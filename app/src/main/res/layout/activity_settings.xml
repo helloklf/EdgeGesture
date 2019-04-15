@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="top"
+    android:padding="20dp"
+    tools:context=".SettingsActivity">
+    <SeekBar
+        android:max="100"
+        style="@style/switch_item" />
+    <Switch
+        android:text="@string/app_name"
+        style="@style/switch_item" />
+    <TextView
+        style="@style/switch_item"
+        android:text="@string/desc_title" />
+    <TextView
+        android:text="@string/desc_content"
+        style="@style/switch_desc"
+        android:layout_weight="1" />
+</LinearLayout>

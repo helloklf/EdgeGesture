@@ -171,7 +171,11 @@ class FloatVitualTouchBar(context: AccessibilityService, var isLandscapf:Boolean
 
         val params = LayoutParams()
 
-        params.type = LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            params.type = LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
+        } else {
+            params.type = LayoutParams.TYPE_SYSTEM_ALERT
+        }
 
         params.format = PixelFormat.TRANSLUCENT
 
