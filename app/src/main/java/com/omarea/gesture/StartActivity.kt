@@ -2,19 +2,18 @@ package com.omarea.gesture
 
 import android.app.Activity
 import android.content.ComponentName
-import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_settings.*
 import android.content.pm.PackageManager
+import android.os.Bundle
 import android.widget.Switch
 import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_settings.*
 import java.lang.Exception
 
-
-class SettingsActivity : Activity() {
+class StartActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+        setContentView(R.layout.activity_start)
 
         val p = packageManager
         val startActivity = ComponentName(this.applicationContext, StartActivity::class.java)

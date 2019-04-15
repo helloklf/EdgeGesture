@@ -4,5 +4,7 @@
         开启此辅助服务即可体验屏幕边缘手势\n\n——此功能源于Scene，访问http://vtools.omarea.com/ 获取Scene体验完整功能。
     </string>
     <string name="desc_title">\n\n操作说明</string>
-    <string name="desc_content">\n返回键：从屏幕两侧下部区域边缘向内滑动\n\n多任务：从屏幕两侧下部区域边缘向内滑动并停顿\n\n首页键：从屏幕底部向上滑动\n\n多任务2：从屏幕底部向上滑动并停顿</string>
+    <string name="desc_content">\n返回键：从屏幕两侧下部区域边缘向内滑动\n\n多任务：从屏幕两侧下部区域边缘向内滑动并停顿\n\n首页键：从屏幕底部向上滑动\n\n多任务2：从屏幕底部向上滑动并停顿\n\n修改配置后，请禁用并重新启用辅助服务</string>
+    <string name="hide_start_icon">隐藏显示启动图标 </string>
+    <string name="hide_start_icon_desc">打开此开关后，本应用将从桌面隐藏，如果需要再恢复请到辅助服务界面，选中本应用进行操作</string>
 </resources>
