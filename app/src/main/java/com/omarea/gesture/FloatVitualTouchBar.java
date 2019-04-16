@@ -138,10 +138,21 @@ class FloatVitualTouchBar {
             params.type = LayoutParams.TYPE_SYSTEM_ALERT;
         }
 
+        /*
+        int height = context.getResources().getDisplayMetrics().heightPixels;
+        int width = context.getResources().getDisplayMetrics().widthPixels;
+        int minSize = width;
+        int maxSize = height;
+        if (height < width) {
+            minSize = height;
+            maxSize = width;
+        }
+        */
+
         params.format = PixelFormat.TRANSLUCENT;
-        params.width = LayoutParams.MATCH_PARENT;
+        params.width =  LayoutParams.MATCH_PARENT; // minSize; //
         params.height = LayoutParams.WRAP_CONTENT;
-        params.gravity = Gravity.BOTTOM;
+        params.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
         params.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_LAYOUT_IN_SCREEN;
 
         mWindowManager.addView(view, params);
