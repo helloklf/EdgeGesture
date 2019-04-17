@@ -47,22 +47,39 @@ class TouchBarView extends View {
     private Vibrator vibrator = (Vibrator) (context.getSystemService(Context.VIBRATOR_SERVICE));
     private boolean vibratorRun = false;
     private boolean drawIcon = true;
-    private Bitmap touch_arrow_left = BitmapFactory.decodeResource(context.getResources(), R.drawable.touch_arrow_left);
-    private Bitmap touch_arrow_right = BitmapFactory.decodeResource(context.getResources(), R.drawable.touch_arrow_right);
-    private Bitmap touch_tasks = BitmapFactory.decodeResource(context.getResources(), R.drawable.touch_tasks);
-    private Bitmap touch_home = BitmapFactory.decodeResource(context.getResources(), R.drawable.touch_home);
+    private Bitmap touch_arrow_left,
+            touch_arrow_right,
+            touch_tasks,
+            touch_home;
     private float flingValue = dp2px(context, 3f); // 小于此值认为是点击而非滑动
+    private Runnable shortTouch, longTouch;
+
+    private Paint p = new Paint();
+
+    private void init() {
+        p.setAntiAlias(true);
+        p.setStyle(Paint.Style.FILL);
+        p.setColor(0x101010);
+        p.setAlpha(240);
+        touch_arrow_left = BitmapFactory.decodeResource(context.getResources(), R.drawable.touch_arrow_left);
+        touch_arrow_right = BitmapFactory.decodeResource(context.getResources(), R.drawable.touch_arrow_right);
+        touch_tasks = BitmapFactory.decodeResource(context.getResources(), R.drawable.touch_tasks);
+        touch_home = BitmapFactory.decodeResource(context.getResources(), R.drawable.touch_home);
+    }
 
     public TouchBarView(Context context) {
         super(context);
+        init();
     }
 
     public TouchBarView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
+        init();
     }
 
     public TouchBarView(Context context, AttributeSet attributeSet, int defStyleAttr) {
         super(context, attributeSet, defStyleAttr);
+        init();
     }
 
     void touchVibrator() {
@@ -82,6 +99,11 @@ class TouchBarView extends View {
         this.bakHeight = height;
         this.setLayoutParams(lp);
         this.orientation = orientation;
+    }
+
+    void setEventHandler(Runnable shortTouch, Runnable longTouch) {
+        this.shortTouch = shortTouch;
+        this.longTouch = longTouch;
     }
 
     // 动画（触摸效果）显示期间，将悬浮窗显示调大，以便显示完整的动效
@@ -223,7 +245,7 @@ class TouchBarView extends View {
                                 vibratorRun = false;
                             }
                             if (orientation == BOTTOM) {
-                                performLongClick();
+                                longTouch.run();
                                 isGestureCompleted = true;
                                 cleartEffect();
                             } else {
@@ -264,24 +286,24 @@ class TouchBarView extends View {
                 if (moveX > FLIP_DISTANCE) {
                     // 向屏幕内侧滑动 - 停顿250ms 打开最近任务，不停顿则“返回”
                     if (isLongTimeGesture)
-                        performLongClick();
+                        longTouch.run();
                     else
-                        performClick();
+                        shortTouch.run();
                 }
             } else if (orientation == RIGHT) {
                 if (-moveX > FLIP_DISTANCE) {
                     // 向屏幕内侧滑动 - 停顿250ms 打开最近任务，不停顿则“返回”
                     if (isLongTimeGesture)
-                        performLongClick();
+                        longTouch.run();
                     else
-                        performClick();
+                        shortTouch.run();
                 }
             } else if (orientation == BOTTOM) {
                 if (moveY > FLIP_DISTANCE) {
                     if (isLongTimeGesture)
-                        performLongClick();
+                        longTouch.run();
                     else
-                        performClick();
+                        shortTouch.run();
                 }
             }
         }
@@ -346,12 +368,6 @@ class TouchBarView extends View {
         if (currentGraphSize < 6f) {
             return;
         }
-
-        Paint p = new Paint();
-        p.setAntiAlias(true);
-        p.setStyle(Paint.Style.FILL);
-        p.setColor(0x101010);
-        p.setAlpha(240);
 
         // 纵向触摸条
         if (orientation == LEFT) {

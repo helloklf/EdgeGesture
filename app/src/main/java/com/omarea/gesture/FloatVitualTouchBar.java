@@ -113,22 +113,18 @@ class FloatVitualTouchBar {
 
         TouchBarView bar = view.findViewById(R.id.bottom_touch_bar);
 
-        bar.setOnClickListener(new View.OnClickListener() {
+        bar.setSize(LayoutParams.MATCH_PARENT, dp2px(context, 8f), TouchBarView.BOTTOM);
+        bar.setEventHandler(new Runnable() {
             @Override
-            public void onClick(View v) {
+            public void run() {
                 performGlobalAction(context, AccessibilityService.GLOBAL_ACTION_HOME);
             }
-        });
-
-        bar.setOnLongClickListener(new View.OnLongClickListener() {
+        }, new Runnable() {
             @Override
-            public boolean onLongClick(View v) {
+            public void run() {
                 performGlobalAction(context, AccessibilityService.GLOBAL_ACTION_RECENTS);
-                return true;
             }
         });
-
-        bar.setSize(LayoutParams.MATCH_PARENT, dp2px(context, 8f), TouchBarView.BOTTOM);
 
         LayoutParams params = new LayoutParams();
 
@@ -165,17 +161,15 @@ class FloatVitualTouchBar {
         View view = LayoutInflater.from(context).inflate(R.layout.fw_vitual_touch_bar, null);
         TouchBarView bar = view.findViewById(R.id.bottom_touch_bar);
 
-        bar.setOnLongClickListener(new View.OnLongClickListener() {
+        bar.setEventHandler(new Runnable() {
             @Override
-            public boolean onLongClick(View v) {
-                performGlobalAction(context, AccessibilityService.GLOBAL_ACTION_RECENTS);
-                return true;
-            }
-        });
-        bar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            public void run() {
                 performGlobalAction(context, AccessibilityService.GLOBAL_ACTION_BACK);
+            }
+        }, new Runnable() {
+            @Override
+            public void run() {
+                performGlobalAction(context, AccessibilityService.GLOBAL_ACTION_RECENTS);
             }
         });
 
@@ -221,17 +215,15 @@ class FloatVitualTouchBar {
 
         TouchBarView bar = view.findViewById(R.id.bottom_touch_bar);
 
-        bar.setOnLongClickListener(new View.OnLongClickListener() {
+        bar.setEventHandler(new Runnable() {
             @Override
-            public boolean onLongClick(View v) {
-                performGlobalAction(context, AccessibilityService.GLOBAL_ACTION_RECENTS);
-                return true;
-            }
-        });
-        bar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            public void run() {
                 performGlobalAction(context, AccessibilityService.GLOBAL_ACTION_BACK);
+            }
+        }, new Runnable() {
+            @Override
+            public void run() {
+                performGlobalAction(context, AccessibilityService.GLOBAL_ACTION_RECENTS);
             }
         });
 
