@@ -5,6 +5,7 @@
     android:layout_gravity="bottom"
     android:background="@android:color/transparent"
     android:fitsSystemWindows="true"
+    android:longClickable="true"
     android:orientation="vertical">
 
     <com.omarea.gesture.TouchBarView

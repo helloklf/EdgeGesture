@@ -124,11 +124,11 @@ class FloatVitualTouchBar {
             @Override
             public boolean onLongClick(View v) {
                 performGlobalAction(context, AccessibilityService.GLOBAL_ACTION_RECENTS);
-                return false;
+                return true;
             }
         });
 
-        bar.setSize(LayoutParams.MATCH_PARENT, dp2px(context, 12f), TouchBarView.BOTTOM);
+        bar.setSize(LayoutParams.MATCH_PARENT, dp2px(context, 8f), TouchBarView.BOTTOM);
 
         LayoutParams params = new LayoutParams();
 
@@ -153,7 +153,7 @@ class FloatVitualTouchBar {
         params.width =  LayoutParams.MATCH_PARENT; // minSize; //
         params.height = LayoutParams.WRAP_CONTENT;
         params.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
-        params.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_LAYOUT_IN_SCREEN;
+        params.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS;
 
         mWindowManager.addView(view, params);
 
@@ -169,7 +169,7 @@ class FloatVitualTouchBar {
             @Override
             public boolean onLongClick(View v) {
                 performGlobalAction(context, AccessibilityService.GLOBAL_ACTION_RECENTS);
-                return false;
+                return true;
             }
         });
         bar.setOnClickListener(new View.OnClickListener() {
@@ -225,7 +225,7 @@ class FloatVitualTouchBar {
             @Override
             public boolean onLongClick(View v) {
                 performGlobalAction(context, AccessibilityService.GLOBAL_ACTION_RECENTS);
-                return false;
+                return true;
             }
         });
         bar.setOnClickListener(new View.OnClickListener() {
@@ -264,7 +264,7 @@ class FloatVitualTouchBar {
         params.height = LayoutParams.WRAP_CONTENT;
 
         params.gravity = Gravity.END | Gravity.BOTTOM;
-        params.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS;
+        params.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS | LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
 
         mWindowManager.addView(view, params);
 

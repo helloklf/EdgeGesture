@@ -51,6 +51,7 @@ class TouchBarView extends View {
     private Bitmap touch_arrow_right = BitmapFactory.decodeResource(context.getResources(), R.drawable.touch_arrow_right);
     private Bitmap touch_tasks = BitmapFactory.decodeResource(context.getResources(), R.drawable.touch_tasks);
     private Bitmap touch_home = BitmapFactory.decodeResource(context.getResources(), R.drawable.touch_home);
+    private float flingValue = dp2px(context, 3f); // 小于此值认为是点击而非滑动
 
     public TouchBarView(Context context) {
         super(context);
@@ -112,6 +113,7 @@ class TouchBarView extends View {
         lp.width = bakWidth;
         lp.height = bakHeight;
         this.setLayoutParams(lp);
+        invalidate();
     }
 
     void cgangePer(float per) {
@@ -137,114 +139,154 @@ class TouchBarView extends View {
         if (event != null) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN: {
-                    isTouchDown = true;
-                    isGestureCompleted = false;
-                    touchStartX = event.getX();
-                    touchStartY = event.getY();
-                    gestureStartTime = 0;
-                    isLongTimeGesture = false;
-                    currentGraphSize = (float) (dp2px(context, 5f));
-                    setSizeOnTouch();
-                    currentGraphSize = 0f;
-                    // invalidate();
-                    // cgangePer(effectSize);
-                    vibratorRun = true;
-                    break;
+                    return onTouchDown(event);
                 }
                 case MotionEvent.ACTION_MOVE: {
-                    if (isGestureCompleted || !isTouchDown) {
-                        return true;
-                    }
-
-                    touchCurrentX = event.getX();
-                    touchCurrentY = event.getY();
-                    float a = -1f;
-                    float b = -1f;
-                    if (orientation == LEFT) {
-                        a = touchCurrentX;
-                        b = touchStartX;
-                    } else if (orientation == RIGHT) {
-                        a = touchStartX;
-                        b = touchCurrentX;
-                    } else if (orientation == BOTTOM) {
-                        a = touchStartY;
-                        b = touchCurrentY;
-                    }
-
-                    if (a - b > FLIP_DISTANCE) {
-                        currentGraphSize = effectSize;
-                        if (gestureStartTime < 1) {
-                            final long currentTime = System.currentTimeMillis();
-                            gestureStartTime = currentTime;
-                            postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (isTouchDown && !isGestureCompleted && currentTime == gestureStartTime) {
-                                        isLongTimeGesture = true;
-                                        if (vibratorRun) {
-                                            touchVibrator();
-                                            vibratorRun = false;
-                                        }
-                                        if (orientation == BOTTOM) {
-                                            performLongClick();
-                                            isGestureCompleted = true;
-                                            cleartEffect();
-                                        } else {
-                                            invalidate();
-                                        }
-                                    }
-                                }
-                            }, longTouchTime);
-                        }
-                    } else {
-                        vibratorRun = true;
-                        gestureStartTime = 0;
-                    }
-                    float size = (a - b) / FLIP_DISTANCE * effectSize;
-                    if (size > effectSize) {
-                        size = effectSize;
-                    }
-                    currentGraphSize = size;
-                    invalidate();
-                    break;
+                    return onTouchMove(event);
                 }
                 case MotionEvent.ACTION_UP: {
-                    if (!isTouchDown || isGestureCompleted) {
-                        return true;
-                    }
-
-                    isTouchDown = false;
-                    isGestureCompleted = true;
-
-                    if (orientation == LEFT) {
-                        if (event.getX() - touchStartX > FLIP_DISTANCE) {
-                            // 向屏幕内侧滑动 - 停顿250ms 打开最近任务，不停顿则“返回”
-                            if (isLongTimeGesture)
-                                performLongClick();
-                            else
-                                performClick();
-                        }
-                    } else if (orientation == RIGHT) {
-                        if (touchStartX - event.getX() > FLIP_DISTANCE) {
-                            // 向屏幕内侧滑动 - 停顿250ms 打开最近任务，不停顿则“返回”
-                            if (isLongTimeGesture)
-                                performLongClick();
-                            else
-                                performClick();
-                        }
-                    } else if (orientation == BOTTOM) {
-                        if (touchStartY - event.getY() > FLIP_DISTANCE) {
-                            if (isLongTimeGesture)
-                                performLongClick();
-                            else
-                                performClick();
-                        }
-                    }
+                    return onTouchUp(event);
+                }
+                case MotionEvent.ACTION_CANCEL:
+                    // Log.d("MotionEvent", "com.omarea.gesture ACTION_CANCEL");
                     cleartEffect();
-                    break;
+                    return true;
+                case MotionEvent.ACTION_OUTSIDE: {
+                    // Log.d("MotionEvent", "com.omarea.gesture ACTION_OUTSIDE");
+                    cleartEffect();
+                    return false;
+                }
+                default: {
+                    Log.d("MotionEvent", "com.omarea.gesture OTHER" + event.getAction());
+                }
+            }
+        } else {
+            // Log.d("MotionEvent", "com.omarea.gesture Null");
+            cleartEffect();
+        }
+        return true;
+    }
+
+    private boolean onTouchDown (MotionEvent event) {
+        // Log.d("MotionEvent", "com.omarea.gesture ACTION_DOWN");
+
+        isTouchDown = true;
+        isGestureCompleted = false;
+        touchStartX = event.getX();
+        touchStartY = event.getY();
+        gestureStartTime = 0;
+        isLongTimeGesture = false;
+        currentGraphSize = (float) (dp2px(context, 5f));
+        setSizeOnTouch();
+        currentGraphSize = 0f;
+        // invalidate();
+        // cgangePer(effectSize);
+        vibratorRun = true;
+
+        return true;
+    }
+
+    private boolean onTouchMove(MotionEvent event) {
+        // Log.d("MotionEvent", "com.omarea.gesture ACTION_MOVE");
+
+        if (isGestureCompleted || !isTouchDown) {
+            return true;
+        }
+
+        touchCurrentX = event.getX();
+        touchCurrentY = event.getY();
+        float a = -1f;
+        float b = -1f;
+        if (orientation == LEFT) {
+            a = touchCurrentX;
+            b = touchStartX;
+        } else if (orientation == RIGHT) {
+            a = touchStartX;
+            b = touchCurrentX;
+        } else if (orientation == BOTTOM) {
+            a = touchStartY;
+            b = touchCurrentY;
+        }
+
+        if (a - b > FLIP_DISTANCE) {
+            currentGraphSize = effectSize;
+            if (gestureStartTime < 1) {
+                final long currentTime = System.currentTimeMillis();
+                gestureStartTime = currentTime;
+                postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isTouchDown && !isGestureCompleted && currentTime == gestureStartTime) {
+                            isLongTimeGesture = true;
+                            if (vibratorRun) {
+                                touchVibrator();
+                                vibratorRun = false;
+                            }
+                            if (orientation == BOTTOM) {
+                                performLongClick();
+                                isGestureCompleted = true;
+                                cleartEffect();
+                            } else {
+                                invalidate();
+                            }
+                        }
+                    }
+                }, longTouchTime);
+            }
+        } else {
+            vibratorRun = true;
+            gestureStartTime = 0;
+        }
+        float size = (a - b) / FLIP_DISTANCE * effectSize;
+        if (size > effectSize) {
+            size = effectSize;
+        }
+        currentGraphSize = size;
+        invalidate();
+        return true;
+    }
+
+    private boolean onTouchUp(MotionEvent event) {
+        // Log.d("MotionEvent", "com.omarea.gesture ACTION_UP");
+
+        if (!isTouchDown || isGestureCompleted) {
+            return true;
+        }
+
+        isTouchDown = false;
+        isGestureCompleted = true;
+
+        float moveX = event.getX() - touchStartX;
+        float moveY = touchStartY - event.getY();
+
+        if (Math.abs(moveX) > flingValue || Math.abs(moveY) > flingValue) {
+            if (orientation == LEFT) {
+                if (moveX > FLIP_DISTANCE) {
+                    // 向屏幕内侧滑动 - 停顿250ms 打开最近任务，不停顿则“返回”
+                    if (isLongTimeGesture)
+                        performLongClick();
+                    else
+                        performClick();
+                }
+            } else if (orientation == RIGHT) {
+                if (-moveX > FLIP_DISTANCE) {
+                    // 向屏幕内侧滑动 - 停顿250ms 打开最近任务，不停顿则“返回”
+                    if (isLongTimeGesture)
+                        performLongClick();
+                    else
+                        performClick();
+                }
+            } else if (orientation == BOTTOM) {
+                if (moveY > FLIP_DISTANCE) {
+                    if (isLongTimeGesture)
+                        performLongClick();
+                    else
+                        performClick();
                 }
             }
         }
+        cleartEffect();
+
         return true;
     }
 
@@ -260,7 +302,6 @@ class TouchBarView extends View {
      * 清除手势效果
      */
     private void cleartEffect() {
-        // resumeBackupSize()
         invalidate();
         isTouchDown = false;
 
@@ -282,7 +323,7 @@ class TouchBarView extends View {
                         gestureStartTime = 0;
                     }
                 }
-                if (currentGraphSize <= 6f && !isTouchDown) {
+                if (currentGraphSize <= 8f && !isTouchDown) {
                     resumeBackupSize();
                 }
                 invalidate();
