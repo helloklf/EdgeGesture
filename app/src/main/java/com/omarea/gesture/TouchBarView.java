@@ -61,10 +61,6 @@ class TouchBarView extends View {
         p.setStyle(Paint.Style.FILL);
         p.setColor(0x101010);
         p.setAlpha(240);
-        touch_arrow_left = BitmapFactory.decodeResource(context.getResources(), R.drawable.touch_arrow_left);
-        touch_arrow_right = BitmapFactory.decodeResource(context.getResources(), R.drawable.touch_arrow_right);
-        touch_tasks = BitmapFactory.decodeResource(context.getResources(), R.drawable.touch_tasks);
-        touch_home = BitmapFactory.decodeResource(context.getResources(), R.drawable.touch_home);
     }
 
     public TouchBarView(Context context) {
@@ -104,6 +100,13 @@ class TouchBarView extends View {
     void setEventHandler(Runnable shortTouch, Runnable longTouch) {
         this.shortTouch = shortTouch;
         this.longTouch = longTouch;
+    }
+
+    void setResource(Bitmap touch_arrow_left, Bitmap touch_arrow_right, Bitmap touch_tasks,Bitmap touch_home) {
+        this.touch_arrow_left = touch_arrow_left;
+        this.touch_arrow_right = touch_arrow_right;
+        this.touch_tasks = touch_tasks;
+        this.touch_home = touch_home;
     }
 
     // 动画（触摸效果）显示期间，将悬浮窗显示调大，以便显示完整的动效

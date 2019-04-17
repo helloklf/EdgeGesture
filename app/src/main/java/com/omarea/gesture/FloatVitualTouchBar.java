@@ -3,6 +3,9 @@ package com.omarea.gesture;
 import android.accessibilityservice.AccessibilityService;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Vibrator;
@@ -32,6 +35,10 @@ class FloatVitualTouchBar {
     private long lastEventTime = 0L;
     private int lastEvent = -1;
     // private Vibrator vibrator;
+    private Bitmap touch_arrow_left;
+    private Bitmap touch_arrow_right;
+    private Bitmap touch_tasks;
+    private Bitmap touch_home;
 
     public FloatVitualTouchBar(AccessibilityService context, boolean isLandscapf, boolean vibratorOn) {
         // this.context = context;
@@ -41,6 +48,12 @@ class FloatVitualTouchBar {
 
         // 获取WindowManager
         mWindowManager = (WindowManager) (context.getSystemService(Context.WINDOW_SERVICE));
+
+        Resources resources = context.getResources();
+        touch_arrow_left = BitmapFactory.decodeResource(resources, R.drawable.touch_arrow_left);
+        touch_arrow_right = BitmapFactory.decodeResource(resources, R.drawable.touch_arrow_right);
+        touch_tasks = BitmapFactory.decodeResource(resources, R.drawable.touch_tasks);
+        touch_home = BitmapFactory.decodeResource(resources, R.drawable.touch_home);
 
         try {
             this.bottomView = setBottomView(context);
@@ -113,6 +126,7 @@ class FloatVitualTouchBar {
 
         TouchBarView bar = view.findViewById(R.id.bottom_touch_bar);
 
+        bar.setResource(touch_arrow_left, touch_arrow_right, touch_tasks, touch_home);
         bar.setSize(LayoutParams.MATCH_PARENT, dp2px(context, 8f), TouchBarView.BOTTOM);
         bar.setEventHandler(new Runnable() {
             @Override
@@ -161,6 +175,7 @@ class FloatVitualTouchBar {
         View view = LayoutInflater.from(context).inflate(R.layout.fw_vitual_touch_bar, null);
         TouchBarView bar = view.findViewById(R.id.bottom_touch_bar);
 
+        bar.setResource(touch_arrow_left, touch_arrow_right, touch_tasks, touch_home);
         bar.setEventHandler(new Runnable() {
             @Override
             public void run() {
@@ -215,6 +230,7 @@ class FloatVitualTouchBar {
 
         TouchBarView bar = view.findViewById(R.id.bottom_touch_bar);
 
+        bar.setResource(touch_arrow_left, touch_arrow_right, touch_tasks, touch_home);
         bar.setEventHandler(new Runnable() {
             @Override
             public void run() {

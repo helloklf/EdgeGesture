@@ -3,6 +3,9 @@ package com.omarea.gesture;
 import android.accessibilityservice.AccessibilityService;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.accessibility.AccessibilityEvent;
 
 public class AccessibilityServiceSceneKeyEvent extends AccessibilityService {
@@ -24,6 +27,7 @@ public class AccessibilityServiceSceneKeyEvent extends AccessibilityService {
     @Override
     public void onServiceConnected() {
         super.onServiceConnected();
+
         createPopupView();
     }
 
