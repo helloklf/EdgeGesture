@@ -1,16 +1,17 @@
 package com.omarea.gesture;
 
 import android.accessibilityservice.AccessibilityService;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.accessibility.AccessibilityEvent;
 
 public class AccessibilityServiceSceneKeyEvent extends AccessibilityService {
     boolean isLandscapf = false;
     private FloatVitualTouchBar floatVitualTouchBar = null;
+    private BroadcastReceiver configChanged = null;
 
     private void hidePopupWindow() {
         if (floatVitualTouchBar != null) {
@@ -28,6 +29,16 @@ public class AccessibilityServiceSceneKeyEvent extends AccessibilityService {
     public void onServiceConnected() {
         super.onServiceConnected();
 
+        if (configChanged == null) {
+            configChanged = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    createPopupView();
+                }
+            };
+
+            registerReceiver(configChanged, new IntentFilter(getString(R.string.action_config_changed)));
+        }
         createPopupView();
     }
 
@@ -58,11 +69,7 @@ public class AccessibilityServiceSceneKeyEvent extends AccessibilityService {
 
     private void createPopupView() {
         hidePopupWindow();
-        floatVitualTouchBar = new FloatVitualTouchBar(
-                this,
-                isLandscapf,
-                true
-        );
+        floatVitualTouchBar = new FloatVitualTouchBar(this, isLandscapf);
     }
 
     @Override
@@ -70,6 +77,11 @@ public class AccessibilityServiceSceneKeyEvent extends AccessibilityService {
         super.onDestroy();
         if (floatVitualTouchBar != null) {
             floatVitualTouchBar.hidePopupWindow();
+        }
+
+        if (configChanged != null) {
+            unregisterReceiver(configChanged);
+            configChanged = null;
         }
     }
 }

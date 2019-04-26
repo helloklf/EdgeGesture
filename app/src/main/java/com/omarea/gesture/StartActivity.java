@@ -20,15 +20,15 @@ public class StartActivity extends Activity {
         hide_start_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    if (hide_start_icon.isChecked()) {
-                        p.setComponentEnabledSetting(startActivity, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-                    } else {
-                        p.setComponentEnabledSetting(startActivity, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-                    }
-                } catch (Exception ex) {
-                    Toast.makeText(v.getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+            try {
+                if (hide_start_icon.isChecked()) {
+                    p.setComponentEnabledSetting(startActivity, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+                } else {
+                    p.setComponentEnabledSetting(startActivity, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
                 }
+            } catch (Exception ex) {
+                Toast.makeText(v.getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+            }
             }
         });
         hide_start_icon.setChecked(p.getComponentEnabledSetting(startActivity) != PackageManager.COMPONENT_ENABLED_STATE_ENABLED);

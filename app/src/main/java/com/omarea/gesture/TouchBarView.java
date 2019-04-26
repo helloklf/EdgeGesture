@@ -3,8 +3,8 @@ package com.omarea.gesture;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -17,21 +17,26 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
 class TouchBarView extends View {
-    static int RIGHT = 2;
-    static int BOTTOM = 0;
-    static int LEFT = 1;
-    ValueAnimator va = null;
-    private int orientation = 0;
+    private SharedPreferences config;
+
+    static final int RIGHT = 2;
+    static final int BOTTOM = 0;
+    static final int LEFT = 1;
+
+    private ValueAnimator va = null; // 动画程序
+    private int barPosition = 0;
     private int bakWidth = 0;
     private int bakHeight = 0;
-    private float touchStartX = 0F;
-    private float touchStartY = 0F;
-    private float touchCurrentX = 0F;
-    private float touchCurrentY = 0F;
+
+    private float touchStartX = 0F; // 触摸开始位置
+    private float touchStartY = 0F; // 触摸开始位置
+    private float touchCurrentX = 0F; // 当前触摸位置
+    private float touchCurrentY = 0F; // 当前触摸位置
     private long gestureStartTime = 0L; // 手势开始时间（是指滑动到一定距离，认定触摸手势生效的时间）
     private boolean isLongTimeGesture = false;
     private Context context = getContext();
@@ -39,18 +44,14 @@ class TouchBarView extends View {
     private float effectSize = (float) (dp2px(context, 15f)); // 特效大小
     private float effectWidth = effectSize * 6; // 特效大小
     private float cushion = effectWidth + effectWidth * 1.4f; // 左右两端的缓冲宽度（数值越大则约缓和）
-    private long longTouchTime = 250L;
     private boolean isTouchDown = false;
     private boolean isGestureCompleted = false;
     private float iconRadius = dp2px(context, 8f);
     private float currentGraphSize = 0f;
     private Vibrator vibrator = (Vibrator) (context.getSystemService(Context.VIBRATOR_SERVICE));
     private boolean vibratorRun = false;
-    private boolean drawIcon = true;
-    private Bitmap touch_arrow_left,
-            touch_arrow_right,
-            touch_tasks,
-            touch_home;
+    private boolean drawIcon = true; // 是否绘制图标
+    private Bitmap touch_arrow_left, touch_arrow_right, touch_tasks, touch_home; // 图标资源
     private float flingValue = dp2px(context, 3f); // 小于此值认为是点击而非滑动
     private Runnable shortTouch, longTouch;
 
@@ -59,8 +60,9 @@ class TouchBarView extends View {
     private void init() {
         p.setAntiAlias(true);
         p.setStyle(Paint.Style.FILL);
-        p.setColor(0x101010);
-        p.setAlpha(240);
+        p.setColor(0xee101010);
+
+        config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
     }
 
     public TouchBarView(Context context) {
@@ -87,14 +89,55 @@ class TouchBarView extends View {
         }
     }
 
-    void setSize(int width, int height, int orientation) {
+    void setBarPosition(int barPosition, boolean isLandscapf) {
+        this.barPosition = barPosition;
+        if (barPosition == BOTTOM) {
+            setSize(WindowManager.LayoutParams.MATCH_PARENT, dp2px(context, 8f));
+            p.setColor(config.getInt(SpfConfig.CONFIG_BOTTOM_COLOR, SpfConfig.CONFIG_BOTTOM_COLOR_DEFAULT));
+        } else {
+            // 根据配置获取触摸条占屏幕的高度比
+            double heightRatio = 0.6;
+            if (barPosition == LEFT) {
+                heightRatio = config.getInt(SpfConfig.CONFIG_LEFT_HEIGHT, SpfConfig.CONFIG_LEFT_HEIGHT_DEFAULT)  / 100.0;
+            } else if (barPosition == RIGHT) {
+                heightRatio = config.getInt(SpfConfig.CONFIG_RIGHT_HEIGHT, SpfConfig.CONFIG_RIGHT_HEIGHT_DEFAULT)  / 100.0;
+            }
+            if (heightRatio > 1) {
+                heightRatio = 1;
+            } else if (heightRatio < 0) {
+                heightRatio = 0;
+            }
+
+
+            int height = context.getResources().getDisplayMetrics().heightPixels;
+            int width = context.getResources().getDisplayMetrics().widthPixels;
+            int minSize = width;
+            int maxSize = height;
+            if (height < width) {
+                minSize = height;
+                maxSize = width;
+            }
+
+            if (isLandscapf) {
+                setSize(dp2px(context, 12f), (int) (minSize * heightRatio));
+            } else {
+                setSize(dp2px(context, 12f), (int) (maxSize * heightRatio));
+            }
+            if (barPosition == LEFT) {
+                p.setColor(config.getInt(SpfConfig.CONFIG_LEFT_COLOR, SpfConfig.CONFIG_LEFT_COLOR_DEFAULT));
+            } else if (barPosition == RIGHT) {
+                p.setColor(config.getInt(SpfConfig.CONFIG_RIGHT_COLOR, SpfConfig.CONFIG_RIGHT_COLOR_DEFAULT));
+            }
+        }
+    }
+
+    private void setSize(int width, int height) {
         ViewGroup.LayoutParams lp = this.getLayoutParams();
         lp.width = width;
         lp.height = height;
         this.bakWidth = width;
         this.bakHeight = height;
         this.setLayoutParams(lp);
-        this.orientation = orientation;
     }
 
     void setEventHandler(Runnable shortTouch, Runnable longTouch) {
@@ -113,9 +156,9 @@ class TouchBarView extends View {
     private void setSizeOnTouch() {
         if (bakHeight > 0 || bakWidth > 0) {
             ViewGroup.LayoutParams lp = this.getLayoutParams();
-            if (orientation == BOTTOM) {
+            if (barPosition == BOTTOM) {
                 lp.height = FLIP_DISTANCE;
-            } else if (orientation == LEFT || orientation == RIGHT) {
+            } else if (barPosition == LEFT || barPosition == RIGHT) {
                 lp.width = FLIP_DISTANCE;
                 if (touchStartY < effectWidth) {
                     int toHeight = (int) (this.bakHeight + effectWidth);
@@ -141,23 +184,6 @@ class TouchBarView extends View {
         invalidate();
     }
 
-    void cgangePer(float per) {
-        if (va != null && va.isRunning()) {
-            va.cancel();
-        }
-        va = ValueAnimator.ofFloat(this.currentGraphSize, per);
-        va.setDuration(200);
-        va.setInterpolator(new DecelerateInterpolator());
-        va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                currentGraphSize = (float) (animation.getAnimatedValue());
-                invalidate();
-            }
-        });
-        va.start();
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -173,11 +199,9 @@ class TouchBarView extends View {
                     return onTouchUp(event);
                 }
                 case MotionEvent.ACTION_CANCEL:
-                    // Log.d("MotionEvent", "com.omarea.gesture ACTION_CANCEL");
                     cleartEffect();
                     return true;
                 case MotionEvent.ACTION_OUTSIDE: {
-                    // Log.d("MotionEvent", "com.omarea.gesture ACTION_OUTSIDE");
                     cleartEffect();
                     return false;
                 }
@@ -186,15 +210,12 @@ class TouchBarView extends View {
                 }
             }
         } else {
-            // Log.d("MotionEvent", "com.omarea.gesture Null");
             cleartEffect();
         }
         return true;
     }
 
     private boolean onTouchDown (MotionEvent event) {
-        // Log.d("MotionEvent", "com.omarea.gesture ACTION_DOWN");
-
         isTouchDown = true;
         isGestureCompleted = false;
         touchStartX = event.getX();
@@ -204,16 +225,12 @@ class TouchBarView extends View {
         currentGraphSize = (float) (dp2px(context, 5f));
         setSizeOnTouch();
         currentGraphSize = 0f;
-        // invalidate();
-        // cgangePer(effectSize);
         vibratorRun = true;
 
         return true;
     }
 
     private boolean onTouchMove(MotionEvent event) {
-        // Log.d("MotionEvent", "com.omarea.gesture ACTION_MOVE");
-
         if (isGestureCompleted || !isTouchDown) {
             return true;
         }
@@ -222,13 +239,13 @@ class TouchBarView extends View {
         touchCurrentY = event.getY();
         float a = -1f;
         float b = -1f;
-        if (orientation == LEFT) {
+        if (barPosition == LEFT) {
             a = touchCurrentX;
             b = touchStartX;
-        } else if (orientation == RIGHT) {
+        } else if (barPosition == RIGHT) {
             a = touchStartX;
             b = touchCurrentX;
-        } else if (orientation == BOTTOM) {
+        } else if (barPosition == BOTTOM) {
             a = touchStartY;
             b = touchCurrentY;
         }
@@ -247,7 +264,7 @@ class TouchBarView extends View {
                                 touchVibrator();
                                 vibratorRun = false;
                             }
-                            if (orientation == BOTTOM) {
+                            if (barPosition == BOTTOM) {
                                 longTouch.run();
                                 isGestureCompleted = true;
                                 cleartEffect();
@@ -256,7 +273,7 @@ class TouchBarView extends View {
                             }
                         }
                     }
-                }, longTouchTime);
+                }, config.getLong(SpfConfig.CONFIG_HOVER_TIME, SpfConfig.CONFIG_HOVER_TIME_DEFAULT));
             }
         } else {
             vibratorRun = true;
@@ -285,7 +302,7 @@ class TouchBarView extends View {
         float moveY = touchStartY - event.getY();
 
         if (Math.abs(moveX) > flingValue || Math.abs(moveY) > flingValue) {
-            if (orientation == LEFT) {
+            if (barPosition == LEFT) {
                 if (moveX > FLIP_DISTANCE) {
                     // 向屏幕内侧滑动 - 停顿250ms 打开最近任务，不停顿则“返回”
                     if (isLongTimeGesture)
@@ -293,7 +310,7 @@ class TouchBarView extends View {
                     else
                         shortTouch.run();
                 }
-            } else if (orientation == RIGHT) {
+            } else if (barPosition == RIGHT) {
                 if (-moveX > FLIP_DISTANCE) {
                     // 向屏幕内侧滑动 - 停顿250ms 打开最近任务，不停顿则“返回”
                     if (isLongTimeGesture)
@@ -301,7 +318,7 @@ class TouchBarView extends View {
                     else
                         shortTouch.run();
                 }
-            } else if (orientation == BOTTOM) {
+            } else if (barPosition == BOTTOM) {
                 if (moveY > FLIP_DISTANCE) {
                     if (isLongTimeGesture)
                         longTouch.run();
@@ -373,7 +390,7 @@ class TouchBarView extends View {
         }
 
         // 纵向触摸条
-        if (orientation == LEFT) {
+        if (barPosition == LEFT) {
             if (touchStartY > 0) {
                 Path path = new Path();
                 float graphHeight = -currentGraphSize;
@@ -401,7 +418,7 @@ class TouchBarView extends View {
                     }
                 }
             }
-        } else if (orientation == RIGHT) {
+        } else if (barPosition == RIGHT) {
             if (touchStartY > 0) {
                 Path path = new Path();
                 float graphHeight = currentGraphSize;

@@ -17,13 +17,4 @@
     <TextView
         style="@style/switch_desc"
         android:text="@string/hide_start_icon_desc" />
-
-    <TextView
-        style="@style/switch_item"
-        android:text="@string/desc_title" />
-
-    <TextView
-        style="@style/switch_desc"
-        android:layout_weight="1"
-        android:text="@string/desc_content" />
 </LinearLayout>
