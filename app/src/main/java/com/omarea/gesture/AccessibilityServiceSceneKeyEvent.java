@@ -22,12 +22,12 @@ public class AccessibilityServiceSceneKeyEvent extends AccessibilityService {
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-
     }
 
     @Override
     public void onServiceConnected() {
         super.onServiceConnected();
+        TouchIconCache.setContext(this.getBaseContext());
 
         if (configChanged == null) {
             configChanged = new BroadcastReceiver() {

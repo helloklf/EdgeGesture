@@ -6,4 +6,8 @@
     <string name="hide_start_icon">隐藏启动图标 </string>
     <string name="hide_start_icon_desc">打开此开关后，本应用将从桌面隐藏，如果需要再恢复请到辅助服务界面，选中本应用进行操作</string>
     <string name="action_config_changed">com.omarea.gesture.FilterConfigChanged</string>
+    <string name="effect_color_picker">手势动效颜色</string>
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
+    <string name="handler_picker">选择动作响应</string>
 </resources>

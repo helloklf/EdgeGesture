@@ -1,10 +1,10 @@
 package com.omarea.gesture;
 
+import android.accessibilityservice.AccessibilityService;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -19,7 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
+import android.widget.Toast;
 
 class TouchBarView extends View {
     private SharedPreferences config;
@@ -51,9 +51,12 @@ class TouchBarView extends View {
     private Vibrator vibrator = (Vibrator) (context.getSystemService(Context.VIBRATOR_SERVICE));
     private boolean vibratorRun = false;
     private boolean drawIcon = true; // 是否绘制图标
-    private Bitmap touch_arrow_left, touch_arrow_right, touch_tasks, touch_home; // 图标资源
     private float flingValue = dp2px(context, 3f); // 小于此值认为是点击而非滑动
-    private Runnable shortTouch, longTouch;
+
+    private int eventTouch;
+    private int eventHover;
+    private AccessibilityService accessibilityService;
+    private boolean isLandscapf = false;
 
     private Paint p = new Paint();
 
@@ -63,6 +66,32 @@ class TouchBarView extends View {
         p.setColor(0xee101010);
 
         config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
+    }
+
+    private long lastEventTime = 0L;
+    private int lastEvent = -1;
+    private void performGlobalAction(int event) {
+        if (accessibilityService != null) {
+            if (isLandscapf && (lastEventTime + 1500 < System.currentTimeMillis() || lastEvent != event)) {
+                lastEvent = event;
+                lastEventTime = System.currentTimeMillis();
+                Toast.makeText(context, "请重复手势~", Toast.LENGTH_SHORT).show();
+            } else {
+                accessibilityService.performGlobalAction(event);
+            }
+        }
+    }
+
+    private void onShortTouch() {
+        if (accessibilityService != null) {
+            performGlobalAction(eventTouch);
+        }
+    }
+
+    private void onTouchHover() {
+        if (accessibilityService != null) {
+            performGlobalAction(eventHover);
+        }
     }
 
     public TouchBarView(Context context) {
@@ -91,6 +120,8 @@ class TouchBarView extends View {
 
     void setBarPosition(int barPosition, boolean isLandscapf) {
         this.barPosition = barPosition;
+        this.isLandscapf = isLandscapf;
+
         if (barPosition == BOTTOM) {
             setSize(WindowManager.LayoutParams.MATCH_PARENT, dp2px(context, 8f));
             p.setColor(config.getInt(SpfConfig.CONFIG_BOTTOM_COLOR, SpfConfig.CONFIG_BOTTOM_COLOR_DEFAULT));
@@ -140,16 +171,10 @@ class TouchBarView extends View {
         this.setLayoutParams(lp);
     }
 
-    void setEventHandler(Runnable shortTouch, Runnable longTouch) {
-        this.shortTouch = shortTouch;
-        this.longTouch = longTouch;
-    }
-
-    void setResource(Bitmap touch_arrow_left, Bitmap touch_arrow_right, Bitmap touch_tasks,Bitmap touch_home) {
-        this.touch_arrow_left = touch_arrow_left;
-        this.touch_arrow_right = touch_arrow_right;
-        this.touch_tasks = touch_tasks;
-        this.touch_home = touch_home;
+    void setEventHandler(int shortTouch, int touchHover, final AccessibilityService context) {
+        this.eventTouch = shortTouch;
+        this.eventHover = touchHover;
+        this.accessibilityService = context;
     }
 
     // 动画（触摸效果）显示期间，将悬浮窗显示调大，以便显示完整的动效
@@ -265,7 +290,7 @@ class TouchBarView extends View {
                                 vibratorRun = false;
                             }
                             if (barPosition == BOTTOM) {
-                                longTouch.run();
+                                onTouchHover();
                                 isGestureCompleted = true;
                                 cleartEffect();
                             } else {
@@ -306,24 +331,24 @@ class TouchBarView extends View {
                 if (moveX > FLIP_DISTANCE) {
                     // 向屏幕内侧滑动 - 停顿250ms 打开最近任务，不停顿则“返回”
                     if (isLongTimeGesture)
-                        longTouch.run();
+                        onTouchHover();
                     else
-                        shortTouch.run();
+                        onShortTouch();
                 }
             } else if (barPosition == RIGHT) {
                 if (-moveX > FLIP_DISTANCE) {
                     // 向屏幕内侧滑动 - 停顿250ms 打开最近任务，不停顿则“返回”
                     if (isLongTimeGesture)
-                        longTouch.run();
+                        onTouchHover();
                     else
-                        shortTouch.run();
+                        onShortTouch();
                 }
             } else if (barPosition == BOTTOM) {
                 if (moveY > FLIP_DISTANCE) {
                     if (isLongTimeGesture)
-                        longTouch.run();
+                        onTouchHover();
                     else
-                        shortTouch.run();
+                        onShortTouch();
                 }
             }
         }
@@ -381,6 +406,19 @@ class TouchBarView extends View {
         return new RectF(centerX - iconRadius, centerY - iconRadius, centerX + iconRadius, centerY + iconRadius);
     }
 
+    private void drawIcon(Canvas canvas, float centerX, float centerY) {
+        try {
+            canvas.drawBitmap(
+                    isLongTimeGesture ? TouchIconCache.getIcon(eventHover) : TouchIconCache.getIcon(eventTouch),
+                    null,
+                    getEffectIconRectF(centerX, centerY),
+                    p);
+        } catch (Exception ex) {
+            Log.e("图标渲染错误", ex.getLocalizedMessage());
+            drawIcon = false;
+        }
+    }
+
     @Override
     @SuppressLint("DrawAllocation")
     public void onDraw(Canvas canvas) {
@@ -406,16 +444,7 @@ class TouchBarView extends View {
                 canvas.drawPath(path, p);
 
                 if (drawIcon && touchCurrentX - touchStartX > FLIP_DISTANCE) {
-                    try {
-                        canvas.drawBitmap(
-                                isLongTimeGesture ? touch_tasks : touch_arrow_right,
-                                null,
-                                getEffectIconRectF(centerX, centerY),
-                                p);
-                    } catch (Exception ex) {
-                        Log.e("图标渲染错误", ex.getLocalizedMessage());
-                        drawIcon = false;
-                    }
+                    drawIcon(canvas, centerX, centerY);
                 }
             }
         } else if (barPosition == RIGHT) {
@@ -434,16 +463,7 @@ class TouchBarView extends View {
                 canvas.drawPath(path, p);
 
                 if (drawIcon && touchStartX - touchCurrentX > FLIP_DISTANCE) {
-                    try {
-                        canvas.drawBitmap(
-                                isLongTimeGesture ? touch_tasks : touch_arrow_left,
-                                null,
-                                getEffectIconRectF(centerX, centerY),
-                                p);
-                    } catch (Exception ex) {
-                        Log.e("图标渲染错误", ex.getLocalizedMessage());
-                        drawIcon = false;
-                    }
+                    drawIcon(canvas, centerX, centerY);
                 }
             }
         }
@@ -464,16 +484,7 @@ class TouchBarView extends View {
                 canvas.drawPath(path, p);
 
                 if (drawIcon && touchStartY - touchCurrentY > FLIP_DISTANCE) {
-                    try {
-                        canvas.drawBitmap(
-                                isLongTimeGesture ? touch_tasks : touch_home,
-                                null,
-                                getEffectIconRectF(centerX, centerY),
-                                p);
-                    } catch (Exception ex) {
-                        Log.e("图标渲染错误", ex.getLocalizedMessage());
-                        drawIcon = false;
-                    }
+                    drawIcon(canvas, centerX, centerY);
                 }
             }
         }

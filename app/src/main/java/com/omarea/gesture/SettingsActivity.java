@@ -1,17 +1,22 @@
 package com.omarea.gesture;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 
 public class SettingsActivity extends Activity {
@@ -40,7 +45,9 @@ public class SettingsActivity extends Activity {
                 }
             }
         });
-        hide_start_icon.setChecked(p.getComponentEnabledSetting(startActivity) != PackageManager.COMPONENT_ENABLED_STATE_ENABLED);
+
+        int activityState = p.getComponentEnabledSetting(startActivity);
+        hide_start_icon.setChecked(activityState != PackageManager.COMPONENT_ENABLED_STATE_ENABLED && activityState != PackageManager.COMPONENT_ENABLED_STATE_DEFAULT);
 
         bindSwitch(R.id.allow_bottom, SpfConfig.CONFIG_BOTTOM_ALLOW, SpfConfig.CONFIG_BOTTOM_ALLOW_DEFAULT);
         bindSwitch(R.id.allow_left, SpfConfig.CONFIG_LEFT_ALLOW, SpfConfig.CONFIG_LEFT_ALLOW_DEFAULT);
@@ -52,6 +59,32 @@ public class SettingsActivity extends Activity {
         bindColorPicker(R.id.bar_color_bottom, SpfConfig.CONFIG_BOTTOM_COLOR, SpfConfig.CONFIG_BOTTOM_COLOR_DEFAULT);
         bindColorPicker(R.id.bar_color_left, SpfConfig.CONFIG_LEFT_COLOR, SpfConfig.CONFIG_LEFT_COLOR_DEFAULT);
         bindColorPicker(R.id.bar_color_right, SpfConfig.CONFIG_RIGHT_COLOR, SpfConfig.CONFIG_RIGHT_COLOR_DEFAULT);
+
+        bindHandlerPicker(R.id.tap_bottom, SpfConfig.CONFIG_BOTTOM_EVBET, SpfConfig.CONFIG_BOTTOM_EVBET_DEFAULT);
+        bindHandlerPicker(R.id.hover_bottom, SpfConfig.CONFIG_BOTTOM_EVBET_HOVER, SpfConfig.CONFIG_BOTTOM_EVBET_HOVER_DEFAULT);
+        bindHandlerPicker(R.id.tap_left, SpfConfig.CONFIG_LEFT_EVBET, SpfConfig.CONFIG_LEFT_EVBET_DEFAULT);
+        bindHandlerPicker(R.id.hover_left, SpfConfig.CONFIG_LEFT_EVBET_HOVER, SpfConfig.CONFIG_LEFT_EVBET_HOVER_DEFAULT);
+        bindHandlerPicker(R.id.tap_right, SpfConfig.CONFIG_RIGHT_EVBET, SpfConfig.CONFIG_RIGHT_EVBET_DEFAULT);
+        bindHandlerPicker(R.id.hover_right, SpfConfig.CONFIG_RIGHT_EVBET_HOVER, SpfConfig.CONFIG_RIGHT_EVBET_HOVER_DEFAULT);
+    }
+
+    private void updateView() {
+        findViewById(R.id.bar_color_bottom).setBackgroundColor(config.getInt(SpfConfig.CONFIG_BOTTOM_COLOR, SpfConfig.CONFIG_BOTTOM_COLOR_DEFAULT));
+        findViewById(R.id.bar_color_left).setBackgroundColor(config.getInt(SpfConfig.CONFIG_LEFT_COLOR, SpfConfig.CONFIG_LEFT_COLOR_DEFAULT));
+        findViewById(R.id.bar_color_right).setBackgroundColor(config.getInt(SpfConfig.CONFIG_RIGHT_COLOR, SpfConfig.CONFIG_RIGHT_COLOR_DEFAULT));
+
+        ((Button)findViewById(R.id.tap_bottom)).setText(Handlers.getOption(config.getInt(SpfConfig.CONFIG_BOTTOM_EVBET, SpfConfig.CONFIG_BOTTOM_EVBET_DEFAULT)));
+        ((Button)findViewById(R.id.hover_bottom)).setText(Handlers.getOption(config.getInt(SpfConfig.CONFIG_BOTTOM_EVBET_HOVER, SpfConfig.CONFIG_BOTTOM_EVBET_HOVER_DEFAULT)));
+        ((Button)findViewById(R.id.tap_left)).setText(Handlers.getOption(config.getInt(SpfConfig.CONFIG_LEFT_EVBET, SpfConfig.CONFIG_LEFT_EVBET_DEFAULT)));
+        ((Button)findViewById(R.id.hover_left)).setText(Handlers.getOption(config.getInt(SpfConfig.CONFIG_LEFT_EVBET_HOVER, SpfConfig.CONFIG_LEFT_EVBET_HOVER_DEFAULT)));
+        ((Button)findViewById(R.id.tap_right)).setText(Handlers.getOption(config.getInt(SpfConfig.CONFIG_RIGHT_EVBET, SpfConfig.CONFIG_RIGHT_EVBET_DEFAULT)));
+        ((Button)findViewById(R.id.hover_right)).setText(Handlers.getOption(config.getInt(SpfConfig.CONFIG_RIGHT_EVBET_HOVER, SpfConfig.CONFIG_RIGHT_EVBET_HOVER_DEFAULT)));
+
+        try {
+            Intent intent = new Intent(getString(R.string.action_config_changed));
+            sendBroadcast(intent);
+        } catch (Exception ex) {
+        }
     }
 
     private void bindSwitch(int id, final String key, boolean defValue) {
@@ -84,23 +117,111 @@ public class SettingsActivity extends Activity {
         });
     }
 
-    private void bindColorPicker(int id, final String key, int defValue) {
+    private void bindColorPicker(int id, final String key, final int defValue) {
         final Button button = findViewById(id);
         button.setBackgroundColor(config.getInt(key, defValue));
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                openColorPicker(key, defValue);
             }
         });
     }
 
-    private void updateView() {
-        try {
-            Intent intent = new Intent(getString(R.string.action_config_changed));
-            sendBroadcast(intent);
-        } catch (Exception ex) {
+    private void bindHandlerPicker(int id, final String key, final int defValue) {
+        final Button button = findViewById(id);
+        button.setText(Handlers.getOption(config.getInt(key, defValue)));
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openHandlerPicker(key, defValue);
+            }
+        });
+    }
 
-        }
+    /**
+     * 选择响应动作
+     * @param key
+     * @param defValue
+     */
+    private void openHandlerPicker(final String key, final int defValue) {
+        String[] items = Handlers.getOptions();
+        final ArrayList<Integer> values = Handlers.getValues();
+
+        int currentValue = config.getInt(key, defValue);
+        int index = values.indexOf(currentValue);
+;
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.handler_picker))
+                .setSingleChoiceItems(items, index, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        config.edit().putInt(key, values.get(which)).apply();
+                        updateView();
+
+                        dialog.dismiss();
+                    }
+                })
+                .create()
+                .show();
+    }
+
+    /**
+     * 选择颜色
+     * @param key
+     * @param defValue
+     */
+    private void openColorPicker(final String key, final int defValue) {
+        View view = getLayoutInflater().inflate(R.layout.color_picker, null);
+        int currentColor = config.getInt(key, defValue);
+        final SeekBar alphaBar = view.findViewById(R.id.color_alpha);
+        final SeekBar redBar = view.findViewById(R.id.color_red);
+        final SeekBar greenBar = view.findViewById(R.id.color_green);
+        final SeekBar blueBar = view.findViewById(R.id.color_blue);
+        final Button colorPreview = view.findViewById(R.id.color_preview);
+
+        alphaBar.setProgress(Color.alpha(currentColor));
+        redBar.setProgress(Color.red(currentColor));
+        greenBar.setProgress(Color.green(currentColor));
+        blueBar.setProgress(Color.blue(currentColor));
+        colorPreview.setBackgroundColor(currentColor);
+
+        SeekBar.OnSeekBarChangeListener listener = new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                int color = Color.argb(alphaBar.getProgress(), redBar.getProgress(), greenBar.getProgress(), blueBar.getProgress());
+                colorPreview.setBackgroundColor(color);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {  }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {  }
+        };
+        alphaBar.setOnSeekBarChangeListener(listener);
+        redBar.setOnSeekBarChangeListener(listener);
+        greenBar.setOnSeekBarChangeListener(listener);
+        blueBar.setOnSeekBarChangeListener(listener);
+
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.effect_color_picker))
+                .setView(view)
+                .setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int color = Color.argb(alphaBar.getProgress(), redBar.getProgress(), greenBar.getProgress(), blueBar.getProgress());
+                        config.edit().putInt(key, color).apply();
+                        colorPreview.setBackgroundColor(color);
+                        updateView();
+                    }
+                })
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .create()
+                .show();
     }
 }

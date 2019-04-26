@@ -25,24 +25,12 @@ class FloatVitualTouchBar {
     private View rightView = null;
     private long lastEventTime = 0L;
     private int lastEvent = -1;
-    private Bitmap touch_arrow_left;
-    private Bitmap touch_arrow_right;
-    private Bitmap touch_tasks;
-    private Bitmap touch_home;
     private SharedPreferences config;
 
     public FloatVitualTouchBar(AccessibilityService context, boolean isLandscapf) {
         this.isLandscapf = isLandscapf;
         config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
-
         mWindowManager = (WindowManager) (context.getSystemService(Context.WINDOW_SERVICE));
-
-        Resources resources = context.getResources();
-        touch_arrow_left = BitmapFactory.decodeResource(resources, R.drawable.touch_arrow_left);
-        touch_arrow_right = BitmapFactory.decodeResource(resources, R.drawable.touch_arrow_right);
-        touch_tasks = BitmapFactory.decodeResource(resources, R.drawable.touch_tasks);
-        touch_home = BitmapFactory.decodeResource(resources, R.drawable.touch_home);
-
         try {
             if (config.getBoolean(SpfConfig.CONFIG_BOTTOM_ALLOW, SpfConfig.CONFIG_BOTTOM_ALLOW_DEFAULT)) {
                 this.bottomView = setBottomView(context);
@@ -109,19 +97,11 @@ class FloatVitualTouchBar {
 
         TouchBarView bar = view.findViewById(R.id.bottom_touch_bar);
 
-        bar.setResource(touch_arrow_left, touch_arrow_right, touch_tasks, touch_home);
+        bar.setEventHandler(
+                config.getInt(SpfConfig.CONFIG_BOTTOM_EVBET, SpfConfig.CONFIG_BOTTOM_EVBET_DEFAULT),
+                config.getInt(SpfConfig.CONFIG_BOTTOM_EVBET_HOVER, SpfConfig.CONFIG_BOTTOM_EVBET_HOVER_DEFAULT),
+                context);
         bar.setBarPosition(TouchBarView.BOTTOM, isLandscapf);
-        bar.setEventHandler(new Runnable() {
-            @Override
-            public void run() {
-                performGlobalAction(context, config.getInt(SpfConfig.CONFIG_BOTTOM_EVBET, SpfConfig.CONFIG_BOTTOM_EVBET_DEFAULT));
-            }
-        }, new Runnable() {
-            @Override
-            public void run() {
-                performGlobalAction(context, config.getInt(SpfConfig.CONFIG_BOTTOM_EVBET_HOVER, SpfConfig.CONFIG_BOTTOM_EVBET_HOVER_DEFAULT));
-            }
-        });
 
         LayoutParams params = new LayoutParams();
 
@@ -147,18 +127,7 @@ class FloatVitualTouchBar {
         View view = LayoutInflater.from(context).inflate(R.layout.fw_vitual_touch_bar, null);
         TouchBarView bar = view.findViewById(R.id.bottom_touch_bar);
 
-        bar.setResource(touch_arrow_left, touch_arrow_right, touch_tasks, touch_home);
-        bar.setEventHandler(new Runnable() {
-            @Override
-            public void run() {
-                performGlobalAction(context, config.getInt(SpfConfig.CONFIG_LEFT_EVBET, SpfConfig.CONFIG_LEFT_EVBET_DEFAULT));
-            }
-        }, new Runnable() {
-            @Override
-            public void run() {
-                performGlobalAction(context, config.getInt(SpfConfig.CONFIG_LEFT_EVBET_HOVER, SpfConfig.CONFIG_LEFT_EVBET_HOVER_DEFAULT));
-            }
-        });
+        bar.setEventHandler(config.getInt(SpfConfig.CONFIG_LEFT_EVBET, SpfConfig.CONFIG_LEFT_EVBET_DEFAULT), config.getInt(SpfConfig.CONFIG_LEFT_EVBET_HOVER, SpfConfig.CONFIG_LEFT_EVBET_HOVER_DEFAULT), context);
 
         bar.setBarPosition(TouchBarView.LEFT, isLandscapf);
 
@@ -189,18 +158,7 @@ class FloatVitualTouchBar {
 
         TouchBarView bar = view.findViewById(R.id.bottom_touch_bar);
 
-        bar.setResource(touch_arrow_left, touch_arrow_right, touch_tasks, touch_home);
-        bar.setEventHandler(new Runnable() {
-            @Override
-            public void run() {
-                performGlobalAction(context, config.getInt(SpfConfig.CONFIG_RIGHT_EVBET, SpfConfig.CONFIG_RIGHT_EVBET_DEFAULT));
-            }
-        }, new Runnable() {
-            @Override
-            public void run() {
-                performGlobalAction(context, config.getInt(SpfConfig.CONFIG_RIGHT_EVBET_HOVER, SpfConfig.CONFIG_RIGHT_EVBET_HOVER_DEFAULT));
-            }
-        });
+        bar.setEventHandler(config.getInt(SpfConfig.CONFIG_RIGHT_EVBET, SpfConfig.CONFIG_RIGHT_EVBET_DEFAULT), config.getInt(SpfConfig.CONFIG_RIGHT_EVBET_HOVER, SpfConfig.CONFIG_RIGHT_EVBET_HOVER_DEFAULT), context);
 
         bar.setBarPosition(TouchBarView.RIGHT, isLandscapf);
 
