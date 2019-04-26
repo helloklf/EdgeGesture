@@ -11,7 +11,7 @@ public class TouchIconCache {
         mContext = context;
     }
 
-    private static Bitmap touch_arrow_left, touch_arrow_right, touch_tasks, touch_home, touch_lock, touch_notice, touch_power, touch_settings, touch_split, touch_info; // 图标资源
+    private static Bitmap touch_arrow_left, touch_arrow_right, touch_tasks, touch_home, touch_lock, touch_notice, touch_power, touch_settings, touch_split, touch_info, touch_screenshot; // 图标资源
 
     public static Bitmap getIcon(int action) {
         switch (action) {
@@ -62,6 +62,12 @@ public class TouchIconCache {
                     touch_split = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.touch_split);
                 }
                 return touch_split;
+            }
+            case AccessibilityService.GLOBAL_ACTION_TAKE_SCREENSHOT: {
+                if (touch_screenshot == null && mContext != null) {
+                    touch_screenshot = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.touch_screenshot);
+                }
+                return touch_screenshot;
             }
         }
         if (touch_info == null && mContext != null) {

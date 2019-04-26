@@ -63,7 +63,7 @@
                         android:layout_gravity="center_vertical" />
                 </LinearLayout>
 
-                <LinearLayout android:visibility="gone"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -80,6 +80,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
+                        android:progress="100"
                         android:max="100"
                         android:min="0" />
 

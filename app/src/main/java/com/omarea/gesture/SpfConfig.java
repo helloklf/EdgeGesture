@@ -42,6 +42,6 @@ public class SpfConfig {
     public static final int CONFIG_BOTTOM_COLOR_DEFAULT = 0xee101010;
     public static final String CONFIG_BOTTOM_EVBET = "CONFIG_BOTTOM_EVBET";
     public static final int CONFIG_BOTTOM_EVBET_DEFAULT = AccessibilityService.GLOBAL_ACTION_HOME;
-    public static final String CONFIG_BOTTOM_EVBET_HOVER = "CONFIG_RIGHT_EVBET_HOVER";
+    public static final String CONFIG_BOTTOM_EVBET_HOVER = "CONFIG_BOTTOM_EVBET_HOVER";
     public static final int CONFIG_BOTTOM_EVBET_HOVER_DEFAULT = AccessibilityService.GLOBAL_ACTION_RECENTS;
 }
