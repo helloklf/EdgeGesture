@@ -2,19 +2,55 @@ package com.omarea.gesture;
 
 import android.accessibilityservice.AccessibilityService;
 import android.os.Build;
+import android.util.Log;
 
 import java.util.ArrayList;
 
 public class Handlers {
-    private final static int GLOBAL_ACTION_BACK = AccessibilityService.GLOBAL_ACTION_BACK;
-    private final static int GLOBAL_ACTION_HOME = AccessibilityService.GLOBAL_ACTION_HOME;
-    private final static int GLOBAL_ACTION_RECENTS = AccessibilityService.GLOBAL_ACTION_RECENTS;
-    private final static int GLOBAL_ACTION_NOTIFICATIONS = AccessibilityService.GLOBAL_ACTION_NOTIFICATIONS;
-    private final static int GLOBAL_ACTION_QUICK_SETTINGS = AccessibilityService.GLOBAL_ACTION_QUICK_SETTINGS;
-    private final static int GLOBAL_ACTION_POWER_DIALOG = AccessibilityService.GLOBAL_ACTION_POWER_DIALOG;
-    private final static int GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN = AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN;
-    private final static int GLOBAL_ACTION_LOCK_SCREEN = AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN;
-    private final static int GLOBAL_ACTION_TAKE_SCREENSHOT = AccessibilityService.GLOBAL_ACTION_TAKE_SCREENSHOT;
+    final static int GLOBAL_ACTION_BACK = AccessibilityService.GLOBAL_ACTION_BACK;
+    final static int GLOBAL_ACTION_HOME = AccessibilityService.GLOBAL_ACTION_HOME;
+    final static int GLOBAL_ACTION_RECENTS = AccessibilityService.GLOBAL_ACTION_RECENTS;
+    final static int GLOBAL_ACTION_NOTIFICATIONS = AccessibilityService.GLOBAL_ACTION_NOTIFICATIONS;
+    final static int GLOBAL_ACTION_QUICK_SETTINGS = AccessibilityService.GLOBAL_ACTION_QUICK_SETTINGS;
+    final static int GLOBAL_ACTION_POWER_DIALOG = AccessibilityService.GLOBAL_ACTION_POWER_DIALOG;
+    final static int GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN = AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN;
+    final static int GLOBAL_ACTION_LOCK_SCREEN = AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN;
+    final static int GLOBAL_ACTION_TAKE_SCREENSHOT = AccessibilityService.GLOBAL_ACTION_TAKE_SCREENSHOT;
+
+    final static int VITUAL_ACTION_LAST_APP = 900001;
+    final static int VITUAL_ACTION_OPEN_APP = 900002;
+
+    static boolean isVitualAction(int aciont) {
+        if (aciont == VITUAL_ACTION_LAST_APP) {
+            return true;
+        } else if (aciont == VITUAL_ACTION_OPEN_APP) {
+            return true;
+        }
+        return false;
+    }
+
+    static void executeVitualAction(final AccessibilityService accessibilityService, int action) {
+        switch (action) {
+            case VITUAL_ACTION_LAST_APP: {
+                Log.d("VITUAL_ACTION_LAST_APP", ">>");
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        accessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS);
+                        try {
+                            Thread.sleep(200);
+                        } catch (Exception ex) {
+                        }
+                        accessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS);
+                    }
+                }).start();
+                break;
+            }
+            default:{
+                break;
+            }
+        }
+    }
 
     static String getOption(int value) {
         String[] options = getOptions();
@@ -34,6 +70,7 @@ public class Handlers {
 
         if (Build.VERSION.SDK_INT > 23) {
             options.add("分屏");
+            options.add("上个应用");
         }
         if (Build.VERSION.SDK_INT > 27) {
             options.add("锁屏");
@@ -55,6 +92,7 @@ public class Handlers {
 
         if (Build.VERSION.SDK_INT > 23) {
             options.add(GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN);
+            options.add(VITUAL_ACTION_LAST_APP);
         }
         if (Build.VERSION.SDK_INT > 27) {
             options.add(GLOBAL_ACTION_LOCK_SCREEN);

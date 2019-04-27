@@ -77,7 +77,11 @@ class TouchBarView extends View {
                 lastEventTime = System.currentTimeMillis();
                 Toast.makeText(context, "请重复手势~", Toast.LENGTH_SHORT).show();
             } else {
-                accessibilityService.performGlobalAction(event);
+                if (Handlers.isVitualAction(event)) {
+                    Handlers.executeVitualAction(accessibilityService, event);
+                } else {
+                    accessibilityService.performGlobalAction(event);
+                }
             }
         }
     }
