@@ -2,6 +2,7 @@ package com.omarea.gesture;
 
 import android.accessibilityservice.AccessibilityService;
 import android.annotation.SuppressLint;
+import android.app.Instrumentation;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -12,6 +13,7 @@ import android.os.Build;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
@@ -93,7 +95,7 @@ class FloatVitualTouchBar {
     }
 
     private View setBottomView(final AccessibilityService context) {
-        View view = LayoutInflater.from(context).inflate(R.layout.fw_vitual_touch_bar, null);
+        final View view = LayoutInflater.from(context).inflate(R.layout.fw_vitual_touch_bar, null);
 
         TouchBarView bar = view.findViewById(R.id.bottom_touch_bar);
 
@@ -103,7 +105,7 @@ class FloatVitualTouchBar {
                 context);
         bar.setBarPosition(TouchBarView.BOTTOM, isLandscapf);
 
-        LayoutParams params = new LayoutParams();
+        final LayoutParams params = new LayoutParams();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             params.type = LayoutParams.TYPE_ACCESSIBILITY_OVERLAY;
@@ -122,16 +124,36 @@ class FloatVitualTouchBar {
         return view;
     }
 
+    private View.OnTouchListener getTouchPierceListener(final WindowManager.LayoutParams params, final View view) {
+        return new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, final MotionEvent event) {
+                int action = event.getAction();
+                if (action == MotionEvent.ACTION_OUTSIDE) {
+                    params.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS;
+                    mWindowManager.updateViewLayout(view, params);
+                } else if (action == MotionEvent.ACTION_DOWN) {
+                    params.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_NOT_TOUCHABLE | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS | LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
+                    mWindowManager.updateViewLayout(view, params);
+                    return true;
+                } else {
+                    Log.d("OnTouchListener", "" + action);
+                }
+                return false;
+            }
+        };
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     private View setLeftView(final AccessibilityService context) {
-        View view = LayoutInflater.from(context).inflate(R.layout.fw_vitual_touch_bar, null);
+        final View view = LayoutInflater.from(context).inflate(R.layout.fw_vitual_touch_bar, null);
         TouchBarView bar = view.findViewById(R.id.bottom_touch_bar);
 
         bar.setEventHandler(config.getInt(SpfConfig.CONFIG_LEFT_EVBET, SpfConfig.CONFIG_LEFT_EVBET_DEFAULT), config.getInt(SpfConfig.CONFIG_LEFT_EVBET_HOVER, SpfConfig.CONFIG_LEFT_EVBET_HOVER_DEFAULT), context);
 
         bar.setBarPosition(TouchBarView.LEFT, isLandscapf);
 
-        LayoutParams params = new LayoutParams();
+        final LayoutParams params = new LayoutParams();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             params.type = LayoutParams.TYPE_ACCESSIBILITY_OVERLAY;
@@ -142,19 +164,20 @@ class FloatVitualTouchBar {
         params.format = PixelFormat.TRANSLUCENT;
 
         params.width = LayoutParams.WRAP_CONTENT;
-        params.height = LayoutParams.WRAP_CONTENT;
+        params.height = LayoutParams.MATCH_PARENT;
 
-        params.gravity = Gravity.START | Gravity.BOTTOM;
+        params.gravity = Gravity.START | Gravity.FILL_VERTICAL;
         params.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS;
 
         mWindowManager.addView(view, params);
+        // view.setOnTouchListener(getTouchPierceListener(params, view));
 
         return view;
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private View setRightView(final AccessibilityService context) {
-        View view = LayoutInflater.from(context).inflate(R.layout.fw_vitual_touch_bar, null);
+        final View view = LayoutInflater.from(context).inflate(R.layout.fw_vitual_touch_bar, null);
 
         TouchBarView bar = view.findViewById(R.id.bottom_touch_bar);
 
@@ -162,7 +185,7 @@ class FloatVitualTouchBar {
 
         bar.setBarPosition(TouchBarView.RIGHT, isLandscapf);
 
-        LayoutParams params = new LayoutParams();
+        final LayoutParams params = new LayoutParams();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             params.type = LayoutParams.TYPE_ACCESSIBILITY_OVERLAY;
@@ -173,12 +196,13 @@ class FloatVitualTouchBar {
         params.format = PixelFormat.TRANSLUCENT;
 
         params.width = LayoutParams.WRAP_CONTENT;
-        params.height = LayoutParams.WRAP_CONTENT;
+        params.height = LayoutParams.MATCH_PARENT;
 
-        params.gravity = Gravity.END | Gravity.BOTTOM;
+        params.gravity = Gravity.END | Gravity.FILL_VERTICAL;
         params.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS;
 
         mWindowManager.addView(view, params);
+        // view.setOnTouchListener(getTouchPierceListener(params, view));
 
         return view;
     }

@@ -52,11 +52,13 @@ class TouchBarView extends View {
     private boolean vibratorRun = false;
     private boolean drawIcon = true; // 是否绘制图标
     private float flingValue = dp2px(context, 3f); // 小于此值认为是点击而非滑动
+    private float defaultWidth = 10f;
 
     private int eventTouch;
     private int eventHover;
     private AccessibilityService accessibilityService;
     private boolean isLandscapf = false;
+    private double heightRatio = 0.6;
 
     private Paint p = new Paint();
 
@@ -131,7 +133,6 @@ class TouchBarView extends View {
             p.setColor(config.getInt(SpfConfig.CONFIG_BOTTOM_COLOR, SpfConfig.CONFIG_BOTTOM_COLOR_DEFAULT));
         } else {
             // 根据配置获取触摸条占屏幕的高度比
-            double heightRatio = 0.6;
             if (barPosition == LEFT) {
                 heightRatio = config.getInt(SpfConfig.CONFIG_LEFT_HEIGHT, SpfConfig.CONFIG_LEFT_HEIGHT_DEFAULT)  / 100.0;
             } else if (barPosition == RIGHT) {
@@ -154,9 +155,9 @@ class TouchBarView extends View {
             }
 
             if (isLandscapf) {
-                setSize(dp2px(context, 12f), (int) (minSize * heightRatio));
+                setSize(dp2px(context, defaultWidth), (int) (minSize * heightRatio));
             } else {
-                setSize(dp2px(context, 12f), (int) (maxSize * heightRatio));
+                setSize(dp2px(context, defaultWidth), (int) (maxSize * heightRatio));
             }
             if (barPosition == LEFT) {
                 p.setColor(config.getInt(SpfConfig.CONFIG_LEFT_COLOR, SpfConfig.CONFIG_LEFT_COLOR_DEFAULT));
@@ -245,6 +246,10 @@ class TouchBarView extends View {
     }
 
     private boolean onTouchDown (MotionEvent event) {
+        if ((barPosition == LEFT || barPosition == RIGHT) && (event.getY() / getHeight()) < (1 - heightRatio)) {
+            return false;
+        }
+
         isTouchDown = true;
         isGestureCompleted = false;
         touchStartX = event.getX();
