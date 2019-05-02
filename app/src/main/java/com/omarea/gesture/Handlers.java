@@ -29,10 +29,9 @@ public class Handlers {
         return false;
     }
 
-    static void executeVitualAction(final AccessibilityService accessibilityService, int action) {
+    static void executeVitualAction(final AccessibilityService accessibilityService, final int action) {
         switch (action) {
             case VITUAL_ACTION_LAST_APP: {
-                Log.d("VITUAL_ACTION_LAST_APP", ">>");
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -46,7 +45,20 @@ public class Handlers {
                 }).start();
                 break;
             }
+            case GLOBAL_ACTION_TAKE_SCREENSHOT: {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(500);
+                        } catch (Exception ex) {}
+                        accessibilityService.performGlobalAction(action);
+                    }
+                }).start();
+                break;
+            }
             default:{
+                accessibilityService.performGlobalAction(action);
                 break;
             }
         }
