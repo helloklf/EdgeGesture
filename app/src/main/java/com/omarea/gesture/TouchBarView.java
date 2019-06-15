@@ -77,7 +77,7 @@ class TouchBarView extends View {
             if (isLandscapf && (lastEventTime + 1500 < System.currentTimeMillis() || lastEvent != event)) {
                 lastEvent = event;
                 lastEventTime = System.currentTimeMillis();
-                Toast.makeText(context, "请重复手势~", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, this.getContext().getString(R.string.please_repeat), Toast.LENGTH_SHORT).show();
             } else {
                 Handlers.executeVitualAction(accessibilityService, event);
             }
@@ -419,7 +419,6 @@ class TouchBarView extends View {
                     getEffectIconRectF(centerX, centerY),
                     p);
         } catch (Exception ex) {
-            Log.e("图标渲染错误", ex.getLocalizedMessage());
             drawIcon = false;
         }
     }

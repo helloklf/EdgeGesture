@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#80000000">
+
+    <FrameLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:background="#f0ffffff"
+        android:orientation="vertical">
+
+        <TabHost
+            android:id="@+id/recent_tabs"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            tools:ignore="NestedWeights">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TabWidget
+                    android:id="@android:id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <FrameLayout
+                    android:layout_weight="1"
+                    android:id="@android:id/tabcontent"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp">
+
+                    <com.omarea.gesture.OverScrollGridView
+                        android:id="@+id/recent_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:columnWidth="75dp"
+                        android:stretchMode="columnWidth"
+                        android:numColumns="auto_fit"
+                        android:scrollbars="none"
+                        android:stackFromBottom="true"
+                        android:transcriptMode="alwaysScroll"
+                        android:focusable="false" />
+                    <com.omarea.gesture.OverScrollGridView
+                        android:id="@+id/recent_hide_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:focusable="false"
+                        android:stretchMode="columnWidth"
+                        android:numColumns="auto_fit"
+                        android:scrollbars="none"
+                        android:stackFromBottom="true"
+                        android:transcriptMode="alwaysScroll"
+                        android:columnWidth="75dp" />
+                </FrameLayout>
+            </LinearLayout>
+        </TabHost>
+
+        <View
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginTop="5dp"
+            android:background="@android:color/darker_gray" />
+
+        <LinearLayout
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:paddingBottom="3dp"
+                android:orientation="horizontal">
+                <ImageButton
+                    android:id="@+id/panel_close"
+                    android:tint="@color/colorAccent"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_close" />
+                <ImageButton
+                    android:id="@+id/panel_trash"
+                    android:tint="@color/colorAccent"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_trash" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:gravity="end"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:paddingBottom="3dp"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/panel_back"
+                    android:tint="@color/colorAccent"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="0dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/touch_arrow_left" />
+
+                <ImageButton
+                    android:id="@+id/panel_home"
+                    android:tint="@color/colorAccent"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="0dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/touch_home" />
+
+                <ImageButton
+                    android:id="@+id/panel_task"
+                    android:tint="@color/colorAccent"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="0dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/touch_tasks" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

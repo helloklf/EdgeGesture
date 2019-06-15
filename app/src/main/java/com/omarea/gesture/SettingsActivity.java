@@ -83,7 +83,7 @@ public class SettingsActivity extends Activity {
         try {
             Intent intent = new Intent(getString(R.string.action_config_changed));
             sendBroadcast(intent);
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
     }
 

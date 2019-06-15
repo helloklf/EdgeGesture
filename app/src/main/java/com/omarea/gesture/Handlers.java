@@ -19,11 +19,14 @@ public class Handlers {
 
     final static int VITUAL_ACTION_LAST_APP = 900001;
     final static int VITUAL_ACTION_OPEN_APP = 900002;
+    final static int VITUAL_ACTION_RECENT_LIST = 900003;
 
     static boolean isVitualAction(int aciont) {
         if (aciont == VITUAL_ACTION_LAST_APP) {
             return true;
         } else if (aciont == VITUAL_ACTION_OPEN_APP) {
+            return true;
+        } else if (aciont == VITUAL_ACTION_RECENT_LIST) {
             return true;
         }
         return false;
@@ -57,6 +60,10 @@ public class Handlers {
                 }).start();
                 break;
             }
+            case VITUAL_ACTION_RECENT_LIST: {
+                new FloatRecent(accessibilityService);
+                break;
+            }
             default:{
                 accessibilityService.performGlobalAction(action);
                 break;
@@ -75,6 +82,7 @@ public class Handlers {
             add("返回");
             add("首页");
             add("任务");
+            add("工具面板");
             add("通知");
             add("快捷设置");
             add("电源弹窗");
@@ -97,6 +105,7 @@ public class Handlers {
             add(GLOBAL_ACTION_BACK);
             add(GLOBAL_ACTION_HOME);
             add(GLOBAL_ACTION_RECENTS);
+            add(VITUAL_ACTION_RECENT_LIST);
             add(GLOBAL_ACTION_NOTIFICATIONS);
             add(GLOBAL_ACTION_QUICK_SETTINGS);
             add(GLOBAL_ACTION_POWER_DIALOG);

@@ -7,7 +7,7 @@ public class SpfConfig {
 
     // 悬停时间
     public static final String CONFIG_HOVER_TIME = "CONFIG_HOVER_TIME";
-    public static final Long CONFIG_HOVER_TIME_DEFAULT = 250L;
+    public static final Long CONFIG_HOVER_TIME_DEFAULT = 180L;
 
     // 左侧手势区域
     public static final String CONFIG_LEFT_ALLOW = "CONFIG_LEFT_ALLOW";

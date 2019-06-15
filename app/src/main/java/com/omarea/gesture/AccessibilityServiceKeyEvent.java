@@ -6,9 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
+import android.view.inputmethod.InputMethodInfo;
+import android.view.inputmethod.InputMethodManager;
 
-public class AccessibilityServiceSceneKeyEvent extends AccessibilityService {
+public class AccessibilityServiceKeyEvent extends AccessibilityService {
     boolean isLandscapf = false;
     private FloatVitualTouchBar floatVitualTouchBar = null;
     private BroadcastReceiver configChanged = null;
@@ -22,6 +25,9 @@ public class AccessibilityServiceSceneKeyEvent extends AccessibilityService {
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
+        // Log.d("onAccessibilityEvent", event.getPackageName().toString());
+        AppHistory.initConfig(this.getApplicationContext());
+        AppHistory.putHistory(event.getPackageName().toString());
     }
 
     @Override
@@ -40,6 +46,10 @@ public class AccessibilityServiceSceneKeyEvent extends AccessibilityService {
             registerReceiver(configChanged, new IntentFilter(getString(R.string.action_config_changed)));
         }
         createPopupView();
+        InputMethodManager inputMethodManager = (InputMethodManager)(getSystemService(Context.INPUT_METHOD_SERVICE));
+        for (InputMethodInfo inputMethod : inputMethodManager.getInputMethodList()) {
+            AppHistory.putBlackList(inputMethod.getPackageName());
+        }
     }
 
     @Override
