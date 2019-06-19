@@ -1,12 +1,13 @@
 package com.omarea.gesture;
 
 import android.accessibilityservice.AccessibilityService;
+import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -26,14 +27,17 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         // Log.d("onAccessibilityEvent", event.getPackageName().toString());
-        AppHistory.initConfig(this.getApplicationContext());
-        AppHistory.putHistory(event.getPackageName().toString());
+        CharSequence packageName = event.getPackageName();
+        if (packageName != null) {
+            AppHistory.putHistory(packageName.toString());
+        }
     }
 
     @Override
     public void onServiceConnected() {
         super.onServiceConnected();
         TouchIconCache.setContext(this.getBaseContext());
+        AppHistory.initConfig(this.getApplicationContext());
 
         if (configChanged == null) {
             configChanged = new BroadcastReceiver() {
@@ -79,6 +83,21 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
 
     private void createPopupView() {
         hidePopupWindow();
+
+        SharedPreferences config = getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
+        boolean panelEnabled = config.getAll().containsValue(Handlers.VITUAL_ACTION_RECENT_LIST);
+        AccessibilityServiceInfo accessibilityServiceInfo = getServiceInfo();
+        if (panelEnabled) {
+            if (accessibilityServiceInfo.packageNames != null) {
+                accessibilityServiceInfo.packageNames = null;
+                setServiceInfo(accessibilityServiceInfo);
+            }
+        } else {
+            if (accessibilityServiceInfo.packageNames == null) {
+                accessibilityServiceInfo.packageNames = new String[]{};
+                setServiceInfo(accessibilityServiceInfo);
+            }
+        }
         floatVitualTouchBar = new FloatVitualTouchBar(this, isLandscapf);
     }
 

@@ -2,14 +2,12 @@ package com.omarea.gesture;
 
 import android.accessibilityservice.AccessibilityService;
 import android.annotation.SuppressLint;
-import android.app.Instrumentation;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Build;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -31,6 +29,7 @@ class FloatVitualTouchBar {
 
     public FloatVitualTouchBar(AccessibilityService context, boolean isLandscapf) {
         this.isLandscapf = isLandscapf;
+
         config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
         mWindowManager = (WindowManager) (context.getSystemService(Context.WINDOW_SERVICE));
         try {
@@ -98,12 +97,25 @@ class FloatVitualTouchBar {
         final View view = LayoutInflater.from(context).inflate(R.layout.fw_vitual_touch_bar, null);
 
         TouchBarView bar = view.findViewById(R.id.bottom_touch_bar);
+        if (GlobalState.testMode) {
+            bar.setBackgroundColor(Color.argb(128, 0, 0, 0));
+        }
 
         bar.setEventHandler(
                 config.getInt(SpfConfig.CONFIG_BOTTOM_EVBET, SpfConfig.CONFIG_BOTTOM_EVBET_DEFAULT),
                 config.getInt(SpfConfig.CONFIG_BOTTOM_EVBET_HOVER, SpfConfig.CONFIG_BOTTOM_EVBET_HOVER_DEFAULT),
                 context);
-        bar.setBarPosition(TouchBarView.BOTTOM, isLandscapf);
+
+        double widthRatio = config.getInt(SpfConfig.CONFIG_BOTTOM_WIDTH, SpfConfig.CONFIG_BOTTOM_WIDTH_DEFAULT)  / 100.0;
+        int barWidht = (int)(getScreenWidth(context) * widthRatio);
+        int barHeight = -1;
+        if (isLandscapf) {
+            barHeight = dp2px(context, config.getInt(SpfConfig.CONFIG_HOT_SIDE_WIDTH, SpfConfig.CONFIG_HOT_SIDE_WIDTH_DEFAULT)); // LayoutParams.WRAP_CONTENT;
+        } else {
+            barHeight = dp2px(context, config.getInt(SpfConfig.CONFIG_HOT_BOTTOM_HEIGHT, SpfConfig.CONFIG_HOT_BOTTOM_HEIGHT_DEFAULT)); // LayoutParams.WRAP_CONTENT;
+        }
+
+        bar.setBarPosition(TouchBarView.BOTTOM, isLandscapf, barWidht, barHeight);
 
         final LayoutParams params = new LayoutParams();
 
@@ -114,14 +126,48 @@ class FloatVitualTouchBar {
         }
 
         params.format = PixelFormat.TRANSLUCENT;
-        params.width = LayoutParams.MATCH_PARENT; // minSize; //
+
+        params.width = LayoutParams.WRAP_CONTENT;
         params.height = LayoutParams.WRAP_CONTENT;
+
         params.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
         params.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS;
 
         mWindowManager.addView(view, params);
 
         return view;
+    }
+
+    /**
+     * 获取当前屏幕方向下的屏幕高度
+     * @param context
+     * @return
+     */
+    private int getScreenHeight(Context context) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        int h = displayMetrics.heightPixels;
+        int w = displayMetrics.widthPixels;
+        if (isLandscapf) {
+            return h > w ? w : h;
+        } else {
+            return h > w ? h : w;
+        }
+    }
+
+    /**
+     * 获取当前屏幕方向下的屏幕宽度
+     * @param context
+     * @return
+     */
+    private int getScreenWidth(Context context) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        int h = displayMetrics.heightPixels;
+        int w = displayMetrics.widthPixels;
+        if (isLandscapf) {
+            return h < w ? w : h;
+        } else {
+            return h < w ? h : w;
+        }
     }
 
     private View.OnTouchListener getTouchPierceListener(final WindowManager.LayoutParams params, final View view) {
@@ -148,10 +194,22 @@ class FloatVitualTouchBar {
     private View setLeftView(final AccessibilityService context) {
         final View view = LayoutInflater.from(context).inflate(R.layout.fw_vitual_touch_bar, null);
         TouchBarView bar = view.findViewById(R.id.bottom_touch_bar);
+        if (GlobalState.testMode) {
+            bar.setBackgroundColor(Color.argb(128, 0, 0, 0));
+        }
 
         bar.setEventHandler(config.getInt(SpfConfig.CONFIG_LEFT_EVBET, SpfConfig.CONFIG_LEFT_EVBET_DEFAULT), config.getInt(SpfConfig.CONFIG_LEFT_EVBET_HOVER, SpfConfig.CONFIG_LEFT_EVBET_HOVER_DEFAULT), context);
 
-        bar.setBarPosition(TouchBarView.LEFT, isLandscapf);
+        double heightRatio = config.getInt(SpfConfig.CONFIG_LEFT_HEIGHT, SpfConfig.CONFIG_LEFT_HEIGHT_DEFAULT)  / 100.0;
+        int barHeight = (int)(getScreenHeight(context) * heightRatio); //
+        int barWidth = -1;
+        if (isLandscapf) {
+            barWidth = dp2px(context, config.getInt(SpfConfig.CONFIG_HOT_BOTTOM_HEIGHT, SpfConfig.CONFIG_HOT_BOTTOM_HEIGHT_DEFAULT)); // LayoutParams.WRAP_CONTENT;
+        } else {
+            barWidth = dp2px(context, config.getInt(SpfConfig.CONFIG_HOT_SIDE_WIDTH, SpfConfig.CONFIG_HOT_SIDE_WIDTH_DEFAULT)); // LayoutParams.WRAP_CONTENT;
+        }
+
+        bar.setBarPosition(TouchBarView.LEFT, isLandscapf, barWidth, barHeight);
 
         final LayoutParams params = new LayoutParams();
 
@@ -164,9 +222,9 @@ class FloatVitualTouchBar {
         params.format = PixelFormat.TRANSLUCENT;
 
         params.width = LayoutParams.WRAP_CONTENT;
-        params.height = LayoutParams.MATCH_PARENT;
+        params.height = LayoutParams.WRAP_CONTENT;
 
-        params.gravity = Gravity.START | Gravity.FILL_VERTICAL;
+        params.gravity = Gravity.START | Gravity.BOTTOM;
         params.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS;
 
         mWindowManager.addView(view, params);
@@ -180,10 +238,21 @@ class FloatVitualTouchBar {
         final View view = LayoutInflater.from(context).inflate(R.layout.fw_vitual_touch_bar, null);
 
         TouchBarView bar = view.findViewById(R.id.bottom_touch_bar);
+        if (GlobalState.testMode) {
+            bar.setBackgroundColor(Color.argb(128, 0, 0, 0));
+        }
 
         bar.setEventHandler(config.getInt(SpfConfig.CONFIG_RIGHT_EVBET, SpfConfig.CONFIG_RIGHT_EVBET_DEFAULT), config.getInt(SpfConfig.CONFIG_RIGHT_EVBET_HOVER, SpfConfig.CONFIG_RIGHT_EVBET_HOVER_DEFAULT), context);
 
-        bar.setBarPosition(TouchBarView.RIGHT, isLandscapf);
+        double heightRatio = config.getInt(SpfConfig.CONFIG_RIGHT_HEIGHT, SpfConfig.CONFIG_RIGHT_HEIGHT_DEFAULT)  / 100.0;
+        int barHeight = (int)(getScreenHeight(context) * heightRatio); //
+        int barWidth = -1;
+        if (isLandscapf) {
+            barWidth = dp2px(context, config.getInt(SpfConfig.CONFIG_HOT_BOTTOM_HEIGHT, SpfConfig.CONFIG_HOT_BOTTOM_HEIGHT_DEFAULT)); // LayoutParams.WRAP_CONTENT;
+        } else {
+            barWidth = dp2px(context, config.getInt(SpfConfig.CONFIG_HOT_SIDE_WIDTH, SpfConfig.CONFIG_HOT_SIDE_WIDTH_DEFAULT)); // LayoutParams.WRAP_CONTENT;
+        }
+        bar.setBarPosition(TouchBarView.RIGHT, isLandscapf, barWidth, barHeight);
 
         final LayoutParams params = new LayoutParams();
 
@@ -196,9 +265,9 @@ class FloatVitualTouchBar {
         params.format = PixelFormat.TRANSLUCENT;
 
         params.width = LayoutParams.WRAP_CONTENT;
-        params.height = LayoutParams.MATCH_PARENT;
+        params.height = LayoutParams.WRAP_CONTENT;
 
-        params.gravity = Gravity.END | Gravity.FILL_VERTICAL;
+        params.gravity = Gravity.END | Gravity.BOTTOM;
         params.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS;
 
         mWindowManager.addView(view, params);

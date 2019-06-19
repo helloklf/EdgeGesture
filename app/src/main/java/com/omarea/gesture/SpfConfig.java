@@ -36,12 +36,18 @@ public class SpfConfig {
     // 底部手势区域
     public static final String CONFIG_BOTTOM_ALLOW = "CONFIG_BOTTOM_ALLOW";
     public static final boolean CONFIG_BOTTOM_ALLOW_DEFAULT = true;
-    public static final String CONFIG_BOTTOM_HEIGHT = "CONFIG_BOTTOM_HEIGHT";
-    public static final int CONFIG_BOTTOM_HEIGHT_DEFAULT = -1;
+    public static final String CONFIG_BOTTOM_WIDTH = "CONFIG_BOTTOM_WIDTH";
+    public static final int CONFIG_BOTTOM_WIDTH_DEFAULT = 100;
     public static final String CONFIG_BOTTOM_COLOR = "CONFIG_BOTTOM_COLOR";
     public static final int CONFIG_BOTTOM_COLOR_DEFAULT = 0xee101010;
     public static final String CONFIG_BOTTOM_EVBET = "CONFIG_BOTTOM_EVBET";
     public static final int CONFIG_BOTTOM_EVBET_DEFAULT = AccessibilityService.GLOBAL_ACTION_HOME;
     public static final String CONFIG_BOTTOM_EVBET_HOVER = "CONFIG_BOTTOM_EVBET_HOVER";
     public static final int CONFIG_BOTTOM_EVBET_HOVER_DEFAULT = AccessibilityService.GLOBAL_ACTION_RECENTS;
+
+    // 热区灵敏度
+    public static final String CONFIG_HOT_SIDE_WIDTH = "CONFIG_SIDE_WIDTH";
+    public static final int CONFIG_HOT_SIDE_WIDTH_DEFAULT = 12; // 侧边热区宽度
+    public static final String CONFIG_HOT_BOTTOM_HEIGHT = "CONFIG_HOT_BOTTOM_HEIGHT";
+    public static final int CONFIG_HOT_BOTTOM_HEIGHT_DEFAULT = 9; // 底部热区高度
 }

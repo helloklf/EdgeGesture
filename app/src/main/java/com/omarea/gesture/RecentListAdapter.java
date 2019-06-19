@@ -3,16 +3,18 @@ package com.omarea.gesture;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.util.LruCache;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class RecentListAdapter extends BaseAdapter {
+    private static LruCache<String, Drawable> iconCaches = new LruCache<>(30);
+
     private ArrayList<String> history = new ArrayList<>();
     private PackageManager packageManager = null;
 
@@ -57,10 +59,13 @@ public class RecentListAdapter extends BaseAdapter {
             if (packageManager == null) {
                 packageManager = parent.getContext().getApplicationContext().getPackageManager();
             }
-            Drawable drawable = packageManager.getApplicationIcon(packageName);
-            if (drawable != null) {
-                ((ImageView)(view.findViewById(R.id.recent_icon))).setImageDrawable(drawable);
+            Drawable iconCache = iconCaches.get(packageName);
+            if (iconCache == null) {
+                iconCache = packageManager.getApplicationIcon(packageName);
+                iconCaches.put(packageName, iconCache);
             }
+            ((ImageView)(view.findViewById(R.id.recent_icon))).setImageDrawable(iconCache);
+
             ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, 0);
             String appName = packageManager.getApplicationLabel(applicationInfo).toString();
             ((TextView)(view.findViewById(R.id.recent_name))).setText(appName);

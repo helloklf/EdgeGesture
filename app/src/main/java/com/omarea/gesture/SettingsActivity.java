@@ -53,8 +53,12 @@ public class SettingsActivity extends Activity {
         bindSwitch(R.id.allow_left, SpfConfig.CONFIG_LEFT_ALLOW, SpfConfig.CONFIG_LEFT_ALLOW_DEFAULT);
         bindSwitch(R.id.allow_right, SpfConfig.CONFIG_RIGHT_ALLOW, SpfConfig.CONFIG_RIGHT_ALLOW_DEFAULT);
 
+        bindSeekBar(R.id.bar_width_bottom, SpfConfig.CONFIG_BOTTOM_WIDTH, SpfConfig.CONFIG_BOTTOM_WIDTH_DEFAULT);
         bindSeekBar(R.id.bar_height_left, SpfConfig.CONFIG_LEFT_HEIGHT, SpfConfig.CONFIG_LEFT_HEIGHT_DEFAULT);
         bindSeekBar(R.id.bar_height_right, SpfConfig.CONFIG_RIGHT_HEIGHT, SpfConfig.CONFIG_RIGHT_HEIGHT_DEFAULT);
+
+        bindSeekBar(R.id.edge_side_width, SpfConfig.CONFIG_HOT_SIDE_WIDTH, SpfConfig.CONFIG_HOT_SIDE_WIDTH_DEFAULT);
+        bindSeekBar(R.id.edge_bottom_height, SpfConfig.CONFIG_HOT_BOTTOM_HEIGHT, SpfConfig.CONFIG_HOT_BOTTOM_HEIGHT_DEFAULT);
 
         bindColorPicker(R.id.bar_color_bottom, SpfConfig.CONFIG_BOTTOM_COLOR, SpfConfig.CONFIG_BOTTOM_COLOR_DEFAULT);
         bindColorPicker(R.id.bar_color_left, SpfConfig.CONFIG_LEFT_COLOR, SpfConfig.CONFIG_LEFT_COLOR_DEFAULT);
@@ -223,5 +227,19 @@ public class SettingsActivity extends Activity {
                 })
                 .create()
                 .show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        GlobalState.testMode = true;
+        updateView();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        GlobalState.testMode = false;
+        updateView();
     }
 }

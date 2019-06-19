@@ -1,13 +1,17 @@
 package com.omarea.gesture;
 
 import android.accessibilityservice.AccessibilityService;
-import android.app.AlertDialog;
+import android.app.ActivityOptions;
+import android.app.PendingIntent;
+import android.app.WallpaperManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -19,6 +23,8 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.TabHost;
 import android.widget.Toast;
+
+import java.lang.reflect.Method;
 
 class FloatRecent {
 
@@ -44,15 +50,41 @@ class FloatRecent {
         }
     }
 
+    // 窗口化启动APP
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void openFreeForm(Context context, Intent appIntent) {
+        ActivityOptions options = ActivityOptions.makeBasic();
+        try {
+            Method method = ActivityOptions.class.getMethod("setLaunchWindowingMode", int.class);
+            int left = 10;
+            int top = 10;
+            int right = 10;
+            int bottom = 10;
+            options.setLaunchBounds(new Rect(left,top,right,bottom));
+            method.invoke(options, 5);
+            Bundle bundle = options.toBundle();
+            context.startActivity(appIntent, bundle);
+            // PendingIntent.getActivity(context, 0, appIntent, 0, bundle).send();
+        } catch (Exception e) { /* Gracefully fail */ }
+    }
+
     private void startApp(AccessibilityService context, String appPackageName) {
         try {
-            // PackageManager pm = context.getPackageManager();
-            // Intent appIntent = pm.getLaunchIntentForPackage(appPackageName);
             Intent appIntent = AppHistory.getAppIntent(appPackageName);
             if (appIntent != null) {
-                // Intent.FLAG_ACTIVITY_NO_ANIMATION
                 appIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(appIntent);
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                    appIntent.addFlags(Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT);
+                }
+                PendingIntent.getActivity(context, 0, appIntent, 0).send();
+                /*
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                    appIntent.addFlags(Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT);
+                    openFreeForm(context, appIntent);
+                }else {
+                    PendingIntent.getActivity(context, 0, appIntent, 0).send();
+                }
+                */
             }
         } catch (Exception ex) {
             Toast.makeText(context, "无法切换到所选应用", Toast.LENGTH_SHORT).show();
