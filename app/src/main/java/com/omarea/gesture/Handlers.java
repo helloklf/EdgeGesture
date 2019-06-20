@@ -19,14 +19,11 @@ public class Handlers {
 
     final static int VITUAL_ACTION_LAST_APP = 900001;
     final static int VITUAL_ACTION_OPEN_APP = 900002;
-    final static int VITUAL_ACTION_RECENT_LIST = 900003;
 
     static boolean isVitualAction(int aciont) {
         if (aciont == VITUAL_ACTION_LAST_APP) {
             return true;
         } else if (aciont == VITUAL_ACTION_OPEN_APP) {
-            return true;
-        } else if (aciont == VITUAL_ACTION_RECENT_LIST) {
             return true;
         }
         return false;
@@ -58,10 +55,6 @@ public class Handlers {
                         accessibilityService.performGlobalAction(action);
                     }
                 }).start();
-                break;
-            }
-            case VITUAL_ACTION_RECENT_LIST: {
-                new FloatRecent(accessibilityService);
                 break;
             }
             default:{
@@ -105,7 +98,6 @@ public class Handlers {
             add(GLOBAL_ACTION_BACK);
             add(GLOBAL_ACTION_HOME);
             add(GLOBAL_ACTION_RECENTS);
-            add(VITUAL_ACTION_RECENT_LIST);
             add(GLOBAL_ACTION_NOTIFICATIONS);
             add(GLOBAL_ACTION_QUICK_SETTINGS);
             add(GLOBAL_ACTION_POWER_DIALOG);
