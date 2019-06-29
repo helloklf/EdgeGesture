@@ -17,7 +17,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.Toast;
 
@@ -70,6 +69,7 @@ class TouchBarView extends View {
 
     private long lastEventTime = 0L;
     private int lastEvent = -1;
+
     private void performGlobalAction(int event) {
         if (accessibilityService != null) {
             if (isLandscapf && (lastEventTime + 1500 < System.currentTimeMillis() || lastEvent != event)) {
@@ -110,11 +110,23 @@ class TouchBarView extends View {
     }
 
     void touchVibrator() {
-        vibrator.cancel();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            vibrator.vibrate(VibrationEffect.createOneShot(1, 1));
-        } else {
-            vibrator.vibrate(new long[]{20, 10}, -1);
+        if (vibrator.hasVibrator()) {
+            vibrator.cancel();
+            int time = config.getInt(SpfConfig.VIBRATOR_TIME, SpfConfig.VIBRATOR_TIME_DEFAULT);
+            int amplitude = config.getInt(SpfConfig.VIBRATOR_AMPLITUDE, SpfConfig.VIBRATOR_AMPLITUDE_DEFAULT);
+            if(time < 1 || amplitude < 1) {
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    vibrator.vibrate(VibrationEffect.createOneShot(time, amplitude));
+                    // vibrator.vibrate(VibrationEffect.createOneShot(2, 255)); // a++
+                    // vibrator.vibrate(VibrationEffect.createOneShot(2, -1)); // a+
+                    // vibrator.vibrate(VibrationEffect.createOneShot(3, 255)); // a+
+                    // vibrator.vibrate(VibrationEffect.createOneShot(5, 255)); // a
+                    // vibrator.vibrate(VibrationEffect.createOneShot(20, 10)); // b
+                } else {
+                    vibrator.vibrate(new long[]{ 0, time, amplitude }, -1);
+                }
+            }
         }
     }
 
@@ -123,7 +135,6 @@ class TouchBarView extends View {
         this.isLandscapf = isLandscapf;
 
         setSize(width, height);
-        Log.d("setBarPosition", "" + barPosition + ":" + width + "," + height);
         if (barPosition == BOTTOM) {
             p.setColor(config.getInt(SpfConfig.CONFIG_BOTTOM_COLOR, SpfConfig.CONFIG_BOTTOM_COLOR_DEFAULT));
         } else {
@@ -137,8 +148,16 @@ class TouchBarView extends View {
 
     private void setSize(int width, int height) {
         ViewGroup.LayoutParams lp = this.getLayoutParams();
-        lp.width = width;
-        lp.height = height;
+        int h = height;
+        int w = width;
+        if (h < 1) {
+            h = 1;
+        }
+        if (w < 1) {
+            w = 1;
+        }
+        lp.width = w;
+        lp.height = h;
         this.bakWidth = width;
         this.bakHeight = height;
         this.setLayoutParams(lp);
@@ -209,7 +228,7 @@ class TouchBarView extends View {
         return true;
     }
 
-    private boolean onTouchDown (MotionEvent event) {
+    private boolean onTouchDown(MotionEvent event) {
         isTouchDown = true;
         isGestureCompleted = false;
         touchStartX = event.getX();
@@ -267,7 +286,7 @@ class TouchBarView extends View {
                             }
                         }
                     }
-                }, config.getLong(SpfConfig.CONFIG_HOVER_TIME, SpfConfig.CONFIG_HOVER_TIME_DEFAULT));
+                }, config.getInt(SpfConfig.CONFIG_HOVER_TIME, SpfConfig.CONFIG_HOVER_TIME_DEFAULT));
             }
         } else {
             vibratorRun = true;

@@ -75,7 +75,6 @@ public class Handlers {
             add("返回");
             add("首页");
             add("任务");
-            add("工具面板");
             add("通知");
             add("快捷设置");
             add("电源弹窗");

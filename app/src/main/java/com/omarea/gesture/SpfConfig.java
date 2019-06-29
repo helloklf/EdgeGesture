@@ -6,8 +6,8 @@ public class SpfConfig {
     public static final String ConfigFile = "main";
 
     // 悬停时间
-    public static final String CONFIG_HOVER_TIME = "CONFIG_HOVER_TIME";
-    public static final Long CONFIG_HOVER_TIME_DEFAULT = 180L;
+    public static final String CONFIG_HOVER_TIME = "CONFIG_HOVER_TIME_MS";
+    public static final int CONFIG_HOVER_TIME_DEFAULT = 180;
 
     // 左侧手势区域
     public static final String CONFIG_LEFT_ALLOW = "CONFIG_LEFT_ALLOW";
@@ -50,4 +50,9 @@ public class SpfConfig {
     public static final int CONFIG_HOT_SIDE_WIDTH_DEFAULT = 12; // 侧边热区宽度
     public static final String CONFIG_HOT_BOTTOM_HEIGHT = "CONFIG_HOT_BOTTOM_HEIGHT";
     public static final int CONFIG_HOT_BOTTOM_HEIGHT_DEFAULT = 9; // 底部热区高度
+
+    public static final String VIBRATOR_TIME = "VIBRATOR_TIME"; // 震动时长
+    public static final int VIBRATOR_TIME_DEFAULT = 2; // 震动时长 默认值
+    public static final String VIBRATOR_AMPLITUDE = "VIBRATOR_AMPLITUDE"; // 震动强度
+    public static final int VIBRATOR_AMPLITUDE_DEFAULT = 255; // 震动强度 默认值
 }
