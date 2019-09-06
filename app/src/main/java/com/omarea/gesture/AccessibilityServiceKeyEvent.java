@@ -6,12 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.view.accessibility.AccessibilityEvent;
 
 public class AccessibilityServiceKeyEvent extends AccessibilityService {
     boolean isLandscapf = false;
     private FloatVitualTouchBar floatVitualTouchBar = null;
     private BroadcastReceiver configChanged = null;
+    private BroadcastReceiver serviceDisable = null;
 
     private void hidePopupWindow() {
         if (floatVitualTouchBar != null) {
@@ -46,6 +48,18 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
             };
 
             registerReceiver(configChanged, new IntentFilter(getString(R.string.action_config_changed)));
+        }
+        if (serviceDisable == null) {
+            serviceDisable = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        disableSelf();
+                    }
+                    stopSelf();
+                }
+            };
+            registerReceiver(serviceDisable, new IntentFilter(getString(R.string.action_service_disable)));
         }
         createPopupView();
     }

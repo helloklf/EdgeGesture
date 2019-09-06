@@ -3,12 +3,16 @@
     <string name="accessibility_keyevent_description">
         开启此辅助服务即可体验屏幕边缘手势\n\n——此功能源于Scene，访问http://vtools.omarea.com/ 获取Scene体验完整功能。
     </string>
+    <string name="enable_service">启用手势导航 </string>
     <string name="hide_start_icon">隐藏启动图标 </string>
     <string name="hide_start_icon_desc">打开此开关后，本应用将从桌面隐藏，如果需要再恢复请到辅助服务界面，选中本应用进行操作</string>
     <string name="action_config_changed">com.omarea.gesture.ConfigChanged</string>
+    <string name="action_service_disable">com.omarea.gesture.ServiceDisable</string>
     <string name="effect_color_picker">手势动效颜色</string>
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
     <string name="handler_picker">选择动作响应</string>
     <string name="please_repeat">请重复手势~</string>
+    <string name="service_active_desc">请手动去系统的“设置”-“无障碍”中激活</string>
+    <string name="back_hide_task">如需从最近任务列表隐藏本应用，请“按返回键”关闭此界面~</string>
 </resources>

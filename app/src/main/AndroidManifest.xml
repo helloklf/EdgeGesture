@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:launchMode="singleTask"
+            android:excludeFromRecents="true"
             android:name=".StartActivity"
             android:enabled="true">
             <intent-filter>

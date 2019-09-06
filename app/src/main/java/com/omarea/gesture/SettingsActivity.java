@@ -1,6 +1,8 @@
 package com.omarea.gesture;
 
+import android.accessibilityservice.AccessibilityServiceInfo;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -10,17 +12,48 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class SettingsActivity extends Activity {
     private SharedPreferences config;
+
+
+    private void setExcludeFromRecents(boolean excludeFromRecents) {
+        try {
+            ActivityManager service = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
+            int taskId = this.getTaskId();
+            for (ActivityManager.AppTask task : service.getAppTasks()) {
+                if (task.getTaskInfo().id == taskId) {
+                    task.setExcludeFromRecents(excludeFromRecents);
+                }
+            }
+        } catch (Exception ex) {
+        }
+    }
+
+    private boolean serviceRunning(Context context, String serviceName) {
+        AccessibilityManager m = (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
+        List<AccessibilityServiceInfo> serviceInfos = m.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_ALL_MASK);
+        for (AccessibilityServiceInfo serviceInfo : serviceInfos) {
+            if (serviceInfo.getId().endsWith(serviceName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    private boolean serviceRunning() {
+        return serviceRunning(this, "AccessibilityServiceKeyEvent");
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,6 +75,35 @@ public class SettingsActivity extends Activity {
                     }
                 } catch (Exception ex) {
                     Toast.makeText(v.getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        final Switch enable_service = findViewById(R.id.enable_service);
+        enable_service.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (serviceRunning()) {
+                    // System.exit(0);
+                    try {
+                        Intent intent = new Intent(getString(R.string.action_service_disable));
+                        sendBroadcast(intent);
+                        v.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                updateView();
+                            }
+                        }, 1000);
+                    } catch (Exception ignored) {
+                    }
+                } else {
+                    try {
+                        Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                        startActivity(intent);
+                    } catch (Exception ex) {
+                    }
+                    String msg = getString(R.string.service_active_desc) + getString(R.string.app_name);
+                    Toast.makeText(getBaseContext(), msg, Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -87,6 +149,7 @@ public class SettingsActivity extends Activity {
         ((Button)findViewById(R.id.hover_left)).setText(Handlers.getOption(config.getInt(SpfConfig.CONFIG_LEFT_EVBET_HOVER, SpfConfig.CONFIG_LEFT_EVBET_HOVER_DEFAULT)));
         ((Button)findViewById(R.id.tap_right)).setText(Handlers.getOption(config.getInt(SpfConfig.CONFIG_RIGHT_EVBET, SpfConfig.CONFIG_RIGHT_EVBET_DEFAULT)));
         ((Button)findViewById(R.id.hover_right)).setText(Handlers.getOption(config.getInt(SpfConfig.CONFIG_RIGHT_EVBET_HOVER, SpfConfig.CONFIG_RIGHT_EVBET_HOVER_DEFAULT)));
+        ((Switch)findViewById(R.id.enable_service)).setChecked(serviceRunning());
 
         try {
             Intent intent = new Intent(getString(R.string.action_config_changed));
@@ -101,8 +164,8 @@ public class SettingsActivity extends Activity {
         switchItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                config.edit().putBoolean(key, ((Switch)v).isChecked()).apply();
-                updateView();
+            config.edit().putBoolean(key, ((Switch)v).isChecked()).apply();
+            updateView();
             }
         });
     }
@@ -247,5 +310,11 @@ public class SettingsActivity extends Activity {
         super.onPause();
         GlobalState.testMode = false;
         updateView();
+    }
+
+    @Override
+    public void onBackPressed() {
+        setExcludeFromRecents(true);
+        super.onBackPressed();
     }
 }

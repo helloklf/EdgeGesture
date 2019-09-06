@@ -80,7 +80,11 @@ class FloatVitualTouchBar {
      */
     private int dp2px(Context context, float dpValue) {
         float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
+        int value = (int) (dpValue * scale + 0.5f);
+        if (value < 1) {
+            return 1;
+        }
+        return value;
     }
 
     private void performGlobalAction(AccessibilityService context, int event) {
