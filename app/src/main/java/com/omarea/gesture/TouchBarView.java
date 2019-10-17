@@ -114,15 +114,9 @@ class TouchBarView extends View {
             vibrator.cancel();
             int time = config.getInt(SpfConfig.VIBRATOR_TIME, SpfConfig.VIBRATOR_TIME_DEFAULT);
             int amplitude = config.getInt(SpfConfig.VIBRATOR_AMPLITUDE, SpfConfig.VIBRATOR_AMPLITUDE_DEFAULT);
-            if(time < 1 || amplitude < 1) {
-            } else {
+            if (time > 0 && amplitude > 0) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     vibrator.vibrate(VibrationEffect.createOneShot(time, amplitude));
-                    // vibrator.vibrate(VibrationEffect.createOneShot(2, 255)); // a++
-                    // vibrator.vibrate(VibrationEffect.createOneShot(2, -1)); // a+
-                    // vibrator.vibrate(VibrationEffect.createOneShot(3, 255)); // a+
-                    // vibrator.vibrate(VibrationEffect.createOneShot(5, 255)); // a
-                    // vibrator.vibrate(VibrationEffect.createOneShot(20, 10)); // b
                 } else {
                     vibrator.vibrate(new long[]{ 0, time, amplitude }, -1);
                 }
@@ -175,6 +169,9 @@ class TouchBarView extends View {
             ViewGroup.LayoutParams lp = this.getLayoutParams();
             if (barPosition == BOTTOM) {
                 lp.height = FLIP_DISTANCE;
+                if (isLandscapf) {
+                    setBackground(context.getDrawable(R.drawable.landscape_bar_background));
+                }
             } else if (barPosition == LEFT || barPosition == RIGHT) {
                 lp.width = FLIP_DISTANCE;
                 if (touchStartY < effectWidth * 0.8) {
@@ -302,8 +299,6 @@ class TouchBarView extends View {
     }
 
     private boolean onTouchUp(MotionEvent event) {
-        // Log.d("MotionEvent", "com.omarea.gesture ACTION_UP");
-
         if (!isTouchDown || isGestureCompleted) {
             return true;
         }
@@ -385,6 +380,9 @@ class TouchBarView extends View {
             }
         });
         va.start();
+        if (isLandscapf) {
+            setBackground(null);
+        }
     }
 
     /**

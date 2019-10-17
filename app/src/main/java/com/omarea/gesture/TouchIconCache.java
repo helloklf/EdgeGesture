@@ -4,15 +4,15 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-public class TouchIconCache {
+class TouchIconCache {
     private static Context mContext;
-    public static void setContext(Context context) {
+    static void setContext(Context context) {
         mContext = context;
     }
 
     private static Bitmap touch_arrow_left, touch_arrow_right, touch_tasks, touch_home, touch_lock, touch_notice, touch_power, touch_settings, touch_split, touch_info, touch_screenshot, touch_switch; // 图标资源
 
-    public static Bitmap getIcon(int action) {
+    static Bitmap getIcon(int action) {
         switch (action) {
             case Handlers.GLOBAL_ACTION_BACK: {
                 if (touch_arrow_left == null && mContext != null) {

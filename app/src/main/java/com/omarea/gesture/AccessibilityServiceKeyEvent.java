@@ -112,9 +112,9 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
             public void onReceive(Context context, Intent intent) {
                 if (intent != null) {
                     String action = intent.getAction();
-                    if (action == Intent.ACTION_USER_PRESENT ||
-                        action == Intent.ACTION_USER_UNLOCKED ||
-                        action == Intent.ACTION_SCREEN_ON) {
+                    if (action != null && (action.equals(Intent.ACTION_USER_PRESENT) ||
+                            action.equals(Intent.ACTION_USER_UNLOCKED) ||
+                            action.equals(Intent.ACTION_SCREEN_ON))) {
                         forceHideNavBar();
                     }
                 }

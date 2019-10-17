@@ -23,10 +23,7 @@ public class Handlers {
     static boolean isVitualAction(int aciont) {
         if (aciont == VITUAL_ACTION_LAST_APP) {
             return true;
-        } else if (aciont == VITUAL_ACTION_OPEN_APP) {
-            return true;
-        }
-        return false;
+        } else return aciont == VITUAL_ACTION_OPEN_APP;
     }
 
     static void executeVitualAction(final AccessibilityService accessibilityService, final int action) {
