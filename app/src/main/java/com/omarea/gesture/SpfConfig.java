@@ -52,7 +52,7 @@ public class SpfConfig {
     public static final int CONFIG_HOT_BOTTOM_HEIGHT_DEFAULT = 9; // 底部热区高度
 
     public static final String VIBRATOR_TIME = "VIBRATOR_TIME"; // 震动时长
-    public static final int VIBRATOR_TIME_DEFAULT = 2; // 震动时长 默认值
+    public static final int VIBRATOR_TIME_DEFAULT = 10; // 震动时长 默认值
     public static final String VIBRATOR_AMPLITUDE = "VIBRATOR_AMPLITUDE"; // 震动强度
     public static final int VIBRATOR_AMPLITUDE_DEFAULT = 255; // 震动强度 默认值
 }

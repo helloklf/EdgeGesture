@@ -102,7 +102,8 @@ class FloatVitualTouchBar {
 
         TouchBarView bar = view.findViewById(R.id.bottom_touch_bar);
         if (GlobalState.testMode) {
-            bar.setBackgroundColor(Color.argb(128, 0, 0, 0));
+            bar.setBackground(context.getDrawable(R.drawable.bar_background));
+            // bar.setBackgroundColor(Color.argb(128, 0, 0, 0));
         }
 
         bar.setEventHandler(
@@ -111,6 +112,12 @@ class FloatVitualTouchBar {
                 context);
 
         double widthRatio = config.getInt(SpfConfig.CONFIG_BOTTOM_WIDTH, SpfConfig.CONFIG_BOTTOM_WIDTH_DEFAULT)  / 100.0;
+
+        // 横屏缩小宽度，避免游戏误触
+        if (isLandscapf && widthRatio > 0.4) {
+            widthRatio = 0.4;
+        }
+
         int barWidht = (int)(getScreenWidth(context) * widthRatio);
         int barHeight = -1;
         if (isLandscapf) {
@@ -174,32 +181,13 @@ class FloatVitualTouchBar {
         }
     }
 
-    private View.OnTouchListener getTouchPierceListener(final WindowManager.LayoutParams params, final View view) {
-        return new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, final MotionEvent event) {
-                int action = event.getAction();
-                if (action == MotionEvent.ACTION_OUTSIDE) {
-                    params.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS;
-                    mWindowManager.updateViewLayout(view, params);
-                } else if (action == MotionEvent.ACTION_DOWN) {
-                    params.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_NOT_TOUCHABLE | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS | LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
-                    mWindowManager.updateViewLayout(view, params);
-                    return true;
-                } else {
-                    Log.d("OnTouchListener", "" + action);
-                }
-                return false;
-            }
-        };
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     private View setLeftView(final AccessibilityService context) {
         final View view = LayoutInflater.from(context).inflate(R.layout.fw_vitual_touch_bar, null);
         TouchBarView bar = view.findViewById(R.id.bottom_touch_bar);
         if (GlobalState.testMode) {
-            bar.setBackgroundColor(Color.argb(128, 0, 0, 0));
+            // bar.setBackgroundColor(Color.argb(128, 0, 0, 0));
+            bar.setBackground(context.getDrawable(R.drawable.bar_background));
         }
 
         bar.setEventHandler(config.getInt(SpfConfig.CONFIG_LEFT_EVBET, SpfConfig.CONFIG_LEFT_EVBET_DEFAULT), config.getInt(SpfConfig.CONFIG_LEFT_EVBET_HOVER, SpfConfig.CONFIG_LEFT_EVBET_HOVER_DEFAULT), context);
@@ -243,7 +231,8 @@ class FloatVitualTouchBar {
 
         TouchBarView bar = view.findViewById(R.id.bottom_touch_bar);
         if (GlobalState.testMode) {
-            bar.setBackgroundColor(Color.argb(128, 0, 0, 0));
+            // bar.setBackgroundColor(Color.argb(128, 0, 0, 0));
+            bar.setBackground(context.getDrawable(R.drawable.bar_background));
         }
 
         bar.setEventHandler(config.getInt(SpfConfig.CONFIG_RIGHT_EVBET, SpfConfig.CONFIG_RIGHT_EVBET_DEFAULT), config.getInt(SpfConfig.CONFIG_RIGHT_EVBET_HOVER, SpfConfig.CONFIG_RIGHT_EVBET_HOVER_DEFAULT), context);

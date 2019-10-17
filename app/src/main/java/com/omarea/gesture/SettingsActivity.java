@@ -4,13 +4,17 @@ import android.accessibilityservice.AccessibilityServiceInfo;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
@@ -18,6 +22,7 @@ import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -136,6 +141,34 @@ public class SettingsActivity extends Activity {
         bindHandlerPicker(R.id.hover_left, SpfConfig.CONFIG_LEFT_EVBET_HOVER, SpfConfig.CONFIG_LEFT_EVBET_HOVER_DEFAULT);
         bindHandlerPicker(R.id.tap_right, SpfConfig.CONFIG_RIGHT_EVBET, SpfConfig.CONFIG_RIGHT_EVBET_DEFAULT);
         bindHandlerPicker(R.id.hover_right, SpfConfig.CONFIG_RIGHT_EVBET_HOVER, SpfConfig.CONFIG_RIGHT_EVBET_HOVER_DEFAULT);
+
+        if (Build.MANUFACTURER.equals("samsung") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && !canWriteGlobalSettings()) {
+            findViewById(R.id.samsung_guide).setVisibility(View.VISIBLE);
+            findViewById(R.id.copy_shell).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        ClipboardManager myClipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                        ClipData myClip = ClipData.newPlainText("text", ((TextView)findViewById(R.id.shell_content)).getText().toString());
+                        myClipboard.setPrimaryClip(myClip);
+                        Toast.makeText(getBaseContext(), getString(R.string.copy_success), Toast.LENGTH_SHORT).show();
+                    } catch (Exception ex) {
+                        Toast.makeText(getBaseContext(), getString(R.string.copy_fail), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+    }
+
+    private boolean canWriteGlobalSettings () {
+        try {
+            ContentResolver contentResolver = getContentResolver();
+            Settings.Global.putInt(contentResolver, "omarea_test_999", 999);
+            int result = Settings.Global.getInt(contentResolver, "omarea_test_999");
+            return result == 999;
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
     private void updateView() {

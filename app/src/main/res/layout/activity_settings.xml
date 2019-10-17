@@ -3,11 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:scrollbars="none"
+    android:scrollbarSize="0dp"
     tools:context=".SettingsActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="top"
         android:orientation="vertical">
 
@@ -38,6 +40,53 @@
             android:text="@string/back_hide_task"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+        <TextView
+            android:padding="5dp"
+            android:textAlignment="center"
+            android:textSize="11dp"
+            android:text="@string/rotate_tips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/samsung_guide"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+            <LinearLayout
+                android:layout_margin="10dp"
+                android:padding="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" android:orientation="vertical">
+                <TextView
+                    android:textSize="12dp"
+                    android:text="对于运行OneUI的三星手机，请通过USB调试执行以下代码，以便自动禁用系统自带导航栏和手势"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/shell_content"
+                        android:textSize="12dp"
+                        android:text="adb shell pm grant com.omarea.gesture android.permission.WRITE_SECURE_SETTINGS"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content" />
+                    <ImageButton
+                        android:id="@+id/copy_shell"
+                        android:background="@color/colorPrimary"
+                        android:padding="4dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/copy"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
