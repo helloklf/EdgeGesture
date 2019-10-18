@@ -34,7 +34,6 @@ public class iOSWhiteBar {
 
     /**
      * 获取当前屏幕方向下的屏幕宽度
-     *
      * @param context
      * @return
      */
@@ -113,9 +112,9 @@ public class iOSWhiteBar {
             private int offsetLimitY = dp2px(accessibilityService, 20);
             private int animationScaling = dp2px(accessibilityService, 2); // 手指移动多少像素时动画才移动1像素
             private boolean vibratorRun = false;
-            private ValueAnimator va = null; // 动画程序（x轴定位）
-            private ValueAnimator va2 = null; // 动画程序（y轴定位）
-            private ValueAnimator va3 = null; // 动画程序（淡出）
+            private ValueAnimator moveXAnimation = null; // 动画程序（x轴定位）
+            private ValueAnimator moveYAnimation = null; // 动画程序（y轴定位）
+            private ValueAnimator fareOutAnimation = null; // 动画程序（淡出）
 
             private void setPosition(float x, float y) {
                 int limitX = (int) x;
@@ -130,19 +129,20 @@ public class iOSWhiteBar {
                 } else if (limitY > offsetLimitY) {
                     limitY = offsetLimitY;
                 }
-                // animationTo(limitX, limitY, 10, new LinearInterpolator());
+                // animationTo(limitX, limitY, 5, new LinearInterpolator());
                 params.x = limitX;
                 params.y = limitY;
                 mWindowManager.updateViewLayout(view, params);
             }
+
             private void fadeOut() {
-                if (va3 != null && va3.isRunning()) {
-                    va3.cancel();
+                if (fareOutAnimation != null) {
+                    fareOutAnimation.cancel();
                 }
-                va3 = ValueAnimator.ofFloat(1f, fateOutAlpha);
-                va3.setDuration(1000);
-                va3.setInterpolator(new LinearInterpolator());
-                va3.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                fareOutAnimation = ValueAnimator.ofFloat(1f, fateOutAlpha);
+                fareOutAnimation.setDuration(1000);
+                fareOutAnimation.setInterpolator(new LinearInterpolator());
+                fareOutAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
                         try {
@@ -150,19 +150,19 @@ public class iOSWhiteBar {
                         } catch (Exception ignored) {}
                     }
                 });
-                va3.setStartDelay(3000);
-                va3.start();
+                fareOutAnimation.setStartDelay(5000);
+                fareOutAnimation.start();
             }
 
             private void animationTo(int x, int y, int duration, Interpolator interpolator) {
-                if (va != null && va.isRunning()) {
-                    va.cancel();
+                if (moveXAnimation != null && moveXAnimation.isRunning()) {
+                    moveXAnimation.cancel();
                 }
-                va = ValueAnimator.ofInt(params.x, x);
+                moveXAnimation = ValueAnimator.ofInt(params.x, x);
 
-                va.setDuration(duration);
-                va.setInterpolator(interpolator);
-                va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                moveXAnimation.setDuration(duration);
+                moveXAnimation.setInterpolator(interpolator);
+                moveXAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
                         params.x = (int) animation.getAnimatedValue();
@@ -171,17 +171,16 @@ public class iOSWhiteBar {
                         } catch (Exception ignored) {}
                     }
                 });
-                va.start();
+                moveXAnimation.start();
 
-
-                if (va2 != null && va2.isRunning()) {
-                    va2.cancel();
+                if (moveYAnimation != null && moveYAnimation.isRunning()) {
+                    moveYAnimation.cancel();
                 }
-                va2 = ValueAnimator.ofInt(params.y, y);
+                moveYAnimation = ValueAnimator.ofInt(params.y, y);
 
-                va2.setDuration(duration);
-                va2.setInterpolator(interpolator);
-                va2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                moveYAnimation.setDuration(duration);
+                moveYAnimation.setInterpolator(interpolator);
+                moveYAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
                         params.y = (int) animation.getAnimatedValue();
@@ -190,7 +189,7 @@ public class iOSWhiteBar {
                         } catch (Exception ignored) {}
                     }
                 });
-                va2.start();
+                moveYAnimation.start();
             }
 
             private boolean onTouchDown(MotionEvent event) {
@@ -201,9 +200,10 @@ public class iOSWhiteBar {
                 gestureStartTime = 0;
                 isLongTimeGesture = false;
                 vibratorRun = true;
-                if (va3 != null && va3.isRunning()) {
-                    va3.cancel();
+                if (fareOutAnimation != null) {
+                    fareOutAnimation.cancel();
                 }
+                bar.setAlpha(1f);
                 return true;
             }
 
@@ -264,7 +264,9 @@ public class iOSWhiteBar {
                             performGlobalAction(Handlers.GLOBAL_ACTION_HOME);
                     } else if (moveX < -FLIP_DISTANCE) { // 向左滑动
                         // 任务
-                        performGlobalAction(Handlers.GLOBAL_ACTION_RECENTS);
+                        // performGlobalAction(Handlers.GLOBAL_ACTION_RECENTS);
+                        // 返回
+                        performGlobalAction(Handlers.GLOBAL_ACTION_BACK);
                     } else if (moveX > FLIP_DISTANCE) { // 向右滑动
                         // 返回
                         performGlobalAction(Handlers.GLOBAL_ACTION_BACK);
