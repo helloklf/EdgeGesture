@@ -6,11 +6,11 @@ import android.graphics.BitmapFactory;
 
 class TouchIconCache {
     private static Context mContext;
+    private static Bitmap touch_arrow_left, touch_arrow_right, touch_tasks, touch_home, touch_lock, touch_notice, touch_power, touch_settings, touch_split, touch_info, touch_screenshot, touch_switch; // 图标资源
+
     static void setContext(Context context) {
         mContext = context;
     }
-
-    private static Bitmap touch_arrow_left, touch_arrow_right, touch_tasks, touch_home, touch_lock, touch_notice, touch_power, touch_settings, touch_split, touch_info, touch_screenshot, touch_switch; // 图标资源
 
     static Bitmap getIcon(int action) {
         switch (action) {

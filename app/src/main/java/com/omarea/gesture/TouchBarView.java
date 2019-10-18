@@ -21,12 +21,10 @@ import android.view.animation.AccelerateInterpolator;
 import android.widget.Toast;
 
 class TouchBarView extends View {
-    private SharedPreferences config;
-
     static final int RIGHT = 2;
     static final int BOTTOM = 0;
     static final int LEFT = 1;
-
+    private SharedPreferences config;
     private ValueAnimator va = null; // 动画程序
     private int barPosition = 0;
     private int bakWidth = 0;
@@ -58,6 +56,22 @@ class TouchBarView extends View {
     private boolean isLandscapf = false;
 
     private Paint p = new Paint();
+    private long lastEventTime = 0L;
+    private int lastEvent = -1;
+    public TouchBarView(Context context) {
+        super(context);
+        init();
+    }
+
+    public TouchBarView(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
+        init();
+    }
+
+    public TouchBarView(Context context, AttributeSet attributeSet, int defStyleAttr) {
+        super(context, attributeSet, defStyleAttr);
+        init();
+    }
 
     private void init() {
         p.setAntiAlias(true);
@@ -66,9 +80,6 @@ class TouchBarView extends View {
 
         config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
     }
-
-    private long lastEventTime = 0L;
-    private int lastEvent = -1;
 
     private void performGlobalAction(int event) {
         if (accessibilityService != null) {
@@ -94,21 +105,6 @@ class TouchBarView extends View {
         }
     }
 
-    public TouchBarView(Context context) {
-        super(context);
-        init();
-    }
-
-    public TouchBarView(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
-        init();
-    }
-
-    public TouchBarView(Context context, AttributeSet attributeSet, int defStyleAttr) {
-        super(context, attributeSet, defStyleAttr);
-        init();
-    }
-
     void touchVibrator() {
         if (vibrator.hasVibrator()) {
             vibrator.cancel();
@@ -118,7 +114,7 @@ class TouchBarView extends View {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     vibrator.vibrate(VibrationEffect.createOneShot(time, amplitude));
                 } else {
-                    vibrator.vibrate(new long[]{ 0, time, amplitude }, -1);
+                    vibrator.vibrate(new long[]{0, time, amplitude}, -1);
                 }
             }
         }

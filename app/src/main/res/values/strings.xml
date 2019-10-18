@@ -5,6 +5,8 @@
     </string>
     <string name="enable_service">启用手势导航 </string>
     <string name="hide_start_icon">隐藏启动图标 </string>
+    <string name="landscape_ios_bar">iOS风格小白条</string>
+    <string name="landscape_ios_bar_desc">横屏时使用iOS风格的小白条作为手势导航区，以便减少游戏误触</string>
     <string name="hide_start_icon_desc">打开此开关后，本应用将从桌面隐藏，如果需要再恢复请到辅助服务界面，选中本应用进行操作</string>
     <string name="action_config_changed">com.omarea.gesture.ConfigChanged</string>
     <string name="action_service_disable">com.omarea.gesture.ServiceDisable</string>

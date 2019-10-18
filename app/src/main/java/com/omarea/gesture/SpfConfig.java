@@ -15,7 +15,7 @@ class SpfConfig {
     static final String CONFIG_LEFT_HEIGHT = "CONFIG_LEFT_HEIGHT";
     static final int CONFIG_LEFT_HEIGHT_DEFAULT = 65; // 高度百分比
     static final String CONFIG_LEFT_COLOR = "CONFIG_LEFT_COLOR";
-    static final int CONFIG_LEFT_COLOR_DEFAULT =0xee101010;
+    static final int CONFIG_LEFT_COLOR_DEFAULT = 0xee101010;
     static final String CONFIG_LEFT_EVBET = "CONFIG_LEFT_EVBET";
     static final int CONFIG_LEFT_EVBET_DEFAULT = AccessibilityService.GLOBAL_ACTION_BACK;
     static final String CONFIG_LEFT_EVBET_HOVER = "CONFIG_LEFT_EVBET_HOVER";
@@ -27,7 +27,7 @@ class SpfConfig {
     static final String CONFIG_RIGHT_HEIGHT = "CONFIG_RIGHT_HEIGHT";
     static final int CONFIG_RIGHT_HEIGHT_DEFAULT = 65; // 高度百分比
     static final String CONFIG_RIGHT_COLOR = "CONFIG_RIGHT_COLOR";
-    static final int CONFIG_RIGHT_COLOR_DEFAULT =0xee101010;
+    static final int CONFIG_RIGHT_COLOR_DEFAULT = 0xee101010;
     static final String CONFIG_RIGHT_EVBET = "CONFIG_RIGHT_EVBET";
     static final int CONFIG_RIGHT_EVBET_DEFAULT = AccessibilityService.GLOBAL_ACTION_BACK;
     static final String CONFIG_RIGHT_EVBET_HOVER = "CONFIG_RIGHT_EVBET_HOVER";
@@ -55,4 +55,8 @@ class SpfConfig {
     static final int VIBRATOR_TIME_DEFAULT = 10; // 震动时长 默认值
     static final String VIBRATOR_AMPLITUDE = "VIBRATOR_AMPLITUDE"; // 震动强度
     static final int VIBRATOR_AMPLITUDE_DEFAULT = 255; // 震动强度 默认值
+
+    // 横屏时使用iOS风格小白条
+    static final String LANDSCAPE_IOS_BAR = "landscape_ios_bar";
+    static final boolean LANDSCAPE_IOS_BAR_DEFAULT = false;
 }

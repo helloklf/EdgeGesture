@@ -479,6 +479,29 @@
                 android:padding="10dp">
 
                 <Switch
+                    android:id="@+id/landscape_ios_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/landscape_ios_bar"
+                    android:textStyle="bold" />
+
+                <TextView
+                    style="@style/switch_desc"
+                    android:text="@string/landscape_ios_bar_desc" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <Switch
                     android:id="@+id/hide_start_icon"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

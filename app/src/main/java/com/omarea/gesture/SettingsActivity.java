@@ -56,6 +56,7 @@ public class SettingsActivity extends Activity {
         }
         return false;
     }
+
     private boolean serviceRunning() {
         return serviceRunning(this, "AccessibilityServiceKeyEvent");
     }
@@ -127,7 +128,7 @@ public class SettingsActivity extends Activity {
         bindSeekBar(R.id.edge_side_width, SpfConfig.CONFIG_HOT_SIDE_WIDTH, SpfConfig.CONFIG_HOT_SIDE_WIDTH_DEFAULT, true);
         bindSeekBar(R.id.edge_bottom_height, SpfConfig.CONFIG_HOT_BOTTOM_HEIGHT, SpfConfig.CONFIG_HOT_BOTTOM_HEIGHT_DEFAULT, true);
 
-        bindSeekBar(R.id.bar_hover_time, SpfConfig.CONFIG_HOVER_TIME, SpfConfig.CONFIG_HOVER_TIME_DEFAULT,  true);
+        bindSeekBar(R.id.bar_hover_time, SpfConfig.CONFIG_HOVER_TIME, SpfConfig.CONFIG_HOVER_TIME_DEFAULT, true);
         bindSeekBar(R.id.vibrator_time, SpfConfig.VIBRATOR_TIME, SpfConfig.VIBRATOR_TIME_DEFAULT, true);
         bindSeekBar(R.id.vibrator_amplitude, SpfConfig.VIBRATOR_AMPLITUDE, SpfConfig.VIBRATOR_AMPLITUDE_DEFAULT, true);
 
@@ -142,6 +143,8 @@ public class SettingsActivity extends Activity {
         bindHandlerPicker(R.id.tap_right, SpfConfig.CONFIG_RIGHT_EVBET, SpfConfig.CONFIG_RIGHT_EVBET_DEFAULT);
         bindHandlerPicker(R.id.hover_right, SpfConfig.CONFIG_RIGHT_EVBET_HOVER, SpfConfig.CONFIG_RIGHT_EVBET_HOVER_DEFAULT);
 
+        bindSwitch(R.id.landscape_ios_bar, SpfConfig.LANDSCAPE_IOS_BAR, SpfConfig.LANDSCAPE_IOS_BAR_DEFAULT);
+
         if (Build.MANUFACTURER.equals("samsung") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && !canWriteGlobalSettings()) {
             findViewById(R.id.samsung_guide).setVisibility(View.VISIBLE);
             findViewById(R.id.copy_shell).setOnClickListener(new View.OnClickListener() {
@@ -149,7 +152,7 @@ public class SettingsActivity extends Activity {
                 public void onClick(View v) {
                     try {
                         ClipboardManager myClipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                        ClipData myClip = ClipData.newPlainText("text", ((TextView)findViewById(R.id.shell_content)).getText().toString());
+                        ClipData myClip = ClipData.newPlainText("text", ((TextView) findViewById(R.id.shell_content)).getText().toString());
                         myClipboard.setPrimaryClip(myClip);
                         Toast.makeText(getBaseContext(), getString(R.string.copy_success), Toast.LENGTH_SHORT).show();
                     } catch (Exception ex) {
@@ -160,7 +163,7 @@ public class SettingsActivity extends Activity {
         }
     }
 
-    private boolean canWriteGlobalSettings () {
+    private boolean canWriteGlobalSettings() {
         try {
             ContentResolver contentResolver = getContentResolver();
             Settings.Global.putInt(contentResolver, "omarea_test_999", 999);
@@ -176,13 +179,13 @@ public class SettingsActivity extends Activity {
         findViewById(R.id.bar_color_left).setBackgroundColor(config.getInt(SpfConfig.CONFIG_LEFT_COLOR, SpfConfig.CONFIG_LEFT_COLOR_DEFAULT));
         findViewById(R.id.bar_color_right).setBackgroundColor(config.getInt(SpfConfig.CONFIG_RIGHT_COLOR, SpfConfig.CONFIG_RIGHT_COLOR_DEFAULT));
 
-        ((Button)findViewById(R.id.tap_bottom)).setText(Handlers.getOption(config.getInt(SpfConfig.CONFIG_BOTTOM_EVBET, SpfConfig.CONFIG_BOTTOM_EVBET_DEFAULT)));
-        ((Button)findViewById(R.id.hover_bottom)).setText(Handlers.getOption(config.getInt(SpfConfig.CONFIG_BOTTOM_EVBET_HOVER, SpfConfig.CONFIG_BOTTOM_EVBET_HOVER_DEFAULT)));
-        ((Button)findViewById(R.id.tap_left)).setText(Handlers.getOption(config.getInt(SpfConfig.CONFIG_LEFT_EVBET, SpfConfig.CONFIG_LEFT_EVBET_DEFAULT)));
-        ((Button)findViewById(R.id.hover_left)).setText(Handlers.getOption(config.getInt(SpfConfig.CONFIG_LEFT_EVBET_HOVER, SpfConfig.CONFIG_LEFT_EVBET_HOVER_DEFAULT)));
-        ((Button)findViewById(R.id.tap_right)).setText(Handlers.getOption(config.getInt(SpfConfig.CONFIG_RIGHT_EVBET, SpfConfig.CONFIG_RIGHT_EVBET_DEFAULT)));
-        ((Button)findViewById(R.id.hover_right)).setText(Handlers.getOption(config.getInt(SpfConfig.CONFIG_RIGHT_EVBET_HOVER, SpfConfig.CONFIG_RIGHT_EVBET_HOVER_DEFAULT)));
-        ((Switch)findViewById(R.id.enable_service)).setChecked(serviceRunning());
+        ((Button) findViewById(R.id.tap_bottom)).setText(Handlers.getOption(config.getInt(SpfConfig.CONFIG_BOTTOM_EVBET, SpfConfig.CONFIG_BOTTOM_EVBET_DEFAULT)));
+        ((Button) findViewById(R.id.hover_bottom)).setText(Handlers.getOption(config.getInt(SpfConfig.CONFIG_BOTTOM_EVBET_HOVER, SpfConfig.CONFIG_BOTTOM_EVBET_HOVER_DEFAULT)));
+        ((Button) findViewById(R.id.tap_left)).setText(Handlers.getOption(config.getInt(SpfConfig.CONFIG_LEFT_EVBET, SpfConfig.CONFIG_LEFT_EVBET_DEFAULT)));
+        ((Button) findViewById(R.id.hover_left)).setText(Handlers.getOption(config.getInt(SpfConfig.CONFIG_LEFT_EVBET_HOVER, SpfConfig.CONFIG_LEFT_EVBET_HOVER_DEFAULT)));
+        ((Button) findViewById(R.id.tap_right)).setText(Handlers.getOption(config.getInt(SpfConfig.CONFIG_RIGHT_EVBET, SpfConfig.CONFIG_RIGHT_EVBET_DEFAULT)));
+        ((Button) findViewById(R.id.hover_right)).setText(Handlers.getOption(config.getInt(SpfConfig.CONFIG_RIGHT_EVBET_HOVER, SpfConfig.CONFIG_RIGHT_EVBET_HOVER_DEFAULT)));
+        ((Switch) findViewById(R.id.enable_service)).setChecked(serviceRunning());
 
         try {
             Intent intent = new Intent(getString(R.string.action_config_changed));
@@ -197,8 +200,8 @@ public class SettingsActivity extends Activity {
         switchItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            config.edit().putBoolean(key, ((Switch)v).isChecked()).apply();
-            updateView();
+                config.edit().putBoolean(key, ((Switch) v).isChecked()).apply();
+                updateView();
             }
         });
     }
@@ -211,9 +214,11 @@ public class SettingsActivity extends Activity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 config.edit().putInt(key, (seekBar.getProgress())).apply();
             }
+
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
             }
+
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 if (updateView) {
@@ -247,6 +252,7 @@ public class SettingsActivity extends Activity {
 
     /**
      * 选择响应动作
+     *
      * @param key
      * @param defValue
      */
@@ -256,7 +262,7 @@ public class SettingsActivity extends Activity {
 
         int currentValue = config.getInt(key, defValue);
         int index = values.indexOf(currentValue);
-;
+        ;
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.handler_picker))
                 .setSingleChoiceItems(items, index, new DialogInterface.OnClickListener() {
@@ -274,6 +280,7 @@ public class SettingsActivity extends Activity {
 
     /**
      * 选择颜色
+     *
      * @param key
      * @param defValue
      */
@@ -300,10 +307,12 @@ public class SettingsActivity extends Activity {
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {  }
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {  }
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
         };
         alphaBar.setOnSeekBarChangeListener(listener);
         redBar.setOnSeekBarChangeListener(listener);

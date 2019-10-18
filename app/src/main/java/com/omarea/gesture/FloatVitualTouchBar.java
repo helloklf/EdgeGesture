@@ -4,14 +4,12 @@ import android.accessibilityservice.AccessibilityService;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
@@ -33,14 +31,18 @@ class FloatVitualTouchBar {
         config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
         mWindowManager = (WindowManager) (context.getSystemService(Context.WINDOW_SERVICE));
         try {
-            if (config.getBoolean(SpfConfig.CONFIG_BOTTOM_ALLOW, SpfConfig.CONFIG_BOTTOM_ALLOW_DEFAULT)) {
-                this.bottomView = setBottomView(context);
-            }
-            if (config.getBoolean(SpfConfig.CONFIG_LEFT_ALLOW, SpfConfig.CONFIG_LEFT_ALLOW_DEFAULT)) {
-                this.leftView = setLeftView(context);
-            }
-            if (config.getBoolean(SpfConfig.CONFIG_RIGHT_ALLOW, SpfConfig.CONFIG_RIGHT_ALLOW_DEFAULT)) {
-                this.rightView = setRightView(context);
+            if (isLandscapf && config.getBoolean(SpfConfig.LANDSCAPE_IOS_BAR, SpfConfig.LANDSCAPE_IOS_BAR_DEFAULT)) {
+                this.bottomView = new iOSWhiteBar(context, isLandscapf).getView();
+            } else {
+                if (config.getBoolean(SpfConfig.CONFIG_BOTTOM_ALLOW, SpfConfig.CONFIG_BOTTOM_ALLOW_DEFAULT)) {
+                    this.bottomView = setBottomView(context);
+                }
+                if (config.getBoolean(SpfConfig.CONFIG_LEFT_ALLOW, SpfConfig.CONFIG_LEFT_ALLOW_DEFAULT)) {
+                    this.leftView = setLeftView(context);
+                }
+                if (config.getBoolean(SpfConfig.CONFIG_RIGHT_ALLOW, SpfConfig.CONFIG_RIGHT_ALLOW_DEFAULT)) {
+                    this.rightView = setRightView(context);
+                }
             }
         } catch (Exception ex) {
             Log.d("异常", ex.getLocalizedMessage());
@@ -111,14 +113,14 @@ class FloatVitualTouchBar {
                 config.getInt(SpfConfig.CONFIG_BOTTOM_EVBET_HOVER, SpfConfig.CONFIG_BOTTOM_EVBET_HOVER_DEFAULT),
                 context);
 
-        double widthRatio = config.getInt(SpfConfig.CONFIG_BOTTOM_WIDTH, SpfConfig.CONFIG_BOTTOM_WIDTH_DEFAULT)  / 100.0;
+        double widthRatio = config.getInt(SpfConfig.CONFIG_BOTTOM_WIDTH, SpfConfig.CONFIG_BOTTOM_WIDTH_DEFAULT) / 100.0;
 
         // 横屏缩小宽度，避免游戏误触
         if (isLandscapf && widthRatio > 0.4) {
             widthRatio = 0.4;
         }
 
-        int barWidht = (int)(getScreenWidth(context) * widthRatio);
+        int barWidht = (int) (getScreenWidth(context) * widthRatio);
         int barHeight = -1;
         if (isLandscapf) {
             barHeight = dp2px(context, config.getInt(SpfConfig.CONFIG_HOT_SIDE_WIDTH, SpfConfig.CONFIG_HOT_SIDE_WIDTH_DEFAULT)); // LayoutParams.WRAP_CONTENT;
@@ -151,6 +153,7 @@ class FloatVitualTouchBar {
 
     /**
      * 获取当前屏幕方向下的屏幕高度
+     *
      * @param context
      * @return
      */
@@ -167,6 +170,7 @@ class FloatVitualTouchBar {
 
     /**
      * 获取当前屏幕方向下的屏幕宽度
+     *
      * @param context
      * @return
      */
@@ -192,8 +196,8 @@ class FloatVitualTouchBar {
 
         bar.setEventHandler(config.getInt(SpfConfig.CONFIG_LEFT_EVBET, SpfConfig.CONFIG_LEFT_EVBET_DEFAULT), config.getInt(SpfConfig.CONFIG_LEFT_EVBET_HOVER, SpfConfig.CONFIG_LEFT_EVBET_HOVER_DEFAULT), context);
 
-        double heightRatio = config.getInt(SpfConfig.CONFIG_LEFT_HEIGHT, SpfConfig.CONFIG_LEFT_HEIGHT_DEFAULT)  / 100.0;
-        int barHeight = (int)(getScreenHeight(context) * heightRatio); //
+        double heightRatio = config.getInt(SpfConfig.CONFIG_LEFT_HEIGHT, SpfConfig.CONFIG_LEFT_HEIGHT_DEFAULT) / 100.0;
+        int barHeight = (int) (getScreenHeight(context) * heightRatio); //
         int barWidth = -1;
         if (isLandscapf) {
             barWidth = dp2px(context, config.getInt(SpfConfig.CONFIG_HOT_BOTTOM_HEIGHT, SpfConfig.CONFIG_HOT_BOTTOM_HEIGHT_DEFAULT)); // LayoutParams.WRAP_CONTENT;
@@ -237,8 +241,8 @@ class FloatVitualTouchBar {
 
         bar.setEventHandler(config.getInt(SpfConfig.CONFIG_RIGHT_EVBET, SpfConfig.CONFIG_RIGHT_EVBET_DEFAULT), config.getInt(SpfConfig.CONFIG_RIGHT_EVBET_HOVER, SpfConfig.CONFIG_RIGHT_EVBET_HOVER_DEFAULT), context);
 
-        double heightRatio = config.getInt(SpfConfig.CONFIG_RIGHT_HEIGHT, SpfConfig.CONFIG_RIGHT_HEIGHT_DEFAULT)  / 100.0;
-        int barHeight = (int)(getScreenHeight(context) * heightRatio); //
+        double heightRatio = config.getInt(SpfConfig.CONFIG_RIGHT_HEIGHT, SpfConfig.CONFIG_RIGHT_HEIGHT_DEFAULT) / 100.0;
+        int barHeight = (int) (getScreenHeight(context) * heightRatio); //
         int barWidth = -1;
         if (isLandscapf) {
             barWidth = dp2px(context, config.getInt(SpfConfig.CONFIG_HOT_BOTTOM_HEIGHT, SpfConfig.CONFIG_HOT_BOTTOM_HEIGHT_DEFAULT)); // LayoutParams.WRAP_CONTENT;

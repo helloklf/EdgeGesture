@@ -2,7 +2,6 @@ package com.omarea.gesture;
 
 import android.accessibilityservice.AccessibilityService;
 import android.os.Build;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -48,13 +47,14 @@ public class Handlers {
                     public void run() {
                         try {
                             Thread.sleep(500);
-                        } catch (Exception ex) {}
+                        } catch (Exception ex) {
+                        }
                         accessibilityService.performGlobalAction(action);
                     }
                 }).start();
                 break;
             }
-            default:{
+            default: {
                 accessibilityService.performGlobalAction(action);
                 break;
             }
@@ -68,7 +68,7 @@ public class Handlers {
     }
 
     static String[] getOptions() {
-        ArrayList<String> options = new ArrayList<String>(){{
+        ArrayList<String> options = new ArrayList<String>() {{
             add("返回");
             add("首页");
             add("任务");
@@ -90,7 +90,7 @@ public class Handlers {
     }
 
     static ArrayList<Integer> getValues() {
-        ArrayList<Integer> options = new ArrayList<Integer>(){{
+        ArrayList<Integer> options = new ArrayList<Integer>() {{
             add(GLOBAL_ACTION_BACK);
             add(GLOBAL_ACTION_HOME);
             add(GLOBAL_ACTION_RECENTS);
