@@ -2,6 +2,7 @@ package com.omarea.gesture;
 
 import android.accessibilityservice.AccessibilityService;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
@@ -16,6 +17,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 
 public class iOSWhiteBar {
@@ -59,6 +61,7 @@ public class iOSWhiteBar {
         return value;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     public View getView() {
         final WindowManager mWindowManager = (WindowManager) (accessibilityService.getSystemService(Context.WINDOW_SERVICE));
 
@@ -109,8 +112,9 @@ public class iOSWhiteBar {
             private int offsetLimitY = dp2px(accessibilityService, 20);
             private int animationScaling = dp2px(accessibilityService, 2); // 手指移动多少像素时动画才移动1像素
             private boolean vibratorRun = false;
-            private ValueAnimator va = null; // 动画程序
-            private ValueAnimator va2 = null; // 动画程序
+            private ValueAnimator va = null; // 动画程序（x轴定位）
+            private ValueAnimator va2 = null; // 动画程序（y轴定位）
+            private ValueAnimator va3 = null; // 动画程序（淡出）
 
             private void setPosition(float x, float y) {
                 int limitX = (int) x;
@@ -130,6 +134,24 @@ public class iOSWhiteBar {
                 params.y = limitY;
                 mWindowManager.updateViewLayout(view, params);
             }
+            private void fadeOut() {
+                if (va3 != null && va3.isRunning()) {
+                    va3.cancel();
+                }
+                va3 = ValueAnimator.ofFloat(1f, 0.3f);
+                va3.setDuration(1000);
+                va3.setInterpolator(new LinearInterpolator());
+                va3.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        try {
+                            bar.setAlpha((float)animation.getAnimatedValue());
+                        } catch (Exception ignored) {}
+                    }
+                });
+                va3.setStartDelay(3000);
+                va3.start();
+            }
 
             private void animationTo(int x, int y, int duration, Interpolator interpolator) {
                 if (va != null && va.isRunning()) {
@@ -145,7 +167,7 @@ public class iOSWhiteBar {
                         params.x = (int) animation.getAnimatedValue();
                         try {
                             mWindowManager.updateViewLayout(view, params);
-                        } catch (Exception ex) {}
+                        } catch (Exception ignored) {}
                     }
                 });
                 va.start();
@@ -164,7 +186,7 @@ public class iOSWhiteBar {
                         params.y = (int) animation.getAnimatedValue();
                         try {
                             mWindowManager.updateViewLayout(view, params);
-                        } catch (Exception ex) {}
+                        } catch (Exception ignored) {}
                     }
                 });
                 va2.start();
@@ -178,6 +200,9 @@ public class iOSWhiteBar {
                 gestureStartTime = 0;
                 isLongTimeGesture = false;
                 vibratorRun = true;
+                if (va3 != null && va3.isRunning()) {
+                    va3.cancel();
+                }
                 return true;
             }
 
@@ -251,6 +276,9 @@ public class iOSWhiteBar {
 
             private void clearEffect() {
                 animationTo(0, 0, 300, new OvershootInterpolator());
+                // if (isLandscapf) {
+                    fadeOut();
+                // }
             }
 
             @Override
@@ -283,6 +311,7 @@ public class iOSWhiteBar {
                 return true;
             }
         });
+        bar.setAlpha(0.3f);
 
         return view;
     }

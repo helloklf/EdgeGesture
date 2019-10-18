@@ -3,7 +3,6 @@ package com.omarea.gesture;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
@@ -11,8 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 class iOSTouchBarView extends View {
-    private SharedPreferences config;
-
     private ValueAnimator va = null; // 动画程序
     private Context context = getContext();
 
@@ -41,7 +38,6 @@ class iOSTouchBarView extends View {
         p.setStrokeCap(Paint.Cap.ROUND);
         p.setShadowLayer(dp2px(context, 4), 0, 0, 0x55555555);
 
-        config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
         setLayerType(LAYER_TYPE_SOFTWARE, null);
     }
 

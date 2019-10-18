@@ -58,5 +58,5 @@ class SpfConfig {
 
     // 横屏时使用iOS风格小白条
     static final String LANDSCAPE_IOS_BAR = "landscape_ios_bar";
-    static final boolean LANDSCAPE_IOS_BAR_DEFAULT = false;
+    static final boolean LANDSCAPE_IOS_BAR_DEFAULT = true;
 }
