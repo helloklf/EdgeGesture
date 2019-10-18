@@ -143,8 +143,9 @@ public class iOSWhiteBar {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
                         params.x = (int) animation.getAnimatedValue();
-                        // params.y = limitY;
-                        mWindowManager.updateViewLayout(view, params);
+                        try {
+                            mWindowManager.updateViewLayout(view, params);
+                        } catch (Exception ex) {}
                     }
                 });
                 va.start();
@@ -161,7 +162,9 @@ public class iOSWhiteBar {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
                         params.y = (int) animation.getAnimatedValue();
-                        mWindowManager.updateViewLayout(view, params);
+                        try {
+                            mWindowManager.updateViewLayout(view, params);
+                        } catch (Exception ex) {}
                     }
                 });
                 va2.start();
