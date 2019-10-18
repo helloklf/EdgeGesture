@@ -74,7 +74,8 @@ public class iOSWhiteBar {
         }
 
         int barWidth = (int) (getScreenWidth(accessibilityService) * 0.3);
-        int barHeight = dp2px(accessibilityService, 20);
+        int barHeight = dp2px(accessibilityService, isLandscapf ? 16 : 20);
+        final float fateOutAlpha = 0.2f;
 
         bar.setBarPosition(barWidth, barHeight);
 
@@ -138,7 +139,7 @@ public class iOSWhiteBar {
                 if (va3 != null && va3.isRunning()) {
                     va3.cancel();
                 }
-                va3 = ValueAnimator.ofFloat(1f, 0.3f);
+                va3 = ValueAnimator.ofFloat(1f, fateOutAlpha);
                 va3.setDuration(1000);
                 va3.setInterpolator(new LinearInterpolator());
                 va3.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -221,6 +222,7 @@ public class iOSWhiteBar {
                         bar.postDelayed(new Runnable() {
                             @Override
                             public void run() {
+                                // 上滑悬停
                                 if (isTouchDown && !isGestureCompleted && currentTime == gestureStartTime) {
                                     isLongTimeGesture = true;
                                     if (vibratorRun) {
@@ -256,16 +258,16 @@ public class iOSWhiteBar {
 
                 if (Math.abs(moveX) > flingValue || Math.abs(moveY) > flingValue) {
                     if (moveY > FLIP_DISTANCE) {
-                        if (isLongTimeGesture)
+                        if (isLongTimeGesture) // 上滑悬停
                             performGlobalAction(Handlers.GLOBAL_ACTION_RECENTS);
-                        else
+                        else // 上滑
                             performGlobalAction(Handlers.GLOBAL_ACTION_HOME);
-                    } else if (moveX < -FLIP_DISTANCE) {
-                        // 返回
-                        performGlobalAction(Handlers.GLOBAL_ACTION_BACK);
-                    } else if (moveX > FLIP_DISTANCE) {
+                    } else if (moveX < -FLIP_DISTANCE) { // 向左滑动
                         // 任务
                         performGlobalAction(Handlers.GLOBAL_ACTION_RECENTS);
+                    } else if (moveX > FLIP_DISTANCE) { // 向右滑动
+                        // 返回
+                        performGlobalAction(Handlers.GLOBAL_ACTION_BACK);
                     }
                 }
 
@@ -311,7 +313,7 @@ public class iOSWhiteBar {
                 return true;
             }
         });
-        bar.setAlpha(0.3f);
+        bar.setAlpha(fateOutAlpha);
 
         return view;
     }
