@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:scrollbars="none"
     android:scrollbarSize="0dp"
+    android:scrollbars="none"
     tools:context=".SettingsActivity">
 
     <LinearLayout
@@ -25,445 +25,74 @@
                 android:padding="10dp">
 
                 <Switch
-                    android:layout_gravity="center_horizontal"
                     android:id="@+id/enable_service"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:text="@string/enable_service"
                     android:textStyle="bold" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
+
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:padding="5dp"
-            android:textAlignment="center"
-            android:textSize="11dp"
             android:text="@string/back_hide_task"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:padding="5dp"
             android:textAlignment="center"
-            android:textSize="11dp"
-            android:text="@string/rotate_tips"
+            android:textSize="11dp" />
+
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="@string/rotate_tips"
+            android:textAlignment="center"
+            android:textSize="11dp" />
 
         <android.support.v7.widget.CardView
             android:id="@+id/samsung_guide"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp">
+            android:layout_margin="10dp"
+            android:visibility="gone">
+
             <LinearLayout
-                android:layout_margin="10dp"
-                android:padding="5dp"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent" android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:orientation="vertical"
+                android:padding="5dp">
+
                 <TextView
-                    android:textSize="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:text="对于运行OneUI的三星手机，请通过USB调试执行以下代码，以便自动禁用系统自带导航栏和手势"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:textSize="12dp" />
+
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
                     <TextView
                         android:id="@+id/shell_content"
-                        android:textSize="12dp"
-                        android:text="adb shell pm grant com.omarea.gesture android.permission.WRITE_SECURE_SETTINGS"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content" />
+                        android:text="adb shell pm grant com.omarea.gesture android.permission.WRITE_SECURE_SETTINGS"
+                        android:textSize="12dp" />
+
                     <ImageButton
                         android:id="@+id/copy_shell"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:background="@color/colorPrimary"
                         android:padding="4dp"
                         android:scaleType="centerInside"
-                        android:src="@drawable/copy"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp" />
+                        android:src="@drawable/copy" />
                 </LinearLayout>
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/card_title"
-                        android:text="底部" />
-
-                    <Switch
-                        android:id="@+id/allow_bottom"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="触发区" />
-
-                    <SeekBar
-                        android:id="@+id/bar_width_bottom"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:max="100"
-                        android:min="0"
-                        android:progress="100" />
-
-                    <Button
-                        android:id="@+id/bar_color_bottom"
-                        style="@style/btn_color_picker" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="快速滑动：" />
-
-                    <Button
-                        android:id="@+id/tap_bottom"
-                        style="@style/btn_handler_picker"
-                        android:text="行为" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="滑动悬停：" />
-
-                    <Button
-                        android:id="@+id/hover_bottom"
-                        style="@style/btn_handler_picker"
-                        android:text="行为" />
-                </LinearLayout>
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/card_title"
-                        android:text="左侧" />
-
-                    <Switch
-                        android:id="@+id/allow_left"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="触发区" />
-
-                    <SeekBar
-                        android:id="@+id/bar_height_left"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:max="100"
-                        android:min="0" />
-
-                    <Button
-                        android:id="@+id/bar_color_left"
-                        style="@style/btn_color_picker" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="快速滑动：" />
-
-                    <Button
-                        android:id="@+id/tap_left"
-                        style="@style/btn_handler_picker"
-                        android:text="行为" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="滑动悬停：" />
-
-                    <Button
-                        android:id="@+id/hover_left"
-                        style="@style/btn_handler_picker"
-                        android:text="行为" />
-                </LinearLayout>
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/card_title"
-                        android:text="右侧" />
-
-                    <Switch
-                        android:id="@+id/allow_right"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="触发区" />
-
-                    <SeekBar
-                        android:id="@+id/bar_height_right"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:max="100"
-                        android:min="0" />
-
-                    <Button
-                        android:id="@+id/bar_color_right"
-                        style="@style/btn_color_picker" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="快速滑动：" />
-
-                    <Button
-                        android:id="@+id/tap_right"
-                        style="@style/btn_handler_picker"
-                        android:text="行为" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="滑动悬停：" />
-
-                    <Button
-                        android:id="@+id/hover_right"
-                        style="@style/btn_handler_picker"
-                        android:text="行为" />
-                </LinearLayout>
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <TextView
-                    style="@style/card_title"
-                    android:text="侧边热区宽度" />
-
-                <SeekBar
-                    android:id="@+id/edge_side_width"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginTop="10dp"
-                    android:max="40"
-                    android:paddingStart="6dp"
-                    android:paddingEnd="6dp" />
-
-                <TextView
-                    style="@style/card_title"
-                    android:layout_marginTop="20dp"
-                    android:text="底部热区高度" />
-
-                <SeekBar
-                    android:id="@+id/edge_bottom_height"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="20dp"
-                    android:max="40"
-                    android:paddingStart="6dp"
-                    android:paddingEnd="6dp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="注意：用于手势操作的热区会阻挡操作，在确保手势操作灵敏的情况下，尽量不要调太大！"
-                    android:textColor="#888"
-                    android:textSize="11dp" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <TextView
-                    style="@style/card_title"
-                    android:text="悬停时长" />
-
-                <SeekBar
-                    android:id="@+id/bar_hover_time"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="20dp"
-                    android:max="500" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="说明：该设置决定悬停多久才算触发手势，悬停时长调太短可能会导致手势不灵敏，或短滑操作难以触发"
-                    android:textColor="#888"
-                    android:textSize="11dp" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <TextView
-                    style="@style/card_title"
-                    android:text="震动反馈 milliseconds" />
-
-                <SeekBar
-                    android:id="@+id/vibrator_time"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="20dp"
-                    android:max="100" />
-
-                <TextView
-                    style="@style/card_title"
-                    android:text="震动反馈 amplitude" />
-
-                <SeekBar
-                    android:id="@+id/vibrator_amplitude"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:max="255" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="说明：因手机振动器差异，相同的参数在不同的手机上会有不同表现，建议自行调节至最佳"
-                    android:textColor="#888"
-                    android:textSize="11dp" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
@@ -482,36 +111,32 @@
                     android:id="@+id/landscape_ios_bar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/landscape_ios_bar"
+                    android:text="@string/portrait_ios_bar"
                     android:textStyle="bold" />
 
                 <TextView
                     style="@style/switch_desc"
                     android:text="@string/landscape_ios_bar_desc" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp">
 
                 <Switch
-                    android:id="@+id/hide_start_icon"
+                    android:id="@+id/portrait_ios_bar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/hide_start_icon"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/portrait_ios_bar"
                     android:textStyle="bold" />
 
                 <TextView
                     style="@style/switch_desc"
-                    android:text="@string/hide_start_icon_desc" />
+                    android:text="@string/portrait_ios_bar_desc" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
+
+        <include layout="@layout/ios_bar_options" />
+
+        <include layout="@layout/classic_options" />
+
+        <include layout="@layout/other_options" />
+
     </LinearLayout>
 </ScrollView>

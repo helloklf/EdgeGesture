@@ -31,7 +31,9 @@ class FloatVitualTouchBar {
         config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
         mWindowManager = (WindowManager) (context.getSystemService(Context.WINDOW_SERVICE));
         try {
-            if (isLandscapf && config.getBoolean(SpfConfig.LANDSCAPE_IOS_BAR, SpfConfig.LANDSCAPE_IOS_BAR_DEFAULT)) {
+            if (
+                    (isLandscapf && config.getBoolean(SpfConfig.LANDSCAPE_IOS_BAR, SpfConfig.LANDSCAPE_IOS_BAR_DEFAULT)) ||
+                            (!isLandscapf && config.getBoolean(SpfConfig.PORTRAIT_IOS_BAR, SpfConfig.PORTRAIT_IOS_BAR_DEFAULT))) {
                 this.bottomView = new iOSWhiteBar(context, isLandscapf).getView();
             } else {
                 if (config.getBoolean(SpfConfig.CONFIG_BOTTOM_ALLOW, SpfConfig.CONFIG_BOTTOM_ALLOW_DEFAULT)) {

@@ -5,8 +5,10 @@
     </string>
     <string name="enable_service">启用手势导航 </string>
     <string name="hide_start_icon">隐藏启动图标 </string>
-    <string name="landscape_ios_bar">iOS风格小白条</string>
+    <string name="landscape_ios_bar">iOS风格小白条（横屏）</string>
     <string name="landscape_ios_bar_desc">横屏时使用iOS风格的小白条作为手势导航区，以便减少游戏误触</string>
+    <string name="portrait_ios_bar">iOS风格小白条（竖屏）</string>
+    <string name="portrait_ios_bar_desc">竖屏时使用iOS风格的小白条作为手势导航区</string>
     <string name="hide_start_icon_desc">打开此开关后，本应用将从桌面隐藏，如果需要再恢复请到辅助服务界面，选中本应用进行操作</string>
     <string name="action_config_changed">com.omarea.gesture.ConfigChanged</string>
     <string name="action_service_disable">com.omarea.gesture.ServiceDisable</string>
@@ -20,4 +22,9 @@
     <string name="rotate_tips">旋转屏幕，可查看横屏状态下的手势热区</string>
     <string name="copy_success">复制成功</string>
     <string name="copy_fail">复制失败</string>
+    <string name="ios_bar_action">小白条 动作</string>
+    <string name="ios_bar_style">小白条 外观</string>
+    <string name="side_bottom">底部</string>
+    <string name="side_area">触发区</string>
+    <string name="edge_action">行为</string>
 </resources>

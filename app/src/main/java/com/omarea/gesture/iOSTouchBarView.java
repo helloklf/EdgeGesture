@@ -41,7 +41,9 @@ class iOSTouchBarView extends View {
         setLayerType(LAYER_TYPE_SOFTWARE, null);
     }
 
-    void setBarPosition(int width, int height) {
+    void setBarPosition(int width, int height, int color) {
+        p.setColor(color);
+
         ViewGroup.LayoutParams lp = this.getLayoutParams();
         int h = height;
         int w = width;

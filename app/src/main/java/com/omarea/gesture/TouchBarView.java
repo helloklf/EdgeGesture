@@ -58,6 +58,7 @@ class TouchBarView extends View {
     private Paint p = new Paint();
     private long lastEventTime = 0L;
     private int lastEvent = -1;
+
     public TouchBarView(Context context) {
         super(context);
         init();

@@ -34,6 +34,7 @@ public class iOSWhiteBar {
 
     /**
      * 获取当前屏幕方向下的屏幕宽度
+     *
      * @param context
      * @return
      */
@@ -67,16 +68,26 @@ public class iOSWhiteBar {
         final View view = LayoutInflater.from(accessibilityService).inflate(R.layout.fw_ios_touch_bar, null);
 
         final iOSTouchBarView bar = view.findViewById(R.id.bottom_touch_bar);
+        /*
         if (GlobalState.testMode) {
             bar.setBackground(accessibilityService.getDrawable(R.drawable.bar_background));
             // bar.setBackgroundColor(Color.argb(128, 0, 0, 0));
         }
+        */
 
-        int barWidth = (int) (getScreenWidth(accessibilityService) * 0.3);
+        float widthRatio = 0.3f;
+        if (isLandscapf) {
+            widthRatio = config.getInt(SpfConfig.IOS_BAR_WIDTH_LANDSCAPE, SpfConfig.IOS_BAR_WIDTH_DEFAULT_LANDSCAPE) / 100f;
+        } else {
+            widthRatio = config.getInt(SpfConfig.IOS_BAR_WIDTH_PORTRAIT, SpfConfig.IOS_BAR_WIDTH_DEFAULT_PORTRAIT) / 100f;
+        }
+
+        int barWidth = (int) (getScreenWidth(accessibilityService) * widthRatio);
         int barHeight = dp2px(accessibilityService, isLandscapf ? 16 : 20);
-        final float fateOutAlpha = 0.2f;
+        final float fateOutAlpha = config.getInt(SpfConfig.IOS_BAR_ALPHA_FADEOUT, SpfConfig.IOS_BAR_ALPHA_FADEOUT_DEFAULT) / 100f; // 0.2f;
+        final int barColor = isLandscapf ? (config.getInt(SpfConfig.IOS_BAR_COLOR_LANDSCAPE, SpfConfig.IOS_BAR_COLOR_LANDSCAPE_DEFAULT)) : (config.getInt(SpfConfig.IOS_BAR_COLOR_PORTRAIT, SpfConfig.IOS_BAR_COLOR_PORTRAIT_DEFAULT));
 
-        bar.setBarPosition(barWidth, barHeight);
+        bar.setBarPosition(barWidth, barHeight, barColor);
 
         final WindowManager.LayoutParams params = new WindowManager.LayoutParams();
 
@@ -88,9 +99,12 @@ public class iOSWhiteBar {
 
         params.format = PixelFormat.TRANSLUCENT;
 
+        final int originY = 0; // -dp2px(accessibilityService, 20); // 20;
+        final int originX = 0;
+
         params.width = WindowManager.LayoutParams.WRAP_CONTENT;
         params.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        // params.y = -dp2px(context, 20); // 20;
+        params.y = originY;
 
         params.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
         params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS | WindowManager.LayoutParams.FLAG_LAYOUT_IN_OVERSCAN;
@@ -146,8 +160,9 @@ public class iOSWhiteBar {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
                         try {
-                            bar.setAlpha((float)animation.getAnimatedValue());
-                        } catch (Exception ignored) {}
+                            bar.setAlpha((float) animation.getAnimatedValue());
+                        } catch (Exception ignored) {
+                        }
                     }
                 });
                 fareOutAnimation.setStartDelay(5000);
@@ -168,7 +183,8 @@ public class iOSWhiteBar {
                         params.x = (int) animation.getAnimatedValue();
                         try {
                             mWindowManager.updateViewLayout(view, params);
-                        } catch (Exception ignored) {}
+                        } catch (Exception ignored) {
+                        }
                     }
                 });
                 moveXAnimation.start();
@@ -186,7 +202,8 @@ public class iOSWhiteBar {
                         params.y = (int) animation.getAnimatedValue();
                         try {
                             mWindowManager.updateViewLayout(view, params);
-                        } catch (Exception ignored) {}
+                        } catch (Exception ignored) {
+                        }
                     }
                 });
                 moveYAnimation.start();
@@ -229,7 +246,7 @@ public class iOSWhiteBar {
                                         touchVibrator();
                                         vibratorRun = false;
                                     }
-                                    performGlobalAction(Handlers.GLOBAL_ACTION_RECENTS);
+                                    performGlobalAction(config.getInt(SpfConfig.IOS_BAR_SLIDE_UP_HOVER, SpfConfig.IOS_BAR_SLIDE_UP_HOVER_DEFAULT));
                                     isGestureCompleted = true;
                                     clearEffect();
                                 }
@@ -241,7 +258,7 @@ public class iOSWhiteBar {
                     gestureStartTime = 0;
                 }
 
-                setPosition((touchCurrentX - touchStartX) / animationScaling, (touchStartY - touchCurrentY) / animationScaling);
+                setPosition(originX + ((touchCurrentX - touchStartX) / animationScaling), originY + ((touchStartY - touchCurrentY) / animationScaling));
                 return false;
             }
 
@@ -259,17 +276,13 @@ public class iOSWhiteBar {
                 if (Math.abs(moveX) > flingValue || Math.abs(moveY) > flingValue) {
                     if (moveY > FLIP_DISTANCE) {
                         if (isLongTimeGesture) // 上滑悬停
-                            performGlobalAction(Handlers.GLOBAL_ACTION_RECENTS);
+                            performGlobalAction(config.getInt(SpfConfig.IOS_BAR_SLIDE_UP_HOVER, SpfConfig.IOS_BAR_SLIDE_UP_HOVER_DEFAULT));
                         else // 上滑
-                            performGlobalAction(Handlers.GLOBAL_ACTION_HOME);
+                            performGlobalAction(config.getInt(SpfConfig.IOS_BAR_SLIDE_UP, SpfConfig.IOS_BAR_SLIDE_UP_DEFAULT));
                     } else if (moveX < -FLIP_DISTANCE) { // 向左滑动
-                        // 任务
-                        // performGlobalAction(Handlers.GLOBAL_ACTION_RECENTS);
-                        // 返回
-                        performGlobalAction(Handlers.GLOBAL_ACTION_BACK);
+                        performGlobalAction(config.getInt(SpfConfig.IOS_BAR_SLIDE_LEFT, SpfConfig.IOS_BAR_SLIDE_LEFT_DEFAULT));
                     } else if (moveX > FLIP_DISTANCE) { // 向右滑动
-                        // 返回
-                        performGlobalAction(Handlers.GLOBAL_ACTION_BACK);
+                        performGlobalAction(config.getInt(SpfConfig.IOS_BAR_SLIDE_RIGHT, SpfConfig.IOS_BAR_SLIDE_RIGHT_DEFAULT));
                     }
                 }
 
@@ -279,9 +292,9 @@ public class iOSWhiteBar {
             }
 
             private void clearEffect() {
-                animationTo(0, 0, 300, new OvershootInterpolator());
+                animationTo(originX, originY, 300, new OvershootInterpolator());
                 // if (isLandscapf) {
-                    fadeOut();
+                fadeOut();
                 // }
             }
 
@@ -320,7 +333,7 @@ public class iOSWhiteBar {
         return view;
     }
 
-    void touchVibrator() {
+    private void touchVibrator() {
         if (vibrator == null) {
             vibrator = (Vibrator) (accessibilityService.getSystemService(Context.VIBRATOR_SERVICE));
         }
