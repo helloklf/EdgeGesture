@@ -4,7 +4,6 @@ import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -56,13 +55,6 @@ class TouchBarView extends View {
 
     private Paint p = new Paint();
 
-    private void init() {
-        p.setAntiAlias(true);
-        p.setStyle(Paint.Style.FILL);
-        p.setColor(0x101010);
-        p.setAlpha(240);
-    }
-
     public TouchBarView(Context context) {
         super(context);
         init();
@@ -76,6 +68,13 @@ class TouchBarView extends View {
     public TouchBarView(Context context, AttributeSet attributeSet, int defStyleAttr) {
         super(context, attributeSet, defStyleAttr);
         init();
+    }
+
+    private void init() {
+        p.setAntiAlias(true);
+        p.setStyle(Paint.Style.FILL);
+        p.setColor(0x101010);
+        p.setAlpha(240);
     }
 
     void touchVibrator() {
@@ -102,7 +101,7 @@ class TouchBarView extends View {
         this.longTouch = longTouch;
     }
 
-    void setResource(Bitmap touch_arrow_left, Bitmap touch_arrow_right, Bitmap touch_tasks,Bitmap touch_home) {
+    void setResource(Bitmap touch_arrow_left, Bitmap touch_arrow_right, Bitmap touch_tasks, Bitmap touch_home) {
         this.touch_arrow_left = touch_arrow_left;
         this.touch_arrow_right = touch_arrow_right;
         this.touch_tasks = touch_tasks;
@@ -192,7 +191,7 @@ class TouchBarView extends View {
         return true;
     }
 
-    private boolean onTouchDown (MotionEvent event) {
+    private boolean onTouchDown(MotionEvent event) {
         // Log.d("MotionEvent", "com.omarea.gesture ACTION_DOWN");
 
         isTouchDown = true;

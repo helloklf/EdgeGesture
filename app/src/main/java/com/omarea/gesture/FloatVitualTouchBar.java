@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
 import android.os.Build;
-import android.os.Vibrator;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -16,8 +15,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Toast;
-
-import static android.content.Context.VIBRATOR_SERVICE;
 
 /**
  * 弹窗辅助类
@@ -160,7 +157,7 @@ class FloatVitualTouchBar {
         */
 
         params.format = PixelFormat.TRANSLUCENT;
-        params.width =  LayoutParams.MATCH_PARENT; // minSize; //
+        params.width = LayoutParams.MATCH_PARENT; // minSize; //
         params.height = LayoutParams.WRAP_CONTENT;
         params.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
         params.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS;

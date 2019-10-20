@@ -10,10 +10,11 @@
 
     <Switch
         android:id="@+id/hide_start_icon"
-        android:textStyle="bold"
-        android:text="@string/hide_start_icon"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="@string/hide_start_icon"
+        android:textStyle="bold" />
+
     <TextView
         style="@style/switch_desc"
         android:text="@string/hide_start_icon_desc" />

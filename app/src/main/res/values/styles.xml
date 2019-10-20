@@ -1,4 +1,5 @@
 <resources>
+
     <style name="switch_item">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -6,6 +7,7 @@
         <item name="android:textSize">14dp</item>
         <item name="android:layout_marginTop">10dp</item>
     </style>
+
     <style name="switch_desc">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
