@@ -18,7 +18,7 @@ import android.view.accessibility.AccessibilityEvent;
 
 public class AccessibilityServiceKeyEvent extends AccessibilityService {
     boolean isLandscapf = false;
-    private FloatVitualTouchBar floatVitualTouchBar = null;
+    private FloatVirtualTouchBar floatVitualTouchBar = null;
     private BroadcastReceiver configChanged = null;
     private BroadcastReceiver serviceDisable = null;
     private Handler handler = new Handler();
@@ -156,7 +156,7 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
 
     private void createPopupView() {
         hidePopupWindow();
-        floatVitualTouchBar = new FloatVitualTouchBar(this, isLandscapf);
+        floatVitualTouchBar = new FloatVirtualTouchBar(this, isLandscapf);
     }
 
     @Override

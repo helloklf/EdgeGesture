@@ -1,10 +1,18 @@
 <resources>
 
-    <style name="appTheme">
+    <style name="appTheme" parent="android:Theme.Material.NoActionBar">
         <item name="android:colorPrimary">@color/colorPrimary</item>
         <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="android:colorAccent">@color/colorAccent</item>
-        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:statusBarColor">@color/windowBackground</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
+    </style>
+
+    <style name="card_view">
+        <item name="cardCornerRadius">@dimen/card_corner_radius</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">10dp</item>
     </style>
 
     <style name="switch_item">
@@ -33,8 +41,8 @@
     </style>
 
     <style name="btn_color_picker">
-        <item name="android:layout_width">40dp</item>
-        <item name="android:layout_height">28dp</item>
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_height">30dp</item>
         <item name="android:layout_gravity">center_vertical</item>
     </style>
 

@@ -11,12 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="top"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp">
+        <android.support.v7.widget.CardView style="@style/card_view">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -52,9 +51,7 @@
 
         <android.support.v7.widget.CardView
             android:id="@+id/samsung_guide"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            style="@style/card_view"
             android:visibility="gone">
 
             <LinearLayout
@@ -93,42 +90,6 @@
                         android:scaleType="centerInside"
                         android:src="@drawable/copy" />
                 </LinearLayout>
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <Switch
-                    android:id="@+id/landscape_ios_bar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/landscape_ios_bar"
-                    android:textStyle="bold" />
-
-                <TextView
-                    style="@style/switch_desc"
-                    android:text="@string/landscape_ios_bar_desc" />
-
-                <Switch
-                    android:id="@+id/portrait_ios_bar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/portrait_ios_bar"
-                    android:textStyle="bold" />
-
-                <TextView
-                    style="@style/switch_desc"
-                    android:text="@string/portrait_ios_bar_desc" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
 

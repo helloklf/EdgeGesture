@@ -14,15 +14,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
+import android.widget.Checkable;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,7 +71,7 @@ public class SettingsActivity extends Activity {
 
         final PackageManager p = getPackageManager();
         final ComponentName startActivity = new ComponentName(this.getApplicationContext(), StartActivity.class);
-        final Switch hide_start_icon = findViewById(R.id.hide_start_icon);
+        final CompoundButton hide_start_icon = findViewById(R.id.hide_start_icon);
         hide_start_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,7 +87,7 @@ public class SettingsActivity extends Activity {
             }
         });
 
-        final Switch enable_service = findViewById(R.id.enable_service);
+        final CompoundButton enable_service = findViewById(R.id.enable_service);
         enable_service.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,22 +119,22 @@ public class SettingsActivity extends Activity {
         int activityState = p.getComponentEnabledSetting(startActivity);
         hide_start_icon.setChecked(activityState != PackageManager.COMPONENT_ENABLED_STATE_ENABLED && activityState != PackageManager.COMPONENT_ENABLED_STATE_DEFAULT);
 
-        bindSwitch(R.id.allow_bottom_landscape, SpfConfig.CONFIG_BOTTOM_ALLOW_LANDSCAPE, SpfConfig.CONFIG_BOTTOM_ALLOW_LANDSCAPE_DEFAULT);
-        bindSwitch(R.id.allow_bottom_portrait, SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT, SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT_DEFAULT);
+        bindCheckable(R.id.allow_bottom_landscape, SpfConfig.CONFIG_BOTTOM_ALLOW_LANDSCAPE, SpfConfig.CONFIG_BOTTOM_ALLOW_LANDSCAPE_DEFAULT);
+        bindCheckable(R.id.allow_bottom_portrait, SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT, SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT_DEFAULT);
         bindSeekBar(R.id.bar_width_bottom, SpfConfig.CONFIG_BOTTOM_WIDTH, SpfConfig.CONFIG_BOTTOM_WIDTH_DEFAULT, true);
         bindColorPicker(R.id.bar_color_bottom, SpfConfig.CONFIG_BOTTOM_COLOR, SpfConfig.CONFIG_BOTTOM_COLOR_DEFAULT);
         bindHandlerPicker(R.id.tap_bottom, SpfConfig.CONFIG_BOTTOM_EVENT, SpfConfig.CONFIG_BOTTOM_EVENT_DEFAULT);
         bindHandlerPicker(R.id.hover_bottom, SpfConfig.CONFIG_BOTTOM_EVENT_HOVER, SpfConfig.CONFIG_BOTTOM_EVENT_HOVER_DEFAULT);
 
-        bindSwitch(R.id.allow_right_landscape, SpfConfig.CONFIG_RIGHT_ALLOW_LANDSCAPE, SpfConfig.CONFIG_RIGHT_ALLOW_LANDSCAPE_DEFAULT);
-        bindSwitch(R.id.allow_right_portrait, SpfConfig.CONFIG_RIGHT_ALLOW_PORTRAIT, SpfConfig.CONFIG_RIGHT_ALLOW_PORTRAIT_DEFAULT);
+        bindCheckable(R.id.allow_right_landscape, SpfConfig.CONFIG_RIGHT_ALLOW_LANDSCAPE, SpfConfig.CONFIG_RIGHT_ALLOW_LANDSCAPE_DEFAULT);
+        bindCheckable(R.id.allow_right_portrait, SpfConfig.CONFIG_RIGHT_ALLOW_PORTRAIT, SpfConfig.CONFIG_RIGHT_ALLOW_PORTRAIT_DEFAULT);
         bindSeekBar(R.id.bar_height_right, SpfConfig.CONFIG_RIGHT_HEIGHT, SpfConfig.CONFIG_RIGHT_HEIGHT_DEFAULT, true);
         bindColorPicker(R.id.bar_color_right, SpfConfig.CONFIG_RIGHT_COLOR, SpfConfig.CONFIG_RIGHT_COLOR_DEFAULT);
         bindHandlerPicker(R.id.tap_right, SpfConfig.CONFIG_RIGHT_EVENT, SpfConfig.CONFIG_RIGHT_EVENT_DEFAULT);
         bindHandlerPicker(R.id.hover_right, SpfConfig.CONFIG_RIGHT_EVENT_HOVER, SpfConfig.CONFIG_RIGHT_EVENT_HOVER_DEFAULT);
 
-        bindSwitch(R.id.allow_left_landscape, SpfConfig.CONFIG_LEFT_ALLOW_LANDSCAPE, SpfConfig.CONFIG_LEFT_ALLOW_LANDSCAPE_DEFAULT);
-        bindSwitch(R.id.allow_left_portrait, SpfConfig.CONFIG_LEFT_ALLOW_PORTRAIT, SpfConfig.CONFIG_LEFT_ALLOW_PORTRAIT_DEFAULT);
+        bindCheckable(R.id.allow_left_landscape, SpfConfig.CONFIG_LEFT_ALLOW_LANDSCAPE, SpfConfig.CONFIG_LEFT_ALLOW_LANDSCAPE_DEFAULT);
+        bindCheckable(R.id.allow_left_portrait, SpfConfig.CONFIG_LEFT_ALLOW_PORTRAIT, SpfConfig.CONFIG_LEFT_ALLOW_PORTRAIT_DEFAULT);
         bindSeekBar(R.id.bar_height_left, SpfConfig.CONFIG_LEFT_HEIGHT, SpfConfig.CONFIG_LEFT_HEIGHT_DEFAULT, true);
         bindColorPicker(R.id.bar_color_left, SpfConfig.CONFIG_LEFT_COLOR, SpfConfig.CONFIG_LEFT_COLOR_DEFAULT);
         bindHandlerPicker(R.id.tap_left, SpfConfig.CONFIG_LEFT_EVENT, SpfConfig.CONFIG_LEFT_EVENT_DEFAULT);
@@ -146,8 +147,8 @@ public class SettingsActivity extends Activity {
         bindSeekBar(R.id.vibrator_time, SpfConfig.VIBRATOR_TIME, SpfConfig.VIBRATOR_TIME_DEFAULT, true);
         bindSeekBar(R.id.vibrator_amplitude, SpfConfig.VIBRATOR_AMPLITUDE, SpfConfig.VIBRATOR_AMPLITUDE_DEFAULT, true);
 
-        final Switch landscape_ios_bar = findViewById(R.id.landscape_ios_bar);
-        final Switch portrait_ios_bar = findViewById(R.id.portrait_ios_bar);
+        final CompoundButton landscape_ios_bar = findViewById(R.id.landscape_ios_bar);
+        final CompoundButton portrait_ios_bar = findViewById(R.id.portrait_ios_bar);
         CompoundButton.OnCheckedChangeListener onIOSBarCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -161,8 +162,8 @@ public class SettingsActivity extends Activity {
         landscape_ios_bar.setOnCheckedChangeListener(onIOSBarCheckedChangeListener);
         portrait_ios_bar.setOnCheckedChangeListener(onIOSBarCheckedChangeListener);
 
-        bindSwitch(R.id.landscape_ios_bar, SpfConfig.LANDSCAPE_IOS_BAR, SpfConfig.LANDSCAPE_IOS_BAR_DEFAULT);
-        bindSwitch(R.id.portrait_ios_bar, SpfConfig.PORTRAIT_IOS_BAR, SpfConfig.PORTRAIT_IOS_BAR_DEFAULT);
+        bindCheckable(R.id.landscape_ios_bar, SpfConfig.LANDSCAPE_IOS_BAR, SpfConfig.LANDSCAPE_IOS_BAR_DEFAULT);
+        bindCheckable(R.id.portrait_ios_bar, SpfConfig.PORTRAIT_IOS_BAR, SpfConfig.PORTRAIT_IOS_BAR_DEFAULT);
 
         bindHandlerPicker(R.id.ios_bar_slide_left, SpfConfig.IOS_BAR_SLIDE_LEFT, SpfConfig.IOS_BAR_SLIDE_LEFT_DEFAULT);
         bindHandlerPicker(R.id.ios_bar_slide_right, SpfConfig.IOS_BAR_SLIDE_RIGHT, SpfConfig.IOS_BAR_SLIDE_RIGHT_DEFAULT);
@@ -174,6 +175,8 @@ public class SettingsActivity extends Activity {
         bindSeekBar(R.id.ios_bar_alpha_fadeout, SpfConfig.IOS_BAR_ALPHA_FADEOUT, SpfConfig.IOS_BAR_ALPHA_FADEOUT_DEFAULT, true);
         bindColorPicker(R.id.ios_bar_color_landscape, SpfConfig.IOS_BAR_COLOR_LANDSCAPE, SpfConfig.IOS_BAR_COLOR_LANDSCAPE_DEFAULT);
         bindColorPicker(R.id.ios_bar_color_portrait, SpfConfig.IOS_BAR_COLOR_PORTRAIT, SpfConfig.IOS_BAR_COLOR_PORTRAIT_DEFAULT);
+
+        setViewBackground(findViewById(R.id.ios_bar_color_fadeout), 0xff888888);
 
         if (Build.MANUFACTURER.equals("samsung") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && !canWriteGlobalSettings()) {
             findViewById(R.id.samsung_guide).setVisibility(View.VISIBLE);
@@ -205,11 +208,14 @@ public class SettingsActivity extends Activity {
     }
 
     private void updateView() {
-        findViewById(R.id.bar_color_bottom).setBackgroundColor(config.getInt(SpfConfig.CONFIG_BOTTOM_COLOR, SpfConfig.CONFIG_BOTTOM_COLOR_DEFAULT));
-        findViewById(R.id.bar_color_left).setBackgroundColor(config.getInt(SpfConfig.CONFIG_LEFT_COLOR, SpfConfig.CONFIG_LEFT_COLOR_DEFAULT));
-        findViewById(R.id.bar_color_right).setBackgroundColor(config.getInt(SpfConfig.CONFIG_RIGHT_COLOR, SpfConfig.CONFIG_RIGHT_COLOR_DEFAULT));
-        findViewById(R.id.ios_bar_color_landscape).setBackgroundColor(config.getInt(SpfConfig.IOS_BAR_COLOR_LANDSCAPE, SpfConfig.IOS_BAR_COLOR_LANDSCAPE_DEFAULT));
-        findViewById(R.id.ios_bar_color_portrait).setBackgroundColor(config.getInt(SpfConfig.IOS_BAR_COLOR_PORTRAIT, SpfConfig.IOS_BAR_COLOR_PORTRAIT_DEFAULT));
+        setViewBackground(findViewById(R.id.bar_color_bottom), config.getInt(SpfConfig.CONFIG_BOTTOM_COLOR, SpfConfig.CONFIG_BOTTOM_COLOR_DEFAULT));
+        setViewBackground(findViewById(R.id.bar_color_left), config.getInt(SpfConfig.CONFIG_LEFT_COLOR, SpfConfig.CONFIG_LEFT_COLOR_DEFAULT));
+        setViewBackground(findViewById(R.id.bar_color_right), config.getInt(SpfConfig.CONFIG_RIGHT_COLOR, SpfConfig.CONFIG_RIGHT_COLOR_DEFAULT));
+        setViewBackground(findViewById(R.id.ios_bar_color_landscape), config.getInt(SpfConfig.IOS_BAR_COLOR_LANDSCAPE, SpfConfig.IOS_BAR_COLOR_LANDSCAPE_DEFAULT));
+        setViewBackground(findViewById(R.id.ios_bar_color_portrait), config.getInt(SpfConfig.IOS_BAR_COLOR_PORTRAIT, SpfConfig.IOS_BAR_COLOR_PORTRAIT_DEFAULT));
+
+        findViewById(R.id.ios_bar_color_fadeout).setAlpha(config.getInt(SpfConfig.IOS_BAR_ALPHA_FADEOUT, SpfConfig.IOS_BAR_ALPHA_FADEOUT_DEFAULT) / 100f);
+
 
         updateActionText(R.id.tap_bottom, SpfConfig.CONFIG_BOTTOM_EVENT, SpfConfig.CONFIG_BOTTOM_EVENT_DEFAULT);
         updateActionText(R.id.hover_bottom, SpfConfig.CONFIG_BOTTOM_EVENT_HOVER, SpfConfig.CONFIG_BOTTOM_EVENT_HOVER_DEFAULT);
@@ -224,7 +230,7 @@ public class SettingsActivity extends Activity {
         updateActionText(R.id.ios_bar_slide_up, SpfConfig.IOS_BAR_SLIDE_UP, SpfConfig.IOS_BAR_SLIDE_UP_DEFAULT);
         updateActionText(R.id.ios_bar_slide_up_hover, SpfConfig.IOS_BAR_SLIDE_UP_HOVER, SpfConfig.IOS_BAR_SLIDE_UP_HOVER_DEFAULT);
 
-        ((Switch) findViewById(R.id.enable_service)).setChecked(serviceRunning());
+        ((Checkable) findViewById(R.id.enable_service)).setChecked(serviceRunning());
 
         try {
             Intent intent = new Intent(getString(R.string.action_config_changed));
@@ -237,13 +243,13 @@ public class SettingsActivity extends Activity {
         ((Button) findViewById(id)).setText(Handlers.getOption(config.getInt(key, defaultAction)));
     }
 
-    private void bindSwitch(int id, final String key, boolean defValue) {
-        final Switch switchItem = findViewById(id);
+    private void bindCheckable(int id, final String key, boolean defValue) {
+        final CompoundButton switchItem = findViewById(id);
         switchItem.setChecked(config.getBoolean(key, defValue));
         switchItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                config.edit().putBoolean(key, ((Switch) v).isChecked()).apply();
+                config.edit().putBoolean(key, ((Checkable) v).isChecked()).apply();
                 updateView();
             }
         });
@@ -271,9 +277,22 @@ public class SettingsActivity extends Activity {
         });
     }
 
+    private void setViewBackground(View view, int color) {
+        GradientDrawable drawable = new GradientDrawable();
+        drawable.setShape(GradientDrawable.RECTANGLE);
+        drawable.setGradientType(GradientDrawable.RECTANGLE);
+        drawable.setCornerRadius(UITools.dp2px(this, 15));
+        drawable.setColor(color);
+        drawable.setStroke(2, 0xff888888);
+        view.setBackground(drawable);
+    }
+
     private void bindColorPicker(int id, final String key, final int defValue) {
         final Button button = findViewById(id);
-        button.setBackgroundColor(config.getInt(key, defValue));
+
+        setViewBackground(button, config.getInt(key, defValue));
+
+        // button.setBackgroundColor(config.getInt(key, defValue));
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -293,19 +312,13 @@ public class SettingsActivity extends Activity {
         });
     }
 
-    /**
-     * 选择响应动作
-     *
-     * @param key
-     * @param defValue
-     */
     private void openHandlerPicker(final String key, final int defValue) {
         String[] items = Handlers.getOptions();
         final ArrayList<Integer> values = Handlers.getValues();
 
         int currentValue = config.getInt(key, defValue);
         int index = values.indexOf(currentValue);
-        ;
+
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.handler_picker))
                 .setSingleChoiceItems(items, index, new DialogInterface.OnClickListener() {

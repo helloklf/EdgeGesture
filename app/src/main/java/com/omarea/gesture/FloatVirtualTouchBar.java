@@ -15,9 +15,10 @@ import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Toast;
 
-class FloatVitualTouchBar {
+class FloatVirtualTouchBar {
     private static WindowManager mWindowManager = null;
-    private boolean isLandscapf;
+    private boolean islandscape;
+    private View iosBarView = null;
     private View bottomView = null;
     private View leftView = null;
     private View rightView = null;
@@ -25,16 +26,17 @@ class FloatVitualTouchBar {
     private int lastEvent = -1;
     private SharedPreferences config;
 
-    public FloatVitualTouchBar(AccessibilityService context, boolean isLandscapf) {
-        this.isLandscapf = isLandscapf;
+    public FloatVirtualTouchBar(AccessibilityService context, boolean islandscape) {
+        this.islandscape = islandscape;
 
         config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
         mWindowManager = (WindowManager) (context.getSystemService(Context.WINDOW_SERVICE));
         try {
-            if (isLandscapf) {
+            if (islandscape) {
                 if (config.getBoolean(SpfConfig.LANDSCAPE_IOS_BAR, SpfConfig.LANDSCAPE_IOS_BAR_DEFAULT)) {
-                    this.bottomView = new iOSWhiteBar(context, isLandscapf).getView();
-                } else if (config.getBoolean(SpfConfig.CONFIG_BOTTOM_ALLOW_LANDSCAPE, SpfConfig.CONFIG_BOTTOM_ALLOW_LANDSCAPE_DEFAULT)) {
+                    this.iosBarView = new iOSWhiteBar(context, islandscape).getView();
+                }
+                if (config.getBoolean(SpfConfig.CONFIG_BOTTOM_ALLOW_LANDSCAPE, SpfConfig.CONFIG_BOTTOM_ALLOW_LANDSCAPE_DEFAULT)) {
                     this.bottomView = setBottomView(context);
                 }
                 if (config.getBoolean(SpfConfig.CONFIG_LEFT_ALLOW_LANDSCAPE, SpfConfig.CONFIG_LEFT_ALLOW_LANDSCAPE_DEFAULT)) {
@@ -45,8 +47,9 @@ class FloatVitualTouchBar {
                 }
             } else {
                 if (config.getBoolean(SpfConfig.PORTRAIT_IOS_BAR, SpfConfig.PORTRAIT_IOS_BAR_DEFAULT)) {
-                    this.bottomView = new iOSWhiteBar(context, isLandscapf).getView();
-                } else if (config.getBoolean(SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT, SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT_DEFAULT)) {
+                    this.iosBarView = new iOSWhiteBar(context, islandscape).getView();
+                }
+                if (config.getBoolean(SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT, SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT_DEFAULT)) {
                     this.bottomView = setBottomView(context);
                 }
                 if (config.getBoolean(SpfConfig.CONFIG_LEFT_ALLOW_PORTRAIT, SpfConfig.CONFIG_LEFT_ALLOW_PORTRAIT_DEFAULT)) {
@@ -77,6 +80,9 @@ class FloatVitualTouchBar {
      * 隐藏弹出框
      */
     void hidePopupWindow() {
+        if (this.iosBarView != null) {
+            mWindowManager.removeView(this.iosBarView);
+        }
         if (this.bottomView != null) {
             mWindowManager.removeView(this.bottomView);
         }
@@ -118,19 +124,19 @@ class FloatVitualTouchBar {
         double widthRatio = config.getInt(SpfConfig.CONFIG_BOTTOM_WIDTH, SpfConfig.CONFIG_BOTTOM_WIDTH_DEFAULT) / 100.0;
 
         // 横屏缩小宽度，避免游戏误触
-        if (isLandscapf && widthRatio > 0.4) {
+        if (islandscape && widthRatio > 0.4) {
             widthRatio = 0.4;
         }
 
-        int barWidht = (int) (getScreenWidth(context) * widthRatio);
-        int barHeight = -1;
-        if (isLandscapf) {
+        int barWidth = (int) (getScreenWidth(context) * widthRatio);
+        int barHeight;
+        if (islandscape) {
             barHeight = dp2px(context, config.getInt(SpfConfig.CONFIG_HOT_SIDE_WIDTH, SpfConfig.CONFIG_HOT_SIDE_WIDTH_DEFAULT)); // LayoutParams.WRAP_CONTENT;
         } else {
             barHeight = dp2px(context, config.getInt(SpfConfig.CONFIG_HOT_BOTTOM_HEIGHT, SpfConfig.CONFIG_HOT_BOTTOM_HEIGHT_DEFAULT)); // LayoutParams.WRAP_CONTENT;
         }
 
-        bar.setBarPosition(TouchBarView.BOTTOM, isLandscapf, barWidht, barHeight);
+        bar.setBarPosition(TouchBarView.BOTTOM, islandscape, barWidth, barHeight);
 
         final LayoutParams params = new LayoutParams();
 
@@ -153,34 +159,23 @@ class FloatVitualTouchBar {
         return view;
     }
 
-    /**
-     * 获取当前屏幕方向下的屏幕高度
-     *
-     * @param context
-     * @return
-     */
+
     private int getScreenHeight(Context context) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         int h = displayMetrics.heightPixels;
         int w = displayMetrics.widthPixels;
-        if (isLandscapf) {
+        if (islandscape) {
             return h > w ? w : h;
         } else {
             return h > w ? h : w;
         }
     }
 
-    /**
-     * 获取当前屏幕方向下的屏幕宽度
-     *
-     * @param context
-     * @return
-     */
     private int getScreenWidth(Context context) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         int h = displayMetrics.heightPixels;
         int w = displayMetrics.widthPixels;
-        if (isLandscapf) {
+        if (islandscape) {
             return h < w ? w : h;
         } else {
             return h < w ? h : w;
@@ -201,13 +196,13 @@ class FloatVitualTouchBar {
         double heightRatio = config.getInt(SpfConfig.CONFIG_LEFT_HEIGHT, SpfConfig.CONFIG_LEFT_HEIGHT_DEFAULT) / 100.0;
         int barHeight = (int) (getScreenHeight(context) * heightRatio); //
         int barWidth = -1;
-        if (isLandscapf) {
+        if (islandscape) {
             barWidth = dp2px(context, config.getInt(SpfConfig.CONFIG_HOT_BOTTOM_HEIGHT, SpfConfig.CONFIG_HOT_BOTTOM_HEIGHT_DEFAULT)); // LayoutParams.WRAP_CONTENT;
         } else {
             barWidth = dp2px(context, config.getInt(SpfConfig.CONFIG_HOT_SIDE_WIDTH, SpfConfig.CONFIG_HOT_SIDE_WIDTH_DEFAULT)); // LayoutParams.WRAP_CONTENT;
         }
 
-        bar.setBarPosition(TouchBarView.LEFT, isLandscapf, barWidth, barHeight);
+        bar.setBarPosition(TouchBarView.LEFT, islandscape, barWidth, barHeight);
 
         final LayoutParams params = new LayoutParams();
 
@@ -246,12 +241,12 @@ class FloatVitualTouchBar {
         double heightRatio = config.getInt(SpfConfig.CONFIG_RIGHT_HEIGHT, SpfConfig.CONFIG_RIGHT_HEIGHT_DEFAULT) / 100.0;
         int barHeight = (int) (getScreenHeight(context) * heightRatio); //
         int barWidth = -1;
-        if (isLandscapf) {
+        if (islandscape) {
             barWidth = dp2px(context, config.getInt(SpfConfig.CONFIG_HOT_BOTTOM_HEIGHT, SpfConfig.CONFIG_HOT_BOTTOM_HEIGHT_DEFAULT)); // LayoutParams.WRAP_CONTENT;
         } else {
             barWidth = dp2px(context, config.getInt(SpfConfig.CONFIG_HOT_SIDE_WIDTH, SpfConfig.CONFIG_HOT_SIDE_WIDTH_DEFAULT)); // LayoutParams.WRAP_CONTENT;
         }
-        bar.setBarPosition(TouchBarView.RIGHT, isLandscapf, barWidth, barHeight);
+        bar.setBarPosition(TouchBarView.RIGHT, islandscape, barWidth, barHeight);
 
         final LayoutParams params = new LayoutParams();
 

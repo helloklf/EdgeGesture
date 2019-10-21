@@ -5,10 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+    <android.support.v7.widget.CardView style="@style/card_view">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,7 +16,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
@@ -48,22 +44,10 @@
                 android:text="说明：该设置决定悬停多久才算触发手势，悬停时长调太短可能会导致手势不灵敏，或短滑操作难以触发"
                 android:textColor="#888"
                 android:textSize="11dp" />
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp">
 
             <TextView
                 style="@style/card_title"
+                android:layout_marginTop="20dp"
                 android:text="震动反馈" />
 
             <LinearLayout
@@ -117,11 +101,7 @@
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp">
-
+    <android.support.v7.widget.CardView style="@style/card_view">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

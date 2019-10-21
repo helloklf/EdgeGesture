@@ -5,10 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+    <android.support.v7.widget.CardView style="@style/card_view">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,19 +23,20 @@
                     style="@style/card_title"
                     android:text="@string/side_bottom" />
 
-                <Switch
+                <CheckBox
                     android:id="@+id/allow_bottom_landscape"
-                    android:text="@string/landscape"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical" />
-                <Switch
-                    android:layout_marginStart="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/landscape" />
+
+                <CheckBox
                     android:id="@+id/allow_bottom_portrait"
-                    android:text="@string/portrait"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical" />
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="10dp"
+                    android:text="@string/portrait" />
             </LinearLayout>
 
             <LinearLayout
@@ -50,7 +48,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/side_area" />
+                    android:text="@string/bottom_hot_area_width" />
 
                 <SeekBar
                     android:id="@+id/bar_width_bottom"
@@ -70,6 +68,28 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/bottom_hot_area_height" />
+
+                <SeekBar
+                    android:id="@+id/edge_bottom_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="30dp"
+                    android:max="40" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -97,10 +117,7 @@
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+    <android.support.v7.widget.CardView style="@style/card_view">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -118,19 +135,20 @@
                     style="@style/card_title"
                     android:text="@string/side_left" />
 
-                <Switch
+                <CheckBox
                     android:id="@+id/allow_left_landscape"
-                    android:text="@string/landscape"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical" />
-                <Switch
-                    android:layout_marginStart="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/landscape" />
+
+                <CheckBox
                     android:id="@+id/allow_left_portrait"
-                    android:text="@string/portrait"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical" />
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="10dp"
+                    android:text="@string/portrait" />
             </LinearLayout>
 
             <LinearLayout
@@ -142,7 +160,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/side_area" />
+                    android:text="热区高度" />
 
                 <SeekBar
                     android:id="@+id/bar_height_left"
@@ -188,10 +206,7 @@
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+    <android.support.v7.widget.CardView style="@style/card_view">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -208,19 +223,21 @@
                 <TextView
                     style="@style/card_title"
                     android:text="@string/side_right" />
-                <Switch
+
+                <CheckBox
                     android:id="@+id/allow_right_landscape"
-                    android:text="@string/landscape"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical" />
-                <Switch
-                    android:layout_marginStart="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/landscape" />
+
+                <CheckBox
                     android:id="@+id/allow_right_portrait"
-                    android:text="@string/portrait"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical" />
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="10dp"
+                    android:text="@string/portrait" />
             </LinearLayout>
 
             <LinearLayout
@@ -232,7 +249,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/side_area" />
+                    android:text="热区高度" />
 
                 <SeekBar
                     android:id="@+id/bar_height_right"
@@ -278,10 +295,7 @@
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+    <android.support.v7.widget.CardView style="@style/card_view">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -299,22 +313,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="10dp"
-                android:max="40"
-                android:paddingStart="6dp"
-                android:paddingEnd="6dp" />
-
-            <TextView
-                style="@style/card_title"
-                android:layout_marginTop="20dp"
-                android:text="@string/bottom_hot_area_height" />
-
-            <SeekBar
-                android:id="@+id/edge_bottom_height"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"
                 android:max="40"
                 android:paddingStart="6dp"
                 android:paddingEnd="6dp" />
