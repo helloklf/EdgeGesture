@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Gesture(手势导航)</string>
     <string name="accessibility_keyevent_description">
-        开启此辅助服务即可体验屏幕边缘手势\n\n——此功能源于Scene，访问http://vtools.omarea.com/ 获取Scene体验完整功能。
+        开启此辅助服务即可体验屏幕边缘手，如需个性化手势功能，请点击界面上的设置按钮。
     </string>
     <string name="enable_service">启用手势导航 </string>
     <string name="hide_start_icon">隐藏启动图标 </string>
