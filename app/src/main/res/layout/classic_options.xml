@@ -68,7 +68,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="快速滑动：" />
+                    android:text="@string/quick_slide" />
 
                 <Button
                     android:id="@+id/tap_bottom"
@@ -79,7 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="滑动悬停：" />
+                    android:text="@string/slide_hover" />
 
                 <Button
                     android:id="@+id/hover_bottom"
@@ -108,7 +108,7 @@
 
                 <TextView
                     style="@style/card_title"
-                    android:text="左侧" />
+                    android:text="@string/side_left" />
 
                 <Switch
                     android:id="@+id/allow_left"
@@ -151,7 +151,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="快速滑动：" />
+                    android:text="@string/quick_slide" />
 
                 <Button
                     android:id="@+id/tap_left"
@@ -162,7 +162,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="滑动悬停：" />
+                    android:text="@string/slide_hover" />
 
                 <Button
                     android:id="@+id/hover_left"
@@ -191,7 +191,7 @@
 
                 <TextView
                     style="@style/card_title"
-                    android:text="右侧" />
+                    android:text="@string/side_right" />
 
                 <Switch
                     android:id="@+id/allow_right"
@@ -234,7 +234,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="快速滑动：" />
+                    android:text="@string/quick_slide" />
 
                 <Button
                     android:id="@+id/tap_right"
@@ -245,7 +245,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="滑动悬停：" />
+                    android:text="@string/slide_hover" />
 
                 <Button
                     android:id="@+id/hover_right"
@@ -268,7 +268,7 @@
 
             <TextView
                 style="@style/card_title"
-                android:text="侧边热区宽度" />
+                android:text="@string/side_hot_area_width" />
 
             <SeekBar
                 android:id="@+id/edge_side_width"
@@ -283,7 +283,7 @@
             <TextView
                 style="@style/card_title"
                 android:layout_marginTop="20dp"
-                android:text="底部热区高度" />
+                android:text="@string/bottom_hot_area_height" />
 
             <SeekBar
                 android:id="@+id/edge_bottom_height"
@@ -299,7 +299,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="注意：用于手势操作的热区会阻挡操作，在确保手势操作灵敏的情况下，尽量不要调太大！"
+                android:text="@string/hot_area_desc"
                 android:textColor="#888"
                 android:textSize="11dp" />
         </LinearLayout>

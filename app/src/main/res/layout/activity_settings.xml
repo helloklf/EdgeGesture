@@ -111,7 +111,7 @@
                     android:id="@+id/landscape_ios_bar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/portrait_ios_bar"
+                    android:text="@string/landscape_ios_bar"
                     android:textStyle="bold" />
 
                 <TextView
