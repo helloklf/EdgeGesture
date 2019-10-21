@@ -353,7 +353,7 @@ public class iOSWhiteBar {
 
     private void performGlobalAction(int event) {
         if (accessibilityService != null) {
-            Handlers.executeVitualAction(accessibilityService, event);
+            Handlers.executeVirtualAction(accessibilityService, event);
         }
     }
 }

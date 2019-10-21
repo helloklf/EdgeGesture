@@ -89,7 +89,7 @@ class TouchBarView extends View {
                 lastEventTime = System.currentTimeMillis();
                 Toast.makeText(context, this.getContext().getString(R.string.please_repeat), Toast.LENGTH_SHORT).show();
             } else {
-                Handlers.executeVitualAction(accessibilityService, event);
+                Handlers.executeVirtualAction(accessibilityService, event);
             }
         }
     }

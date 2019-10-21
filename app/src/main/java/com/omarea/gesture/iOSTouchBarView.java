@@ -36,7 +36,7 @@ class iOSTouchBarView extends View {
         p.setColor(0xf0f0f0f0);
         p.setStrokeWidth(dp2px(context, 8));
         p.setStrokeCap(Paint.Cap.ROUND);
-        p.setShadowLayer(dp2px(context, 4), 0, 0, 0x88555555);
+        p.setShadowLayer(dp2px(context, 4), 0, 0, 0x88000000);
 
         setLayerType(LAYER_TYPE_SOFTWARE, null);
     }

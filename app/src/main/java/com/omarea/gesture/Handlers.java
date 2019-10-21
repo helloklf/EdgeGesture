@@ -26,7 +26,7 @@ public class Handlers {
         } else return aciont == VITUAL_ACTION_OPEN_APP;
     }
 
-    static void executeVitualAction(final AccessibilityService accessibilityService, final int action) {
+    static void executeVirtualAction(final AccessibilityService accessibilityService, final int action) {
         switch (action) {
             case GLOBAL_ACTION_NONE: {
                 break;
@@ -37,7 +37,7 @@ public class Handlers {
                     public void run() {
                         accessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS);
                         try {
-                            Thread.sleep(200);
+                            Thread.sleep(300);
                         } catch (Exception ex) {
                         }
                         accessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS);
@@ -73,6 +73,7 @@ public class Handlers {
 
     static String[] getOptions() {
         ArrayList<String> options = new ArrayList<String>() {{
+            add("无动作");
             add("返回");
             add("首页");
             add("任务");
@@ -95,6 +96,7 @@ public class Handlers {
 
     static ArrayList<Integer> getValues() {
         ArrayList<Integer> options = new ArrayList<Integer>() {{
+            add(GLOBAL_ACTION_NONE);
             add(GLOBAL_ACTION_BACK);
             add(GLOBAL_ACTION_HOME);
             add(GLOBAL_ACTION_RECENTS);

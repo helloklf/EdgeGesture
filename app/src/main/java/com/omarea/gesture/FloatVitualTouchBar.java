@@ -31,18 +31,28 @@ class FloatVitualTouchBar {
         config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
         mWindowManager = (WindowManager) (context.getSystemService(Context.WINDOW_SERVICE));
         try {
-            if (
-                    (isLandscapf && config.getBoolean(SpfConfig.LANDSCAPE_IOS_BAR, SpfConfig.LANDSCAPE_IOS_BAR_DEFAULT)) ||
-                            (!isLandscapf && config.getBoolean(SpfConfig.PORTRAIT_IOS_BAR, SpfConfig.PORTRAIT_IOS_BAR_DEFAULT))) {
-                this.bottomView = new iOSWhiteBar(context, isLandscapf).getView();
-            } else {
-                if (config.getBoolean(SpfConfig.CONFIG_BOTTOM_ALLOW, SpfConfig.CONFIG_BOTTOM_ALLOW_DEFAULT)) {
+            if (isLandscapf) {
+                if (config.getBoolean(SpfConfig.LANDSCAPE_IOS_BAR, SpfConfig.LANDSCAPE_IOS_BAR_DEFAULT)) {
+                    this.bottomView = new iOSWhiteBar(context, isLandscapf).getView();
+                } else if (config.getBoolean(SpfConfig.CONFIG_BOTTOM_ALLOW_LANDSCAPE, SpfConfig.CONFIG_BOTTOM_ALLOW_LANDSCAPE_DEFAULT)) {
                     this.bottomView = setBottomView(context);
                 }
-                if (config.getBoolean(SpfConfig.CONFIG_LEFT_ALLOW, SpfConfig.CONFIG_LEFT_ALLOW_DEFAULT)) {
+                if (config.getBoolean(SpfConfig.CONFIG_LEFT_ALLOW_LANDSCAPE, SpfConfig.CONFIG_LEFT_ALLOW_LANDSCAPE_DEFAULT)) {
                     this.leftView = setLeftView(context);
                 }
-                if (config.getBoolean(SpfConfig.CONFIG_RIGHT_ALLOW, SpfConfig.CONFIG_RIGHT_ALLOW_DEFAULT)) {
+                if (config.getBoolean(SpfConfig.CONFIG_RIGHT_ALLOW_LANDSCAPE, SpfConfig.CONFIG_RIGHT_ALLOW_LANDSCAPE_DEFAULT)) {
+                    this.rightView = setRightView(context);
+                }
+            } else {
+                if (config.getBoolean(SpfConfig.PORTRAIT_IOS_BAR, SpfConfig.PORTRAIT_IOS_BAR_DEFAULT)) {
+                    this.bottomView = new iOSWhiteBar(context, isLandscapf).getView();
+                } else if (config.getBoolean(SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT, SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT_DEFAULT)) {
+                    this.bottomView = setBottomView(context);
+                }
+                if (config.getBoolean(SpfConfig.CONFIG_LEFT_ALLOW_PORTRAIT, SpfConfig.CONFIG_LEFT_ALLOW_PORTRAIT_DEFAULT)) {
+                    this.leftView = setLeftView(context);
+                }
+                if (config.getBoolean(SpfConfig.CONFIG_RIGHT_ALLOW_PORTRAIT, SpfConfig.CONFIG_RIGHT_ALLOW_PORTRAIT_DEFAULT)) {
                     this.rightView = setRightView(context);
                 }
             }
@@ -91,16 +101,6 @@ class FloatVitualTouchBar {
         return value;
     }
 
-    private void performGlobalAction(AccessibilityService context, int event) {
-        if (isLandscapf && (lastEventTime + 1500 < System.currentTimeMillis() || lastEvent != event)) {
-            lastEvent = event;
-            lastEventTime = System.currentTimeMillis();
-            Toast.makeText(context, "请重复手势~", Toast.LENGTH_SHORT).show();
-        } else {
-            context.performGlobalAction(event);
-        }
-    }
-
     private View setBottomView(final AccessibilityService context) {
         final View view = LayoutInflater.from(context).inflate(R.layout.fw_vitual_touch_bar, null);
 
@@ -111,8 +111,8 @@ class FloatVitualTouchBar {
         }
 
         bar.setEventHandler(
-                config.getInt(SpfConfig.CONFIG_BOTTOM_EVBET, SpfConfig.CONFIG_BOTTOM_EVBET_DEFAULT),
-                config.getInt(SpfConfig.CONFIG_BOTTOM_EVBET_HOVER, SpfConfig.CONFIG_BOTTOM_EVBET_HOVER_DEFAULT),
+                config.getInt(SpfConfig.CONFIG_BOTTOM_EVENT, SpfConfig.CONFIG_BOTTOM_EVENT_DEFAULT),
+                config.getInt(SpfConfig.CONFIG_BOTTOM_EVENT_HOVER, SpfConfig.CONFIG_BOTTOM_EVENT_HOVER_DEFAULT),
                 context);
 
         double widthRatio = config.getInt(SpfConfig.CONFIG_BOTTOM_WIDTH, SpfConfig.CONFIG_BOTTOM_WIDTH_DEFAULT) / 100.0;
@@ -196,7 +196,7 @@ class FloatVitualTouchBar {
             bar.setBackground(context.getDrawable(R.drawable.bar_background));
         }
 
-        bar.setEventHandler(config.getInt(SpfConfig.CONFIG_LEFT_EVBET, SpfConfig.CONFIG_LEFT_EVBET_DEFAULT), config.getInt(SpfConfig.CONFIG_LEFT_EVBET_HOVER, SpfConfig.CONFIG_LEFT_EVBET_HOVER_DEFAULT), context);
+        bar.setEventHandler(config.getInt(SpfConfig.CONFIG_LEFT_EVENT, SpfConfig.CONFIG_LEFT_EVENT_DEFAULT), config.getInt(SpfConfig.CONFIG_LEFT_EVENT_HOVER, SpfConfig.CONFIG_LEFT_EVENT_HOVER_DEFAULT), context);
 
         double heightRatio = config.getInt(SpfConfig.CONFIG_LEFT_HEIGHT, SpfConfig.CONFIG_LEFT_HEIGHT_DEFAULT) / 100.0;
         int barHeight = (int) (getScreenHeight(context) * heightRatio); //
@@ -241,7 +241,7 @@ class FloatVitualTouchBar {
             bar.setBackground(context.getDrawable(R.drawable.bar_background));
         }
 
-        bar.setEventHandler(config.getInt(SpfConfig.CONFIG_RIGHT_EVBET, SpfConfig.CONFIG_RIGHT_EVBET_DEFAULT), config.getInt(SpfConfig.CONFIG_RIGHT_EVBET_HOVER, SpfConfig.CONFIG_RIGHT_EVBET_HOVER_DEFAULT), context);
+        bar.setEventHandler(config.getInt(SpfConfig.CONFIG_RIGHT_EVENT, SpfConfig.CONFIG_RIGHT_EVENT_DEFAULT), config.getInt(SpfConfig.CONFIG_RIGHT_EVENT_HOVER, SpfConfig.CONFIG_RIGHT_EVENT_HOVER_DEFAULT), context);
 
         double heightRatio = config.getInt(SpfConfig.CONFIG_RIGHT_HEIGHT, SpfConfig.CONFIG_RIGHT_HEIGHT_DEFAULT) / 100.0;
         int barHeight = (int) (getScreenHeight(context) * heightRatio); //
