@@ -147,21 +147,6 @@ public class SettingsActivity extends Activity {
         bindSeekBar(R.id.vibrator_time, SpfConfig.VIBRATOR_TIME, SpfConfig.VIBRATOR_TIME_DEFAULT, true);
         bindSeekBar(R.id.vibrator_amplitude, SpfConfig.VIBRATOR_AMPLITUDE, SpfConfig.VIBRATOR_AMPLITUDE_DEFAULT, true);
 
-        final CompoundButton landscape_ios_bar = findViewById(R.id.landscape_ios_bar);
-        final CompoundButton portrait_ios_bar = findViewById(R.id.portrait_ios_bar);
-        CompoundButton.OnCheckedChangeListener onIOSBarCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (landscape_ios_bar.isChecked() || portrait_ios_bar.isChecked()) {
-                    findViewById(R.id.ios_bar_options).setVisibility(View.VISIBLE);
-                } else {
-                    findViewById(R.id.ios_bar_options).setVisibility(View.GONE);
-                }
-            }
-        };
-        landscape_ios_bar.setOnCheckedChangeListener(onIOSBarCheckedChangeListener);
-        portrait_ios_bar.setOnCheckedChangeListener(onIOSBarCheckedChangeListener);
-
         bindCheckable(R.id.landscape_ios_bar, SpfConfig.LANDSCAPE_IOS_BAR, SpfConfig.LANDSCAPE_IOS_BAR_DEFAULT);
         bindCheckable(R.id.portrait_ios_bar, SpfConfig.PORTRAIT_IOS_BAR, SpfConfig.PORTRAIT_IOS_BAR_DEFAULT);
 
