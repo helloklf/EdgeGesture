@@ -16,18 +16,31 @@
             android:orientation="vertical"
             android:padding="10dp">
 
-            <TextView
-                style="@style/card_title"
-                android:text="悬停时长" />
-
-            <SeekBar
-                android:id="@+id/bar_hover_time"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="20dp"
-                android:max="500" />
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="0dp"
+                    android:text="悬停时长"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <SeekBar
+                    android:id="@+id/bar_hover_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="500"
+                    android:paddingEnd="5dp" />
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
@@ -51,36 +64,56 @@
 
             <TextView
                 style="@style/card_title"
-                android:text="震动反馈 milliseconds" />
+                android:text="震动反馈" />
 
-            <SeekBar
-                android:id="@+id/vibrator_time"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"
-                android:max="100" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="时长" />
+
+                <SeekBar
+                    android:id="@+id/vibrator_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:max="100" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="强度" />
+
+                <SeekBar
+                    android:id="@+id/vibrator_amplitude"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:max="255" />
+            </LinearLayout>
 
             <TextView
-                style="@style/card_title"
-                android:text="震动反馈 amplitude" />
-
-            <SeekBar
-                android:id="@+id/vibrator_amplitude"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:max="255" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="说明：因手机振动器差异，相同的参数在不同的手机上会有不同表现，建议自行调节至最佳"
+                android:text="说明：根据自己的系统调节震动反馈效果，线性马达的时长可以调小，而转子马达由于响应速度较慢，时长必需要更大一些。"
                 android:textColor="#888"
                 android:textSize="11dp" />
+
         </LinearLayout>
     </android.support.v7.widget.CardView>
 

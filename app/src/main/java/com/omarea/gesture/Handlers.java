@@ -6,6 +6,7 @@ import android.os.Build;
 import java.util.ArrayList;
 
 public class Handlers {
+    final static int GLOBAL_ACTION_NONE = 0;
     final static int GLOBAL_ACTION_BACK = AccessibilityService.GLOBAL_ACTION_BACK;
     final static int GLOBAL_ACTION_HOME = AccessibilityService.GLOBAL_ACTION_HOME;
     final static int GLOBAL_ACTION_RECENTS = AccessibilityService.GLOBAL_ACTION_RECENTS;
@@ -27,6 +28,9 @@ public class Handlers {
 
     static void executeVitualAction(final AccessibilityService accessibilityService, final int action) {
         switch (action) {
+            case GLOBAL_ACTION_NONE: {
+                break;
+            }
             case VITUAL_ACTION_LAST_APP: {
                 new Thread(new Runnable() {
                     @Override

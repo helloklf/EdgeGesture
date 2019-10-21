@@ -22,8 +22,7 @@
     <string name="rotate_tips">旋转屏幕，可查看横屏状态下的手势热区</string>
     <string name="copy_success">复制成功</string>
     <string name="copy_fail">复制失败</string>
-    <string name="ios_bar_action">小白条 动作</string>
-    <string name="ios_bar_style">小白条 外观</string>
+    <string name="ios_bar">iOS 小白条</string>
     <string name="side_bottom">底部</string>
     <string name="side_area">触发区</string>
     <string name="edge_action">行为</string>
