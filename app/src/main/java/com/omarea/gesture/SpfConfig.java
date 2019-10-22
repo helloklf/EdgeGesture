@@ -38,7 +38,7 @@ class SpfConfig {
     // 底部手势区域
     static final String CONFIG_BOTTOM_ALLOW_PORTRAIT = "CONFIG_BOTTOM_ALLOW_PORTRAIT";
     static final boolean CONFIG_BOTTOM_ALLOW_PORTRAIT_DEFAULT = true;
-    static final String CONFIG_BOTTOM_ALLOW_LANDSCAPE = "CONFIG_BOTTOM_ALLOW_PORTRAIT";
+    static final String CONFIG_BOTTOM_ALLOW_LANDSCAPE = "CONFIG_BOTTOM_ALLOW_LANDSCAPE";
     static final boolean CONFIG_BOTTOM_ALLOW_LANDSCAPE_DEFAULT = false;
     static final String CONFIG_BOTTOM_WIDTH = "CONFIG_BOTTOM_WIDTH";
     static final int CONFIG_BOTTOM_WIDTH_DEFAULT = 100;

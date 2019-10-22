@@ -1,8 +1,12 @@
 package com.omarea.gesture;
 
 import android.accessibilityservice.AccessibilityService;
+import android.content.ComponentName;
+import android.content.Intent;
 import android.os.Build;
+import android.widget.Toast;
 
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 public class Handlers {
@@ -18,13 +22,55 @@ public class Handlers {
     final static int GLOBAL_ACTION_TAKE_SCREENSHOT = AccessibilityService.GLOBAL_ACTION_TAKE_SCREENSHOT;
 
     final static int VITUAL_ACTION_LAST_APP = 900001;
-    final static int VITUAL_ACTION_OPEN_APP = 900002;
+    final static int VITUAL_ACTION_XIAO_AI = 900002;
 
-    static boolean isVitualAction(int aciont) {
-        if (aciont == VITUAL_ACTION_LAST_APP) {
-            return true;
-        } else return aciont == VITUAL_ACTION_OPEN_APP;
-    }
+    private static boolean isXiaomi = Build.MANUFACTURER.equals("Xiaomi") && Build.BRAND.equals("Xiaomi");
+
+    private final static String[] options = new ArrayList<String>() {{
+        add("无动作");
+        add("返回");
+        add("首页");
+        add("任务");
+        add("通知");
+        add("快捷设置");
+        add("电源弹窗");
+
+        if (isXiaomi) {
+            add("小爱同学（需要ROOT）");
+        }
+
+        if (Build.VERSION.SDK_INT > 23) {
+            add("分屏");
+            add("上个应用");
+        }
+        if (Build.VERSION.SDK_INT > 27) {
+            add("锁屏");
+            add("截图");
+        }
+    }}.toArray(new String[0]);
+
+    private final static ArrayList<Integer> values = new ArrayList<Integer>() {{
+                add(GLOBAL_ACTION_NONE);
+                add(GLOBAL_ACTION_BACK);
+                add(GLOBAL_ACTION_HOME);
+                add(GLOBAL_ACTION_RECENTS);
+                add(GLOBAL_ACTION_NOTIFICATIONS);
+                add(GLOBAL_ACTION_QUICK_SETTINGS);
+                add(GLOBAL_ACTION_POWER_DIALOG);
+
+                if (isXiaomi) {
+                    add(VITUAL_ACTION_XIAO_AI);
+                }
+
+                if (Build.VERSION.SDK_INT > 23) {
+                    add(GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN);
+                    add(VITUAL_ACTION_LAST_APP);
+                }
+                if (Build.VERSION.SDK_INT > 27) {
+                    add(GLOBAL_ACTION_LOCK_SCREEN);
+                    add(GLOBAL_ACTION_TAKE_SCREENSHOT);
+                }
+            }};
 
     static void executeVirtualAction(final AccessibilityService accessibilityService, final int action) {
         switch (action) {
@@ -43,6 +89,10 @@ public class Handlers {
                         accessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS);
                     }
                 }).start();
+                break;
+            }
+            case VITUAL_ACTION_XIAO_AI: {
+                openXiaoAi();
                 break;
             }
             case GLOBAL_ACTION_TAKE_SCREENSHOT: {
@@ -68,52 +118,47 @@ public class Handlers {
     static String getOption(int value) {
         String[] options = getOptions();
         ArrayList<Integer> values = getValues();
-        return options[((ArrayList) values).indexOf(value)];
+        return options[values.indexOf(value)];
     }
 
     static String[] getOptions() {
-        ArrayList<String> options = new ArrayList<String>() {{
-            add("无动作");
-            add("返回");
-            add("首页");
-            add("任务");
-            add("通知");
-            add("快捷设置");
-            add("电源弹窗");
-        }};
-
-        if (Build.VERSION.SDK_INT > 23) {
-            options.add("分屏");
-            options.add("上个应用");
-        }
-        if (Build.VERSION.SDK_INT > 27) {
-            options.add("锁屏");
-            options.add("截图");
-        }
-
-        return options.toArray(new String[0]);
+        return options;
     }
 
     static ArrayList<Integer> getValues() {
-        ArrayList<Integer> options = new ArrayList<Integer>() {{
-            add(GLOBAL_ACTION_NONE);
-            add(GLOBAL_ACTION_BACK);
-            add(GLOBAL_ACTION_HOME);
-            add(GLOBAL_ACTION_RECENTS);
-            add(GLOBAL_ACTION_NOTIFICATIONS);
-            add(GLOBAL_ACTION_QUICK_SETTINGS);
-            add(GLOBAL_ACTION_POWER_DIALOG);
-        }};
+        return values;
+    }
 
-        if (Build.VERSION.SDK_INT > 23) {
-            options.add(GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN);
-            options.add(VITUAL_ACTION_LAST_APP);
-        }
-        if (Build.VERSION.SDK_INT > 27) {
-            options.add(GLOBAL_ACTION_LOCK_SCREEN);
-            options.add(GLOBAL_ACTION_TAKE_SCREENSHOT);
-        }
-
-        return options;
+    private static Process rootProcess = null;
+    private static OutputStream rootOutputStream = null;
+    static void openXiaoAi() {
+            /*
+            try {
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                ComponentName xiaoAi = new ComponentName("com.miui.voiceassist", "com.xiaomi.voiceassistant.AiSettings.AiShortcutActivit");
+                intent.setComponent(xiaoAi);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                accessibilityService.startActivity(intent);
+            } catch (Exception ex) {
+                Toast.makeText(accessibilityService, "" + ex.getMessage(), Toast.LENGTH_LONG).show();
+            }
+            */
+            if (rootProcess == null) {
+                try {
+                    rootProcess = Runtime.getRuntime().exec("su");
+                    rootOutputStream = rootProcess.getOutputStream();
+                } catch (Exception ex) {
+                }
+            }
+            if (rootProcess != null && rootOutputStream != null) {
+                try {
+                    rootOutputStream.write("am start -n com.miui.voiceassist/com.xiaomi.voiceassistant.AiSettings.AiShortcutActivity\n".getBytes());
+                    rootOutputStream.flush();
+                } catch (Exception ex) {
+                    rootProcess = null;
+                    rootOutputStream = null;
+                }
+            }
     }
 }
