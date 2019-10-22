@@ -38,11 +38,13 @@ class iOSTouchBarView extends View {
         p.setStrokeCap(Paint.Cap.ROUND);
         p.setShadowLayer(dp2px(context, 4), 0, 0, 0x88000000);
 
-        setLayerType(LAYER_TYPE_SOFTWARE, null);
+        // setLayerType(LAYER_TYPE_SOFTWARE, null);
     }
 
-    void setBarPosition(int width, int height, int color) {
+    void setStyle(int width, int height, int color, int shadowColor, int shadowSize, int lineWeight) {
         p.setColor(color);
+        p.setShadowLayer(dp2px(context, shadowSize), 0, 0, shadowColor);
+        p.setStrokeWidth(dp2px(context, lineWeight));
 
         ViewGroup.LayoutParams lp = this.getLayoutParams();
         int h = height;

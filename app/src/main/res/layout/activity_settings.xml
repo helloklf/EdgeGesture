@@ -99,6 +99,5 @@
         <include layout="@layout/classic_options" />
 
         <include layout="@layout/other_options" />
-
     </LinearLayout>
 </ScrollView>

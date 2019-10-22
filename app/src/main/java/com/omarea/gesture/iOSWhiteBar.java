@@ -82,12 +82,21 @@ public class iOSWhiteBar {
             widthRatio = config.getInt(SpfConfig.IOS_BAR_WIDTH_PORTRAIT, SpfConfig.IOS_BAR_WIDTH_DEFAULT_PORTRAIT) / 100f;
         }
 
-        int barWidth = (int) (getScreenWidth(accessibilityService) * widthRatio);
-        int barHeight = dp2px(accessibilityService, isLandscapf ? 16 : 20);
         final float fateOutAlpha = config.getInt(SpfConfig.IOS_BAR_ALPHA_FADEOUT, SpfConfig.IOS_BAR_ALPHA_FADEOUT_DEFAULT) / 100f; // 0.2f;
         final int barColor = isLandscapf ? (config.getInt(SpfConfig.IOS_BAR_COLOR_LANDSCAPE, SpfConfig.IOS_BAR_COLOR_LANDSCAPE_DEFAULT)) : (config.getInt(SpfConfig.IOS_BAR_COLOR_PORTRAIT, SpfConfig.IOS_BAR_COLOR_PORTRAIT_DEFAULT));
+        final int shadowColor = config.getInt(SpfConfig.IOS_BAR_COLOR_SHADOW, SpfConfig.IOS_BAR_COLOR_SHADOW_DEFAULT);
+        final int shadowSize = config.getInt(SpfConfig.IOS_BAR_SIZE_SHADOW, SpfConfig.IOS_BAR_SIZE_SHADOW_DEFAULT);
+        final int lineWeight = config.getInt(SpfConfig.IOS_BAR_HEIGHT, SpfConfig.IOS_BAR_HEIGHT_DEFAULT);
+        final int minHeight = lineWeight + (shadowSize * 2); // 16; // 最小高度
+        final int totalHeight = config.getInt(SpfConfig.IOS_BAR_MARGIN_BOTTOM, SpfConfig.IOS_BAR_MARGIN_BOTTOM_DEFAULT) + minHeight;
 
-        bar.setBarPosition(barWidth, barHeight, barColor);
+        bar.setStyle(
+                ((int) (getScreenWidth(accessibilityService) * widthRatio)),
+                dp2px(accessibilityService, totalHeight < minHeight ? minHeight : totalHeight),
+                barColor,
+                shadowColor,
+                shadowSize,
+                lineWeight);
 
         final WindowManager.LayoutParams params = new WindowManager.LayoutParams();
 
@@ -99,7 +108,8 @@ public class iOSWhiteBar {
 
         params.format = PixelFormat.TRANSLUCENT;
 
-        final int originY = 0; // -dp2px(accessibilityService, 20); // 20;
+        final int offsetFixY = (totalHeight < minHeight) ? (minHeight - totalHeight) : 0;
+        final int originY =  - dp2px(accessibilityService, offsetFixY + (isLandscapf ? 4 : 0));
         final int originX = 0;
 
         params.width = WindowManager.LayoutParams.WRAP_CONTENT;
@@ -111,7 +121,7 @@ public class iOSWhiteBar {
 
         mWindowManager.addView(view, params);
 
-        bar.setOnTouchListener(new View.OnTouchListener() {
+        View.OnTouchListener onTouchListener = new View.OnTouchListener() {
             private float touchStartX = 0F; // 触摸开始位置
             private float touchStartY = 0F; // 触摸开始位置
             private boolean isTouchDown = false;
@@ -291,7 +301,7 @@ public class iOSWhiteBar {
                 return true;
             }
 
-            private void clearEffect() {
+            void clearEffect() {
                 animationTo(originX, originY, 300, new OvershootInterpolator());
                 // if (isLandscapf) {
                 fadeOut();
@@ -327,8 +337,12 @@ public class iOSWhiteBar {
                 }
                 return true;
             }
-        });
-        bar.setAlpha(fateOutAlpha);
+
+        };
+        bar.setOnTouchListener(onTouchListener);
+        if (!GlobalState.testMode) {
+            bar.setAlpha(fateOutAlpha);
+        }
 
         return view;
     }

@@ -84,7 +84,19 @@ class SpfConfig {
     static final String IOS_BAR_ALPHA_FADEOUT = "ios_bar_alpha_fadeout";
     static final int IOS_BAR_ALPHA_FADEOUT_DEFAULT = 20; // 百分比
     static final String IOS_BAR_COLOR_LANDSCAPE = "ios_bar_color_landscape";
-    static final int IOS_BAR_COLOR_LANDSCAPE_DEFAULT = 0xf0f0f0f0; // 颜色
+    static final int IOS_BAR_COLOR_LANDSCAPE_DEFAULT = 0xfff8f8f8; // 颜色
     static final String IOS_BAR_COLOR_PORTRAIT = "ios_bar_color_portrait";
-    static final int IOS_BAR_COLOR_PORTRAIT_DEFAULT = 0xf0e0e0e0; // 颜色
+    static final int IOS_BAR_COLOR_PORTRAIT_DEFAULT = 0xfff8f8f8; // 颜色
+    static final String IOS_BAR_COLOR_SHADOW = "ios_bar_color_shadow";
+    static final int IOS_BAR_COLOR_SHADOW_DEFAULT = 0x88000000; // 默认阴影颜色
+    static final String IOS_BAR_SIZE_SHADOW = "ios_bar_alpha_shadow";
+    static final int IOS_BAR_SIZE_SHADOW_DEFAULT = 4; // ?dp
+    static final String IOS_BAR_MARGIN_BOTTOM = "ios_bar_margin_bottom";
+    static final int IOS_BAR_MARGIN_BOTTOM_DEFAULT = 5; // ?dp
+    static final String IOS_BAR_HEIGHT = "ios_bar_height";
+    static final int IOS_BAR_HEIGHT_DEFAULT = 8; // ?dp
+
+    // 硬件加速
+    public static String HARDWARE_ACCELERATED = "HARDWARE_ACCELERATED";
+    public static boolean HARDWARE_ACCELERATED_DEFAULT = false;
 }
