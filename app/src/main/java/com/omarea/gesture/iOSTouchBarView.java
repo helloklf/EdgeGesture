@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 class iOSTouchBarView extends View {
-    private ValueAnimator va = null; // 动画程序
     private Context context = getContext();
 
     private Paint p = new Paint();
@@ -41,14 +40,21 @@ class iOSTouchBarView extends View {
         // setLayerType(LAYER_TYPE_SOFTWARE, null);
     }
 
-    void setStyle(int width, int height, int color, int shadowColor, int shadowSize, int lineWeight) {
+    private float shadowSize = 16f;
+    private float lineWeight = 16f;
+    private float margin = 24f;
+    void setStyle(int widthPx, int heightPx, int color, int shadowColor, int shadowSizeDp, int lineWeightDp) {
+        this.shadowSize = dp2px(context, shadowSizeDp);
+        this.lineWeight = dp2px(context, lineWeightDp);
+        this.margin = shadowSize + (lineWeight / 2f);
+
         p.setColor(color);
-        p.setShadowLayer(dp2px(context, shadowSize), 0, 0, shadowColor);
-        p.setStrokeWidth(dp2px(context, lineWeight));
+        p.setShadowLayer(shadowSize, 0, 0, shadowColor);
+        p.setStrokeWidth(lineWeight);
 
         ViewGroup.LayoutParams lp = this.getLayoutParams();
-        int h = height;
-        int w = width;
+        int h = heightPx;
+        int w = widthPx;
         if (h < 1) {
             h = 1;
         }
@@ -73,8 +79,6 @@ class iOSTouchBarView extends View {
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        int top = dp2px(context, 8);
-        int left = dp2px(context, 8);
-        canvas.drawLine(left, top, getWidth() - left, top, p);
+        canvas.drawLine(margin, margin, getWidth() - margin, margin, p);
     }
 }

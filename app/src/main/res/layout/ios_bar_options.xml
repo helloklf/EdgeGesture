@@ -199,7 +199,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:max="6"
+                    android:max="5"
                     android:min="0"
                     android:paddingStart="6dp"
                     android:paddingEnd="6dp" />

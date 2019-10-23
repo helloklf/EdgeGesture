@@ -87,12 +87,12 @@ public class iOSWhiteBar {
         final int shadowColor = config.getInt(SpfConfig.IOS_BAR_COLOR_SHADOW, SpfConfig.IOS_BAR_COLOR_SHADOW_DEFAULT);
         final int shadowSize = config.getInt(SpfConfig.IOS_BAR_SIZE_SHADOW, SpfConfig.IOS_BAR_SIZE_SHADOW_DEFAULT);
         final int lineWeight = config.getInt(SpfConfig.IOS_BAR_HEIGHT, SpfConfig.IOS_BAR_HEIGHT_DEFAULT);
-        final int minHeight = lineWeight + (shadowSize * 2); // 16; // 最小高度
-        final int totalHeight = config.getInt(SpfConfig.IOS_BAR_MARGIN_BOTTOM, SpfConfig.IOS_BAR_MARGIN_BOTTOM_DEFAULT) + minHeight;
+        final int marginBottom =  config.getInt(SpfConfig.IOS_BAR_MARGIN_BOTTOM, SpfConfig.IOS_BAR_MARGIN_BOTTOM_DEFAULT);
+        final int totalHeight = marginBottom + lineWeight + (shadowSize * 2);
 
         bar.setStyle(
                 ((int) (getScreenWidth(accessibilityService) * widthRatio)),
-                dp2px(accessibilityService, totalHeight < minHeight ? minHeight : totalHeight),
+                dp2px(accessibilityService, totalHeight),
                 barColor,
                 shadowColor,
                 shadowSize,
@@ -108,8 +108,7 @@ public class iOSWhiteBar {
 
         params.format = PixelFormat.TRANSLUCENT;
 
-        final int offsetFixY = (totalHeight < minHeight) ? (minHeight - totalHeight) : 0;
-        final int originY =  - dp2px(accessibilityService, offsetFixY + (isLandscapf ? 4 : 0));
+        final int originY =  - dp2px(accessibilityService, (isLandscapf ? marginBottom : 0));
         final int originX = 0;
 
         params.width = WindowManager.LayoutParams.WRAP_CONTENT;
@@ -343,6 +342,18 @@ public class iOSWhiteBar {
         if (!GlobalState.testMode) {
             bar.setAlpha(fateOutAlpha);
         }
+
+        view.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {
+                ReciverLock.autoRegister(accessibilityService, new ReciverLockHandler(bar));
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+                ReciverLock.unRegister(accessibilityService);
+            }
+        });
 
         return view;
     }
