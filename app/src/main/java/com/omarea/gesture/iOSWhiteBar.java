@@ -346,14 +346,17 @@ public class iOSWhiteBar {
         view.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
             @Override
             public void onViewAttachedToWindow(View v) {
-                ReciverLock.autoRegister(accessibilityService, new ReciverLockHandler(bar));
+                ReceiverLock.autoRegister(accessibilityService, new ReceiverLockHandler(bar));
             }
 
             @Override
             public void onViewDetachedFromWindow(View v) {
-                ReciverLock.unRegister(accessibilityService);
+                ReceiverLock.unRegister(accessibilityService);
             }
         });
+        if(new ScreenState(accessibilityService).isScreenLocked()) {
+            view.setVisibility(View.GONE);
+        }
 
         return view;
     }

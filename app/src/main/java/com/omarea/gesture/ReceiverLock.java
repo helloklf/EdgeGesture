@@ -12,13 +12,13 @@ import android.os.Handler;
  * Created by Hello on 2018/01/23.
  */
 
-class ReciverLock extends BroadcastReceiver {
+class ReceiverLock extends BroadcastReceiver {
     public static int EVENT_SCREEN_OFF = 8;
     public static int EVENT_SCREEN_ON = 10;
 
     private Handler callbacks;
 
-    public ReciverLock(Handler callbacks) {
+    public ReceiverLock(Handler callbacks) {
         this.callbacks = callbacks;
     }
 
@@ -44,31 +44,31 @@ class ReciverLock extends BroadcastReceiver {
         }
     }
 
-    private static ReciverLock reciver = null;
+    private static ReceiverLock receiver = null;
 
-    public static ReciverLock autoRegister(Context context, Handler callbacks) {
-        if (reciver != null) {
+    public static ReceiverLock autoRegister(Context context, Handler callbacks) {
+        if (receiver != null) {
             unRegister(context);
         }
 
-        reciver = new ReciverLock(callbacks);
+        receiver = new ReceiverLock(callbacks);
         Context bc = context.getApplicationContext();
 
-        bc.registerReceiver(reciver, new IntentFilter(Intent.ACTION_SCREEN_OFF));
+        bc.registerReceiver(receiver, new IntentFilter(Intent.ACTION_SCREEN_OFF));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            bc.registerReceiver(reciver, new IntentFilter(Intent.ACTION_USER_UNLOCKED));
+            bc.registerReceiver(receiver, new IntentFilter(Intent.ACTION_USER_UNLOCKED));
         }
-        bc.registerReceiver(reciver, new IntentFilter(Intent.ACTION_SCREEN_ON));
-        bc.registerReceiver(reciver, new IntentFilter(Intent.ACTION_USER_PRESENT));
+        bc.registerReceiver(receiver, new IntentFilter(Intent.ACTION_SCREEN_ON));
+        bc.registerReceiver(receiver, new IntentFilter(Intent.ACTION_USER_PRESENT));
 
-        return reciver;
+        return receiver;
     }
 
     public static void unRegister(Context context) {
-        if (reciver == null) {
+        if (receiver == null) {
             return;
         }
-        context.getApplicationContext().unregisterReceiver(reciver);
-        reciver = null;
+        context.getApplicationContext().unregisterReceiver(receiver);
+        receiver = null;
     }
 }
