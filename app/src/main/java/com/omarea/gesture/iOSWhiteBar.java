@@ -346,16 +346,20 @@ public class iOSWhiteBar {
         view.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
             @Override
             public void onViewAttachedToWindow(View v) {
-                ReceiverLock.autoRegister(accessibilityService, new ReceiverLockHandler(bar));
+                ReceiverLock.unRegister(accessibilityService);
+                if (config.getBoolean(SpfConfig.IOS_BAR_LOCK_HIDE, SpfConfig.IOS_BAR_LOCK_HIDE_DEFAULT)) {
+                    ReceiverLock.autoRegister(accessibilityService, new ReceiverLockHandler(bar, accessibilityService));
+                }
             }
 
             @Override
             public void onViewDetachedFromWindow(View v) {
-                ReceiverLock.unRegister(accessibilityService);
             }
         });
-        if(new ScreenState(accessibilityService).isScreenLocked()) {
-            view.setVisibility(View.GONE);
+        if (config.getBoolean(SpfConfig.IOS_BAR_LOCK_HIDE, SpfConfig.IOS_BAR_LOCK_HIDE_DEFAULT)) {
+            if (new ScreenState(accessibilityService).isScreenLocked()) {
+                view.setVisibility(View.GONE);
+            }
         }
 
         return view;

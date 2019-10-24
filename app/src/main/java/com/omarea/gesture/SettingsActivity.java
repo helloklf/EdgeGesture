@@ -164,6 +164,7 @@ public class SettingsActivity extends Activity {
         bindSeekBar(R.id.ios_bar_size_shadow, SpfConfig.IOS_BAR_SIZE_SHADOW, SpfConfig.IOS_BAR_SIZE_SHADOW_DEFAULT, true);
         bindSeekBar(R.id.ios_bar_total_height, SpfConfig.IOS_BAR_MARGIN_BOTTOM, SpfConfig.IOS_BAR_MARGIN_BOTTOM_DEFAULT, true);
         bindSeekBar(R.id.ios_bar_height, SpfConfig.IOS_BAR_HEIGHT, SpfConfig.IOS_BAR_HEIGHT_DEFAULT, true);
+        bindCheckable(R.id.ios_bar_lock_hide, SpfConfig.IOS_BAR_LOCK_HIDE, SpfConfig.IOS_BAR_LOCK_HIDE_DEFAULT);
 
         setViewBackground(findViewById(R.id.ios_bar_color_fadeout), 0xff888888);
 

@@ -95,6 +95,8 @@ class SpfConfig {
     static final int IOS_BAR_MARGIN_BOTTOM_DEFAULT = 5; // ?dp
     static final String IOS_BAR_HEIGHT = "ios_bar_height";
     static final int IOS_BAR_HEIGHT_DEFAULT = 8; // ?dp
+    static final String IOS_BAR_LOCK_HIDE = "ios_bar_lock_hide";
+    static final Boolean IOS_BAR_LOCK_HIDE_DEFAULT = false;
 
     // 硬件加速
     public static String HARDWARE_ACCELERATED = "HARDWARE_ACCELERATED";

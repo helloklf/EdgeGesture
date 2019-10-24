@@ -258,6 +258,23 @@
                     android:paddingStart="6dp"
                     android:paddingEnd="6dp" />
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp">
+
+                <Switch
+                    android:id="@+id/ios_bar_lock_hide"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="锁屏隐藏"
+                    android:textStyle="bold" />
+
+                <TextView
+                    style="@style/switch_desc"
+                    android:text="手机屏幕锁定时，隐藏小白条" />
+            </LinearLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

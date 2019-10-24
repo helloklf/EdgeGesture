@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Handler;
+import android.util.Log;
 
 /**
  * 监听屏幕开关事件
@@ -32,11 +33,14 @@ class ReceiverLock extends BroadcastReceiver {
         if (action != null) {
             if (action.equals(Intent.ACTION_SCREEN_OFF)) {
                 try {
+                    Log.d("ReceiverLockHandler", "锁屏");
                     callbacks.sendMessage(callbacks.obtainMessage(EVENT_SCREEN_OFF));
                 } catch (Exception ignored) {
                 }
-            } else if (action.equals(Intent.ACTION_USER_PRESENT) || action.equals(Intent.ACTION_USER_UNLOCKED) || action.equals(Intent.ACTION_SCREEN_ON)) {
+            // } else if (action.equals(Intent.ACTION_USER_PRESENT) || action.equals(Intent.ACTION_USER_UNLOCKED) || action.equals(Intent.ACTION_SCREEN_ON)) {
+            } else if (action.equals(Intent.ACTION_USER_PRESENT) || action.equals(Intent.ACTION_USER_UNLOCKED)) {
                 try {
+                    Log.d("ReceiverLockHandler", "解锁");
                     callbacks.sendMessage(callbacks.obtainMessage(EVENT_SCREEN_ON));
                 } catch (Exception ignored) {
                 }
