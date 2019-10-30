@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.graphics.Point;
 import android.os.Build;
 import android.os.Handler;
 import android.provider.Settings;
@@ -31,19 +32,39 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
         }
     }
 
+    private ContentResolver cr = null;
     private void forceHideNavBar() {
-        try {
-            if (Build.MANUFACTURER.equals("samsung") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                ContentResolver cr = getContentResolver();
+        if (Build.MANUFACTURER.equals("samsung") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            try {
+                if (cr == null) {
+                    cr = getContentResolver();
+                }
                 // Samsung
                 Settings.Global.putInt(cr, "navigation_bar_gesture_while_hidden", 1); // oneui 开启手势模式
                 Settings.Global.putInt(cr, "navigation_bar_gesture_hint", 0); // oneui 隐藏手势提示
                 Settings.Global.putInt(cr, "navigation_bar_gesture_disabled_by_policy", 0); // oneui 策略取消强制禁用手势（因为锁屏唤醒后底部会触摸失灵，需要重新开关）
                 Thread.sleep(200);
                 Settings.Global.putInt(cr, "navigation_bar_gesture_disabled_by_policy", 1); // oneui 策略强制禁用手势
+                // settings put global policy_control null
+                if (Settings.Global.getString(cr, "policy_control").equals("immersive.navigation=*")) {
+                    Settings.Global.putString(cr,"policy_control", "");
+                }
+            } catch (java.lang.Exception ex) {
+                Log.e("forceHideNavBar", "" + ex.getMessage());
             }
-        } catch (java.lang.Exception ex) {
-            Log.e("forceHideNavBar", "" + ex.getMessage());
+        }
+    }
+
+    private void resumeNavBar() {
+        if (Build.MANUFACTURER.equals("samsung") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            try {
+                if (cr == null) {
+                    cr = getContentResolver();
+                }
+                Settings.Global.putInt(cr, "navigation_bar_gesture_disabled_by_policy", 0); // oneui 策略取消强制禁用手势（因为锁屏唤醒后底部会触摸失灵，需要重新开关）
+            } catch (Exception ex) {
+            }
+            cr = null;
         }
     }
 
@@ -81,6 +102,13 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
     @Override
     public void onServiceConnected() {
         super.onServiceConnected();
+
+        WindowManager wm = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
+        Point point = new Point();
+        wm.getDefaultDisplay().getRealSize(point);
+        screenWidth = point.x;
+        screenHeight = point.y;
+
         TouchIconCache.setContext(this.getBaseContext());
 
         if (configChanged == null) {
@@ -115,7 +143,7 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
                     if (action != null && ((action.equals(Intent.ACTION_USER_PRESENT)
                             || action.equals(Intent.ACTION_USER_UNLOCKED))
                             // || action.equals(Intent.ACTION_SCREEN_ON)
-                        )) {
+                    )) {
                         forceHideNavBar();
                     }
                 }
@@ -133,6 +161,7 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
     @Override
     public boolean onUnbind(Intent intent) {
         hidePopupWindow();
+        resumeNavBar();
         return super.onUnbind(intent);
     }
 
@@ -141,18 +170,25 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
 
     }
 
+    private int screenWidth;
+    private int screenHeight;
     // 监测屏幕旋转
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         if (floatVitualTouchBar != null && newConfig != null) {
-            if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                isLandscapf = false;
-            } else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                isLandscapf = true;
+            isLandscapf = newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE;
+
+            // 如果分辨率变了，那就重新创建手势区域
+            WindowManager wm = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
+            Point point = new Point();
+            wm.getDefaultDisplay().getRealSize(point);
+            if (point.x != screenWidth || point.y != screenHeight) {
+                screenWidth = point.x;
+                screenHeight = point.y;
+                createPopupView();
+                forceHideNavBar();
             }
-            createPopupView();
-            forceHideNavBar();
         }
     }
 
