@@ -24,7 +24,7 @@ class ReceiverLock extends BroadcastReceiver {
     }
 
     @Override
-    public void onReceive(Context p0, Intent p1) {
+    public void onReceive(final Context p0, Intent p1) {
         if (p1 == null) {
             return;
         }
@@ -41,7 +41,20 @@ class ReceiverLock extends BroadcastReceiver {
             } else if (action.equals(Intent.ACTION_USER_PRESENT) || action.equals(Intent.ACTION_USER_UNLOCKED)) {
                 try {
                     Log.d("ReceiverLockHandler", "解锁");
-                    callbacks.sendMessage(callbacks.obtainMessage(EVENT_SCREEN_ON));
+                    callbacks.sendMessageDelayed(callbacks.obtainMessage(EVENT_SCREEN_ON), 500);
+                } catch (Exception ignored) {
+                }
+            } else if (action.equals(Intent.ACTION_SCREEN_ON)) {
+                try {
+                    Log.d("ReceiverLockHandler", "解锁");
+                    callbacks.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (!new ScreenState(p0).isScreenLocked()) {
+                                callbacks.sendMessage(callbacks.obtainMessage(EVENT_SCREEN_ON));
+                            }
+                        }
+                    }, 6000);
                 } catch (Exception ignored) {
                 }
             }
