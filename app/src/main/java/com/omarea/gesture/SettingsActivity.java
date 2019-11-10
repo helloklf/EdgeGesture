@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.Checkable;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -168,21 +169,41 @@ public class SettingsActivity extends Activity {
 
         setViewBackground(findViewById(R.id.ios_bar_color_fadeout), 0xff888888);
 
-        if (Build.MANUFACTURER.equals("samsung") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && !canWriteGlobalSettings()) {
-            findViewById(R.id.samsung_guide).setVisibility(View.VISIBLE);
-            findViewById(R.id.copy_shell).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        ClipboardManager myClipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                        ClipData myClip = ClipData.newPlainText("text", ((TextView) findViewById(R.id.shell_content)).getText().toString());
-                        myClipboard.setPrimaryClip(myClip);
-                        Toast.makeText(getBaseContext(), getString(R.string.copy_success), Toast.LENGTH_SHORT).show();
-                    } catch (Exception ex) {
-                        Toast.makeText(getBaseContext(), getString(R.string.copy_fail), Toast.LENGTH_SHORT).show();
+        if (Build.MANUFACTURER.equals("samsung") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            if (canWriteGlobalSettings()) {
+                findViewById(R.id.samsung_guide).setVisibility(View.GONE);
+                findViewById(R.id.samsung_options).setVisibility(View.VISIBLE);
+                Switch samsung_optimize = findViewById(R.id.samsung_optimize);
+                samsung_optimize.setChecked(config.getBoolean(SpfConfig.SAMSUNG_OPTIMIZE, SpfConfig.SAMSUNG_OPTIMIZE_DEFAULT));
+                samsung_optimize.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Switch switchItem = findViewById(R.id.samsung_optimize);
+                        if (switchItem.isChecked()) {
+                            new ForceHideNavBarThread(getContentResolver()).start();
+                        } else {
+                            new ResumeNavBar(getContentResolver()).run();
+                        }
+                        config.edit().putBoolean(SpfConfig.SAMSUNG_OPTIMIZE, switchItem.isChecked());
                     }
-                }
-            });
+                });
+            } else {
+                findViewById(R.id.samsung_guide).setVisibility(View.VISIBLE);
+                findViewById(R.id.samsung_options).setVisibility(View.GONE);
+                findViewById(R.id.copy_shell).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            ClipboardManager myClipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                            ClipData myClip = ClipData.newPlainText("text", ((TextView) findViewById(R.id.shell_content)).getText().toString());
+                            myClipboard.setPrimaryClip(myClip);
+                            Toast.makeText(getBaseContext(), getString(R.string.copy_success), Toast.LENGTH_SHORT).show();
+                        } catch (Exception ex) {
+                            Toast.makeText(getBaseContext(), getString(R.string.copy_fail), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
         }
     }
 

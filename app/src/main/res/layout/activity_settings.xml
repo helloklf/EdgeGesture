@@ -51,21 +51,44 @@
             android:textSize="11dp" />
 
         <android.support.v7.widget.CardView
+            android:id="@+id/samsung_options"
+            style="@style/card_view"
+            android:visibility="gone">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+
+                <Switch
+                    android:id="@+id/samsung_optimize"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/samsung_optimize"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/samsung_optimize_desc"
+                    android:textSize="12dp" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
             android:id="@+id/samsung_guide"
             style="@style/card_view"
             android:visibility="gone">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:orientation="vertical"
-                android:padding="5dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="对于运行OneUI的三星手机，请通过USB调试执行以下代码，以便自动禁用系统自带导航栏和手势"
+                    android:text="@string/samsung_guide_desc"
                     android:textSize="12dp" />
 
                 <LinearLayout

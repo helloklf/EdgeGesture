@@ -31,4 +31,7 @@
     <string name="hot_area_desc">注意：用于手势操作的热区会阻挡操作，在确保手势操作灵敏的情况下，尽量不要调太大！</string>
     <string name="portrait">竖屏</string>
     <string name="landscape">横屏</string>
+    <string name="samsung_optimize">禁用OneUI手势</string>
+    <string name="samsung_optimize_desc">激活手势功能时，自动禁用系统的手势。会导致底部区域偶尔不能点击，需要重新开关屏幕。如果经常出现问题，请禁用本选项</string>
+    <string name="samsung_guide_desc">运行OneUI的三星手机，可通过USB调试执行以下代码，并重启本应用。软件会帮你自动禁用系统手势~</string>
 </resources>

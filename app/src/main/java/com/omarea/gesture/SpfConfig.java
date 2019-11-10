@@ -90,15 +90,19 @@ class SpfConfig {
     static final String IOS_BAR_COLOR_SHADOW = "ios_bar_color_shadow";
     static final int IOS_BAR_COLOR_SHADOW_DEFAULT = 0x88000000; // 默认阴影颜色
     static final String IOS_BAR_SIZE_SHADOW = "ios_bar_alpha_shadow";
-    static final int IOS_BAR_SIZE_SHADOW_DEFAULT = 4; // ?dp
+    static final int IOS_BAR_SIZE_SHADOW_DEFAULT = 3; // ?dp
     static final String IOS_BAR_MARGIN_BOTTOM = "ios_bar_margin_bottom";
-    static final int IOS_BAR_MARGIN_BOTTOM_DEFAULT = 5; // ?dp
+    static final int IOS_BAR_MARGIN_BOTTOM_DEFAULT = 4; // ?dp
     static final String IOS_BAR_HEIGHT = "ios_bar_height";
-    static final int IOS_BAR_HEIGHT_DEFAULT = 8; // ?dp
+    static final int IOS_BAR_HEIGHT_DEFAULT = 5; // ?dp
     static final String IOS_BAR_LOCK_HIDE = "ios_bar_lock_hide";
     static final Boolean IOS_BAR_LOCK_HIDE_DEFAULT = false;
 
     // 硬件加速
     public static String HARDWARE_ACCELERATED = "HARDWARE_ACCELERATED";
     public static boolean HARDWARE_ACCELERATED_DEFAULT = false;
+
+    // 三星优化(自动禁用系统手势)
+    public static String SAMSUNG_OPTIMIZE = "SAMSUNG_OPTIMIZE";
+    public static boolean SAMSUNG_OPTIMIZE_DEFAULT = true;
 }
