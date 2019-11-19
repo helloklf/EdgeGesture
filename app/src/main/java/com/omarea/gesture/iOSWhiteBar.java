@@ -358,7 +358,7 @@ public class iOSWhiteBar {
         });
         if (config.getBoolean(SpfConfig.IOS_BAR_LOCK_HIDE, SpfConfig.IOS_BAR_LOCK_HIDE_DEFAULT)) {
             if (new ScreenState(accessibilityService).isScreenLocked()) {
-                view.setVisibility(View.GONE);
+                bar.setVisibility(View.GONE);
             }
         }
 
