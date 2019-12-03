@@ -13,9 +13,12 @@ import android.graphics.Point;
 import android.os.Build;
 import android.os.Handler;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
+
+import java.util.ArrayList;
 
 public class AccessibilityServiceKeyEvent extends AccessibilityService {
     boolean isLandscapf = false;
@@ -64,16 +67,41 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
         }
     }
 
+    // 已经确保可以打开的应用
+    private ArrayList<String> whiteList = new ArrayList<>();
+    // 已经可以肯定不是可以打开的应用
+    private ArrayList<String> blackList = new ArrayList<>();
+    // 检测应用是否是可以打开的
+    private boolean canOpen(String packageName) {
+        if (whiteList.indexOf(packageName) > -1) {
+            return true;
+        } else if (blackList.indexOf(packageName) > -1) {
+            return false;
+        } else {
+            Intent launchIntent = getPackageManager().getLaunchIntentForPackage(packageName);
+            if (launchIntent != null) {
+                whiteList.add(packageName);
+                return true;
+            } else {
+                blackList.add(packageName);
+                return false;
+            }
+        }
+    }
+
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-        /*
-        Log.d("onAccessibilityEvent", "onAccessibilityEvent");
         // Log.d("onAccessibilityEvent", event.getPackageName().toString());
-        CharSequence packageName = event.getPackageName();
-        if (packageName != null) {
-            AppHistory.putHistory(packageName.toString());
+        if (event != null) {
+            CharSequence packageName = event.getPackageName();
+            if (packageName != null && !packageName.equals(getPackageName())) {
+                String packageNameStr = packageName.toString();
+                Log.d("onAccessibilityEvent", "" + packageNameStr);
+                if (canOpen(packageNameStr)) {
+                    Recents.addRecent(packageNameStr);
+                }
+            }
         }
-        */
     }
 
     private boolean isScreenLocked() {

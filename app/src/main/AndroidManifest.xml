@@ -29,6 +29,17 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:excludeFromRecents="true"
+            android:screenOrientation="behind"
+            android:name=".AppSwitchActivity"
+            android:theme="@style/appSwitch">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".StartActivity"
             android:configChanges="orientation"
@@ -46,7 +57,7 @@
 
         <service
             android:name=".AccessibilityServiceKeyEvent"
-            android:label="@string/app_name"
+            android:label="@string/app_name_long"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />

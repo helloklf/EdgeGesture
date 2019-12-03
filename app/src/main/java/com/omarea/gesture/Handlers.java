@@ -1,9 +1,10 @@
 package com.omarea.gesture;
 
 import android.accessibilityservice.AccessibilityService;
-import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.OutputStream;
@@ -21,7 +22,8 @@ public class Handlers {
     final static int GLOBAL_ACTION_LOCK_SCREEN = AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN;
     final static int GLOBAL_ACTION_TAKE_SCREENSHOT = AccessibilityService.GLOBAL_ACTION_TAKE_SCREENSHOT;
 
-    final static int VITUAL_ACTION_LAST_APP = 900001;
+    final static int VITUAL_ACTION_NEXT_APP = 900000;
+    final static int VITUAL_ACTION_PREV_APP = 900001;
     final static int VITUAL_ACTION_XIAO_AI = 900002;
 
     private static boolean isXiaomi = Build.MANUFACTURER.equals("Xiaomi") && Build.BRAND.equals("Xiaomi");
@@ -34,6 +36,8 @@ public class Handlers {
         add("通知");
         add("快捷设置");
         add("电源弹窗");
+        add("上个应用");
+        add("下个应用");
 
         if (isXiaomi) {
             add("小爱同学（需要ROOT）");
@@ -41,7 +45,6 @@ public class Handlers {
 
         if (Build.VERSION.SDK_INT > 23) {
             add("分屏");
-            add("上个应用");
         }
         if (Build.VERSION.SDK_INT > 27) {
             add("锁屏");
@@ -57,6 +60,8 @@ public class Handlers {
                 add(GLOBAL_ACTION_NOTIFICATIONS);
                 add(GLOBAL_ACTION_QUICK_SETTINGS);
                 add(GLOBAL_ACTION_POWER_DIALOG);
+                add(VITUAL_ACTION_PREV_APP);
+                add(VITUAL_ACTION_NEXT_APP);
 
                 if (isXiaomi) {
                     add(VITUAL_ACTION_XIAO_AI);
@@ -64,7 +69,6 @@ public class Handlers {
 
                 if (Build.VERSION.SDK_INT > 23) {
                     add(GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN);
-                    add(VITUAL_ACTION_LAST_APP);
                 }
                 if (Build.VERSION.SDK_INT > 27) {
                     add(GLOBAL_ACTION_LOCK_SCREEN);
@@ -77,7 +81,49 @@ public class Handlers {
             case GLOBAL_ACTION_NONE: {
                 break;
             }
-            case VITUAL_ACTION_LAST_APP: {
+            case GLOBAL_ACTION_HOME: {
+                int animation = accessibilityService
+                                    .getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE)
+                                    .getInt(SpfConfig.HOME_ANIMATION, SpfConfig.HOME_ANIMATION_DEFAULT);
+                if (animation == SpfConfig.HOME_ANIMATION_DEFAULT) {
+                    accessibilityService.performGlobalAction(action);
+                } else {
+                    try {
+                        Intent intent = new Intent(accessibilityService, AppSwitchActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("home", true);
+                        intent.putExtra("animation", animation);
+                        accessibilityService.startActivity(intent);
+                    } catch (Exception ex) {
+                        Log.e("Gesture", "" + ex.getMessage());
+                    }
+                }
+                break;
+            }
+            case VITUAL_ACTION_NEXT_APP: {
+                String targetApp = Recents.moveNext();
+                if (targetApp != null) {
+                    try {
+                        Intent intent = new Intent(accessibilityService, AppSwitchActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("next", targetApp);
+                        accessibilityService.startActivity(intent);
+                    } catch (Exception ex) {
+                        Log.e("Gesture", "" + ex.getMessage());
+                    }
+                } else {
+                    Toast.makeText(accessibilityService, ">> ]", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            }
+            case VITUAL_ACTION_PREV_APP: {
+                /*
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -89,6 +135,26 @@ public class Handlers {
                         accessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS);
                     }
                 }).start();
+                */
+                String targetApp = Recents.movePrevious();
+                if (targetApp != null) {
+                    try {
+                        Intent intent = new Intent(accessibilityService, AppSwitchActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("prev", targetApp);
+                        // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        accessibilityService.startActivity(intent);
+                    } catch (Exception ex) {
+                        Log.e("Gesture", "" + ex.getMessage());
+                    }
+                } else {
+                    Toast.makeText(accessibilityService, "[ <<", Toast.LENGTH_SHORT).show();
+                }
+
                 break;
             }
             case VITUAL_ACTION_XIAO_AI: {

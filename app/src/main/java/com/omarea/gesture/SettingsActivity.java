@@ -205,6 +205,50 @@ public class SettingsActivity extends Activity {
                 });
             }
         }
+
+        findViewById(R.id.home_animation).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                homeAnimationPicker();
+            }
+        });
+        setHomeAnimationText();
+    }
+
+    private void homeAnimationPicker() {
+        String[] options = new String[]{getString(R.string.animation_mode_default), getString(R.string.animation_mode_default), getString(R.string.animation_mode_default)};
+        new AlertDialog.Builder(this).setTitle(R.string.animation_mode)
+                .setSingleChoiceItems(options,
+                        config.getInt(SpfConfig.HOME_ANIMATION, SpfConfig.HOME_ANIMATION_DEFAULT),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                config.edit().putInt(SpfConfig.HOME_ANIMATION, which).apply();
+                                updateView();
+                                dialog.dismiss();
+                            }
+                        })
+                .create()
+                .show();
+    }
+
+    private void setHomeAnimationText() {
+        int modeIndex = config.getInt(SpfConfig.HOME_ANIMATION, SpfConfig.HOME_ANIMATION_DEFAULT);
+        Button button = findViewById(R.id.home_animation);
+        switch (modeIndex) {
+            case SpfConfig.HOME_ANIMATION_DEFAULT: {
+                button.setText(getString(R.string.animation_mode_default));
+                break;
+            }
+            case SpfConfig.HOME_ANIMATION_BASIC: {
+                button.setText(getString(R.string.animation_mode_basic));
+                break;
+            }
+            case SpfConfig.HOME_ANIMATION_CUSTOM: {
+                button.setText(getString(R.string.animation_mode_custom));
+                break;
+            }
+        }
     }
 
     private boolean canWriteGlobalSettings() {
@@ -228,7 +272,6 @@ public class SettingsActivity extends Activity {
 
         findViewById(R.id.ios_bar_color_fadeout).setAlpha(config.getInt(SpfConfig.IOS_BAR_ALPHA_FADEOUT, SpfConfig.IOS_BAR_ALPHA_FADEOUT_DEFAULT) / 100f);
 
-
         updateActionText(R.id.tap_bottom, SpfConfig.CONFIG_BOTTOM_EVENT, SpfConfig.CONFIG_BOTTOM_EVENT_DEFAULT);
         updateActionText(R.id.hover_bottom, SpfConfig.CONFIG_BOTTOM_EVENT_HOVER, SpfConfig.CONFIG_BOTTOM_EVENT_HOVER_DEFAULT);
         updateActionText(R.id.tap_left, SpfConfig.CONFIG_LEFT_EVENT, SpfConfig.CONFIG_LEFT_EVENT_DEFAULT);
@@ -241,6 +284,8 @@ public class SettingsActivity extends Activity {
         updateActionText(R.id.ios_bar_slide_right, SpfConfig.IOS_BAR_SLIDE_RIGHT, SpfConfig.IOS_BAR_SLIDE_RIGHT_DEFAULT);
         updateActionText(R.id.ios_bar_slide_up, SpfConfig.IOS_BAR_SLIDE_UP, SpfConfig.IOS_BAR_SLIDE_UP_DEFAULT);
         updateActionText(R.id.ios_bar_slide_up_hover, SpfConfig.IOS_BAR_SLIDE_UP_HOVER, SpfConfig.IOS_BAR_SLIDE_UP_HOVER_DEFAULT);
+
+        setHomeAnimationText();
 
         ((Checkable) findViewById(R.id.enable_service)).setChecked(serviceRunning());
 

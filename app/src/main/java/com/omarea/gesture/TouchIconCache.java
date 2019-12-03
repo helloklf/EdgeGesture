@@ -68,7 +68,7 @@ class TouchIconCache {
                 }
                 return touch_screenshot;
             }
-            case Handlers.VITUAL_ACTION_LAST_APP: {
+            case Handlers.VITUAL_ACTION_PREV_APP: {
                 if (touch_switch == null && mContext != null) {
                     touch_switch = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.touch_switch);
                 }

@@ -68,9 +68,9 @@ class SpfConfig {
 
     // iOS小白条动作
     static final String IOS_BAR_SLIDE_LEFT = "ios_bar_slide_left";
-    static final int IOS_BAR_SLIDE_LEFT_DEFAULT = Handlers.GLOBAL_ACTION_BACK;
+    static final int IOS_BAR_SLIDE_LEFT_DEFAULT = Handlers.VITUAL_ACTION_NEXT_APP;
     static final String IOS_BAR_SLIDE_RIGHT = "ios_bar_slide_right";
-    static final int IOS_BAR_SLIDE_RIGHT_DEFAULT = Handlers.GLOBAL_ACTION_BACK;
+    static final int IOS_BAR_SLIDE_RIGHT_DEFAULT = Handlers.VITUAL_ACTION_PREV_APP;
     static final String IOS_BAR_SLIDE_UP = "ios_bar_slide_up";
     static final int IOS_BAR_SLIDE_UP_DEFAULT = Handlers.GLOBAL_ACTION_HOME;
     static final String IOS_BAR_SLIDE_UP_HOVER = "ios_bar_slide_up_hover";
@@ -105,4 +105,9 @@ class SpfConfig {
     // 三星优化(自动禁用系统手势)
     public static String SAMSUNG_OPTIMIZE = "SAMSUNG_OPTIMIZE";
     public static boolean SAMSUNG_OPTIMIZE_DEFAULT = true;
+
+    public final static String HOME_ANIMATION = "HOME_ANIMATION";
+    public final static int HOME_ANIMATION_DEFAULT = 0;
+    public final static int HOME_ANIMATION_BASIC = 1;
+    public final static int HOME_ANIMATION_CUSTOM = 2;
 }

@@ -102,6 +102,7 @@
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView style="@style/card_view">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -118,6 +119,31 @@
             <TextView
                 style="@style/switch_desc"
                 android:text="@string/hide_start_icon_desc" />
+
+            <LinearLayout
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/card_title"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/animation_mode" />
+
+                <Button
+                    android:id="@+id/home_animation"
+                    android:textAlignment="center"
+                    android:text="@string/animation_mode_default"
+                    style="@style/btn_handler_picker" />
+            </LinearLayout>
+            <TextView
+                android:layout_marginTop="6dp"
+                style="@style/switch_desc"
+                android:text="@string/animation_mode_desc" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>
