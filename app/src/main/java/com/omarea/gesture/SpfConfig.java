@@ -94,7 +94,7 @@ class SpfConfig {
     static final String IOS_BAR_MARGIN_BOTTOM = "ios_bar_margin_bottom";
     static final int IOS_BAR_MARGIN_BOTTOM_DEFAULT = 4; // ?dp
     static final String IOS_BAR_HEIGHT = "ios_bar_height";
-    static final int IOS_BAR_HEIGHT_DEFAULT = 5; // ?dp
+    static final int IOS_BAR_HEIGHT_DEFAULT = 3; // ?dp
     static final String IOS_BAR_LOCK_HIDE = "ios_bar_lock_hide";
     static final Boolean IOS_BAR_LOCK_HIDE_DEFAULT = false;
 

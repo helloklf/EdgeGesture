@@ -30,37 +30,19 @@ public class AppSwitchActivity extends Activity {
             if (currentIntent.hasExtra("next")) {
                 String appPackageName = currentIntent.getStringExtra("next");
                 Log.d("AppSwitchActivity", "next >> " + appPackageName);
-                int enter = R.anim.activity_open_enter;
-                int exit = R.anim.activity_open_exit;
                 if (animation == SpfConfig.HOME_ANIMATION_CUSTOM) {
-                    enter = R.anim.activity_open_enter_2;
-                    exit = R.anim.activity_open_exit_2;
+                    switchApp(appPackageName, R.anim.activity_open_enter_2, R.anim.activity_open_exit_2);
+                } else {
+                    switchApp(appPackageName, R.anim.activity_open_enter, R.anim.activity_open_exit);
                 }
-                ActivityOptions activityOptions = ActivityOptions.makeCustomAnimation(this.getApplicationContext(), enter, exit);
-                startActivity(
-                        setIntentFlags(
-                                getPackageManager().getLaunchIntentForPackage(appPackageName)
-                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION),
-                        activityOptions.toBundle()
-                );
-                overridePendingTransition(enter, exit);
             } else if (currentIntent.hasExtra("prev")) {
                 String appPackageName = currentIntent.getStringExtra("prev");
                 Log.d("AppSwitchActivity", "prev << " + appPackageName);
-                int enter = R.anim.activity_close_enter;
-                int exit = R.anim.activity_close_exit;
                 if (animation == SpfConfig.HOME_ANIMATION_CUSTOM) {
-                    enter = R.anim.activity_close_enter_2;
-                    exit = R.anim.activity_close_exit_2;
+                    switchApp(appPackageName, R.anim.activity_close_enter_2, R.anim.activity_close_exit_2);
+                } else {
+                    switchApp(appPackageName, R.anim.activity_close_enter, R.anim.activity_close_exit);
                 }
-                ActivityOptions activityOptions = ActivityOptions.makeCustomAnimation(this.getApplicationContext(), enter, exit);
-                startActivity(
-                        setIntentFlags(
-                                getPackageManager().getLaunchIntentForPackage(appPackageName)
-                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION),
-                        activityOptions.toBundle()
-                );
-                overridePendingTransition(enter, exit);
             } else if (currentIntent.hasExtra("home")) {
                 overridePendingTransition(R.anim.activity_close_enter, R.anim.activity_close_exit);
                 Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -128,14 +110,22 @@ public class AppSwitchActivity extends Activity {
     }
     */
 
-    private Intent setIntentFlags(Intent i) {
+    private void switchApp(String appPackageName, int enterAnimation, int exitAnimation) {
+        ActivityOptions activityOptions = ActivityOptions.makeCustomAnimation(this.getApplicationContext(), enterAnimation, exitAnimation);
+        startActivity(getAppSwitchIntent(appPackageName), activityOptions.toBundle());
+        overridePendingTransition(enterAnimation, exitAnimation);
+    }
+
+    private Intent getAppSwitchIntent(String appPackageName) {
+        Intent i = getPackageManager().getLaunchIntentForPackage(appPackageName);
         // i.setFlags((i.getFlags() & ~Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED) | Intent.FLAG_ACTIVITY_NEW_TASK);
         // i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         // i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         // i.addFlags(Intent.FLAG_ACTIVITY_TASK_ON_HOME);
         // i.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
         // i.setFlags(0x10200000);
-        i.setFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED & Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         // i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         i.setAction(Intent.ACTION_MAIN);
         i.addCategory(Intent.CATEGORY_LAUNCHER);

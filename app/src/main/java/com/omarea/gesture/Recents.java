@@ -5,22 +5,27 @@ import java.util.ArrayList;
 public class Recents {
     private static final ArrayList<String> recents = new ArrayList<>();
     private static int index = -1;
-    private static final int sizeLimit = 10;
+    private static final int sizeLimit = 100;
 
-    public static void addRecent(String packageName) {
+    static void addRecent(String packageName) {
         synchronized (recents) {
             int searchResult = recents.indexOf(packageName);
-            // if (searchResult > -1 && Math.abs(searchResult - index) == 1) {
             if (searchResult > -1) {
-                index = searchResult;
-            } else {
-                if (recents.size() >= sizeLimit) {
-                    recents.remove(0);
-                }
-
-                recents.add(packageName);
-                index = recents.size() - 1;
+                recents.remove(searchResult);
             }
+            if (recents.size() >= sizeLimit) {
+                recents.remove(0);
+                if (index >= recents.size()) {
+                    index = recents.size() - 1;
+                }
+            }
+
+            if (index > -1) {
+                recents.add(index, packageName);
+            } else {
+                recents.add(packageName);
+            }
+            index = recents.indexOf(packageName);
         }
     }
 
@@ -34,7 +39,7 @@ public class Recents {
         }
     }
 
-    public static String movePrevious() {
+    static String movePrevious() {
         synchronized (recents) {
             if (index > 0) {
                 index -= 1;
@@ -49,7 +54,7 @@ public class Recents {
         }
     }
 
-    public static String moveNext() {
+    static String moveNext() {
         synchronized (recents) {
             if (index < recents.size() - 1) {
                 index += 1;
