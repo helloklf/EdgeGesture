@@ -33,6 +33,7 @@
         <activity
             android:excludeFromRecents="true"
             android:screenOrientation="behind"
+            android:launchMode="standard"
             android:name=".AppSwitchActivity"
             android:theme="@style/appSwitch">
             <intent-filter>

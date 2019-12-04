@@ -82,6 +82,7 @@ public class iOSWhiteBar {
             widthRatio = config.getInt(SpfConfig.IOS_BAR_WIDTH_PORTRAIT, SpfConfig.IOS_BAR_WIDTH_DEFAULT_PORTRAIT) / 100f;
         }
 
+        final boolean gameOptimization = config.getBoolean(SpfConfig.GAME_OPTIMIZATION, SpfConfig.GAME_OPTIMIZATION_DEFAULT);
         final float fateOutAlpha = config.getInt(SpfConfig.IOS_BAR_ALPHA_FADEOUT, SpfConfig.IOS_BAR_ALPHA_FADEOUT_DEFAULT) / 100f; // 0.2f;
         final int barColor = isLandscapf ? (config.getInt(SpfConfig.IOS_BAR_COLOR_LANDSCAPE, SpfConfig.IOS_BAR_COLOR_LANDSCAPE_DEFAULT)) : (config.getInt(SpfConfig.IOS_BAR_COLOR_PORTRAIT, SpfConfig.IOS_BAR_COLOR_PORTRAIT_DEFAULT));
         final int shadowColor = config.getInt(SpfConfig.IOS_BAR_COLOR_SHADOW, SpfConfig.IOS_BAR_COLOR_SHADOW_DEFAULT);
@@ -108,7 +109,7 @@ public class iOSWhiteBar {
 
         params.format = PixelFormat.TRANSLUCENT;
 
-        final int originY =  - dp2px(accessibilityService, (isLandscapf ? marginBottom : 0));
+        final int originY =  - dp2px(accessibilityService, ((isLandscapf && gameOptimization) ? marginBottom : 0));
         final int originX = 0;
 
         params.width = WindowManager.LayoutParams.WRAP_CONTENT;

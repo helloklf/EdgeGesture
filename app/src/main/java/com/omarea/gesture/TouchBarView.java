@@ -54,6 +54,7 @@ class TouchBarView extends View {
     private int eventHover;
     private AccessibilityService accessibilityService;
     private boolean isLandscapf = false;
+    private boolean gameOptimization = false;
 
     private Paint p = new Paint();
     private long lastEventTime = 0L;
@@ -84,7 +85,7 @@ class TouchBarView extends View {
 
     private void performGlobalAction(int event) {
         if (accessibilityService != null) {
-            if (isLandscapf && (lastEventTime + 1500 < System.currentTimeMillis() || lastEvent != event)) {
+            if (gameOptimization && isLandscapf && (lastEventTime + 1500 < System.currentTimeMillis() || lastEvent != event)) {
                 lastEvent = event;
                 lastEventTime = System.currentTimeMillis();
                 Toast.makeText(context, this.getContext().getString(R.string.please_repeat), Toast.LENGTH_SHORT).show();
@@ -121,9 +122,10 @@ class TouchBarView extends View {
         }
     }
 
-    void setBarPosition(int barPosition, boolean isLandscapf, int width, int height) {
+    void setBarPosition(int barPosition, boolean isLandscapf, boolean gameOptimization, int width, int height) {
         this.barPosition = barPosition;
         this.isLandscapf = isLandscapf;
+        this.gameOptimization = gameOptimization;
 
         setSize(width, height);
         if (barPosition == BOTTOM) {

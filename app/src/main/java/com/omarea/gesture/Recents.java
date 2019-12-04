@@ -39,6 +39,10 @@ public class Recents {
             if (index > 0) {
                 index -= 1;
                 return recents.get(index);
+            } else if (recents.size() > 0) {
+                int size = recents.size();
+                index = size - 1;
+                return recents.get(index);
             } else {
                 return null;
             }
@@ -50,6 +54,9 @@ public class Recents {
             if (index < recents.size() - 1) {
                 index += 1;
                 return recents.get(index);
+            } else if (recents.size() > 0) {
+                index = 0;
+                return recents.get(0);
             } else {
                 return null;
             }

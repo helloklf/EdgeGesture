@@ -136,7 +136,7 @@ class FloatVirtualTouchBar {
             barHeight = dp2px(context, config.getInt(SpfConfig.CONFIG_HOT_BOTTOM_HEIGHT, SpfConfig.CONFIG_HOT_BOTTOM_HEIGHT_DEFAULT)); // LayoutParams.WRAP_CONTENT;
         }
 
-        bar.setBarPosition(TouchBarView.BOTTOM, islandscape, barWidth, barHeight);
+        bar.setBarPosition(TouchBarView.BOTTOM, islandscape, config.getBoolean(SpfConfig.GAME_OPTIMIZATION, SpfConfig.GAME_OPTIMIZATION_DEFAULT), barWidth, barHeight);
 
         final LayoutParams params = new LayoutParams();
 
@@ -202,7 +202,7 @@ class FloatVirtualTouchBar {
             barWidth = dp2px(context, config.getInt(SpfConfig.CONFIG_HOT_SIDE_WIDTH, SpfConfig.CONFIG_HOT_SIDE_WIDTH_DEFAULT)); // LayoutParams.WRAP_CONTENT;
         }
 
-        bar.setBarPosition(TouchBarView.LEFT, islandscape, barWidth, barHeight);
+        bar.setBarPosition(TouchBarView.LEFT, islandscape, config.getBoolean(SpfConfig.GAME_OPTIMIZATION, SpfConfig.GAME_OPTIMIZATION_DEFAULT), barWidth, barHeight);
 
         final LayoutParams params = new LayoutParams();
 
@@ -246,7 +246,7 @@ class FloatVirtualTouchBar {
         } else {
             barWidth = dp2px(context, config.getInt(SpfConfig.CONFIG_HOT_SIDE_WIDTH, SpfConfig.CONFIG_HOT_SIDE_WIDTH_DEFAULT)); // LayoutParams.WRAP_CONTENT;
         }
-        bar.setBarPosition(TouchBarView.RIGHT, islandscape, barWidth, barHeight);
+        bar.setBarPosition(TouchBarView.RIGHT, islandscape, config.getBoolean(SpfConfig.GAME_OPTIMIZATION, SpfConfig.GAME_OPTIMIZATION_DEFAULT), barWidth, barHeight);
 
         final LayoutParams params = new LayoutParams();
 

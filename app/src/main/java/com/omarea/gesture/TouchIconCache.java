@@ -68,9 +68,21 @@ class TouchIconCache {
                 }
                 return touch_screenshot;
             }
-            case Handlers.VITUAL_ACTION_PREV_APP: {
+            case Handlers.VITUAL_ACTION_SWITCH_APP: {
                 if (touch_switch == null && mContext != null) {
                     touch_switch = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.touch_switch);
+                }
+                return touch_switch;
+            }
+            case Handlers.VITUAL_ACTION_PREV_APP: {
+                if (touch_switch == null && mContext != null) {
+                    touch_switch = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.touch_jump_previous);
+                }
+                return touch_switch;
+            }
+            case Handlers.VITUAL_ACTION_NEXT_APP: {
+                if (touch_switch == null && mContext != null) {
+                    touch_switch = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.touch_jump_next);
                 }
                 return touch_switch;
             }

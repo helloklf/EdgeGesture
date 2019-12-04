@@ -167,6 +167,8 @@ public class SettingsActivity extends Activity {
         bindSeekBar(R.id.ios_bar_height, SpfConfig.IOS_BAR_HEIGHT, SpfConfig.IOS_BAR_HEIGHT_DEFAULT, true);
         bindCheckable(R.id.ios_bar_lock_hide, SpfConfig.IOS_BAR_LOCK_HIDE, SpfConfig.IOS_BAR_LOCK_HIDE_DEFAULT);
 
+        bindCheckable(R.id.game_optimization, SpfConfig.GAME_OPTIMIZATION, SpfConfig.GAME_OPTIMIZATION_DEFAULT);
+
         setViewBackground(findViewById(R.id.ios_bar_color_fadeout), 0xff888888);
 
         if (Build.MANUFACTURER.equals("samsung") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -216,7 +218,7 @@ public class SettingsActivity extends Activity {
     }
 
     private void homeAnimationPicker() {
-        String[] options = new String[]{getString(R.string.animation_mode_default), getString(R.string.animation_mode_default), getString(R.string.animation_mode_default)};
+        String[] options = new String[]{getString(R.string.animation_mode_default), getString(R.string.animation_mode_basic), getString(R.string.animation_mode_custom)};
         new AlertDialog.Builder(this).setTitle(R.string.animation_mode)
                 .setSingleChoiceItems(options,
                         config.getInt(SpfConfig.HOME_ANIMATION, SpfConfig.HOME_ANIMATION_DEFAULT),

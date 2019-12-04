@@ -110,4 +110,8 @@ class SpfConfig {
     public final static int HOME_ANIMATION_DEFAULT = 0;
     public final static int HOME_ANIMATION_BASIC = 1;
     public final static int HOME_ANIMATION_CUSTOM = 2;
+
+    // 游戏防误触
+    static final String GAME_OPTIMIZATION = "GAME_OPTIMIZATION";
+    static final Boolean GAME_OPTIMIZATION_DEFAULT = true;
 }

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Build;
@@ -17,8 +18,11 @@ import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
+import android.view.inputmethod.InputMethodInfo;
+import android.view.inputmethod.InputMethodManager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AccessibilityServiceKeyEvent extends AccessibilityService {
     boolean isLandscapf = false;
@@ -70,13 +74,20 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
     // 已经确保可以打开的应用
     private ArrayList<String> whiteList = new ArrayList<>();
     // 已经可以肯定不是可以打开的应用
-    private ArrayList<String> blackList = new ArrayList<>();
+    private ArrayList<String> blackList = new ArrayList<String>(){{
+        add("android");
+        add("com.android.systemui");
+        add("com.miui.home");
+        add("com.miui.freeform");
+    }};
+    // 忽略的应用
+    private ArrayList<String> ignoreApps = null;
     // 检测应用是否是可以打开的
     private boolean canOpen(String packageName) {
-        if (whiteList.indexOf(packageName) > -1) {
-            return true;
-        } else if (blackList.indexOf(packageName) > -1) {
+        if (blackList.indexOf(packageName) > -1 || ignoreApps.indexOf(packageName) > -1) {
             return false;
+        } else if (whiteList.indexOf(packageName) > -1) {
+            return true;
         } else {
             Intent launchIntent = getPackageManager().getLaunchIntentForPackage(packageName);
             if (launchIntent != null) {
@@ -89,6 +100,28 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
         }
     }
 
+    // 启动器应用（桌面）
+    private ArrayList<String> getLauncherApps() {
+        Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
+        resolveIntent.addCategory(Intent.CATEGORY_HOME);
+        List<ResolveInfo> resolveinfoList = getPackageManager().queryIntentActivities(resolveIntent, 0);
+        ArrayList<String> launcherApps = new ArrayList<>();
+        for (ResolveInfo resolveInfo: resolveinfoList) {
+            launcherApps.add(resolveInfo.activityInfo.packageName);
+        }
+        return launcherApps;
+    }
+
+    // 启动器应用（桌面）
+    private ArrayList<String> getInputMethods() {
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        ArrayList<String> inputMethods = new ArrayList<>();
+        for (InputMethodInfo inputMethodInfo: imm.getInputMethodList()) {
+            ignoreApps.add(inputMethodInfo.getPackageName());
+        }
+        return inputMethods;
+    }
+
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         // Log.d("onAccessibilityEvent", event.getPackageName().toString());
@@ -97,6 +130,10 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
             if (packageName != null && !packageName.equals(getPackageName())) {
                 String packageNameStr = packageName.toString();
                 Log.d("onAccessibilityEvent", "" + packageNameStr);
+                if (ignoreApps == null) {
+                    ignoreApps = getLauncherApps();
+                    ignoreApps.addAll(getInputMethods());
+                }
                 if (canOpen(packageNameStr)) {
                     Recents.addRecent(packageNameStr);
                 }
