@@ -42,6 +42,9 @@
     <string name="animation_mode_desc">使用非默认的动画模式，需要授权本应用“后台运行”、“后台弹出界面”等权限，否则可能操作无反应，此功能仅支持部分设备</string>
     <string name="game_optimization">游戏防误触</string>
     <string name="game_optimization_desc">横屏时降低小白条高度；其它边缘手势则需要重复手势以确认</string>
+    <string name="root_get_recents">使用ROOT获取最近任务</string>
+    <string name="root_get_recents_desc">使用ROOT权限获取活动的进程，避免切换应用时打开已经结束的应用</string>
+    <string name="no_root">未能获得ROOT权限</string>
 
     <string-array name="app_switch_black_list">
         <item>android</item>

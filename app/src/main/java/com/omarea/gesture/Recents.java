@@ -5,7 +5,8 @@ import java.util.ArrayList;
 public class Recents {
     private static final ArrayList<String> recents = new ArrayList<>();
     private static int index = -1;
-    private static final int sizeLimit = 100;
+    private static final int sizeLimit = 60;
+    private static String currentTop = "";
 
     static void addRecent(String packageName) {
         synchronized (recents) {
@@ -26,6 +27,18 @@ public class Recents {
                 recents.add(packageName);
             }
             index = recents.indexOf(packageName);
+            currentTop = packageName;
+        }
+    }
+
+    static void setRecents(ArrayList<String> items) {
+        synchronized (recents) {
+            for (String recent:recents) {
+                if (items.indexOf(recent) < 0) {
+                    recents.remove(recent);
+                }
+            }
+            index = recents.indexOf(currentTop);
         }
     }
 

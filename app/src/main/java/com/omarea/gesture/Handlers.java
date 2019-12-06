@@ -3,12 +3,19 @@ package com.omarea.gesture;
 import android.accessibilityservice.AccessibilityService;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.util.Log;
 import android.widget.Toast;
+
+import com.omarea.gesture.shell.KeepShellPublic;
+
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Handlers {
+    private static SharedPreferences config;
     final static int GLOBAL_ACTION_NONE = 0;
     final static int GLOBAL_ACTION_BACK = AccessibilityService.GLOBAL_ACTION_BACK;
     final static int GLOBAL_ACTION_HOME = AccessibilityService.GLOBAL_ACTION_HOME;
@@ -121,6 +128,17 @@ public class Handlers {
                             }
                             case VITUAL_ACTION_PREV_APP:
                             case VITUAL_ACTION_NEXT_APP: {
+                                if (config == null) {
+                                    config = accessibilityService.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
+                                }
+                                if (config.getBoolean(SpfConfig.ROOT_GET_RECENTS, SpfConfig.ROOT_GET_RECENTS_DEFAULT)) {
+                                    // 单个app：dumpsys activity com.android.browser | grep ACTIVITY | cut -F3 | cut -f1 -d '/'
+                                    // recent： dumpsys activity r | grep Recent | grep A= | cut -F7 | cut -f2 -d '='
+                                    // top Activity（慢）： dumpsys activity top | grep ACTIVITY | cut -F3 | cut -f1 -d '/'
+                                    ArrayList<String> recents = new ArrayList<>();
+                                    Collections.addAll(recents, KeepShellPublic.doCmdSync("dumpsys activity r | grep 'TaskRecord.*A=' | cut -F7 | cut -f2 -d '='").split("\n"));
+                                    Recents.setRecents(recents);
+                                }
                                 if (action == VITUAL_ACTION_PREV_APP) {
                                     String targetApp = Recents.movePrevious();
                                     if (targetApp != null) {

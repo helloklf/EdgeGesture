@@ -28,6 +28,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.omarea.gesture.shell.KeepShellPublic;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -215,6 +217,28 @@ public class SettingsActivity extends Activity {
             }
         });
         setHomeAnimationText();
+
+        // 使用ROOT获取最近任务
+        Switch root_get_recents = findViewById(R.id.root_get_recents);
+        root_get_recents.setChecked(config.getBoolean(SpfConfig.ROOT_GET_RECENTS, SpfConfig.ROOT_GET_RECENTS_DEFAULT));
+        root_get_recents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Checkable ele = (Checkable) v;
+                if (ele.isChecked()) {
+                    if (KeepShellPublic.checkRoot()) {
+                        config.edit().putBoolean(SpfConfig.ROOT_GET_RECENTS, true).apply();
+                        updateView();
+                    } else {
+                        ele.setChecked(false);
+                        Toast.makeText(getApplicationContext(), getString(R.string.no_root), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    config.edit().putBoolean(SpfConfig.ROOT_GET_RECENTS, false).apply();
+                    updateView();
+                }
+            }
+        });
     }
 
     private void homeAnimationPicker() {

@@ -115,4 +115,6 @@ class SpfConfig {
     // 游戏防误触
     static final String GAME_OPTIMIZATION = "GAME_OPTIMIZATION";
     static final Boolean GAME_OPTIMIZATION_DEFAULT = true;
+    static final String ROOT_GET_RECENTS = "ROOT_GET_RECENTS =";
+    static final Boolean ROOT_GET_RECENTS_DEFAULT = false;
 }
