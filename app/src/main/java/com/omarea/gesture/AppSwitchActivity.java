@@ -29,7 +29,6 @@ public class AppSwitchActivity extends Activity {
 
             if (currentIntent.hasExtra("next")) {
                 String appPackageName = currentIntent.getStringExtra("next");
-                Log.d("AppSwitchActivity", "next >> " + appPackageName);
                 if (animation == SpfConfig.HOME_ANIMATION_CUSTOM) {
                     switchApp(appPackageName, R.anim.activity_open_enter_2, R.anim.activity_open_exit_2);
                 } else {
@@ -37,7 +36,6 @@ public class AppSwitchActivity extends Activity {
                 }
             } else if (currentIntent.hasExtra("prev")) {
                 String appPackageName = currentIntent.getStringExtra("prev");
-                Log.d("AppSwitchActivity", "prev << " + appPackageName);
                 if (animation == SpfConfig.HOME_ANIMATION_CUSTOM) {
                     switchApp(appPackageName, R.anim.activity_close_enter_2, R.anim.activity_close_exit_2);
                 } else {

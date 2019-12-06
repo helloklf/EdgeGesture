@@ -4,9 +4,7 @@ import android.accessibilityservice.AccessibilityService;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 import android.widget.Toast;
-
 import java.io.OutputStream;
 import java.util.ArrayList;
 
@@ -121,23 +119,24 @@ public class Handlers {
                                 intent.putExtra("home", true);
                                 break;
                             }
+                            case VITUAL_ACTION_PREV_APP:
                             case VITUAL_ACTION_NEXT_APP: {
-                                String targetApp = Recents.moveNext();
-                                if (targetApp != null) {
-                                    intent.putExtra("next", targetApp);
+                                if (action == VITUAL_ACTION_PREV_APP) {
+                                    String targetApp = Recents.movePrevious();
+                                    if (targetApp != null) {
+                                        intent.putExtra("prev", targetApp);
+                                    } else {
+                                        Toast.makeText(accessibilityService, "<<", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
                                 } else {
-                                    Toast.makeText(accessibilityService, ">>", Toast.LENGTH_SHORT).show();
-                                    return;
-                                }
-                                break;
-                            }
-                            case VITUAL_ACTION_PREV_APP: {
-                                String targetApp = Recents.movePrevious();
-                                if (targetApp != null) {
-                                    intent.putExtra("prev", targetApp);
-                                } else {
-                                    Toast.makeText(accessibilityService, "<<", Toast.LENGTH_SHORT).show();
-                                    return;
+                                    String targetApp = Recents.moveNext();
+                                    if (targetApp != null) {
+                                        intent.putExtra("next", targetApp);
+                                    } else {
+                                        Toast.makeText(accessibilityService, ">>", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
                                 }
                                 break;
                             }

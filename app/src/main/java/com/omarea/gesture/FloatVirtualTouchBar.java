@@ -60,7 +60,6 @@ class FloatVirtualTouchBar {
                 }
             }
         } catch (Exception ex) {
-            Log.d("异常", ex.getLocalizedMessage());
             Toast.makeText(context, "启动虚拟导航手势失败！", Toast.LENGTH_LONG).show();
         }
     }

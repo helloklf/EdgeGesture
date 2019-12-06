@@ -30,7 +30,6 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
     private FloatVirtualTouchBar floatVitualTouchBar = null;
     private BroadcastReceiver configChanged = null;
     private BroadcastReceiver serviceDisable = null;
-    private Handler handler = new Handler();
     private BroadcastReceiver screenStateReceiver;
     private SharedPreferences config;
 
@@ -116,6 +115,24 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
         return inputMethods;
     }
 
+    /*
+    通过
+    dumpsys activity top | grep ACTIVITY
+    可以获取当前打开的应用，但是，作为普通应用并且有这个权限
+    */
+
+    /*
+    List<AccessibilityWindowInfo> windowInfos = accessibilityService.getWindows();
+    Log.d("AccessibilityWindowInfo", "windowInfos " + windowInfos.size());
+    for (AccessibilityWindowInfo windowInfo : windowInfos) {
+        try {
+            Log.d("AccessibilityWindowInfo", "" + windowInfo.getRoot().getPackageName());
+        } catch (Exception ex) {
+            Log.e("AccessibilityWindowInfo", "" + ex.getMessage());
+        }
+    }
+    */
+
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         // Log.d("onAccessibilityEvent", event.getPackageName().toString());
@@ -123,7 +140,6 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
             CharSequence packageName = event.getPackageName();
             if (packageName != null && !packageName.equals(getPackageName())) {
                 String packageNameStr = packageName.toString();
-                Log.d("onAccessibilityEvent", "" + packageNameStr);
                 if (ignoreApps == null) {
                     ignoreApps = getLauncherApps();
                     ignoreApps.addAll(getInputMethods());
