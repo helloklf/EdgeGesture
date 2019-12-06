@@ -124,11 +124,10 @@ public class AppSwitchActivity extends Activity {
         // i.addFlags(Intent.FLAG_ACTIVITY_TASK_ON_HOME);
         // i.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
         // i.setFlags(0x10200000);
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-        i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        // i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-        i.setAction(Intent.ACTION_MAIN);
-        i.addCategory(Intent.CATEGORY_LAUNCHER);
+        i.setFlags((i.getFlags() | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED) | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        // i.setFlags((i.getFlags() & ~Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED) | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        // i.setAction(Intent.ACTION_MAIN);
+        // i.addCategory(Intent.CATEGORY_LAUNCHER);
         return i;
     }
 }

@@ -144,7 +144,7 @@ public class Handlers {
                         }
                         accessibilityService.startActivity(intent);
                     } catch (Exception ex) {
-                        Log.e("Gesture", "" + ex.getMessage());
+                        Toast.makeText(accessibilityService, "" + ex.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;

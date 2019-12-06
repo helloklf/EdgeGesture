@@ -2,6 +2,7 @@ package com.omarea.gesture;
 
 class SpfConfig {
     static final String ConfigFile = "main";
+    static final String AppSwitchBlackList = "app_switch_black_list";
 
     // 悬停时间
     static final String CONFIG_HOVER_TIME = "CONFIG_HOVER_TIME_MS";

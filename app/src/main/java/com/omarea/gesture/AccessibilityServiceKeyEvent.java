@@ -22,6 +22,7 @@ import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class AccessibilityServiceKeyEvent extends AccessibilityService {
@@ -74,12 +75,7 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
     // 已经确保可以打开的应用
     private ArrayList<String> whiteList = new ArrayList<>();
     // 已经可以肯定不是可以打开的应用
-    private ArrayList<String> blackList = new ArrayList<String>(){{
-        add("android");
-        add("com.android.systemui");
-        add("com.miui.home");
-        add("com.miui.freeform");
-    }};
+    private ArrayList<String> blackList = new ArrayList<String>(){};
     // 忽略的应用
     private ArrayList<String> ignoreApps = null;
     // 检测应用是否是可以打开的
@@ -99,7 +95,6 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
             }
         }
     }
-
     // 启动器应用（桌面）
     private ArrayList<String> getLauncherApps() {
         Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
@@ -111,8 +106,7 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
         }
         return launcherApps;
     }
-
-    // 启动器应用（桌面）
+    // 输入法应用
     private ArrayList<String> getInputMethods() {
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         ArrayList<String> inputMethods = new ArrayList<>();
@@ -217,6 +211,8 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
         registerReceiver(screenStateReceiver, new IntentFilter(Intent.ACTION_SCREEN_ON));
         registerReceiver(screenStateReceiver, new IntentFilter(Intent.ACTION_USER_PRESENT));
         forceHideNavBar();
+
+        Collections.addAll(blackList, getResources().getStringArray(R.array.app_switch_black_list));
     }
 
     @Override
