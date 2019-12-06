@@ -26,7 +26,7 @@ class FloatVirtualTouchBar {
     private int lastEvent = -1;
     private SharedPreferences config;
 
-    public FloatVirtualTouchBar(AccessibilityService context, boolean islandscape) {
+    public FloatVirtualTouchBar(AccessibilityServiceKeyEvent context, boolean islandscape) {
         this.islandscape = islandscape;
 
         config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
@@ -106,7 +106,7 @@ class FloatVirtualTouchBar {
         return value;
     }
 
-    private View setBottomView(final AccessibilityService context) {
+    private View setBottomView(final AccessibilityServiceKeyEvent context) {
         final View view = LayoutInflater.from(context).inflate(R.layout.fw_vitual_touch_bar, null);
 
         TouchBarView bar = view.findViewById(R.id.bottom_touch_bar);
@@ -182,7 +182,7 @@ class FloatVirtualTouchBar {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private View setLeftView(final AccessibilityService context) {
+    private View setLeftView(final AccessibilityServiceKeyEvent context) {
         final View view = LayoutInflater.from(context).inflate(R.layout.fw_vitual_touch_bar, null);
         TouchBarView bar = view.findViewById(R.id.bottom_touch_bar);
         if (GlobalState.testMode) {
@@ -226,7 +226,7 @@ class FloatVirtualTouchBar {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private View setRightView(final AccessibilityService context) {
+    private View setRightView(final AccessibilityServiceKeyEvent context) {
         final View view = LayoutInflater.from(context).inflate(R.layout.fw_vitual_touch_bar, null);
 
         TouchBarView bar = view.findViewById(R.id.bottom_touch_bar);

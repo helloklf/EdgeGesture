@@ -12,15 +12,12 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Build;
-import android.os.Handler;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,6 +29,7 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
     private BroadcastReceiver serviceDisable = null;
     private BroadcastReceiver screenStateReceiver;
     private SharedPreferences config;
+    public Recents recents = new Recents();
 
     private void hidePopupWindow() {
         if (floatVitualTouchBar != null) {
@@ -71,25 +69,19 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
         }
     }
 
-    // 已经确保可以打开的应用
-    private ArrayList<String> whiteList = new ArrayList<>();
-    // 已经可以肯定不是可以打开的应用
-    private ArrayList<String> blackList = new ArrayList<String>(){};
-    // 忽略的应用
-    private ArrayList<String> ignoreApps = null;
     // 检测应用是否是可以打开的
     private boolean canOpen(String packageName) {
-        if (blackList.indexOf(packageName) > -1 || ignoreApps.indexOf(packageName) > -1) {
+        if (recents.blackList.indexOf(packageName) > -1 || recents.ignoreApps.indexOf(packageName) > -1) {
             return false;
-        } else if (whiteList.indexOf(packageName) > -1) {
+        } else if (recents.whiteList.indexOf(packageName) > -1) {
             return true;
         } else {
             Intent launchIntent = getPackageManager().getLaunchIntentForPackage(packageName);
             if (launchIntent != null) {
-                whiteList.add(packageName);
+                recents.whiteList.add(packageName);
                 return true;
             } else {
-                blackList.add(packageName);
+                recents.blackList.add(packageName);
                 return false;
             }
         }
@@ -110,7 +102,7 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         ArrayList<String> inputMethods = new ArrayList<>();
         for (InputMethodInfo inputMethodInfo: imm.getInputMethodList()) {
-            ignoreApps.add(inputMethodInfo.getPackageName());
+            recents.ignoreApps.add(inputMethodInfo.getPackageName());
         }
         return inputMethods;
     }
@@ -140,12 +132,12 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
             CharSequence packageName = event.getPackageName();
             if (packageName != null && !packageName.equals(getPackageName())) {
                 String packageNameStr = packageName.toString();
-                if (ignoreApps == null) {
-                    ignoreApps = getLauncherApps();
-                    ignoreApps.addAll(getInputMethods());
+                if (recents.ignoreApps == null) {
+                    recents.ignoreApps = getLauncherApps();
+                    recents.ignoreApps.addAll(getInputMethods());
                 }
                 if (canOpen(packageNameStr)) {
-                    Recents.addRecent(packageNameStr);
+                    recents.addRecent(packageNameStr);
                 }
             }
         }
@@ -228,7 +220,7 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
         registerReceiver(screenStateReceiver, new IntentFilter(Intent.ACTION_USER_PRESENT));
         forceHideNavBar();
 
-        Collections.addAll(blackList, getResources().getStringArray(R.array.app_switch_black_list));
+        Collections.addAll(recents.blackList, getResources().getStringArray(R.array.app_switch_black_list));
     }
 
     @Override

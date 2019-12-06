@@ -21,12 +21,12 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 
 public class iOSWhiteBar {
-    private AccessibilityService accessibilityService;
+    private AccessibilityServiceKeyEvent accessibilityService;
     private SharedPreferences config;
     private Boolean isLandscapf;
     private Vibrator vibrator;
 
-    public iOSWhiteBar(AccessibilityService accessibilityService, Boolean isLandscapf) {
+    public iOSWhiteBar(AccessibilityServiceKeyEvent accessibilityService, Boolean isLandscapf) {
         this.accessibilityService = accessibilityService;
         this.isLandscapf = isLandscapf;
         config = accessibilityService.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);

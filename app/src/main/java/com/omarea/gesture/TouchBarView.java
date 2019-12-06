@@ -52,7 +52,7 @@ class TouchBarView extends View {
 
     private int eventTouch;
     private int eventHover;
-    private AccessibilityService accessibilityService;
+    private AccessibilityServiceKeyEvent accessibilityService;
     private boolean isLandscapf = false;
     private boolean gameOptimization = false;
 
@@ -156,7 +156,7 @@ class TouchBarView extends View {
         this.setLayoutParams(lp);
     }
 
-    void setEventHandler(int shortTouch, int touchHover, final AccessibilityService context) {
+    void setEventHandler(int shortTouch, int touchHover, final AccessibilityServiceKeyEvent context) {
         this.eventTouch = shortTouch;
         this.eventHover = touchHover;
         this.accessibilityService = context;

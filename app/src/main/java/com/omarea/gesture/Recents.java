@@ -1,14 +1,24 @@
 package com.omarea.gesture;
 
+import android.content.Context;
 import java.util.ArrayList;
 
 public class Recents {
-    private static final ArrayList<String> recents = new ArrayList<>();
-    private static int index = -1;
-    private static final int sizeLimit = 60;
-    private static String currentTop = "";
+    // TODO:关闭辅助服务时清理以下数据
+    // 已经确保可以打开的应用
+    public ArrayList<String> whiteList = new ArrayList<>();
+    // 已经可以肯定不是可以打开的应用
+    public ArrayList<String> blackList = new ArrayList<String>() {
+    };
+    // 忽略的应用
+    public ArrayList<String> ignoreApps = null;
 
-    static void addRecent(String packageName) {
+    private final ArrayList<String> recents = new ArrayList<>();
+    private int index = -1;
+    private final int sizeLimit = 60;
+    private String currentTop = "";
+
+    void addRecent(String packageName) {
         synchronized (recents) {
             int searchResult = recents.indexOf(packageName);
             if (searchResult > -1) {
@@ -31,28 +41,54 @@ public class Recents {
         }
     }
 
-    static void setRecents(ArrayList<String> items) {
+    void setRecents(ArrayList<String> items, Context context) {
         synchronized (recents) {
-            for (String recent:recents) {
+            /*
+            if (recents.size() < 4) {
+                recents.clear();
+                for (String packageName : items) {
+                    if (
+                            whiteList.indexOf(packageName) > -1 ||
+                            (blackList.indexOf(packageName) < 0 && ignoreApps.indexOf(packageName) < 0)
+                    ) {
+                        recents.add(packageName);
+                    }
+                }
+                index = recents.indexOf(currentTop);
+            } else {
+                ArrayList<String> lostedItems = new ArrayList<>();
+                for (String recent : recents) {
+                    if (items.indexOf(recent) < 0) {
+                        lostedItems.add(recent);
+                    }
+                }
+                recents.removeAll(lostedItems);
+                index = recents.indexOf(currentTop);
+            }
+            */
+
+            ArrayList<String> lostedItems = new ArrayList<>();
+            for (String recent : recents) {
                 if (items.indexOf(recent) < 0) {
-                    recents.remove(recent);
+                    lostedItems.add(recent);
                 }
             }
+            recents.removeAll(lostedItems);
             index = recents.indexOf(currentTop);
         }
     }
 
-    public static int getIndex(String packageName) {
+    public int getIndex(String packageName) {
         return recents.indexOf(packageName);
     }
 
-    public static void setIndex(int to) {
+    public void setIndex(int to) {
         if (index < recents.size()) {
             index = to;
         }
     }
 
-    static String movePrevious() {
+    String movePrevious() {
         synchronized (recents) {
             if (index > 0) {
                 index -= 1;
@@ -67,7 +103,7 @@ public class Recents {
         }
     }
 
-    static String moveNext() {
+    String moveNext() {
         synchronized (recents) {
             if (index < recents.size() - 1) {
                 index += 1;

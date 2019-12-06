@@ -84,7 +84,7 @@ public class Handlers {
                 }
             }};
 
-    static void executeVirtualAction(final AccessibilityService accessibilityService, final int action) {
+    static void executeVirtualAction(final AccessibilityServiceKeyEvent accessibilityService, final int action) {
         switch (action) {
             case GLOBAL_ACTION_NONE: {
                 break;
@@ -136,11 +136,11 @@ public class Handlers {
                                     // recent： dumpsys activity r | grep Recent | grep A= | cut -F7 | cut -f2 -d '='
                                     // top Activity（慢）： dumpsys activity top | grep ACTIVITY | cut -F3 | cut -f1 -d '/'
                                     ArrayList<String> recents = new ArrayList<>();
-                                    Collections.addAll(recents, KeepShellPublic.doCmdSync("dumpsys activity r | grep 'TaskRecord.*A=' | cut -F7 | cut -f2 -d '='").split("\n"));
-                                    Recents.setRecents(recents);
+                                    Collections.addAll(recents, KeepShellPublic.doCmdSync("dumpsys activity r | grep realActivity | cut -f2 -d '=' | cut -f1 -d '/'").split("\n"));
+                                    accessibilityService.recents.setRecents(recents, accessibilityService);
                                 }
                                 if (action == VITUAL_ACTION_PREV_APP) {
-                                    String targetApp = Recents.movePrevious();
+                                    String targetApp = accessibilityService.recents.movePrevious();
                                     if (targetApp != null) {
                                         intent.putExtra("prev", targetApp);
                                     } else {
@@ -148,7 +148,7 @@ public class Handlers {
                                         return;
                                     }
                                 } else {
-                                    String targetApp = Recents.moveNext();
+                                    String targetApp = accessibilityService.recents.moveNext();
                                     if (targetApp != null) {
                                         intent.putExtra("next", targetApp);
                                     } else {
@@ -161,7 +161,8 @@ public class Handlers {
                         }
                         accessibilityService.startActivity(intent);
                     } catch (Exception ex) {
-                        Toast.makeText(accessibilityService, "" + ex.getMessage(), Toast.LENGTH_SHORT).show();
+                        ex.printStackTrace();
+                        Toast.makeText(accessibilityService, "AppSwitch Exception >> " + ex.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;

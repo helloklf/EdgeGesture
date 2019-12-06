@@ -18,6 +18,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/appTheme"
+        android:icon="@drawable/logo"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".SettingsActivity"

@@ -2,12 +2,11 @@ package com.omarea.gesture;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.widget.Toast;
@@ -50,8 +49,10 @@ public class AppSwitchActivity extends Activity {
                 intent.addCategory(Intent.CATEGORY_HOME);
                 if (animation == SpfConfig.HOME_ANIMATION_CUSTOM) {
                     ActivityOptions activityOptions = ActivityOptions.makeCustomAnimation(this.getApplicationContext(), R.anim.activity_close_enter_2, R.anim.activity_close_exit_2);
+                    // 很奇怪，在三星手机的OneUI（Android P）系统上，必须先overridePendingTransition再启动startActivity方可覆盖动画
                     overridePendingTransition(R.anim.home_enter, R.anim.app_exit);
                     startActivity(intent, activityOptions.toBundle());
+                    overridePendingTransition(R.anim.home_enter, R.anim.app_exit);
                 } else {
                     startActivity(intent);
                 }
@@ -122,8 +123,15 @@ public class AppSwitchActivity extends Activity {
         // i.addFlags(Intent.FLAG_ACTIVITY_TASK_ON_HOME);
         // i.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
         // i.setFlags(0x10200000);
-        i.setFlags((i.getFlags() | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED) | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        // Log.d("getAppSwitchIntent", "" + i.getFlags());
+        i.setFlags((i.getFlags() & ~Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED) | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        // i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        // @参考 https://blog.csdn.net/weixin_34335458/article/details/88020972
+        i.setPackage(null); // 加上这句代
+
         // i.setFlags((i.getFlags() & ~Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED) | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        // i.setFlags((i.getFlags() | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED) | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
         // i.setAction(Intent.ACTION_MAIN);
         // i.addCategory(Intent.CATEGORY_LAUNCHER);
         return i;
