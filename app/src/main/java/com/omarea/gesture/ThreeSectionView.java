@@ -303,14 +303,16 @@ class ThreeSectionView extends View {
         isGestureCompleted = true;
 
         float moveX = event.getX() - touchStartX;
-        float moveY = touchStartY - event.getY();
+        float moveY = touchStartY - event.getRawY();
 
         if (Math.abs(moveX) > flingValue || Math.abs(moveY) > flingValue) {
-            if (moveY > FLIP_DISTANCE) {
+            if (moveY > FLIP_DISTANCE) { // 纵向滑动
                 if (isLongTimeGesture)
                     onTouchHover();
                 else
                     onShortTouch();
+            } else if (moveX > FLIP_DISTANCE) { // 横向滑动
+
             }
         }
         cleartEffect();
