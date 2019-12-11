@@ -1,128 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_tabhost"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:scrollbarSize="0dp"
-    android:scrollbars="none"
-    tools:context=".SettingsActivity">
+    android:scrollbars="none">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="top"
-        android:orientation="vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingBottom="15dp">
-
-        <android.support.v7.widget.CardView style="@style/card_view">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <Switch
-                    android:id="@+id/enable_service"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/enable_service"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-        <TextView
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TabWidget
+            android:id="@android:id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:text="@string/back_hide_task"
-            android:textAlignment="center"
-            android:textSize="11dp" />
+            android:background="#ff222222" />
 
-        <TextView
+        <FrameLayout
+            android:id="@android:id/tabcontent"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="15dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:text="@string/rotate_tips"
-            android:textAlignment="center"
-            android:textSize="11dp" />
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/samsung_options"
-            style="@style/card_view"
-            android:visibility="gone">
-
-            <LinearLayout
+            <ScrollView
+                android:id="@+id/main_tab_0"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:orientation="vertical">
-
-                <Switch
-                    android:id="@+id/samsung_optimize"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/samsung_optimize"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/samsung_optimize_desc"
-                    android:textSize="12dp" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/samsung_guide"
-            style="@style/card_view"
-            android:visibility="gone">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/samsung_guide_desc"
-                    android:textSize="12dp" />
-
+                android:layout_height="match_parent">
                 <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/shell_content"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:text="adb shell pm grant com.omarea.gesture android.permission.WRITE_SECURE_SETTINGS"
-                        android:textSize="12dp" />
-
-                    <ImageButton
-                        android:id="@+id/copy_shell"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:background="@color/colorPrimary"
-                        android:padding="4dp"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/copy" />
+                    <include layout="@layout/switch_options" />
+                    <include layout="@layout/samsung_options" />
+                    <include layout="@layout/basic_options" />
                 </LinearLayout>
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
+            </ScrollView>
 
-        <include layout="@layout/ios_bar_options" />
+            <ScrollView
+                android:id="@+id/main_tab_1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <include layout="@layout/ios_bar_options" />
+            </ScrollView>
 
-        <include layout="@layout/classic_options" />
+            <ScrollView
+                android:id="@+id/main_tab_2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <include layout="@layout/edge_options" />
+            </ScrollView>
 
-        <include layout="@layout/other_options" />
+            <ScrollView
+                android:id="@+id/main_tab_3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <include layout="@layout/other_options" />
+            </ScrollView>
+        </FrameLayout>
     </LinearLayout>
-</ScrollView>
+</TabHost>

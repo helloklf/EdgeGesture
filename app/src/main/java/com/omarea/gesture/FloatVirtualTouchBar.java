@@ -31,9 +31,6 @@ class FloatVirtualTouchBar {
         mWindowManager = (WindowManager) (context.getSystemService(Context.WINDOW_SERVICE));
         try {
             if (islandscape) {
-                if (config.getBoolean(SpfConfig.LANDSCAPE_IOS_BAR, SpfConfig.LANDSCAPE_IOS_BAR_DEFAULT)) {
-                    this.iosBarView = new iOSWhiteBar(context, islandscape).getView();
-                }
                 if (config.getBoolean(SpfConfig.CONFIG_BOTTOM_ALLOW_LANDSCAPE, SpfConfig.CONFIG_BOTTOM_ALLOW_LANDSCAPE_DEFAULT)) {
                     this.bottomView = setBottomView(context);
                 }
@@ -43,10 +40,10 @@ class FloatVirtualTouchBar {
                 if (config.getBoolean(SpfConfig.CONFIG_RIGHT_ALLOW_LANDSCAPE, SpfConfig.CONFIG_RIGHT_ALLOW_LANDSCAPE_DEFAULT)) {
                     this.rightView = setRightView(context);
                 }
-            } else {
-                if (config.getBoolean(SpfConfig.PORTRAIT_IOS_BAR, SpfConfig.PORTRAIT_IOS_BAR_DEFAULT)) {
+                if (config.getBoolean(SpfConfig.LANDSCAPE_IOS_BAR, SpfConfig.LANDSCAPE_IOS_BAR_DEFAULT)) {
                     this.iosBarView = new iOSWhiteBar(context, islandscape).getView();
                 }
+            } else {
                 if (config.getBoolean(SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT, SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT_DEFAULT)) {
                     this.bottomView = setBottomView(context);
                 }
@@ -55,6 +52,9 @@ class FloatVirtualTouchBar {
                 }
                 if (config.getBoolean(SpfConfig.CONFIG_RIGHT_ALLOW_PORTRAIT, SpfConfig.CONFIG_RIGHT_ALLOW_PORTRAIT_DEFAULT)) {
                     this.rightView = setRightView(context);
+                }
+                if (config.getBoolean(SpfConfig.PORTRAIT_IOS_BAR, SpfConfig.PORTRAIT_IOS_BAR_DEFAULT)) {
+                    this.iosBarView = new iOSWhiteBar(context, islandscape).getView();
                 }
             }
         } catch (Exception ex) {
