@@ -194,21 +194,21 @@ public class Handlers {
         }
     }
 
-    static String getOption(int value) {
+    public static String getOption(int value) {
         String[] options = getOptions();
         ArrayList<Integer> values = getValues();
         return options[values.indexOf(value)];
     }
 
-    static String[] getOptions() {
+    public static String[] getOptions() {
         return options;
     }
 
-    static ArrayList<Integer> getValues() {
+    public static ArrayList<Integer> getValues() {
         return values;
     }
 
-    static void openXiaoAi() {
+    public static void openXiaoAi() {
             /*
             try {
                 Intent intent = new Intent(Intent.ACTION_MAIN);

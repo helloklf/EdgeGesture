@@ -1,10 +1,12 @@
-package com.omarea.gesture;
+package com.omarea.gesture.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.omarea.gesture.R;
+import com.omarea.gesture.SpfConfig;
 
 public class FragmentThreeSection extends FragmentSettingsBase {
 
@@ -32,9 +34,11 @@ public class FragmentThreeSection extends FragmentSettingsBase {
         bindHandlerPicker(R.id.three_section_right_hover, SpfConfig.THREE_SECTION_RIGHT_HOVER, SpfConfig.THREE_SECTION_RIGHT_HOVER_DEFAULT);
 
         bindColorPicker(R.id.bar_color_three_section, SpfConfig.THREE_SECTION_COLOR, SpfConfig.THREE_SECTION_COLOR_DEFAULT);
+
+        updateView();
     }
 
-    protected void updateView() {
+    private void updateView() {
         setViewBackground(getActivity().findViewById(R.id.bar_color_three_section), config.getInt(SpfConfig.THREE_SECTION_COLOR, SpfConfig.THREE_SECTION_COLOR_DEFAULT));
 
         updateActionText(R.id.three_section_left_slide, SpfConfig.THREE_SECTION_LEFT_SLIDE, SpfConfig.THREE_SECTION_LEFT_SLIDE_DEFAULT);
@@ -43,7 +47,11 @@ public class FragmentThreeSection extends FragmentSettingsBase {
         updateActionText(R.id.three_section_left_hover, SpfConfig.THREE_SECTION_LEFT_HOVER, SpfConfig.THREE_SECTION_LEFT_HOVER_DEFAULT);
         updateActionText(R.id.three_section_center_hover, SpfConfig.THREE_SECTION_CENTER_HOVER, SpfConfig.THREE_SECTION_CENTER_HOVER_DEFAULT);
         updateActionText(R.id.three_section_right_hover, SpfConfig.THREE_SECTION_RIGHT_HOVER, SpfConfig.THREE_SECTION_RIGHT_HOVER_DEFAULT);
+    }
 
-        super.updateView();
+    protected void restartService() {
+        updateView();
+
+        super.restartService();
     }
 }

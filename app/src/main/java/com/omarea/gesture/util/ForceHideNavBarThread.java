@@ -1,4 +1,4 @@
-package com.omarea.gesture;
+package com.omarea.gesture.util;
 
 import android.content.ContentResolver;
 import android.provider.Settings;
@@ -6,7 +6,7 @@ import android.provider.Settings;
 public class ForceHideNavBarThread extends Thread {
     private ContentResolver cr = null;
 
-    ForceHideNavBarThread(ContentResolver contentResolver) {
+    public ForceHideNavBarThread(ContentResolver contentResolver) {
         this.cr = contentResolver;
     }
 

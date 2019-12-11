@@ -19,6 +19,9 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
 
+import com.omarea.gesture.util.ForceHideNavBarThread;
+import com.omarea.gesture.util.Overscan;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -43,31 +46,43 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
     }
 
     private void forceHideNavBar() {
+        if (config == null) {
+            config = getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
+        }
+
         if (Build.MANUFACTURER.equals("samsung") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             if (cr == null) {
                 cr = getContentResolver();
             }
-
-            if (config == null) {
-                config = getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
-            }
-
             if (config.getBoolean(SpfConfig.SAMSUNG_OPTIMIZE, SpfConfig.SAMSUNG_OPTIMIZE_DEFAULT)) {
                 new ForceHideNavBarThread(cr).run();
+            }
+        } else {
+            if (config.getBoolean(SpfConfig.OVERSCAN_SWITCH, SpfConfig.OVERSCAN_SWITCH_DEFAULT)) {
+                new Overscan().setOverscan(this);
             }
         }
     }
 
     private void resumeNavBar() {
+        if (config == null) {
+            config = getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
+        }
+
         if (Build.MANUFACTURER.equals("samsung") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             try {
                 if (cr == null) {
                     cr = getContentResolver();
                 }
-                Settings.Global.putInt(cr, "navigation_bar_gesture_disabled_by_policy", 0); // oneui 策略取消强制禁用手势（因为锁屏唤醒后底部会触摸失灵，需要重新开关）
+                // oneui 策略取消强制禁用手势（因为锁屏唤醒后底部会触摸失灵，需要重新开关）
+                Settings.Global.putInt(cr, "navigation_bar_gesture_disabled_by_policy", 0);
             } catch (Exception ex) {
             }
             cr = null;
+        } else {
+            if (config.getBoolean(SpfConfig.OVERSCAN_SWITCH, SpfConfig.OVERSCAN_SWITCH_DEFAULT)) {
+                new Overscan().setOverscan(this);
+            }
         }
     }
 
@@ -207,8 +222,8 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
             public void onReceive(Context context, Intent intent) {
                 if (intent != null) {
                     String action = intent.getAction();
-                    if (action != null && ((action.equals(Intent.ACTION_USER_PRESENT)
-                            || action.equals(Intent.ACTION_USER_UNLOCKED))
+                    if (action != null &&
+                            ((action.equals(Intent.ACTION_USER_PRESENT) || action.equals(Intent.ACTION_USER_UNLOCKED))
                             // || action.equals(Intent.ACTION_SCREEN_ON)
                     )) {
                         forceHideNavBar();

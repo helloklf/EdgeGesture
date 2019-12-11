@@ -28,46 +28,30 @@
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <ScrollView
+            <FrameLayout
                 android:id="@+id/main_tab_0"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                android:layout_height="match_parent" />
 
-                    <include layout="@layout/switch_options" />
-                    <include layout="@layout/samsung_options" />
-                    <include layout="@layout/basic_options" />
-                </LinearLayout>
-            </ScrollView>
-
-            <ScrollView
+            <FrameLayout
                 android:id="@+id/main_tab_1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <include layout="@layout/ios_bar_options" />
-            </ScrollView>
+                android:layout_height="match_parent" />
 
-            <ScrollView
+            <FrameLayout
                 android:id="@+id/main_tab_2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <include layout="@layout/edge_options" />
-            </ScrollView>
+                android:layout_height="match_parent" />
 
-            <ScrollView
+            <FrameLayout
                 android:id="@+id/main_tab_3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-            <ScrollView
+            <FrameLayout
                 android:id="@+id/main_tab_4"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <include layout="@layout/other_options" />
-            </ScrollView>
+                android:layout_height="match_parent" />
         </FrameLayout>
     </LinearLayout>
 </TabHost>

@@ -1,4 +1,4 @@
-package com.omarea.gesture;
+package com.omarea.gesture.fragments;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -10,13 +10,16 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Checkable;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
+
+import com.omarea.gesture.Handlers;
+import com.omarea.gesture.R;
+import com.omarea.gesture.SpfConfig;
+import com.omarea.gesture.UITools;
 
 import java.util.ArrayList;
 
@@ -35,7 +38,7 @@ public class FragmentSettingsBase extends Fragment {
         super.onResume();
     }
 
-    protected void updateView() {
+    protected void restartService() {
         try {
             Intent intent = new Intent(getString(R.string.action_config_changed));
             getActivity().sendBroadcast(intent);
@@ -68,7 +71,7 @@ public class FragmentSettingsBase extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         config.edit().putInt(key, values.get(which)).apply();
-                        updateView();
+                        restartService();
 
                         dialog.dismiss();
                     }
@@ -88,7 +91,7 @@ public class FragmentSettingsBase extends Fragment {
             @Override
             public void onClick(View v) {
                 config.edit().putBoolean(key, ((Checkable) v).isChecked()).apply();
-                updateView();
+                restartService();
             }
         });
     }
@@ -152,7 +155,7 @@ public class FragmentSettingsBase extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         int color = Color.argb(alphaBar.getProgress(), redBar.getProgress(), greenBar.getProgress(), blueBar.getProgress());
                         config.edit().putInt(key, color).apply();
-                        updateView();
+                        restartService();
                     }
                 })
                 .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -194,7 +197,7 @@ public class FragmentSettingsBase extends Fragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 if (updateView) {
-                    updateView();
+                    restartService();
                 }
             }
         });

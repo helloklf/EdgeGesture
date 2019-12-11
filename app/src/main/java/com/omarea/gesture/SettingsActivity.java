@@ -1,492 +1,59 @@
 package com.omarea.gesture;
 
-import android.accessibilityservice.AccessibilityServiceInfo;
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.AlertDialog;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.ComponentName;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.view.View;
-import android.view.accessibility.AccessibilityManager;
-import android.widget.Button;
-import android.widget.Checkable;
-import android.widget.CompoundButton;
-import android.widget.SeekBar;
-import android.widget.Switch;
 import android.widget.TabHost;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.omarea.gesture.shell.KeepShellPublic;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.omarea.gesture.fragments.FragmentBasic;
+import com.omarea.gesture.fragments.FragmentEdge;
+import com.omarea.gesture.fragments.FragmentOther;
+import com.omarea.gesture.fragments.FragmentThreeSection;
+import com.omarea.gesture.fragments.FragmentWhiteBar;
 
 
 public class SettingsActivity extends Activity {
-    private SharedPreferences config;
-
-    private void setExcludeFromRecents(boolean excludeFromRecents) {
-        try {
-            ActivityManager service = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
-            int taskId = this.getTaskId();
-            for (ActivityManager.AppTask task : service.getAppTasks()) {
-                if (task.getTaskInfo().id == taskId) {
-                    task.setExcludeFromRecents(excludeFromRecents);
-                }
-            }
-        } catch (Exception ex) {
-        }
-    }
-
-    private boolean serviceRunning(Context context, String serviceName) {
-        AccessibilityManager m = (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
-        List<AccessibilityServiceInfo> serviceInfos = m.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_ALL_MASK);
-        for (AccessibilityServiceInfo serviceInfo : serviceInfos) {
-            if (serviceInfo.getId().endsWith(serviceName)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean serviceRunning() {
-        return serviceRunning(this, "AccessibilityServiceKeyEvent");
-    }
-
+    private boolean inited = false;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        config = getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
 
-        final PackageManager p = getPackageManager();
-        final ComponentName startActivity = new ComponentName(this.getApplicationContext(), StartActivity.class);
-
-        final TabHost tabHost = findViewById(R.id.main_tabhost);
-        tabHost.setup();
-        tabHost.addTab(tabHost.newTabSpec("1").setContent(R.id.main_tab_0).setIndicator("", getDrawable(R.drawable.tab_switch)));
-        tabHost.addTab(tabHost.newTabSpec("2").setContent(R.id.main_tab_1).setIndicator("", getDrawable(R.drawable.tab_apple)));
-        tabHost.addTab(tabHost.newTabSpec("3").setContent(R.id.main_tab_2).setIndicator("", getDrawable(R.drawable.tab_lab)));
-        tabHost.addTab(tabHost.newTabSpec("ThreeSection").setContent(R.id.main_tab_3).setIndicator("", getDrawable(R.drawable.tab_edge)));
-        tabHost.addTab(tabHost.newTabSpec("5").setContent(R.id.main_tab_4).setIndicator("", getDrawable(R.drawable.tab_settings)));
-
-        getFragmentManager().beginTransaction().replace(R.id.main_tab_3, new FragmentThreeSection()).commit();
-
-        final CompoundButton hide_start_icon = findViewById(R.id.hide_start_icon);
-        hide_start_icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    if (hide_start_icon.isChecked()) {
-                        p.setComponentEnabledSetting(startActivity, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-                    } else {
-                        p.setComponentEnabledSetting(startActivity, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-                    }
-                } catch (Exception ex) {
-                    Toast.makeText(v.getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        final CompoundButton enable_service = findViewById(R.id.enable_service);
-        enable_service.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (serviceRunning()) {
-                    // System.exit(0);
-                    try {
-                        Intent intent = new Intent(getString(R.string.action_service_disable));
-                        sendBroadcast(intent);
-                        v.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                updateView();
-                            }
-                        }, 1000);
-                    } catch (Exception ignored) {
-                    }
-                } else {
-                    try {
-                        Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-                        startActivity(intent);
-                    } catch (Exception ex) {
-                    }
-                    String msg = getString(R.string.service_active_desc) + getString(R.string.app_name);
-                    Toast.makeText(getBaseContext(), msg, Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        int activityState = p.getComponentEnabledSetting(startActivity);
-        hide_start_icon.setChecked(activityState != PackageManager.COMPONENT_ENABLED_STATE_ENABLED && activityState != PackageManager.COMPONENT_ENABLED_STATE_DEFAULT);
-
-        bindCheckable(R.id.allow_bottom_landscape, SpfConfig.CONFIG_BOTTOM_ALLOW_LANDSCAPE, SpfConfig.CONFIG_BOTTOM_ALLOW_LANDSCAPE_DEFAULT);
-        bindCheckable(R.id.allow_bottom_portrait, SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT, SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT_DEFAULT);
-        bindSeekBar(R.id.bar_width_bottom, SpfConfig.CONFIG_BOTTOM_WIDTH, SpfConfig.CONFIG_BOTTOM_WIDTH_DEFAULT, true);
-        bindColorPicker(R.id.bar_color_bottom, SpfConfig.CONFIG_BOTTOM_COLOR, SpfConfig.CONFIG_BOTTOM_COLOR_DEFAULT);
-        bindHandlerPicker(R.id.tap_bottom, SpfConfig.CONFIG_BOTTOM_EVENT, SpfConfig.CONFIG_BOTTOM_EVENT_DEFAULT);
-        bindHandlerPicker(R.id.hover_bottom, SpfConfig.CONFIG_BOTTOM_EVENT_HOVER, SpfConfig.CONFIG_BOTTOM_EVENT_HOVER_DEFAULT);
-
-        bindCheckable(R.id.allow_right_landscape, SpfConfig.CONFIG_RIGHT_ALLOW_LANDSCAPE, SpfConfig.CONFIG_RIGHT_ALLOW_LANDSCAPE_DEFAULT);
-        bindCheckable(R.id.allow_right_portrait, SpfConfig.CONFIG_RIGHT_ALLOW_PORTRAIT, SpfConfig.CONFIG_RIGHT_ALLOW_PORTRAIT_DEFAULT);
-        bindSeekBar(R.id.bar_height_right, SpfConfig.CONFIG_RIGHT_HEIGHT, SpfConfig.CONFIG_RIGHT_HEIGHT_DEFAULT, true);
-        bindColorPicker(R.id.bar_color_right, SpfConfig.CONFIG_RIGHT_COLOR, SpfConfig.CONFIG_RIGHT_COLOR_DEFAULT);
-        bindHandlerPicker(R.id.tap_right, SpfConfig.CONFIG_RIGHT_EVENT, SpfConfig.CONFIG_RIGHT_EVENT_DEFAULT);
-        bindHandlerPicker(R.id.hover_right, SpfConfig.CONFIG_RIGHT_EVENT_HOVER, SpfConfig.CONFIG_RIGHT_EVENT_HOVER_DEFAULT);
-
-        bindCheckable(R.id.allow_left_landscape, SpfConfig.CONFIG_LEFT_ALLOW_LANDSCAPE, SpfConfig.CONFIG_LEFT_ALLOW_LANDSCAPE_DEFAULT);
-        bindCheckable(R.id.allow_left_portrait, SpfConfig.CONFIG_LEFT_ALLOW_PORTRAIT, SpfConfig.CONFIG_LEFT_ALLOW_PORTRAIT_DEFAULT);
-        bindSeekBar(R.id.bar_height_left, SpfConfig.CONFIG_LEFT_HEIGHT, SpfConfig.CONFIG_LEFT_HEIGHT_DEFAULT, true);
-        bindColorPicker(R.id.bar_color_left, SpfConfig.CONFIG_LEFT_COLOR, SpfConfig.CONFIG_LEFT_COLOR_DEFAULT);
-        bindHandlerPicker(R.id.tap_left, SpfConfig.CONFIG_LEFT_EVENT, SpfConfig.CONFIG_LEFT_EVENT_DEFAULT);
-        bindHandlerPicker(R.id.hover_left, SpfConfig.CONFIG_LEFT_EVENT_HOVER, SpfConfig.CONFIG_LEFT_EVENT_HOVER_DEFAULT);
-
-        bindSeekBar(R.id.edge_side_width, SpfConfig.CONFIG_HOT_SIDE_WIDTH, SpfConfig.CONFIG_HOT_SIDE_WIDTH_DEFAULT, true);
-        bindSeekBar(R.id.edge_bottom_height, SpfConfig.CONFIG_HOT_BOTTOM_HEIGHT, SpfConfig.CONFIG_HOT_BOTTOM_HEIGHT_DEFAULT, true);
-
-        bindSeekBar(R.id.bar_hover_time, SpfConfig.CONFIG_HOVER_TIME, SpfConfig.CONFIG_HOVER_TIME_DEFAULT, true);
-        bindSeekBar(R.id.vibrator_time, SpfConfig.VIBRATOR_TIME, SpfConfig.VIBRATOR_TIME_DEFAULT, true);
-        bindSeekBar(R.id.vibrator_amplitude, SpfConfig.VIBRATOR_AMPLITUDE, SpfConfig.VIBRATOR_AMPLITUDE_DEFAULT, true);
-
-        bindCheckable(R.id.landscape_ios_bar, SpfConfig.LANDSCAPE_IOS_BAR, SpfConfig.LANDSCAPE_IOS_BAR_DEFAULT);
-        bindCheckable(R.id.portrait_ios_bar, SpfConfig.PORTRAIT_IOS_BAR, SpfConfig.PORTRAIT_IOS_BAR_DEFAULT);
-
-        bindHandlerPicker(R.id.ios_bar_slide_left, SpfConfig.IOS_BAR_SLIDE_LEFT, SpfConfig.IOS_BAR_SLIDE_LEFT_DEFAULT);
-        bindHandlerPicker(R.id.ios_bar_slide_right, SpfConfig.IOS_BAR_SLIDE_RIGHT, SpfConfig.IOS_BAR_SLIDE_RIGHT_DEFAULT);
-        bindHandlerPicker(R.id.ios_bar_slide_up, SpfConfig.IOS_BAR_SLIDE_UP, SpfConfig.IOS_BAR_SLIDE_UP_DEFAULT);
-        bindHandlerPicker(R.id.ios_bar_slide_up_hover, SpfConfig.IOS_BAR_SLIDE_UP_HOVER, SpfConfig.IOS_BAR_SLIDE_UP_HOVER_DEFAULT);
-        bindColorPicker(R.id.ios_bar_color_shadow, SpfConfig.IOS_BAR_COLOR_SHADOW, SpfConfig.IOS_BAR_COLOR_SHADOW_DEFAULT);
-
-        bindSeekBar(R.id.ios_bar_width_landscape, SpfConfig.IOS_BAR_WIDTH_LANDSCAPE, SpfConfig.IOS_BAR_WIDTH_DEFAULT_LANDSCAPE, true);
-        bindSeekBar(R.id.ios_bar_width_portrait, SpfConfig.IOS_BAR_WIDTH_PORTRAIT, SpfConfig.IOS_BAR_WIDTH_DEFAULT_PORTRAIT, true);
-        bindSeekBar(R.id.ios_bar_alpha_fadeout, SpfConfig.IOS_BAR_ALPHA_FADEOUT, SpfConfig.IOS_BAR_ALPHA_FADEOUT_DEFAULT, true);
-        bindColorPicker(R.id.ios_bar_color_landscape, SpfConfig.IOS_BAR_COLOR_LANDSCAPE, SpfConfig.IOS_BAR_COLOR_LANDSCAPE_DEFAULT);
-        bindColorPicker(R.id.ios_bar_color_portrait, SpfConfig.IOS_BAR_COLOR_PORTRAIT, SpfConfig.IOS_BAR_COLOR_PORTRAIT_DEFAULT);
-        bindSeekBar(R.id.ios_bar_size_shadow, SpfConfig.IOS_BAR_SHADOW_SIZE, SpfConfig.IOS_BAR_SHADOW_SIZE_DEFAULT, true);
-        bindSeekBar(R.id.ios_bar_total_height, SpfConfig.IOS_BAR_MARGIN_BOTTOM, SpfConfig.IOS_BAR_MARGIN_BOTTOM_DEFAULT, true);
-        bindSeekBar(R.id.ios_bar_height, SpfConfig.IOS_BAR_HEIGHT, SpfConfig.IOS_BAR_HEIGHT_DEFAULT, true);
-        bindCheckable(R.id.ios_bar_lock_hide, SpfConfig.IOS_BAR_LOCK_HIDE, SpfConfig.IOS_BAR_LOCK_HIDE_DEFAULT);
-
-        bindCheckable(R.id.game_optimization, SpfConfig.GAME_OPTIMIZATION, SpfConfig.GAME_OPTIMIZATION_DEFAULT);
-
-        setViewBackground(findViewById(R.id.ios_bar_color_fadeout), 0xff888888);
-
-        if (Build.MANUFACTURER.equals("samsung") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            if (canWriteGlobalSettings()) {
-                findViewById(R.id.samsung_guide).setVisibility(View.GONE);
-                findViewById(R.id.samsung_options).setVisibility(View.VISIBLE);
-                Switch samsung_optimize = findViewById(R.id.samsung_optimize);
-                samsung_optimize.setChecked(config.getBoolean(SpfConfig.SAMSUNG_OPTIMIZE, SpfConfig.SAMSUNG_OPTIMIZE_DEFAULT));
-                samsung_optimize.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Switch switchItem = findViewById(R.id.samsung_optimize);
-                        if (switchItem.isChecked()) {
-                            new ForceHideNavBarThread(getContentResolver()).start();
-                        } else {
-                            new ResumeNavBar(getContentResolver()).run();
-                        }
-                        config.edit().putBoolean(SpfConfig.SAMSUNG_OPTIMIZE, switchItem.isChecked());
-                    }
-                });
-            } else {
-                findViewById(R.id.samsung_guide).setVisibility(View.VISIBLE);
-                findViewById(R.id.samsung_options).setVisibility(View.GONE);
-                findViewById(R.id.copy_shell).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        try {
-                            ClipboardManager myClipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                            ClipData myClip = ClipData.newPlainText("text", ((TextView) findViewById(R.id.shell_content)).getText().toString());
-                            myClipboard.setPrimaryClip(myClip);
-                            Toast.makeText(getBaseContext(), getString(R.string.copy_success), Toast.LENGTH_SHORT).show();
-                        } catch (Exception ex) {
-                            Toast.makeText(getBaseContext(), getString(R.string.copy_fail), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-            }
-        }
-
-        findViewById(R.id.home_animation).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                homeAnimationPicker();
-            }
-        });
-        setHomeAnimationText();
-
-        // 使用ROOT获取最近任务
-        Switch root_get_recents = findViewById(R.id.root_get_recents);
-        root_get_recents.setChecked(config.getBoolean(SpfConfig.ROOT_GET_RECENTS, SpfConfig.ROOT_GET_RECENTS_DEFAULT));
-        root_get_recents.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Checkable ele = (Checkable) v;
-                if (ele.isChecked()) {
-                    if (KeepShellPublic.checkRoot()) {
-                        config.edit().putBoolean(SpfConfig.ROOT_GET_RECENTS, true).apply();
-                        updateView();
-                    } else {
-                        ele.setChecked(false);
-                        Toast.makeText(getApplicationContext(), getString(R.string.no_root), Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    config.edit().putBoolean(SpfConfig.ROOT_GET_RECENTS, false).apply();
-                    updateView();
-                }
-            }
-        });
-    }
-
-    private void homeAnimationPicker() {
-        String[] options = new String[]{getString(R.string.animation_mode_default), getString(R.string.animation_mode_basic), getString(R.string.animation_mode_custom)};
-        new AlertDialog.Builder(this).setTitle(R.string.animation_mode)
-                .setSingleChoiceItems(options,
-                        config.getInt(SpfConfig.HOME_ANIMATION, SpfConfig.HOME_ANIMATION_DEFAULT),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                config.edit().putInt(SpfConfig.HOME_ANIMATION, which).apply();
-                                updateView();
-                                dialog.dismiss();
-                            }
-                        })
-                .create()
-                .show();
-    }
-
-    private void setHomeAnimationText() {
-        int modeIndex = config.getInt(SpfConfig.HOME_ANIMATION, SpfConfig.HOME_ANIMATION_DEFAULT);
-        Button button = findViewById(R.id.home_animation);
-        switch (modeIndex) {
-            case SpfConfig.HOME_ANIMATION_DEFAULT: {
-                button.setText(getString(R.string.animation_mode_default));
-                break;
-            }
-            case SpfConfig.HOME_ANIMATION_BASIC: {
-                button.setText(getString(R.string.animation_mode_basic));
-                break;
-            }
-            case SpfConfig.HOME_ANIMATION_CUSTOM: {
-                button.setText(getString(R.string.animation_mode_custom));
-                break;
-            }
-        }
-    }
-
-    private boolean canWriteGlobalSettings() {
         try {
-            ContentResolver contentResolver = getContentResolver();
-            Settings.Global.putInt(contentResolver, "omarea_test_999", 999);
-            int result = Settings.Global.getInt(contentResolver, "omarea_test_999");
-            return result == 999;
-        } catch (Exception ex) {
-            return false;
-        }
+            final TabHost tabHost = findViewById(R.id.main_tabhost);
+            tabHost.setup();
+            tabHost.addTab(tabHost.newTabSpec("Basic")
+                    .setContent(R.id.main_tab_0).setIndicator("", getDrawable(R.drawable.tab_switch)));
+            tabHost.addTab(tabHost.newTabSpec("WhiteBar")
+                    .setContent(R.id.main_tab_1).setIndicator("", getDrawable(R.drawable.tab_apple)));
+            tabHost.addTab(tabHost.newTabSpec("Edge")
+                    .setContent(R.id.main_tab_2).setIndicator("", getDrawable(R.drawable.tab_lab)));
+            tabHost.addTab(tabHost.newTabSpec("ThreeSection")
+                    .setContent(R.id.main_tab_3).setIndicator("", getDrawable(R.drawable.tab_edge)));
+            tabHost.addTab(tabHost.newTabSpec("Other")
+                    .setContent(R.id.main_tab_4).setIndicator("", getDrawable(R.drawable.tab_settings)));
+
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.main_tab_0, new FragmentBasic()).commit();
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.main_tab_1, new FragmentWhiteBar()).commit();
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.main_tab_2, new FragmentEdge()).commit();
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.main_tab_3, new FragmentThreeSection()).commit();
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.main_tab_4, new FragmentOther()).commit();
+        } catch (Exception ex) {}
     }
 
     private void updateView() {
-        setViewBackground(findViewById(R.id.bar_color_bottom), config.getInt(SpfConfig.CONFIG_BOTTOM_COLOR, SpfConfig.CONFIG_BOTTOM_COLOR_DEFAULT));
-        setViewBackground(findViewById(R.id.bar_color_left), config.getInt(SpfConfig.CONFIG_LEFT_COLOR, SpfConfig.CONFIG_LEFT_COLOR_DEFAULT));
-        setViewBackground(findViewById(R.id.bar_color_right), config.getInt(SpfConfig.CONFIG_RIGHT_COLOR, SpfConfig.CONFIG_RIGHT_COLOR_DEFAULT));
-        setViewBackground(findViewById(R.id.ios_bar_color_landscape), config.getInt(SpfConfig.IOS_BAR_COLOR_LANDSCAPE, SpfConfig.IOS_BAR_COLOR_LANDSCAPE_DEFAULT));
-        setViewBackground(findViewById(R.id.ios_bar_color_portrait), config.getInt(SpfConfig.IOS_BAR_COLOR_PORTRAIT, SpfConfig.IOS_BAR_COLOR_PORTRAIT_DEFAULT));
-        setViewBackground(findViewById(R.id.ios_bar_color_shadow), config.getInt(SpfConfig.IOS_BAR_COLOR_SHADOW, SpfConfig.IOS_BAR_COLOR_SHADOW_DEFAULT));
-
-        findViewById(R.id.ios_bar_color_fadeout).setAlpha(config.getInt(SpfConfig.IOS_BAR_ALPHA_FADEOUT, SpfConfig.IOS_BAR_ALPHA_FADEOUT_DEFAULT) / 100f);
-
-        updateActionText(R.id.tap_bottom, SpfConfig.CONFIG_BOTTOM_EVENT, SpfConfig.CONFIG_BOTTOM_EVENT_DEFAULT);
-        updateActionText(R.id.hover_bottom, SpfConfig.CONFIG_BOTTOM_EVENT_HOVER, SpfConfig.CONFIG_BOTTOM_EVENT_HOVER_DEFAULT);
-        updateActionText(R.id.tap_left, SpfConfig.CONFIG_LEFT_EVENT, SpfConfig.CONFIG_LEFT_EVENT_DEFAULT);
-        updateActionText(R.id.hover_left, SpfConfig.CONFIG_LEFT_EVENT_HOVER, SpfConfig.CONFIG_LEFT_EVENT_HOVER_DEFAULT);
-        updateActionText(R.id.tap_right, SpfConfig.CONFIG_RIGHT_EVENT, SpfConfig.CONFIG_RIGHT_EVENT_DEFAULT);
-        updateActionText(R.id.hover_right, SpfConfig.CONFIG_RIGHT_EVENT_HOVER, SpfConfig.CONFIG_RIGHT_EVENT_HOVER_DEFAULT);
-
-
-        updateActionText(R.id.ios_bar_slide_left, SpfConfig.IOS_BAR_SLIDE_LEFT, SpfConfig.IOS_BAR_SLIDE_LEFT_DEFAULT);
-        updateActionText(R.id.ios_bar_slide_right, SpfConfig.IOS_BAR_SLIDE_RIGHT, SpfConfig.IOS_BAR_SLIDE_RIGHT_DEFAULT);
-        updateActionText(R.id.ios_bar_slide_up, SpfConfig.IOS_BAR_SLIDE_UP, SpfConfig.IOS_BAR_SLIDE_UP_DEFAULT);
-        updateActionText(R.id.ios_bar_slide_up_hover, SpfConfig.IOS_BAR_SLIDE_UP_HOVER, SpfConfig.IOS_BAR_SLIDE_UP_HOVER_DEFAULT);
-
-        setHomeAnimationText();
-
-        ((Checkable) findViewById(R.id.enable_service)).setChecked(serviceRunning());
-
         try {
             Intent intent = new Intent(getString(R.string.action_config_changed));
             sendBroadcast(intent);
         } catch (Exception ignored) {
         }
-    }
-
-    private void updateActionText(int id, String key, int defaultAction) {
-        ((Button) findViewById(id)).setText(Handlers.getOption(config.getInt(key, defaultAction)));
-    }
-
-    private void bindCheckable(int id, final String key, boolean defValue) {
-        final CompoundButton switchItem = findViewById(id);
-        switchItem.setChecked(config.getBoolean(key, defValue));
-        switchItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                config.edit().putBoolean(key, ((Checkable) v).isChecked()).apply();
-                updateView();
-            }
-        });
-    }
-
-    private void bindSeekBar(int id, final String key, int defValue, final boolean updateView) {
-        final SeekBar seekBar = findViewById(id);
-        seekBar.setProgress(config.getInt(key, defValue));
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                config.edit().putInt(key, (seekBar.getProgress())).apply();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                if (updateView) {
-                    updateView();
-                }
-            }
-        });
-    }
-
-    private void setViewBackground(View view, int color) {
-        GradientDrawable drawable = new GradientDrawable();
-        drawable.setShape(GradientDrawable.RECTANGLE);
-        drawable.setGradientType(GradientDrawable.RECTANGLE);
-        drawable.setCornerRadius(UITools.dp2px(this, 15));
-        drawable.setColor(color);
-        drawable.setStroke(2, 0xff888888);
-        view.setBackground(drawable);
-    }
-
-    private void bindColorPicker(int id, final String key, final int defValue) {
-        final Button button = findViewById(id);
-
-        setViewBackground(button, config.getInt(key, defValue));
-
-        // button.setBackgroundColor(config.getInt(key, defValue));
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openColorPicker(key, defValue);
-            }
-        });
-    }
-
-    private void bindHandlerPicker(int id, final String key, final int defValue) {
-        final Button button = findViewById(id);
-        button.setText(Handlers.getOption(config.getInt(key, defValue)));
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openHandlerPicker(key, defValue);
-            }
-        });
-    }
-
-    private void openHandlerPicker(final String key, final int defValue) {
-        String[] items = Handlers.getOptions();
-        final ArrayList<Integer> values = Handlers.getValues();
-
-        int currentValue = config.getInt(key, defValue);
-        int index = values.indexOf(currentValue);
-
-        new AlertDialog.Builder(this)
-                .setTitle(getString(R.string.handler_picker))
-                .setSingleChoiceItems(items, index, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        config.edit().putInt(key, values.get(which)).apply();
-                        updateView();
-
-                        dialog.dismiss();
-                    }
-                })
-                .create()
-                .show();
-    }
-
-    /**
-     * 选择颜色
-     *
-     * @param key
-     * @param defValue
-     */
-    private void openColorPicker(final String key, final int defValue) {
-        View view = getLayoutInflater().inflate(R.layout.color_picker, null);
-        int currentColor = config.getInt(key, defValue);
-        final SeekBar alphaBar = view.findViewById(R.id.color_alpha);
-        final SeekBar redBar = view.findViewById(R.id.color_red);
-        final SeekBar greenBar = view.findViewById(R.id.color_green);
-        final SeekBar blueBar = view.findViewById(R.id.color_blue);
-        final Button colorPreview = view.findViewById(R.id.color_preview);
-
-        alphaBar.setProgress(Color.alpha(currentColor));
-        redBar.setProgress(Color.red(currentColor));
-        greenBar.setProgress(Color.green(currentColor));
-        blueBar.setProgress(Color.blue(currentColor));
-        colorPreview.setBackgroundColor(currentColor);
-
-        SeekBar.OnSeekBarChangeListener listener = new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                int color = Color.argb(alphaBar.getProgress(), redBar.getProgress(), greenBar.getProgress(), blueBar.getProgress());
-                colorPreview.setBackgroundColor(color);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        };
-        alphaBar.setOnSeekBarChangeListener(listener);
-        redBar.setOnSeekBarChangeListener(listener);
-        greenBar.setOnSeekBarChangeListener(listener);
-        blueBar.setOnSeekBarChangeListener(listener);
-
-        new AlertDialog.Builder(this)
-                .setTitle(getString(R.string.effect_color_picker))
-                .setView(view)
-                .setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        int color = Color.argb(alphaBar.getProgress(), redBar.getProgress(), greenBar.getProgress(), blueBar.getProgress());
-                        config.edit().putInt(key, color).apply();
-                        updateView();
-                    }
-                })
-                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                })
-                .create()
-                .show();
     }
 
     @Override
@@ -501,6 +68,20 @@ public class SettingsActivity extends Activity {
         super.onPause();
         GlobalState.testMode = false;
         updateView();
+    }
+
+
+    private void setExcludeFromRecents(boolean excludeFromRecents) {
+        try {
+            ActivityManager service = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
+            int taskId = this.getTaskId();
+            for (ActivityManager.AppTask task : service.getAppTasks()) {
+                if (task.getTaskInfo().id == taskId) {
+                    task.setExcludeFromRecents(excludeFromRecents);
+                }
+            }
+        } catch (Exception ex) {
+        }
     }
 
     @Override

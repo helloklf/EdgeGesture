@@ -3,6 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+    <TextView
+        android:layout_margin="10dp"
+        android:text="@string/three_section_gesture"
+        android:textAppearance="@android:style/TextAppearance.Material.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <android.support.v7.widget.CardView style="@style/card_view">
         <LinearLayout
