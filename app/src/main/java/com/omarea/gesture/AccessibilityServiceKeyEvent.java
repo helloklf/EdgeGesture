@@ -18,18 +18,22 @@ import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class AccessibilityServiceKeyEvent extends AccessibilityService {
+    public Recents recents = new Recents();
     boolean isLandscapf = false;
     private FloatVirtualTouchBar floatVitualTouchBar = null;
     private BroadcastReceiver configChanged = null;
     private BroadcastReceiver serviceDisable = null;
     private BroadcastReceiver screenStateReceiver;
     private SharedPreferences config;
-    public Recents recents = new Recents();
+    private ContentResolver cr = null;
+    private int screenWidth;
+    private int screenHeight;
 
     private void hidePopupWindow() {
         if (floatVitualTouchBar != null) {
@@ -37,8 +41,6 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
             floatVitualTouchBar = null;
         }
     }
-
-    private ContentResolver cr = null;
 
     private void forceHideNavBar() {
         if (Build.MANUFACTURER.equals("samsung") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -86,26 +88,6 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
             }
         }
     }
-    // 启动器应用（桌面）
-    private ArrayList<String> getLauncherApps() {
-        Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
-        resolveIntent.addCategory(Intent.CATEGORY_HOME);
-        List<ResolveInfo> resolveinfoList = getPackageManager().queryIntentActivities(resolveIntent, 0);
-        ArrayList<String> launcherApps = new ArrayList<>();
-        for (ResolveInfo resolveInfo: resolveinfoList) {
-            launcherApps.add(resolveInfo.activityInfo.packageName);
-        }
-        return launcherApps;
-    }
-    // 输入法应用
-    private ArrayList<String> getInputMethods() {
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        ArrayList<String> inputMethods = new ArrayList<>();
-        for (InputMethodInfo inputMethodInfo: imm.getInputMethodList()) {
-            recents.ignoreApps.add(inputMethodInfo.getPackageName());
-        }
-        return inputMethods;
-    }
 
     /*
     通过
@@ -124,6 +106,28 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
         }
     }
     */
+
+    // 启动器应用（桌面）
+    private ArrayList<String> getLauncherApps() {
+        Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
+        resolveIntent.addCategory(Intent.CATEGORY_HOME);
+        List<ResolveInfo> resolveinfoList = getPackageManager().queryIntentActivities(resolveIntent, 0);
+        ArrayList<String> launcherApps = new ArrayList<>();
+        for (ResolveInfo resolveInfo : resolveinfoList) {
+            launcherApps.add(resolveInfo.activityInfo.packageName);
+        }
+        return launcherApps;
+    }
+
+    // 输入法应用
+    private ArrayList<String> getInputMethods() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        ArrayList<String> inputMethods = new ArrayList<>();
+        for (InputMethodInfo inputMethodInfo : imm.getInputMethodList()) {
+            recents.ignoreApps.add(inputMethodInfo.getPackageName());
+        }
+        return inputMethods;
+    }
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
@@ -234,9 +238,6 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
     public void onInterrupt() {
 
     }
-
-    private int screenWidth;
-    private int screenHeight;
 
     // 监测屏幕旋转
     @Override

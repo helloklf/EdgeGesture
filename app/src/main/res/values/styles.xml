@@ -91,6 +91,7 @@
         <item name="android:fragmentFadeEnterAnimation">@null</item>
         <item name="android:fragmentFadeExitAnimation">@null</item>
     </style>
+
     <style name="appSwitch" parent="android:Theme.Translucent.NoTitleBar.Fullscreen">
         <item name="android:windowAnimationStyle">@style/activityAnim</item>
     </style>

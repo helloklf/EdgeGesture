@@ -3,7 +3,6 @@ package com.omarea.gesture;
 import android.accessibilityservice.AccessibilityService;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 
 public class ReceiverLockHandler extends Handler {

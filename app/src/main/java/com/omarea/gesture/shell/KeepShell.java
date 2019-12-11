@@ -18,6 +18,27 @@ public class KeepShell {
     private Process p = null;
     private OutputStream out = null;
     private BufferedReader reader = null;
+    //获取ROOT超时时间
+    private long GET_ROOT_TIMEOUT = 20000L;
+    private ReentrantLock mLock = new ReentrantLock();
+    private long LOCK_TIMEOUT = 10000L;
+    private long enterLockTime = 0L;
+    private String checkRootState =
+            "if [[ $(id -u 2>&1) == '0' ]] || [[ $($UID) == '0' ]] || [[ $(whoami 2>&1) == 'root' ]] || [[ $(set | grep 'USER_ID=0') == 'USER_ID=0' ]]; then\n" +
+                    "  echo 'root'\n" +
+                    "else\n" +
+                    "if [[ -d /cache ]]; then\n" +
+                    "  echo 1 > /cache/vtools_root\n" +
+                    "  if [[ -f /cache/vtools_root ]] && [[ $(cat /cache/vtools_root) == '1' ]]; then\n" +
+                    "    echo root\n" +
+                    "    rm -rf /cache/vtools_root\n" +
+                    "    return\n" +
+                    "  fi\n" +
+                    "fi\n" +
+                    "exit 1\n" +
+                    "exit 1\n" +
+                    "fi\n";
+    private byte[] br = "\n\n".getBytes(Charset.defaultCharset());
 
     //尝试退出命令行程序
     public void tryExit() {
@@ -37,28 +58,6 @@ public class KeepShell {
         reader = null;
         p = null;
     }
-
-    //获取ROOT超时时间
-    private long GET_ROOT_TIMEOUT = 20000L;
-    private ReentrantLock mLock = new ReentrantLock();
-    private long LOCK_TIMEOUT = 10000L;
-    private long enterLockTime = 0L;
-
-    private String checkRootState =
-            "if [[ $(id -u 2>&1) == '0' ]] || [[ $($UID) == '0' ]] || [[ $(whoami 2>&1) == 'root' ]] || [[ $(set | grep 'USER_ID=0') == 'USER_ID=0' ]]; then\n" +
-                    "  echo 'root'\n" +
-                    "else\n" +
-                    "if [[ -d /cache ]]; then\n" +
-                    "  echo 1 > /cache/vtools_root\n" +
-                    "  if [[ -f /cache/vtools_root ]] && [[ $(cat /cache/vtools_root) == '1' ]]; then\n" +
-                    "    echo root\n" +
-                    "    rm -rf /cache/vtools_root\n" +
-                    "    return\n" +
-                    "  fi\n" +
-                    "fi\n" +
-                    "exit 1\n" +
-                    "exit 1\n" +
-                    "fi\n";
 
     Boolean checkRoot() {
         String r = doCmdSync(checkRootState);
@@ -123,8 +122,6 @@ public class KeepShell {
             getSu.interrupt();
         }
     }
-
-    private byte[] br = "\n\n".getBytes(Charset.defaultCharset());
 
     //执行脚本
     public String doCmdSync(String cmd) {

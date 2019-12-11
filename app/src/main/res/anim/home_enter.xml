@@ -10,17 +10,17 @@
         android:toYDelta="0%p" />
     <scale
         android:duration="@android:integer/config_longAnimTime"
+        android:fillAfter="true"
         android:fromXScale="2"
         android:fromYScale="2"
         android:interpolator="@android:anim/overshoot_interpolator"
-        android:fillAfter="true"
         android:pivotX="50%"
         android:pivotY="50%"
         android:toXScale="1"
         android:toYScale="1" />
     <alpha
-        android:fillAfter="true"
         android:duration="@android:integer/config_longAnimTime"
+        android:fillAfter="true"
         android:fromAlpha="0"
         android:toAlpha="1" />
 </set>

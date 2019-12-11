@@ -1,6 +1,5 @@
 package com.omarea.gesture;
 
-import android.accessibilityservice.AccessibilityService;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;

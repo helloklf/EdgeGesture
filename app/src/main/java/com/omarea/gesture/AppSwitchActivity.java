@@ -6,9 +6,7 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.RequiresApi;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.lang.reflect.Method;
@@ -82,7 +80,7 @@ public class AppSwitchActivity extends Activity {
         int top = 100;
         int right = 800;
         int bottom = 1100;
-        activityOptions.setLaunchBounds(new Rect(left,top,right,bottom));
+        activityOptions.setLaunchBounds(new Rect(left, top, right, bottom));
         Bundle bundle = activityOptions.toBundle();
         startActivity(intent, bundle);
     }

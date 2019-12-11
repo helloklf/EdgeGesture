@@ -121,74 +121,79 @@
                 android:text="@string/hide_start_icon_desc" />
 
             <LinearLayout
-                android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:orientation="horizontal">
 
                 <TextView
                     style="@style/card_title"
-                    android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
                     android:text="@string/animation_mode" />
 
                 <Button
                     android:id="@+id/home_animation"
-                    android:textAlignment="textEnd"
+                    style="@style/btn_handler_picker"
                     android:text="@string/animation_mode_default"
-                    style="@style/btn_handler_picker" />
+                    android:textAlignment="textEnd" />
             </LinearLayout>
+
             <TextView
-                android:layout_marginTop="6dp"
                 style="@style/switch_desc"
+                android:layout_marginTop="6dp"
                 android:text="@string/animation_mode_desc" />
+
             <LinearLayout
-                android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:orientation="horizontal">
 
                 <TextView
                     style="@style/card_title"
-                    android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
                     android:text="@string/game_optimization" />
 
                 <Switch
                     android:id="@+id/game_optimization"
-                    android:textAlignment="center"
-                    style="@style/btn_handler_picker" />
+                    style="@style/btn_handler_picker"
+                    android:textAlignment="center" />
             </LinearLayout>
+
             <TextView
-                android:layout_marginTop="6dp"
                 style="@style/switch_desc"
+                android:layout_marginTop="6dp"
                 android:text="@string/game_optimization_desc" />
+
             <LinearLayout
-                android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:orientation="horizontal">
 
                 <TextView
                     style="@style/card_title"
-                    android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
                     android:text="@string/root_get_recents" />
 
                 <Switch
                     android:id="@+id/root_get_recents"
-                    android:textAlignment="center"
-                    style="@style/btn_handler_picker" />
+                    style="@style/btn_handler_picker"
+                    android:textAlignment="center" />
             </LinearLayout>
+
             <TextView
-                android:layout_marginTop="6dp"
                 style="@style/switch_desc"
+                android:layout_marginTop="6dp"
                 android:text="@string/root_get_recents_desc" />
         </LinearLayout>
     </android.support.v7.widget.CardView>

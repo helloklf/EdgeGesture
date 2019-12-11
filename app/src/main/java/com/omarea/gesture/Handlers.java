@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.omarea.gesture.shell.KeepShellPublic;
@@ -15,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Handlers {
-    private static SharedPreferences config;
     final static int GLOBAL_ACTION_NONE = 0;
     final static int GLOBAL_ACTION_BACK = AccessibilityService.GLOBAL_ACTION_BACK;
     final static int GLOBAL_ACTION_HOME = AccessibilityService.GLOBAL_ACTION_HOME;
@@ -26,12 +24,11 @@ public class Handlers {
     final static int GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN = AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN;
     final static int GLOBAL_ACTION_LOCK_SCREEN = AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN;
     final static int GLOBAL_ACTION_TAKE_SCREENSHOT = AccessibilityService.GLOBAL_ACTION_TAKE_SCREENSHOT;
-
     final static int VITUAL_ACTION_NEXT_APP = 900000;
     final static int VITUAL_ACTION_PREV_APP = 900001;
     final static int VITUAL_ACTION_XIAO_AI = 900002;
     final static int VITUAL_ACTION_SWITCH_APP = 900005;
-
+    private static SharedPreferences config;
     private static boolean isXiaomi = Build.MANUFACTURER.equals("Xiaomi") && Build.BRAND.equals("Xiaomi");
 
     private final static String[] options = new ArrayList<String>() {{
@@ -60,29 +57,31 @@ public class Handlers {
     }}.toArray(new String[0]);
 
     private final static ArrayList<Integer> values = new ArrayList<Integer>() {{
-                add(GLOBAL_ACTION_NONE);
-                add(GLOBAL_ACTION_BACK);
-                add(GLOBAL_ACTION_HOME);
-                add(GLOBAL_ACTION_RECENTS);
-                add(GLOBAL_ACTION_NOTIFICATIONS);
-                add(GLOBAL_ACTION_QUICK_SETTINGS);
-                add(GLOBAL_ACTION_POWER_DIALOG);
-                add(VITUAL_ACTION_PREV_APP);
-                add(VITUAL_ACTION_NEXT_APP);
+        add(GLOBAL_ACTION_NONE);
+        add(GLOBAL_ACTION_BACK);
+        add(GLOBAL_ACTION_HOME);
+        add(GLOBAL_ACTION_RECENTS);
+        add(GLOBAL_ACTION_NOTIFICATIONS);
+        add(GLOBAL_ACTION_QUICK_SETTINGS);
+        add(GLOBAL_ACTION_POWER_DIALOG);
+        add(VITUAL_ACTION_PREV_APP);
+        add(VITUAL_ACTION_NEXT_APP);
 
-                if (isXiaomi) {
-                    add(VITUAL_ACTION_XIAO_AI);
-                }
+        if (isXiaomi) {
+            add(VITUAL_ACTION_XIAO_AI);
+        }
 
-                if (Build.VERSION.SDK_INT > 23) {
-                    add(GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN);
-                    add(VITUAL_ACTION_SWITCH_APP);
-                }
-                if (Build.VERSION.SDK_INT > 27) {
-                    add(GLOBAL_ACTION_LOCK_SCREEN);
-                    add(GLOBAL_ACTION_TAKE_SCREENSHOT);
-                }
-            }};
+        if (Build.VERSION.SDK_INT > 23) {
+            add(GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN);
+            add(VITUAL_ACTION_SWITCH_APP);
+        }
+        if (Build.VERSION.SDK_INT > 27) {
+            add(GLOBAL_ACTION_LOCK_SCREEN);
+            add(GLOBAL_ACTION_TAKE_SCREENSHOT);
+        }
+    }};
+    private static Process rootProcess = null;
+    private static OutputStream rootOutputStream = null;
 
     static void executeVirtualAction(final AccessibilityServiceKeyEvent accessibilityService, final int action) {
         switch (action) {
@@ -107,8 +106,8 @@ public class Handlers {
             case VITUAL_ACTION_PREV_APP:
             case GLOBAL_ACTION_HOME: {
                 int animation = accessibilityService
-                                    .getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE)
-                                    .getInt(SpfConfig.HOME_ANIMATION, SpfConfig.HOME_ANIMATION_DEFAULT);
+                        .getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE)
+                        .getInt(SpfConfig.HOME_ANIMATION, SpfConfig.HOME_ANIMATION_DEFAULT);
                 if (action == GLOBAL_ACTION_HOME && animation == SpfConfig.HOME_ANIMATION_DEFAULT) {
                     accessibilityService.performGlobalAction(action);
                 } else {
@@ -133,10 +132,14 @@ public class Handlers {
                                 }
                                 if (config.getBoolean(SpfConfig.ROOT_GET_RECENTS, SpfConfig.ROOT_GET_RECENTS_DEFAULT)) {
                                     // 单个app：dumpsys activity com.android.browser | grep ACTIVITY | cut -F3 | cut -f1 -d '/'
-                                    // recent： dumpsys activity r | grep Recent | grep A= | cut -F7 | cut -f2 -d '='
+                                    // recent： dumpsys activity r | grep TaskRecord | grep A= | cut -F7 | cut -f2 -d '='
                                     // top Activity（慢）： dumpsys activity top | grep ACTIVITY | cut -F3 | cut -f1 -d '/'
                                     ArrayList<String> recents = new ArrayList<>();
-                                    Collections.addAll(recents, KeepShellPublic.doCmdSync("dumpsys activity r | grep realActivity | cut -f2 -d '=' | cut -f1 -d '/'").split("\n"));
+                                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+                                        Collections.addAll(recents, KeepShellPublic.doCmdSync("dumpsys activity r | grep realActivity | cut -f2 -d '=' | cut -f1 -d '/'").split("\n"));
+                                    } else {
+                                        Collections.addAll(recents, KeepShellPublic.doCmdSync("dumpsys activity r | grep mActivityComponent | cut -f2 -d '=' | cut -f1 -d '/'").split("\n"));
+                                    }
                                     accessibilityService.recents.setRecents(recents, accessibilityService);
                                 }
                                 if (action == VITUAL_ACTION_PREV_APP) {
@@ -205,8 +208,6 @@ public class Handlers {
         return values;
     }
 
-    private static Process rootProcess = null;
-    private static OutputStream rootOutputStream = null;
     static void openXiaoAi() {
             /*
             try {
@@ -220,21 +221,21 @@ public class Handlers {
                 Toast.makeText(accessibilityService, "" + ex.getMessage(), Toast.LENGTH_LONG).show();
             }
             */
-            if (rootProcess == null) {
-                try {
-                    rootProcess = Runtime.getRuntime().exec("su");
-                    rootOutputStream = rootProcess.getOutputStream();
-                } catch (Exception ex) {
-                }
+        if (rootProcess == null) {
+            try {
+                rootProcess = Runtime.getRuntime().exec("su");
+                rootOutputStream = rootProcess.getOutputStream();
+            } catch (Exception ex) {
             }
-            if (rootProcess != null && rootOutputStream != null) {
-                try {
-                    rootOutputStream.write("am start -n com.miui.voiceassist/com.xiaomi.voiceassistant.AiSettings.AiShortcutActivity\n".getBytes());
-                    rootOutputStream.flush();
-                } catch (Exception ex) {
-                    rootProcess = null;
-                    rootOutputStream = null;
-                }
+        }
+        if (rootProcess != null && rootOutputStream != null) {
+            try {
+                rootOutputStream.write("am start -n com.miui.voiceassist/com.xiaomi.voiceassistant.AiSettings.AiShortcutActivity\n".getBytes());
+                rootOutputStream.flush();
+            } catch (Exception ex) {
+                rootProcess = null;
+                rootOutputStream = null;
             }
+        }
     }
 }

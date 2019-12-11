@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory;
 
 class TouchIconCache {
     private static Context mContext;
-    private static Bitmap touch_arrow_left, touch_arrow_right, touch_tasks, touch_home, touch_lock, touch_notice, touch_power, touch_settings, touch_split, touch_info, touch_screenshot, touch_switch; // 图标资源
+    private static Bitmap touch_arrow_left, touch_arrow_right, touch_tasks, touch_home, touch_lock, touch_notice, touch_power, touch_settings, touch_split, touch_info, touch_screenshot, touch_switch, touch_jump_previous, touch_jump_next; // 图标资源
 
     static void setContext(Context context) {
         mContext = context;
@@ -75,16 +75,16 @@ class TouchIconCache {
                 return touch_switch;
             }
             case Handlers.VITUAL_ACTION_PREV_APP: {
-                if (touch_switch == null && mContext != null) {
-                    touch_switch = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.touch_jump_previous);
+                if (touch_jump_previous == null && mContext != null) {
+                    touch_jump_previous = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.touch_jump_previous);
                 }
-                return touch_switch;
+                return touch_jump_previous;
             }
             case Handlers.VITUAL_ACTION_NEXT_APP: {
-                if (touch_switch == null && mContext != null) {
-                    touch_switch = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.touch_jump_next);
+                if (touch_jump_next == null && mContext != null) {
+                    touch_jump_next = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.touch_jump_next);
                 }
-                return touch_switch;
+                return touch_jump_next;
             }
         }
         if (touch_info == null && mContext != null) {

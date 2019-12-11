@@ -1,6 +1,5 @@
 package com.omarea.gesture;
 
-import android.accessibilityservice.AccessibilityService;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -88,7 +87,7 @@ public class iOSWhiteBar {
         final int shadowColor = config.getInt(SpfConfig.IOS_BAR_COLOR_SHADOW, SpfConfig.IOS_BAR_COLOR_SHADOW_DEFAULT);
         final int shadowSize = config.getInt(SpfConfig.IOS_BAR_SHADOW_SIZE, SpfConfig.IOS_BAR_SHADOW_SIZE_DEFAULT);
         final int lineWeight = config.getInt(SpfConfig.IOS_BAR_HEIGHT, SpfConfig.IOS_BAR_HEIGHT_DEFAULT);
-        final int marginBottom =  config.getInt(SpfConfig.IOS_BAR_MARGIN_BOTTOM, SpfConfig.IOS_BAR_MARGIN_BOTTOM_DEFAULT);
+        final int marginBottom = config.getInt(SpfConfig.IOS_BAR_MARGIN_BOTTOM, SpfConfig.IOS_BAR_MARGIN_BOTTOM_DEFAULT);
         final int totalHeight = marginBottom + lineWeight + (shadowSize * 2);
 
         bar.setStyle(
@@ -109,7 +108,7 @@ public class iOSWhiteBar {
 
         params.format = PixelFormat.TRANSLUCENT;
 
-        final int originY =  - dp2px(accessibilityService, ((isLandscapf && gameOptimization) ? marginBottom : 0));
+        final int originY = -dp2px(accessibilityService, ((isLandscapf && gameOptimization) ? marginBottom : 0));
         final int originX = 0;
 
         params.width = WindowManager.LayoutParams.WRAP_CONTENT;

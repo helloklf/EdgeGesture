@@ -1,6 +1,5 @@
 package com.omarea.gesture;
 
-import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -13,6 +12,9 @@ class iOSTouchBarView extends View {
     private Context context = getContext();
 
     private Paint p = new Paint();
+    private float shadowSize = 16f;
+    private float lineWeight = 16f;
+    private float margin = 24f;
 
     public iOSTouchBarView(Context context) {
         super(context);
@@ -23,7 +25,6 @@ class iOSTouchBarView extends View {
         super(context, attributeSet);
         init();
     }
-
     public iOSTouchBarView(Context context, AttributeSet attributeSet, int defStyleAttr) {
         super(context, attributeSet, defStyleAttr);
         init();
@@ -40,9 +41,6 @@ class iOSTouchBarView extends View {
         // setLayerType(LAYER_TYPE_SOFTWARE, null);
     }
 
-    private float shadowSize = 16f;
-    private float lineWeight = 16f;
-    private float margin = 24f;
     void setStyle(int widthPx, int heightPx, int color, int shadowColor, int shadowSizeDp, int lineWeightDp) {
         this.shadowSize = dp2px(context, shadowSizeDp);
         this.lineWeight = dp2px(context, lineWeightDp);

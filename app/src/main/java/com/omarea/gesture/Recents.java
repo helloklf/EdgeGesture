@@ -1,9 +1,12 @@
 package com.omarea.gesture;
 
 import android.content.Context;
+
 import java.util.ArrayList;
 
 public class Recents {
+    private final ArrayList<String> recents = new ArrayList<>();
+    private final int sizeLimit = 60;
     // TODO:关闭辅助服务时清理以下数据
     // 已经确保可以打开的应用
     public ArrayList<String> whiteList = new ArrayList<>();
@@ -12,10 +15,7 @@ public class Recents {
     };
     // 忽略的应用
     public ArrayList<String> ignoreApps = null;
-
-    private final ArrayList<String> recents = new ArrayList<>();
     private int index = -1;
-    private final int sizeLimit = 60;
     private String currentTop = "";
 
     void addRecent(String packageName) {
