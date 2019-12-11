@@ -31,7 +31,9 @@ class FloatVirtualTouchBar {
         mWindowManager = (WindowManager) (context.getSystemService(Context.WINDOW_SERVICE));
         try {
             if (islandscape) {
-                if (config.getBoolean(SpfConfig.CONFIG_BOTTOM_ALLOW_LANDSCAPE, SpfConfig.CONFIG_BOTTOM_ALLOW_LANDSCAPE_DEFAULT)) {
+                if (config.getBoolean(SpfConfig.THREE_SECTION_LANDSCAPE, SpfConfig.THREE_SECTION_LANDSCAPE_DEFAULT)) {
+                    this.bottomView = setThreeSectionView(context);
+                } else if (config.getBoolean(SpfConfig.CONFIG_BOTTOM_ALLOW_LANDSCAPE, SpfConfig.CONFIG_BOTTOM_ALLOW_LANDSCAPE_DEFAULT)) {
                     this.bottomView = setBottomView(context);
                 }
                 if (config.getBoolean(SpfConfig.CONFIG_LEFT_ALLOW_LANDSCAPE, SpfConfig.CONFIG_LEFT_ALLOW_LANDSCAPE_DEFAULT)) {
@@ -44,7 +46,9 @@ class FloatVirtualTouchBar {
                     this.iosBarView = new iOSWhiteBar(context, islandscape).getView();
                 }
             } else {
-                if (config.getBoolean(SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT, SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT_DEFAULT)) {
+                if (config.getBoolean(SpfConfig.THREE_SECTION_PORTRAIT, SpfConfig.THREE_SECTION_PORTRAIT_DEFAULT)) {
+                    this.bottomView = setThreeSectionView(context);
+                } else if (config.getBoolean(SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT, SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT_DEFAULT)) {
                     this.bottomView = setBottomView(context);
                 }
                 if (config.getBoolean(SpfConfig.CONFIG_LEFT_ALLOW_PORTRAIT, SpfConfig.CONFIG_LEFT_ALLOW_PORTRAIT_DEFAULT)) {
@@ -59,6 +63,7 @@ class FloatVirtualTouchBar {
             }
         } catch (Exception ex) {
             Toast.makeText(context, "启动虚拟导航手势失败！", Toast.LENGTH_LONG).show();
+            // throw  ex;
         }
     }
 
@@ -156,6 +161,55 @@ class FloatVirtualTouchBar {
         return view;
     }
 
+    private View setThreeSectionView(final AccessibilityServiceKeyEvent context) {
+        final View view = LayoutInflater.from(context).inflate(R.layout.fw_three_section, null);
+
+        ThreeSectionView bar = view.findViewById(R.id.core_area);
+        if (GlobalState.testMode) {
+            bar.setBackground(context.getDrawable(R.drawable.bar_background));
+        }
+
+        bar.setEventHandler(
+                config.getInt(SpfConfig.THREE_SECTION_LEFT_SLIDE, SpfConfig.THREE_SECTION_LEFT_SLIDE_DEFAULT),
+                config.getInt(SpfConfig.THREE_SECTION_LEFT_HOVER, SpfConfig.THREE_SECTION_LEFT_HOVER_DEFAULT),
+                config.getInt(SpfConfig.THREE_SECTION_CENTER_SLIDE, SpfConfig.THREE_SECTION_CENTER_SLIDE_DEFAULT),
+                config.getInt(SpfConfig.THREE_SECTION_CENTER_HOVER, SpfConfig.THREE_SECTION_CENTER_HOVER_DEFAULT),
+                config.getInt(SpfConfig.THREE_SECTION_RIGHT_SLIDE, SpfConfig.THREE_SECTION_RIGHT_SLIDE_DEFAULT),
+                config.getInt(SpfConfig.THREE_SECTION_RIGHT_HOVER, SpfConfig.THREE_SECTION_RIGHT_HOVER_DEFAULT),
+                context);
+
+        double widthRatio = config.getInt(SpfConfig.THREE_SECTION_WIDTH, SpfConfig.THREE_SECTION_WIDTH_DEFAULT) / 100.0;
+
+        // 横屏缩小宽度，避免游戏误触
+        if (islandscape && widthRatio > 0.4) {
+            widthRatio = 0.4;
+        }
+
+        int barWidth = (int) (getScreenWidth(context) * widthRatio);
+        int barHeight = dp2px(context, config.getInt(SpfConfig.THREE_SECTION_HEIGHT, SpfConfig.THREE_SECTION_HEIGHT_DEFAULT)); // LayoutParams.WRAP_CONTENT;
+
+        bar.setBarPosition(islandscape, config.getBoolean(SpfConfig.GAME_OPTIMIZATION, SpfConfig.GAME_OPTIMIZATION_DEFAULT), barWidth, barHeight);
+
+        final LayoutParams params = new LayoutParams();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            params.type = LayoutParams.TYPE_ACCESSIBILITY_OVERLAY;
+        } else {
+            params.type = LayoutParams.TYPE_SYSTEM_ALERT;
+        }
+
+        params.format = PixelFormat.TRANSLUCENT;
+
+        params.width = LayoutParams.WRAP_CONTENT;
+        params.height = LayoutParams.WRAP_CONTENT;
+
+        params.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+        params.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS;
+
+        mWindowManager.addView(view, params);
+
+        return view;
+    }
 
     private int getScreenHeight(Context context) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();

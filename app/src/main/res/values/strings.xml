@@ -22,6 +22,7 @@
     <string name="ios_bar">小白条手势</string>
     <string name="side_bottom">底边手势</string>
     <string name="side_right">右边手势</string>
+    <string name="three_section">三段手势</string>
     <string name="side_left">左边手势</string>
     <string name="edge_action">行为</string>
     <string name="slide_hover">滑动悬停：</string>

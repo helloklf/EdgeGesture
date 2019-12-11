@@ -38,7 +38,6 @@ import java.util.List;
 public class SettingsActivity extends Activity {
     private SharedPreferences config;
 
-
     private void setExcludeFromRecents(boolean excludeFromRecents) {
         try {
             ActivityManager service = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
@@ -76,12 +75,15 @@ public class SettingsActivity extends Activity {
         final PackageManager p = getPackageManager();
         final ComponentName startActivity = new ComponentName(this.getApplicationContext(), StartActivity.class);
 
-        TabHost tabHost = findViewById(R.id.main_tabhost);
+        final TabHost tabHost = findViewById(R.id.main_tabhost);
         tabHost.setup();
         tabHost.addTab(tabHost.newTabSpec("1").setContent(R.id.main_tab_0).setIndicator("", getDrawable(R.drawable.tab_switch)));
         tabHost.addTab(tabHost.newTabSpec("2").setContent(R.id.main_tab_1).setIndicator("", getDrawable(R.drawable.tab_apple)));
-        tabHost.addTab(tabHost.newTabSpec("3").setContent(R.id.main_tab_2).setIndicator("", getDrawable(R.drawable.tab_edge)));
-        tabHost.addTab(tabHost.newTabSpec("4").setContent(R.id.main_tab_3).setIndicator("", getDrawable(R.drawable.tab_settings)));
+        tabHost.addTab(tabHost.newTabSpec("3").setContent(R.id.main_tab_2).setIndicator("", getDrawable(R.drawable.tab_lab)));
+        tabHost.addTab(tabHost.newTabSpec("ThreeSection").setContent(R.id.main_tab_3).setIndicator("", getDrawable(R.drawable.tab_edge)));
+        tabHost.addTab(tabHost.newTabSpec("5").setContent(R.id.main_tab_4).setIndicator("", getDrawable(R.drawable.tab_settings)));
+
+        getFragmentManager().beginTransaction().replace(R.id.main_tab_3, new FragmentThreeSection()).commit();
 
         final CompoundButton hide_start_icon = findViewById(R.id.hide_start_icon);
         hide_start_icon.setOnClickListener(new View.OnClickListener() {

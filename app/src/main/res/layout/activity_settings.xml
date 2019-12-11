@@ -60,6 +60,11 @@
             <ScrollView
                 android:id="@+id/main_tab_3"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ScrollView
+                android:id="@+id/main_tab_4"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <include layout="@layout/other_options" />
             </ScrollView>

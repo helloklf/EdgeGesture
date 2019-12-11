@@ -93,15 +93,41 @@ class SpfConfig {
     static final int IOS_BAR_HEIGHT_DEFAULT = 3; // ?dp
     static final String IOS_BAR_LOCK_HIDE = "ios_bar_lock_hide";
     static final Boolean IOS_BAR_LOCK_HIDE_DEFAULT = false;
+
     // 游戏防误触
     static final String GAME_OPTIMIZATION = "GAME_OPTIMIZATION";
     static final Boolean GAME_OPTIMIZATION_DEFAULT = true;
     static final String ROOT_GET_RECENTS = "ROOT_GET_RECENTS =";
     static final Boolean ROOT_GET_RECENTS_DEFAULT = false;
+
     // 硬件加速
     public static String HARDWARE_ACCELERATED = "HARDWARE_ACCELERATED";
     public static boolean HARDWARE_ACCELERATED_DEFAULT = false;
     // 三星优化(自动禁用系统手势)
-    public static String SAMSUNG_OPTIMIZE = "SAMSUNG_OPTIMIZE";
-    public static boolean SAMSUNG_OPTIMIZE_DEFAULT = true;
+    static String SAMSUNG_OPTIMIZE = "SAMSUNG_OPTIMIZE";
+    static boolean SAMSUNG_OPTIMIZE_DEFAULT = true;
+
+    // 三段式手势
+    static String THREE_SECTION_LANDSCAPE = "THREE_SECTION_LANDSCAPE";
+    static boolean THREE_SECTION_LANDSCAPE_DEFAULT = false;
+    static String THREE_SECTION_PORTRAIT = "THREE_SECTION_PORTRAIT";
+    static boolean THREE_SECTION_PORTRAIT_DEFAULT = false;
+    static final String THREE_SECTION_WIDTH = "THREE_SECTION_WIDTH";
+    static final int THREE_SECTION_WIDTH_DEFAULT = 100;
+    static final String THREE_SECTION_HEIGHT = "THREE_SECTION_HEIGHT";
+    static final int THREE_SECTION_HEIGHT_DEFAULT = 9; // ?dp
+    static final String THREE_SECTION_COLOR = "THREE_SECTION_COLOR";
+    static final int THREE_SECTION_COLOR_DEFAULT = 0xffffffff; // 颜色
+    static String THREE_SECTION_LEFT_SLIDE = "THREE_SECTION_LEFT_SLIDE";
+    static int THREE_SECTION_LEFT_SLIDE_DEFAULT = Handlers.GLOBAL_ACTION_BACK;
+    static String THREE_SECTION_CENTER_SLIDE = "THREE_SECTION_CENTER_SLIDE";
+    static int THREE_SECTION_CENTER_SLIDE_DEFAULT = Handlers.GLOBAL_ACTION_HOME;
+    static String THREE_SECTION_RIGHT_SLIDE = "THREE_SECTION_RIGHT_SLIDE";
+    static int THREE_SECTION_RIGHT_SLIDE_DEFAULT = Handlers.GLOBAL_ACTION_RECENTS;
+    static String THREE_SECTION_LEFT_HOVER = "THREE_SECTION_LEFT_HOVER";
+    static int THREE_SECTION_LEFT_HOVER_DEFAULT = Handlers.GLOBAL_ACTION_NONE;
+    static String THREE_SECTION_CENTER_HOVER = "THREE_SECTION_CENTER_HOVER";
+    static int THREE_SECTION_CENTER_HOVER_DEFAULT = Handlers.GLOBAL_ACTION_NONE;
+    static String THREE_SECTION_RIGHT_HOVER = "THREE_SECTION_RIGHT_HOVER";
+    static int THREE_SECTION_RIGHT_HOVER_DEFAULT = Handlers.GLOBAL_ACTION_NONE;
 }
