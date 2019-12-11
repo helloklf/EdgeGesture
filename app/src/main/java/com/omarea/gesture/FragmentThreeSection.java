@@ -36,6 +36,14 @@ public class FragmentThreeSection extends FragmentSettingsBase {
 
     protected void updateView() {
         setViewBackground(getActivity().findViewById(R.id.bar_color_three_section), config.getInt(SpfConfig.THREE_SECTION_COLOR, SpfConfig.THREE_SECTION_COLOR_DEFAULT));
+
+        updateActionText(R.id.three_section_left_slide, SpfConfig.THREE_SECTION_LEFT_SLIDE, SpfConfig.THREE_SECTION_LEFT_SLIDE_DEFAULT);
+        updateActionText(R.id.three_section_center_slide, SpfConfig.THREE_SECTION_CENTER_SLIDE, SpfConfig.THREE_SECTION_CENTER_SLIDE_DEFAULT);
+        updateActionText(R.id.three_section_right_slide, SpfConfig.THREE_SECTION_RIGHT_SLIDE, SpfConfig.THREE_SECTION_RIGHT_SLIDE_DEFAULT);
+        updateActionText(R.id.three_section_left_hover, SpfConfig.THREE_SECTION_LEFT_HOVER, SpfConfig.THREE_SECTION_LEFT_HOVER_DEFAULT);
+        updateActionText(R.id.three_section_center_hover, SpfConfig.THREE_SECTION_CENTER_HOVER, SpfConfig.THREE_SECTION_CENTER_HOVER_DEFAULT);
+        updateActionText(R.id.three_section_right_hover, SpfConfig.THREE_SECTION_RIGHT_HOVER, SpfConfig.THREE_SECTION_RIGHT_HOVER_DEFAULT);
+
         super.updateView();
     }
 }
