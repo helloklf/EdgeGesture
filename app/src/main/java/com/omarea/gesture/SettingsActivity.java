@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TabHost;
-import android.widget.Toast;
+
 import com.omarea.gesture.fragments.FragmentBasic;
 import com.omarea.gesture.fragments.FragmentEdge;
 import com.omarea.gesture.fragments.FragmentOther;

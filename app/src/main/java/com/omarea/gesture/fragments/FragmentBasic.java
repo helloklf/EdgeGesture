@@ -20,11 +20,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.omarea.gesture.util.ForceHideNavBarThread;
 import com.omarea.gesture.R;
+import com.omarea.gesture.SpfConfig;
+import com.omarea.gesture.util.ForceHideNavBarThread;
 import com.omarea.gesture.util.Overscan;
 import com.omarea.gesture.util.ResumeNavBar;
-import com.omarea.gesture.SpfConfig;
 
 import java.util.List;
 

@@ -4,9 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.util.Log;
-import android.view.WindowManager;
 
-import java.io.InputStream;
 import java.io.OutputStream;
 
 public class Overscan {
