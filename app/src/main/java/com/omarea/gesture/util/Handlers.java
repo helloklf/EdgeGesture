@@ -6,13 +6,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.widget.Toast;
-
 import com.omarea.gesture.AccessibilityServiceKeyEvent;
 import com.omarea.gesture.ActionModel;
 import com.omarea.gesture.AppSwitchActivity;
 import com.omarea.gesture.SpfConfig;
+import com.omarea.gesture.SpfConfigEx;
 import com.omarea.gesture.shell.KeepShellPublic;
-
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,86 +32,46 @@ public class Handlers {
     final public static int VITUAL_ACTION_XIAO_AI = 900002;
     final public static int VITUAL_ACTION_SWITCH_APP = 900005;
     final public static int VITUAL_ACTION_FORM = 900009;
+
+    final public static int CUSTOM_ACTION_APP = 1000001;
+    final public static int CUSTOM_ACTION_SHELL = 1000006;
+
     private static SharedPreferences config;
+    private static SharedPreferences configEx;
     private static boolean isXiaomi = Build.MANUFACTURER.equals("Xiaomi") && Build.BRAND.equals("Xiaomi");
 
     private final static ActionModel[] options = new ArrayList<ActionModel>() {{
-        add(new ActionModel() {{
-            actionCode = GLOBAL_ACTION_NONE;
-            title = "无";
-        }});
-        add(new ActionModel() {{
-            actionCode = GLOBAL_ACTION_BACK;
-            title = "返回键";
-        }});
-        add(new ActionModel() {{
-            actionCode = GLOBAL_ACTION_HOME;
-            title = "主页键";
-        }});
-        add(new ActionModel() {{
-            actionCode = GLOBAL_ACTION_RECENTS;
-            title = "任务键";
-        }});
-        add(new ActionModel() {{
-            actionCode = GLOBAL_ACTION_NOTIFICATIONS;
-            title = "下拉通知";
-        }});
-        add(new ActionModel() {{
-            actionCode = GLOBAL_ACTION_QUICK_SETTINGS;
-            title = "快捷面板";
-        }});
-        add(new ActionModel() {{
-            actionCode = GLOBAL_ACTION_POWER_DIALOG;
-            title = "电源菜单";
-        }});
-        add(new ActionModel() {{
-            actionCode = VITUAL_ACTION_PREV_APP;
-            title = "上个应用";
-        }});
-        add(new ActionModel() {{
-            actionCode = VITUAL_ACTION_NEXT_APP;
-            title = "下个应用";
-        }});
-
-        if (isXiaomi) {
-            add(new ActionModel() {{
-                actionCode = VITUAL_ACTION_XIAO_AI;
-                title = "小爱[ROOT]";
-            }});
-        }
+        add(new ActionModel(GLOBAL_ACTION_NONE, "无"));
+        add(new ActionModel(GLOBAL_ACTION_BACK, "返回键"));
+        add(new ActionModel(GLOBAL_ACTION_HOME, "主页键"));
+        add(new ActionModel(GLOBAL_ACTION_RECENTS, "任务键"));
+        add(new ActionModel(GLOBAL_ACTION_NOTIFICATIONS, "下拉通知"));
+        add(new ActionModel(GLOBAL_ACTION_QUICK_SETTINGS, "快捷面板"));
+        add(new ActionModel(GLOBAL_ACTION_POWER_DIALOG, "电源菜单"));
+        add(new ActionModel(VITUAL_ACTION_PREV_APP, "上个应用"));
+        add(new ActionModel(VITUAL_ACTION_NEXT_APP, "下个应用"));
+        add(new ActionModel(VITUAL_ACTION_XIAO_AI, "小爱[ROOT]"));
 
         if (Build.VERSION.SDK_INT > 23) {
-            add(new ActionModel() {{
-                actionCode = GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN;
-                title = "分屏";
-            }});
-            add(new ActionModel() {{
-                actionCode = VITUAL_ACTION_SWITCH_APP;
-                title = "上个应用[原生]";
-            }});
-            add(new ActionModel() {{
-                actionCode = VITUAL_ACTION_FORM;
-                title = "窗口化[试验]";
-            }});
+            add(new ActionModel(GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN, "分屏"));
+            add(new ActionModel(VITUAL_ACTION_SWITCH_APP, "上个应用[原生]"));
+            add(new ActionModel(VITUAL_ACTION_FORM, "窗口化[试验]"));
         }
 
         if (Build.VERSION.SDK_INT > 27) {
-            add(new ActionModel() {{
-                actionCode = GLOBAL_ACTION_LOCK_SCREEN;
-                title = "锁屏";
-            }});
-            add(new ActionModel() {{
-                actionCode = GLOBAL_ACTION_TAKE_SCREENSHOT;
-                title = "屏幕截图";
-            }});
+            add(new ActionModel(GLOBAL_ACTION_LOCK_SCREEN, "锁屏"));
+            add(new ActionModel(GLOBAL_ACTION_TAKE_SCREENSHOT, "屏幕截图"));
         }
+
+        add(new ActionModel(CUSTOM_ACTION_APP, "EX-打开应用"));
+        add(new ActionModel(CUSTOM_ACTION_SHELL, "EX-运行脚本"));
     }}.toArray(new ActionModel[0]);
 
     private static Process rootProcess = null;
     private static OutputStream rootOutputStream = null;
 
-    public static void executeVirtualAction(final AccessibilityServiceKeyEvent accessibilityService, final int action) {
-        switch (action) {
+    public static void executeVirtualAction(final AccessibilityServiceKeyEvent accessibilityService, final ActionModel action) {
+        switch (action.actionCode) {
             case GLOBAL_ACTION_NONE: {
                 break;
             }
@@ -137,10 +96,10 @@ public class Handlers {
                 int animation = accessibilityService
                         .getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE)
                         .getInt(SpfConfig.HOME_ANIMATION, SpfConfig.HOME_ANIMATION_DEFAULT);
-                if (action == GLOBAL_ACTION_HOME && animation == SpfConfig.HOME_ANIMATION_DEFAULT) {
-                    accessibilityService.performGlobalAction(action);
+                if (action.actionCode == GLOBAL_ACTION_HOME && animation == SpfConfig.HOME_ANIMATION_DEFAULT) {
+                    accessibilityService.performGlobalAction(action.actionCode);
                 } else {
-                    appSwitch(accessibilityService, action, animation);
+                    appSwitch(accessibilityService, action.actionCode, animation);
                 }
                 break;
             }
@@ -156,28 +115,42 @@ public class Handlers {
                             Thread.sleep(500);
                         } catch (Exception ignored) {
                         }
-                        accessibilityService.performGlobalAction(action);
+                        accessibilityService.performGlobalAction(action.actionCode);
                     }
                 }).start();
                 break;
             }
+            case CUSTOM_ACTION_SHELL: {
+                executeShell(accessibilityService, action);
+                break;
+            }
+            case CUSTOM_ACTION_APP: {
+                openApp(accessibilityService, action);
+                break;
+            }
             default: {
-                accessibilityService.performGlobalAction(action);
+                accessibilityService.performGlobalAction(action.actionCode);
                 break;
             }
         }
     }
 
+    private static Intent getOpenAppIntent(final AccessibilityServiceKeyEvent accessibilityService) {
+        Intent intent = new Intent(accessibilityService, AppSwitchActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        return intent;
+    }
+
     private static void appSwitch(final AccessibilityServiceKeyEvent accessibilityService, final int action, final int animation) {
         try {
-            Intent intent = new Intent(accessibilityService, AppSwitchActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            Intent intent = getOpenAppIntent(accessibilityService);
             intent.putExtra("animation", animation);
+
             switch (action) {
                 case GLOBAL_ACTION_HOME: {
                     intent.putExtra("home", true);
@@ -226,8 +199,35 @@ public class Handlers {
             }
             accessibilityService.startActivity(intent);
         } catch (Exception ex) {
-            ex.printStackTrace();
             Toast.makeText(accessibilityService, "AppSwitch Exception >> " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private static void openApp(AccessibilityServiceKeyEvent accessibilityService, ActionModel action) {
+        if (configEx == null) {
+            configEx = accessibilityService.getSharedPreferences(SpfConfigEx.configFile, Context.MODE_PRIVATE);
+        }
+
+        String app = configEx.getString(SpfConfigEx.prefix_app + action.exKey, "com.tencent.mm");
+        if (app != null && !app.isEmpty()) {
+            try {
+                Intent intent = getOpenAppIntent(accessibilityService);
+                intent.putExtra("app", app);
+                accessibilityService.startActivity(intent);
+            } catch (Exception ex) {
+                Toast.makeText(accessibilityService, "AppSwitch Exception >> " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private static void executeShell(AccessibilityServiceKeyEvent accessibilityService, ActionModel action) {
+        if (configEx == null) {
+            configEx = accessibilityService.getSharedPreferences(SpfConfigEx.configFile, Context.MODE_PRIVATE);
+        }
+
+        String shell = configEx.getString(SpfConfigEx.prefix_shell + action.exKey, "");
+        if (shell != null && !shell.isEmpty()) {
+            KeepShellPublic.doCmdSync(shell);
         }
     }
 

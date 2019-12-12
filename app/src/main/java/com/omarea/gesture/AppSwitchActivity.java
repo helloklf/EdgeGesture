@@ -42,6 +42,11 @@ public class AppSwitchActivity extends Activity {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     startActivityAsFreeForm(appPackageName);
                 }
+            } else if (currentIntent.hasExtra("app")) {
+                String appPackageName = currentIntent.getStringExtra("app");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    startActivity(appPackageName);
+                }
             } else if (currentIntent.hasExtra("home")) {
                 overridePendingTransition(R.anim.activity_close_enter, R.anim.activity_close_exit);
                 Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -74,6 +79,10 @@ public class AppSwitchActivity extends Activity {
         } catch (Exception e) { /* Gracefully fail */ }
 
         return options;
+    }
+
+    private void startActivity(String packageName) {
+        switchApp(packageName, R.anim.app_open_enter, R.anim.app_open_exit);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

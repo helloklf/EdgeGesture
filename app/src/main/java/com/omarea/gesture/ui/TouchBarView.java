@@ -20,6 +20,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.widget.Toast;
 
 import com.omarea.gesture.AccessibilityServiceKeyEvent;
+import com.omarea.gesture.ActionModel;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.util.Handlers;
@@ -54,8 +55,8 @@ public class TouchBarView extends View {
     private boolean drawIcon = true; // 是否绘制图标
     private float flingValue = dp2px(context, 3f); // 小于此值认为是点击而非滑动
 
-    private int eventTouch;
-    private int eventHover;
+    private ActionModel eventTouch;
+    private ActionModel eventHover;
     private AccessibilityServiceKeyEvent accessibilityService;
     private boolean isLandscapf = false;
     private boolean gameOptimization = false;
@@ -87,10 +88,10 @@ public class TouchBarView extends View {
         config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
     }
 
-    private void performGlobalAction(int event) {
+    private void performGlobalAction(ActionModel event) {
         if (accessibilityService != null) {
-            if (gameOptimization && isLandscapf && ((System.currentTimeMillis() - lastEventTime) > 2000 || lastEvent != event)) {
-                lastEvent = event;
+            if (gameOptimization && isLandscapf && ((System.currentTimeMillis() - lastEventTime) > 2000 || lastEvent != event.actionCode)) {
+                lastEvent = event.actionCode;
                 lastEventTime = System.currentTimeMillis();
                 Toast.makeText(context, this.getContext().getString(R.string.please_repeat), Toast.LENGTH_SHORT).show();
             } else {
@@ -160,7 +161,7 @@ public class TouchBarView extends View {
         this.setLayoutParams(lp);
     }
 
-    void setEventHandler(int shortTouch, int touchHover, final AccessibilityServiceKeyEvent context) {
+    void setEventHandler(ActionModel shortTouch, ActionModel touchHover, final AccessibilityServiceKeyEvent context) {
         this.eventTouch = shortTouch;
         this.eventHover = touchHover;
         this.accessibilityService = context;
@@ -398,7 +399,7 @@ public class TouchBarView extends View {
     private void drawIcon(Canvas canvas, float centerX, float centerY) {
         try {
             canvas.drawBitmap(
-                    isLongTimeGesture ? TouchIconCache.getIcon(eventHover) : TouchIconCache.getIcon(eventTouch),
+                    isLongTimeGesture ? TouchIconCache.getIcon(eventHover.actionCode) : TouchIconCache.getIcon(eventTouch.actionCode),
                     null,
                     getEffectIconRectF(centerX, centerY),
                     p);

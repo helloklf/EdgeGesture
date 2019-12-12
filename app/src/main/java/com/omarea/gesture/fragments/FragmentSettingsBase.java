@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import com.omarea.gesture.ActionModel;
+import com.omarea.gesture.DialogHandlerEX;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.util.Handlers;
@@ -103,10 +105,14 @@ public class FragmentSettingsBase extends Fragment {
                 }, finalIndex, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        config.edit().putInt(key, items[which].actionCode).apply();
+                        int code = items[which].actionCode;
+                        config.edit().putInt(key, code).apply();
                         restartService();
-
                         dialog.dismiss();
+
+                        if (code >= Handlers.CUSTOM_ACTION_APP) {
+                            new DialogHandlerEX().openDialog(getActivity(), key, code);
+                        }
                     }
                 }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override

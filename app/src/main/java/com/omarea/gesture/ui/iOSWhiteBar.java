@@ -20,6 +20,7 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 
 import com.omarea.gesture.AccessibilityServiceKeyEvent;
+import com.omarea.gesture.ActionModel;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.util.GlobalState;
@@ -261,7 +262,7 @@ public class iOSWhiteBar {
                                         touchVibrator();
                                         vibratorRun = false;
                                     }
-                                    performGlobalAction(config.getInt(SpfConfig.IOS_BAR_SLIDE_UP_HOVER, SpfConfig.IOS_BAR_SLIDE_UP_HOVER_DEFAULT));
+                                    performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_UP_HOVER, SpfConfig.IOS_BAR_SLIDE_UP_HOVER_DEFAULT));
                                     isGestureCompleted = true;
                                     clearEffect();
                                 }
@@ -291,13 +292,13 @@ public class iOSWhiteBar {
                 if (Math.abs(moveX) > flingValue || Math.abs(moveY) > flingValue) {
                     if (moveY > FLIP_DISTANCE) {
                         if (isLongTimeGesture) // 上滑悬停
-                            performGlobalAction(config.getInt(SpfConfig.IOS_BAR_SLIDE_UP_HOVER, SpfConfig.IOS_BAR_SLIDE_UP_HOVER_DEFAULT));
+                            performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_UP_HOVER, SpfConfig.IOS_BAR_SLIDE_UP_HOVER_DEFAULT));
                         else // 上滑
-                            performGlobalAction(config.getInt(SpfConfig.IOS_BAR_SLIDE_UP, SpfConfig.IOS_BAR_SLIDE_UP_DEFAULT));
+                            performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_UP, SpfConfig.IOS_BAR_SLIDE_UP_DEFAULT));
                     } else if (moveX < -FLIP_DISTANCE) { // 向左滑动
-                        performGlobalAction(config.getInt(SpfConfig.IOS_BAR_SLIDE_LEFT, SpfConfig.IOS_BAR_SLIDE_LEFT_DEFAULT));
+                        performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_LEFT, SpfConfig.IOS_BAR_SLIDE_LEFT_DEFAULT));
                     } else if (moveX > FLIP_DISTANCE) { // 向右滑动
-                        performGlobalAction(config.getInt(SpfConfig.IOS_BAR_SLIDE_RIGHT, SpfConfig.IOS_BAR_SLIDE_RIGHT_DEFAULT));
+                        performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_RIGHT, SpfConfig.IOS_BAR_SLIDE_RIGHT_DEFAULT));
                     }
                 }
 
@@ -389,7 +390,7 @@ public class iOSWhiteBar {
         }
     }
 
-    private void performGlobalAction(int event) {
+    private void performGlobalAction(ActionModel event) {
         if (accessibilityService != null) {
             Handlers.executeVirtualAction(accessibilityService, event);
         }
