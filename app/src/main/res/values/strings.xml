@@ -54,6 +54,7 @@
     <string name="basic_settings">基础设置</string>
     <string name="custom_shell_hint">输入自定义的脚本内容，最多可输入1024个字符。 如需执行大量脚本代码，请自行存储为文件，并通过本应用调用！</string>
     <string name="custom_shell">自定义脚本</string>
+    <string name="custom_app">自定义应用</string>
 
     <string-array name="app_switch_black_list">
         <item>android</item>

@@ -96,9 +96,8 @@ public class FragmentSettingsBase extends Fragment {
                         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_action_option, null);
                         TextView textView = view.findViewById(R.id.item_title);
                         textView.setText(actionModel.title);
-                        if (finalIndex == position) {
-                            RadioButton radioButton = view.findViewById(R.id.item_selected);
-                            radioButton.setChecked(true);
+                        if (position == finalIndex) {
+                            textView.setTextColor(textView.getHighlightColor());
                         }
                         return view;
                     }

@@ -7,6 +7,7 @@
 
     <EditText
         android:id="@+id/ex_shell"
+        android:gravity="top"
         android:textSize="12sp"
         android:hint="@string/custom_shell_hint"
         android:maxLength="1024"

@@ -5,7 +5,9 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.lang.reflect.Method;
@@ -14,7 +16,7 @@ public class AppSwitchActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.d(">>>>", "11");
         try {
             overridePendingTransition(0, 0);
             Intent currentIntent = getIntent();
@@ -67,7 +69,12 @@ public class AppSwitchActivity extends Activity {
         } catch (Exception ex) {
             Toast.makeText(getApplicationContext(), "" + ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
-        finish();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finish();
+            }
+        }, 300);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
