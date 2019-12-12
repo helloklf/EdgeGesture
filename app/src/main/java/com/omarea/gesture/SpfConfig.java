@@ -1,5 +1,7 @@
 package com.omarea.gesture;
 
+import com.omarea.gesture.util.Handlers;
+
 public class SpfConfig {
     public final static String HOME_ANIMATION = "HOME_ANIMATION";
     public final static int HOME_ANIMATION_DEFAULT = 0;
@@ -99,7 +101,12 @@ public class SpfConfig {
     public static final Boolean GAME_OPTIMIZATION_DEFAULT = true;
     public static final String ROOT_GET_RECENTS = "ROOT_GET_RECENTS =";
     public static final Boolean ROOT_GET_RECENTS_DEFAULT = false;
-
+    public static final String THREE_SECTION_WIDTH = "THREE_SECTION_WIDTH";
+    public static final int THREE_SECTION_WIDTH_DEFAULT = 100;
+    public static final String THREE_SECTION_HEIGHT = "THREE_SECTION_HEIGHT";
+    public static final int THREE_SECTION_HEIGHT_DEFAULT = 9; // ?dp
+    public static final String THREE_SECTION_COLOR = "THREE_SECTION_COLOR";
+    public static final int THREE_SECTION_COLOR_DEFAULT = 0xffffffff; // 颜色
     // 硬件加速
     public static String HARDWARE_ACCELERATED = "HARDWARE_ACCELERATED";
     public static boolean HARDWARE_ACCELERATED_DEFAULT = false;
@@ -109,18 +116,11 @@ public class SpfConfig {
     // Overscan隐藏导航栏
     public static String OVERSCAN_SWITCH = "OVERSCAN_SWITCH";
     public static boolean OVERSCAN_SWITCH_DEFAULT = false;
-
     // 三段式手势
     public static String THREE_SECTION_LANDSCAPE = "THREE_SECTION_LANDSCAPE";
     public static boolean THREE_SECTION_LANDSCAPE_DEFAULT = false;
     public static String THREE_SECTION_PORTRAIT = "THREE_SECTION_PORTRAIT";
     public static boolean THREE_SECTION_PORTRAIT_DEFAULT = false;
-    public static final String THREE_SECTION_WIDTH = "THREE_SECTION_WIDTH";
-    public static final int THREE_SECTION_WIDTH_DEFAULT = 100;
-    public static final String THREE_SECTION_HEIGHT = "THREE_SECTION_HEIGHT";
-    public static final int THREE_SECTION_HEIGHT_DEFAULT = 9; // ?dp
-    public static final String THREE_SECTION_COLOR = "THREE_SECTION_COLOR";
-    public static final int THREE_SECTION_COLOR_DEFAULT = 0xffffffff; // 颜色
     public static String THREE_SECTION_LEFT_SLIDE = "THREE_SECTION_LEFT_SLIDE";
     public static int THREE_SECTION_LEFT_SLIDE_DEFAULT = Handlers.GLOBAL_ACTION_BACK;
     public static String THREE_SECTION_CENTER_SLIDE = "THREE_SECTION_CENTER_SLIDE";

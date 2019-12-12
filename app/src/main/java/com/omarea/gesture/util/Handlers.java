@@ -1,4 +1,4 @@
-package com.omarea.gesture;
+package com.omarea.gesture.util;
 
 import android.accessibilityservice.AccessibilityService;
 import android.content.Context;
@@ -7,6 +7,9 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.widget.Toast;
 
+import com.omarea.gesture.AccessibilityServiceKeyEvent;
+import com.omarea.gesture.AppSwitchActivity;
+import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.shell.KeepShellPublic;
 
 import java.io.OutputStream;
@@ -14,21 +17,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Handlers {
-    final static int GLOBAL_ACTION_NONE = 0;
-    final static int GLOBAL_ACTION_BACK = AccessibilityService.GLOBAL_ACTION_BACK;
-    final static int GLOBAL_ACTION_HOME = AccessibilityService.GLOBAL_ACTION_HOME;
-    final static int GLOBAL_ACTION_RECENTS = AccessibilityService.GLOBAL_ACTION_RECENTS;
-    final static int GLOBAL_ACTION_NOTIFICATIONS = AccessibilityService.GLOBAL_ACTION_NOTIFICATIONS;
-    final static int GLOBAL_ACTION_QUICK_SETTINGS = AccessibilityService.GLOBAL_ACTION_QUICK_SETTINGS;
-    final static int GLOBAL_ACTION_POWER_DIALOG = AccessibilityService.GLOBAL_ACTION_POWER_DIALOG;
-    final static int GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN = AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN;
-    final static int GLOBAL_ACTION_LOCK_SCREEN = AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN;
-    final static int GLOBAL_ACTION_TAKE_SCREENSHOT = AccessibilityService.GLOBAL_ACTION_TAKE_SCREENSHOT;
-    final static int VITUAL_ACTION_NEXT_APP = 900000;
-    final static int VITUAL_ACTION_PREV_APP = 900001;
-    final static int VITUAL_ACTION_XIAO_AI = 900002;
-    final static int VITUAL_ACTION_SWITCH_APP = 900005;
-    final static int VITUAL_ACTION_FORM = 900009;
+    final public static int GLOBAL_ACTION_NONE = 0;
+    final public static int GLOBAL_ACTION_BACK = AccessibilityService.GLOBAL_ACTION_BACK;
+    final public static int GLOBAL_ACTION_HOME = AccessibilityService.GLOBAL_ACTION_HOME;
+    final public static int GLOBAL_ACTION_RECENTS = AccessibilityService.GLOBAL_ACTION_RECENTS;
+    final public static int GLOBAL_ACTION_NOTIFICATIONS = AccessibilityService.GLOBAL_ACTION_NOTIFICATIONS;
+    final public static int GLOBAL_ACTION_QUICK_SETTINGS = AccessibilityService.GLOBAL_ACTION_QUICK_SETTINGS;
+    final public static int GLOBAL_ACTION_POWER_DIALOG = AccessibilityService.GLOBAL_ACTION_POWER_DIALOG;
+    final public static int GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN = AccessibilityService.GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN;
+    final public static int GLOBAL_ACTION_LOCK_SCREEN = AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN;
+    final public static int GLOBAL_ACTION_TAKE_SCREENSHOT = AccessibilityService.GLOBAL_ACTION_TAKE_SCREENSHOT;
+    final public static int VITUAL_ACTION_NEXT_APP = 900000;
+    final public static int VITUAL_ACTION_PREV_APP = 900001;
+    final public static int VITUAL_ACTION_XIAO_AI = 900002;
+    final public static int VITUAL_ACTION_SWITCH_APP = 900005;
+    final public static int VITUAL_ACTION_FORM = 900009;
     private static SharedPreferences config;
     private static boolean isXiaomi = Build.MANUFACTURER.equals("Xiaomi") && Build.BRAND.equals("Xiaomi");
 
@@ -87,7 +90,7 @@ public class Handlers {
     private static Process rootProcess = null;
     private static OutputStream rootOutputStream = null;
 
-    static void executeVirtualAction(final AccessibilityServiceKeyEvent accessibilityService, final int action) {
+    public static void executeVirtualAction(final AccessibilityServiceKeyEvent accessibilityService, final int action) {
         switch (action) {
             case GLOBAL_ACTION_NONE: {
                 break;

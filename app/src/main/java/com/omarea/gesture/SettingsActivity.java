@@ -12,10 +12,12 @@ import com.omarea.gesture.fragments.FragmentEdge;
 import com.omarea.gesture.fragments.FragmentOther;
 import com.omarea.gesture.fragments.FragmentThreeSection;
 import com.omarea.gesture.fragments.FragmentWhiteBar;
+import com.omarea.gesture.util.GlobalState;
 
 
 public class SettingsActivity extends Activity {
     private boolean inited = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +47,8 @@ public class SettingsActivity extends Activity {
                     .replace(R.id.main_tab_3, new FragmentThreeSection()).commit();
             getFragmentManager().beginTransaction()
                     .replace(R.id.main_tab_4, new FragmentOther()).commit();
-        } catch (Exception ex) {}
+        } catch (Exception ex) {
+        }
     }
 
     private void updateView() {

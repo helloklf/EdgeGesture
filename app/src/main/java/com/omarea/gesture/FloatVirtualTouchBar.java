@@ -13,6 +13,8 @@ import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Toast;
 
+import com.omarea.gesture.util.GlobalState;
+
 class FloatVirtualTouchBar {
     private static WindowManager mWindowManager = null;
     private boolean islandscape;

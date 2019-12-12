@@ -16,10 +16,10 @@ import android.widget.Checkable;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
 
-import com.omarea.gesture.Handlers;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
-import com.omarea.gesture.UITools;
+import com.omarea.gesture.util.Handlers;
+import com.omarea.gesture.util.UITools;
 
 import java.util.ArrayList;
 

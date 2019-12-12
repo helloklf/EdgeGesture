@@ -1,4 +1,4 @@
-package com.omarea.gesture;
+package com.omarea.gesture.util;
 
 import android.content.Context;
 

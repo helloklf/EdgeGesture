@@ -1,4 +1,4 @@
-package com.omarea.gesture;
+package com.omarea.gesture.util;
 
 import android.accessibilityservice.AccessibilityService;
 import android.os.Handler;
@@ -9,7 +9,7 @@ public class ReceiverLockHandler extends Handler {
     private View bar;
     private AccessibilityService accessibilityService;
 
-    ReceiverLockHandler(View bar, AccessibilityService accessibilityService) {
+    public ReceiverLockHandler(View bar, AccessibilityService accessibilityService) {
         this.bar = bar;
         this.accessibilityService = accessibilityService;
     }

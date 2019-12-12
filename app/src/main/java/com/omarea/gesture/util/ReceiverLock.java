@@ -1,4 +1,4 @@
-package com.omarea.gesture;
+package com.omarea.gesture.util;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,7 +12,7 @@ import android.os.Handler;
  * Created by Hello on 2018/01/23.
  */
 
-class ReceiverLock extends BroadcastReceiver {
+public class ReceiverLock extends BroadcastReceiver {
     public static int EVENT_SCREEN_OFF = 8;
     public static int EVENT_SCREEN_ON = 10;
     private static ReceiverLock receiver = null;

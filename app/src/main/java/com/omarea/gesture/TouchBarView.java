@@ -19,6 +19,8 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.Toast;
 
+import com.omarea.gesture.util.Handlers;
+
 class TouchBarView extends View {
     static final int RIGHT = 2;
     static final int BOTTOM = 0;

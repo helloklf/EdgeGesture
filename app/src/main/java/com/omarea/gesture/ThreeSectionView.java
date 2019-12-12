@@ -17,6 +17,8 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.Toast;
 
+import com.omarea.gesture.util.Handlers;
+
 class ThreeSectionView extends View {
     private SharedPreferences config;
     private ValueAnimator va = null; // 动画程序
@@ -174,7 +176,7 @@ class ThreeSectionView extends View {
             ViewGroup.LayoutParams lp = this.getLayoutParams();
             lp.height = FLIP_DISTANCE;
             // if (isLandscapf) {
-                // setBackground(context.getDrawable(R.drawable.landscape_bar_background));
+            // setBackground(context.getDrawable(R.drawable.landscape_bar_background));
             // }
             this.setLayoutParams(lp);
         }

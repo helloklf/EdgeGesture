@@ -21,6 +21,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.omarea.gesture.util.ForceHideNavBarThread;
 import com.omarea.gesture.util.Overscan;
+import com.omarea.gesture.util.Recents;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -224,8 +225,8 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
                     String action = intent.getAction();
                     if (action != null &&
                             ((action.equals(Intent.ACTION_USER_PRESENT) || action.equals(Intent.ACTION_USER_UNLOCKED))
-                            // || action.equals(Intent.ACTION_SCREEN_ON)
-                    )) {
+                                    // || action.equals(Intent.ACTION_SCREEN_ON)
+                            )) {
                         forceHideNavBar();
                     }
                 }

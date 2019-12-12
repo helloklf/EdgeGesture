@@ -19,6 +19,12 @@ import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 
+import com.omarea.gesture.util.GlobalState;
+import com.omarea.gesture.util.Handlers;
+import com.omarea.gesture.util.ReceiverLock;
+import com.omarea.gesture.util.ReceiverLockHandler;
+import com.omarea.gesture.util.ScreenState;
+
 public class iOSWhiteBar {
     private AccessibilityServiceKeyEvent accessibilityService;
     private SharedPreferences config;

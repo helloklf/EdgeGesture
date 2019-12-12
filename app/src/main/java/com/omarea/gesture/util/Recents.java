@@ -1,4 +1,4 @@
-package com.omarea.gesture;
+package com.omarea.gesture.util;
 
 import android.content.Context;
 
@@ -18,7 +18,7 @@ public class Recents {
     private int index = -1;
     private String currentTop = "";
 
-    void addRecent(String packageName) {
+    public void addRecent(String packageName) {
         synchronized (recents) {
             int searchResult = recents.indexOf(packageName);
             if (searchResult > -1) {
@@ -41,7 +41,7 @@ public class Recents {
         }
     }
 
-    void setRecents(ArrayList<String> items, Context context) {
+    public void setRecents(ArrayList<String> items, Context context) {
         synchronized (recents) {
             /*
             if (recents.size() < 4) {
@@ -92,7 +92,7 @@ public class Recents {
         return currentTop;
     }
 
-    String movePrevious() {
+    public String movePrevious() {
         synchronized (recents) {
             if (index > 0) {
                 index -= 1;
@@ -107,7 +107,7 @@ public class Recents {
         }
     }
 
-    String moveNext() {
+    public String moveNext() {
         synchronized (recents) {
             if (index < recents.size() - 1) {
                 index += 1;
