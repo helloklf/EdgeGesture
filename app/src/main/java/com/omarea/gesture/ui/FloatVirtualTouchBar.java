@@ -1,4 +1,4 @@
-package com.omarea.gesture;
+package com.omarea.gesture.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,9 +13,12 @@ import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Toast;
 
+import com.omarea.gesture.AccessibilityServiceKeyEvent;
+import com.omarea.gesture.R;
+import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.util.GlobalState;
 
-class FloatVirtualTouchBar {
+public class FloatVirtualTouchBar {
     private static WindowManager mWindowManager = null;
     private boolean islandscape;
     private View iosBarView = null;
@@ -83,7 +86,7 @@ class FloatVirtualTouchBar {
     /**
      * 隐藏弹出框
      */
-    void hidePopupWindow() {
+    public void hidePopupWindow() {
         if (this.iosBarView != null) {
             mWindowManager.removeView(this.iosBarView);
         }

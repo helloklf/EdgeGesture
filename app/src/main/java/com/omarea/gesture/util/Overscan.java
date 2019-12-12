@@ -8,10 +8,6 @@ import android.util.Log;
 import java.io.OutputStream;
 
 public class Overscan {
-    public boolean canWriteSecureSettings(Context context) {
-        return PackageManager.PERMISSION_GRANTED == context.checkCallingOrSelfPermission(Manifest.permission.WRITE_SECURE_SETTINGS);
-    }
-
     private static int getNavigationHeight(Context context) {
         int result = 0;
         int resourceId = 0;
@@ -22,6 +18,10 @@ public class Overscan {
         } else {
             return 0;
         }
+    }
+
+    public boolean canWriteSecureSettings(Context context) {
+        return PackageManager.PERMISSION_GRANTED == context.checkCallingOrSelfPermission(Manifest.permission.WRITE_SECURE_SETTINGS);
     }
 
     public boolean setOverscan(Context context) {
@@ -40,6 +40,7 @@ public class Overscan {
         }
         return false;
     }
+
     public boolean resetOverscan(Context context) {
         if (canWriteSecureSettings(context)) {
             try {

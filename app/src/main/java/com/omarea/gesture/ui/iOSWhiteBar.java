@@ -1,4 +1,4 @@
-package com.omarea.gesture;
+package com.omarea.gesture.ui;
 
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
@@ -19,6 +19,9 @@ import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 
+import com.omarea.gesture.AccessibilityServiceKeyEvent;
+import com.omarea.gesture.R;
+import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.util.GlobalState;
 import com.omarea.gesture.util.Handlers;
 import com.omarea.gesture.util.ReceiverLock;

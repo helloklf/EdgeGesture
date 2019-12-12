@@ -1,4 +1,4 @@
-package com.omarea.gesture;
+package com.omarea.gesture.ui;
 
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
@@ -19,9 +19,12 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.Toast;
 
+import com.omarea.gesture.AccessibilityServiceKeyEvent;
+import com.omarea.gesture.R;
+import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.util.Handlers;
 
-class TouchBarView extends View {
+public class TouchBarView extends View {
     static final int RIGHT = 2;
     static final int BOTTOM = 0;
     static final int LEFT = 1;

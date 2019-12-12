@@ -1,4 +1,4 @@
-package com.omarea.gesture;
+package com.omarea.gesture.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
-class iOSTouchBarView extends View {
+public class iOSTouchBarView extends View {
     private Context context = getContext();
 
     private Paint p = new Paint();
@@ -25,6 +25,7 @@ class iOSTouchBarView extends View {
         super(context, attributeSet);
         init();
     }
+
     public iOSTouchBarView(Context context, AttributeSet attributeSet, int defStyleAttr) {
         super(context, attributeSet, defStyleAttr);
         init();

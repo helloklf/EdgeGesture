@@ -19,6 +19,8 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
 
+import com.omarea.gesture.ui.FloatVirtualTouchBar;
+import com.omarea.gesture.ui.TouchIconCache;
 import com.omarea.gesture.util.ForceHideNavBarThread;
 import com.omarea.gesture.util.Overscan;
 import com.omarea.gesture.util.Recents;

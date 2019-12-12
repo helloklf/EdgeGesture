@@ -1,4 +1,4 @@
-package com.omarea.gesture;
+package com.omarea.gesture.ui;
 
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
@@ -17,9 +17,12 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.Toast;
 
+import com.omarea.gesture.AccessibilityServiceKeyEvent;
+import com.omarea.gesture.R;
+import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.util.Handlers;
 
-class ThreeSectionView extends View {
+public class ThreeSectionView extends View {
     private SharedPreferences config;
     private ValueAnimator va = null; // 动画程序
     private int bakWidth = 0;
