@@ -25,8 +25,8 @@
     <string name="three_section">三段手势</string>
     <string name="side_left">左边手势</string>
     <string name="edge_action">行为</string>
-    <string name="slide_hover">滑动悬停：</string>
-    <string name="quick_slide">快速滑动：</string>
+    <string name="slide_hover">滑动悬停</string>
+    <string name="quick_slide">快速滑动</string>
     <string name="side_hot_area_width">侧边热区宽度</string>
     <string name="bottom_hot_area_height">热区高度</string>
     <string name="bottom_hot_area_width">热区宽度</string>

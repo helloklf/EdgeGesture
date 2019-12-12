@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.Toast;
-
 import com.omarea.gesture.AccessibilityServiceKeyEvent;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;

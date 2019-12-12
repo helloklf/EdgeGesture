@@ -42,9 +42,6 @@ public class iOSWhiteBar {
 
     /**
      * 获取当前屏幕方向下的屏幕宽度
-     *
-     * @param context
-     * @return
      */
     private int getScreenWidth(Context context) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();

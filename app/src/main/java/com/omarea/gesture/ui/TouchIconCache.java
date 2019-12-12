@@ -9,7 +9,7 @@ import com.omarea.gesture.util.Handlers;
 
 public class TouchIconCache {
     private static Context mContext;
-    private static Bitmap touch_arrow_left, touch_arrow_right, touch_tasks, touch_home, touch_lock, touch_notice, touch_power, touch_settings, touch_split, touch_info, touch_screenshot, touch_switch, touch_jump_previous, touch_jump_next; // 图标资源
+    private static Bitmap touch_arrow_left, touch_arrow_right, touch_tasks, touch_home, touch_lock, touch_notice, touch_power, touch_settings, touch_split, touch_info, touch_screenshot, touch_switch, touch_jump_previous, touch_jump_next, touch_window; // 图标资源
 
     public static void setContext(Context context) {
         mContext = context;
@@ -88,6 +88,12 @@ public class TouchIconCache {
                     touch_jump_next = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.touch_jump_next);
                 }
                 return touch_jump_next;
+            }
+            case Handlers.VITUAL_ACTION_FORM: {
+                if (touch_window == null && mContext != null) {
+                    touch_window = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.touch_window);
+                }
+                return touch_window;
             }
         }
         if (touch_info == null && mContext != null) {

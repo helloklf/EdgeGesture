@@ -25,8 +25,6 @@ public class FloatVirtualTouchBar {
     private View bottomView = null;
     private View leftView = null;
     private View rightView = null;
-    private long lastEventTime = 0L;
-    private int lastEvent = -1;
     private SharedPreferences config;
 
     public FloatVirtualTouchBar(AccessibilityServiceKeyEvent context, boolean islandscape) {

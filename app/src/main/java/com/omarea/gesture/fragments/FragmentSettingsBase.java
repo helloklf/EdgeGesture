@@ -10,18 +10,21 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.Checkable;
 import android.widget.CompoundButton;
+import android.widget.RadioButton;
 import android.widget.SeekBar;
-
+import android.widget.TextView;
+import com.omarea.gesture.ActionModel;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.util.Handlers;
 import com.omarea.gesture.util.UITools;
-
-import java.util.ArrayList;
 
 public class FragmentSettingsBase extends Fragment {
     protected SharedPreferences config;
@@ -49,7 +52,6 @@ public class FragmentSettingsBase extends Fragment {
 
     protected void bindHandlerPicker(int id, final String key, final int defValue) {
         final Button button = getActivity().findViewById(id);
-        button.setText(Handlers.getOption(config.getInt(key, defValue)));
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,25 +61,58 @@ public class FragmentSettingsBase extends Fragment {
     }
 
     private void openHandlerPicker(final String key, final int defValue) {
-        String[] items = Handlers.getOptions();
-        final ArrayList<Integer> values = Handlers.getValues();
+        final ActionModel[] items = Handlers.getOptions();
 
-        int currentValue = config.getInt(key, defValue);
-        int index = values.indexOf(currentValue);
+        final int currentValue = config.getInt(key, defValue);
+        int index = -1;
+        for (int i = 0; i < items.length; i++) {
+            if (items[i].actionCode == currentValue) {
+                index = i;
+                break;
+            }
+        }
 
+        final int finalIndex = index;
         new AlertDialog.Builder(getActivity())
                 .setTitle(getString(R.string.handler_picker))
-                .setSingleChoiceItems(items, index, new DialogInterface.OnClickListener() {
+                .setSingleChoiceItems(new BaseAdapter() {
+                    @Override
+                    public int getCount() {
+                        return items.length;
+                    }
+                    @Override
+                    public Object getItem(int position) {
+                        return items[position];
+                    }
+                    @Override
+                    public long getItemId(int position) {
+                        return items[position].actionCode;
+                    }
+                    @Override
+                    public View getView(int position, View convertView, ViewGroup parent) {
+                        ActionModel actionModel = ((ActionModel)getItem(position));
+                        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_action_option, null);
+                        TextView textView = view.findViewById(R.id.item_title);
+                        textView.setText(actionModel.title);
+                        if (finalIndex == position) {
+                            RadioButton radioButton = view.findViewById(R.id.item_selected);
+                            radioButton.setChecked(true);
+                        }
+                        return view;
+                    }
+                }, finalIndex, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        config.edit().putInt(key, values.get(which)).apply();
+                        config.edit().putInt(key, items[which].actionCode).apply();
                         restartService();
 
                         dialog.dismiss();
                     }
-                })
-                .create()
-                .show();
+                }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        }).create().show();
     }
 
     protected void updateActionText(int id, String key, int defaultAction) {

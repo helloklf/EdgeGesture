@@ -58,7 +58,8 @@
         <item name="android:paddingBottom">0dp</item>
         <item name="android:textAlignment">textStart</item>
         <item name="android:gravity">left|center_vertical</item>
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:singleLine">true</item>
     </style>
 
     <style name="activityAnim">
