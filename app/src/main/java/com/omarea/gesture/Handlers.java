@@ -28,6 +28,7 @@ public class Handlers {
     final static int VITUAL_ACTION_PREV_APP = 900001;
     final static int VITUAL_ACTION_XIAO_AI = 900002;
     final static int VITUAL_ACTION_SWITCH_APP = 900005;
+    final static int VITUAL_ACTION_FORM = 900009;
     private static SharedPreferences config;
     private static boolean isXiaomi = Build.MANUFACTURER.equals("Xiaomi") && Build.BRAND.equals("Xiaomi");
 
@@ -49,7 +50,9 @@ public class Handlers {
         if (Build.VERSION.SDK_INT > 23) {
             add("分屏");
             add("上个应用(原生)");
+            add("窗口化（试验）");
         }
+
         if (Build.VERSION.SDK_INT > 27) {
             add("锁屏");
             add("截图");
@@ -74,6 +77,7 @@ public class Handlers {
         if (Build.VERSION.SDK_INT > 23) {
             add(GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN);
             add(VITUAL_ACTION_SWITCH_APP);
+            add(VITUAL_ACTION_FORM);
         }
         if (Build.VERSION.SDK_INT > 27) {
             add(GLOBAL_ACTION_LOCK_SCREEN);
@@ -95,7 +99,7 @@ public class Handlers {
                         accessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS);
                         try {
                             Thread.sleep(350);
-                        } catch (Exception ex) {
+                        } catch (Exception ignored) {
                         }
                         accessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS);
                     }
@@ -104,6 +108,7 @@ public class Handlers {
             }
             case VITUAL_ACTION_NEXT_APP:
             case VITUAL_ACTION_PREV_APP:
+            case VITUAL_ACTION_FORM:
             case GLOBAL_ACTION_HOME: {
                 int animation = accessibilityService
                         .getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE)
@@ -123,6 +128,10 @@ public class Handlers {
                         switch (action) {
                             case GLOBAL_ACTION_HOME: {
                                 intent.putExtra("home", true);
+                                break;
+                            }
+                            case VITUAL_ACTION_FORM: {
+                                intent.putExtra("form", accessibilityService.recents.getCurrent());
                                 break;
                             }
                             case VITUAL_ACTION_PREV_APP:
@@ -180,7 +189,7 @@ public class Handlers {
                     public void run() {
                         try {
                             Thread.sleep(500);
-                        } catch (Exception ex) {
+                        } catch (Exception ignored) {
                         }
                         accessibilityService.performGlobalAction(action);
                     }
@@ -208,7 +217,7 @@ public class Handlers {
         return values;
     }
 
-    public static void openXiaoAi() {
+    private static void openXiaoAi() {
             /*
             try {
                 Intent intent = new Intent(Intent.ACTION_MAIN);

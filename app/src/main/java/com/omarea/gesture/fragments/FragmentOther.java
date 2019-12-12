@@ -95,6 +95,7 @@ public class FragmentOther extends FragmentSettingsBase {
         setHomeAnimationText();
     }
 
+    @Override
     protected void restartService() {
         updateView();
 

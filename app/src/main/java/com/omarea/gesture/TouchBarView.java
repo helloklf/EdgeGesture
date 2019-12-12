@@ -84,7 +84,7 @@ class TouchBarView extends View {
 
     private void performGlobalAction(int event) {
         if (accessibilityService != null) {
-            if (gameOptimization && isLandscapf && (lastEventTime + 1500 < System.currentTimeMillis() || lastEvent != event)) {
+            if (gameOptimization && isLandscapf && ((System.currentTimeMillis() - lastEventTime) > 2000 || lastEvent != event)) {
                 lastEvent = event;
                 lastEventTime = System.currentTimeMillis();
                 Toast.makeText(context, this.getContext().getString(R.string.please_repeat), Toast.LENGTH_SHORT).show();

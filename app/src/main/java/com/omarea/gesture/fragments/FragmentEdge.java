@@ -61,9 +61,9 @@ public class FragmentEdge extends FragmentSettingsBase {
         updateActionText(R.id.tap_right, SpfConfig.CONFIG_RIGHT_EVENT, SpfConfig.CONFIG_RIGHT_EVENT_DEFAULT);
         updateActionText(R.id.hover_right, SpfConfig.CONFIG_RIGHT_EVENT_HOVER, SpfConfig.CONFIG_RIGHT_EVENT_HOVER_DEFAULT);
 
-        updateView();
     }
 
+    @Override
     protected void restartService() {
         updateView();
 

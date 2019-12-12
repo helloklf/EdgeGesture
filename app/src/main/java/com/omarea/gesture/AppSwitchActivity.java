@@ -38,6 +38,11 @@ public class AppSwitchActivity extends Activity {
                 } else {
                     switchApp(appPackageName, R.anim.activity_close_enter, R.anim.activity_close_exit);
                 }
+            } else if (currentIntent.hasExtra("form")) {
+                String appPackageName = currentIntent.getStringExtra("form");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    startActivityAsFreeForm(appPackageName);
+                }
             } else if (currentIntent.hasExtra("home")) {
                 overridePendingTransition(R.anim.activity_close_enter, R.anim.activity_close_exit);
                 Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -63,24 +68,27 @@ public class AppSwitchActivity extends Activity {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public ActivityOptions getActivityOptions() {
-        ActivityOptions options = ActivityOptions.makeBasic();
-        int freeform_stackId = 5;
+        ActivityOptions options = ActivityOptions.makeTaskLaunchBehind();
         try {
             Method method = ActivityOptions.class.getMethod("setLaunchWindowingMode", int.class);
-            method.invoke(options, freeform_stackId);
+            method.invoke(options, 5);
         } catch (Exception e) { /* Gracefully fail */ }
 
         return options;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void startActivityAsFreeForm(Intent intent) {
+    private void startActivityAsFreeForm(String packageName) {
+        Intent intent = getPackageManager().getLaunchIntentForPackage(packageName);
+        // intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+
         ActivityOptions activityOptions = getActivityOptions();
-        int left = 50;
-        int top = 100;
-        int right = 800;
-        int bottom = 1100;
-        activityOptions.setLaunchBounds(new Rect(left, top, right, bottom));
+        // int left = 50;
+        // int top = 100;
+        // int right = 800;
+        // int bottom = 1100;
+        // activityOptions.setLaunchBounds(new Rect(left, top, right, bottom));
         Bundle bundle = activityOptions.toBundle();
         startActivity(intent, bundle);
     }

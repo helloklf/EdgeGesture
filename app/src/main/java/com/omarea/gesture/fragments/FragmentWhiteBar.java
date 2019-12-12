@@ -59,6 +59,7 @@ public class FragmentWhiteBar extends FragmentSettingsBase {
         updateActionText(R.id.ios_bar_slide_up_hover, SpfConfig.IOS_BAR_SLIDE_UP_HOVER, SpfConfig.IOS_BAR_SLIDE_UP_HOVER_DEFAULT);
     }
 
+    @Override
     protected void restartService() {
         updateView();
 

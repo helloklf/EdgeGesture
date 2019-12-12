@@ -49,6 +49,7 @@ public class FragmentThreeSection extends FragmentSettingsBase {
         updateActionText(R.id.three_section_right_hover, SpfConfig.THREE_SECTION_RIGHT_HOVER, SpfConfig.THREE_SECTION_RIGHT_HOVER_DEFAULT);
     }
 
+    @Override
     protected void restartService() {
         updateView();
 

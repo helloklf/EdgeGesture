@@ -76,7 +76,7 @@ class ThreeSectionView extends View {
         p.setAntiAlias(true);
         p.setStyle(Paint.Style.FILL);
         p.setStrokeCap(Paint.Cap.ROUND);
-        p.setShadowLayer(dp2px(context, 1), 0, 0, 0x66000000);
+        p.setShadowLayer(dp2px(context, 1), 0, 0, 0x99000000);
         p.setStrokeWidth(dp2px(context, 3));
 
         config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
@@ -84,7 +84,7 @@ class ThreeSectionView extends View {
 
     private void performGlobalAction(int event) {
         if (accessibilityService != null) {
-            if (gameOptimization && isLandscapf && (lastEventTime + 1500 < System.currentTimeMillis() || lastEvent != event)) {
+            if (gameOptimization && isLandscapf && ((System.currentTimeMillis() - lastEventTime) > 2000 || lastEvent != event)) {
                 lastEvent = event;
                 lastEventTime = System.currentTimeMillis();
                 Toast.makeText(context, this.getContext().getString(R.string.please_repeat), Toast.LENGTH_SHORT).show();
@@ -176,9 +176,9 @@ class ThreeSectionView extends View {
         if (bakHeight > 0 || bakWidth > 0) {
             ViewGroup.LayoutParams lp = this.getLayoutParams();
             lp.height = FLIP_DISTANCE;
-            if (isLandscapf) {
-                setBackground(context.getDrawable(R.drawable.landscape_bar_background));
-            }
+            // if (isLandscapf) {
+                // setBackground(context.getDrawable(R.drawable.landscape_bar_background));
+            // }
             this.setLayoutParams(lp);
         }
     }
@@ -230,7 +230,6 @@ class ThreeSectionView extends View {
         isGestureCompleted = false;
         touchStartX = event.getX();
         touchStartY = event.getRawY();
-        Log.d("xxxxx->", "" + touchStartX + ", " + touchStartY);
         gestureStartTime = 0;
         isLongTimeGesture = false;
         currentGraphSize = (float) (dp2px(context, 5f));
@@ -245,7 +244,6 @@ class ThreeSectionView extends View {
         float height = getHeight();
 
         float posY = (touchCurrentY - touchStartY) / FLIP_DISTANCE / 8;
-        Log.d("xxxxx", "" + touchCurrentY + "  " + touchStartY + "(" + (touchCurrentY - touchStartY) + ")  " + FLIP_DISTANCE + "  " + posY);
 
         if (posY < -0.7f) {
             posY = -0.7f;
@@ -376,10 +374,25 @@ class ThreeSectionView extends View {
         if (currentGraphSize > 0 && touchStartY > 0f) {
             if (pos > 0.6f) {
                 canvas.drawLine(bakWidth * 0.65f, currentGraphSize, bakWidth * 0.95f, currentGraphSize, p);
+                if (isLandscapf) {
+                    float y = getHeight() - p.getStrokeWidth();
+                    canvas.drawLine(bakWidth * 0.37f, y, bakWidth * 0.63f, y, p);
+                    canvas.drawLine(bakWidth * 0.05f, y, bakWidth * 0.33f, y, p);
+                }
             } else if (pos > 0.4f) {
                 canvas.drawLine(bakWidth * 0.35f, currentGraphSize, bakWidth * 0.65f, currentGraphSize, p);
+                if (isLandscapf) {
+                    float y = getHeight() - p.getStrokeWidth();
+                    canvas.drawLine(bakWidth * 0.67f, y, bakWidth * 0.95f, y, p);
+                    canvas.drawLine(bakWidth * 0.05f, y, bakWidth * 0.33f, y, p);
+                }
             } else {
                 canvas.drawLine(bakWidth * 0.05f, currentGraphSize, bakWidth * 0.35f, currentGraphSize, p);
+                if (isLandscapf) {
+                    float y = getHeight() - p.getStrokeWidth();
+                    canvas.drawLine(bakWidth * 0.67f, y, bakWidth * 0.95f, y, p);
+                    canvas.drawLine(bakWidth * 0.37f, y, bakWidth * 0.63f, y, p);
+                }
             }
         } else {
             // canvas.drawLine(bakWidth * 0.66f, getHeight() - 10, bakWidth * 0.95f, getHeight() - 10, p);

@@ -88,6 +88,10 @@ public class Recents {
         }
     }
 
+    public String getCurrent() {
+        return currentTop;
+    }
+
     String movePrevious() {
         synchronized (recents) {
             if (index > 0) {

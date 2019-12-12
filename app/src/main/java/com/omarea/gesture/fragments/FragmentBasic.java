@@ -160,6 +160,7 @@ public class FragmentBasic extends FragmentSettingsBase {
         ((Checkable) activity.findViewById(R.id.enable_service)).setChecked(serviceRunning());
     }
 
+    @Override
     protected void restartService() {
         updateView();
 
