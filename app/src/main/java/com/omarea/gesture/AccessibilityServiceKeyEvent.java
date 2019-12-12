@@ -2,6 +2,9 @@ package com.omarea.gesture;
 
 import android.accessibilityservice.AccessibilityService;
 import android.app.KeyguardManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -40,6 +43,20 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
     private ContentResolver cr = null;
     private int screenWidth;
     private int screenHeight;
+
+    private void startForeground() {
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel("fg", "辅助服务进程", NotificationManager.IMPORTANCE_LOW);
+            manager.createNotificationChannel(notificationChannel);
+            Notification notification = new Notification.Builder(this, "fg").setTicker("").setSmallIcon(R.drawable.logo).build();
+            startForeground(1, notification);
+        } else {
+            Notification notification = new Notification.Builder(this).setTicker("").setSmallIcon(R.drawable.logo).build();
+            //id 不能为0
+            startForeground(1, notification);
+        }
+    }
 
     private void hidePopupWindow() {
         if (floatVitualTouchBar != null) {
@@ -243,6 +260,7 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
         forceHideNavBar();
 
         Collections.addAll(recents.blackList, getResources().getStringArray(R.array.app_switch_black_list));
+        // startForeground();
     }
 
     @Override
@@ -298,5 +316,7 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
             unregisterReceiver(screenStateReceiver);
             screenStateReceiver = null;
         }
+
+        // stopForeground(true);
     }
 }

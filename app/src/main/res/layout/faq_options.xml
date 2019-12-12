@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:padding="10dp"
+        android:textSize="13dp"
+        android:textAlignment="center"
+        android:textColor="#dd0000"
+        android:text="常见问题很繁琐，但值得仔细看~"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:padding="10dp"
+        android:textSize="13dp"
+        android:text="@string/faq_delay_5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:padding="10dp"
+        android:textSize="13dp"
+        android:text="@string/faq_no_response"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:padding="10dp"
+        android:textSize="13dp"
+        android:text="@string/faq_restart_task"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:padding="10dp"
+        android:textSize="13dp"
+        android:text="@string/faq_slow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:padding="10dp"
+        android:textSize="13dp"
+        android:text="@string/faq_close"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:padding="10dp"
+        android:textSize="13dp"
+        android:text="@string/faq_animation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

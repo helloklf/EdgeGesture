@@ -1,6 +1,7 @@
 package com.omarea.gesture.util;
 
 import android.accessibilityservice.AccessibilityService;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -50,7 +51,9 @@ public class Handlers {
         add(new ActionModel(GLOBAL_ACTION_POWER_DIALOG, "电源菜单"));
         add(new ActionModel(VITUAL_ACTION_PREV_APP, "上个应用"));
         add(new ActionModel(VITUAL_ACTION_NEXT_APP, "下个应用"));
-        add(new ActionModel(VITUAL_ACTION_XIAO_AI, "小爱[ROOT]"));
+        if (isXiaomi) {
+            add(new ActionModel(VITUAL_ACTION_XIAO_AI, "小爱[ROOT]"));
+        }
 
         if (Build.VERSION.SDK_INT > 23) {
             add(new ActionModel(GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN, "分屏"));
@@ -69,6 +72,12 @@ public class Handlers {
 
     private static Process rootProcess = null;
     private static OutputStream rootOutputStream = null;
+
+    // FIXME:
+    // <uses-permission android:name="android.permission.STOP_APP_SWITCHES" />
+    // 由于Google限制，再按下Home键以后，后台应用如果想要打开Activity则需要等待5秒，参考 stopAppSwitches 相关逻辑
+    // 这导致应用切换手势和打开应用的操作变得体验很差
+    // 目前还没找到解决办法
 
     public static void executeVirtualAction(final AccessibilityServiceKeyEvent accessibilityService, final ActionModel action) {
         switch (action.actionCode) {
@@ -141,7 +150,7 @@ public class Handlers {
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         return intent;
     }
@@ -214,6 +223,8 @@ public class Handlers {
                 Intent intent = getOpenAppIntent(accessibilityService);
                 intent.putExtra("app", app);
                 accessibilityService.startActivity(intent);
+                // PendingIntent pendingIntent = PendingIntent.getActivity(accessibilityService.getApplicationContext(), 0, intent, 0);
+                // pendingIntent.send();
             } catch (Exception ex) {
                 Toast.makeText(accessibilityService, "AppSwitch Exception >> " + ex.getMessage(), Toast.LENGTH_SHORT).show();
             }
