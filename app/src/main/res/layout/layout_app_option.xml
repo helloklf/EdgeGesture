@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:text="@string/app_name"
+        android:textColor="#ff888888"
         android:textAppearance="@android:style/TextAppearance.Material.Small" />
 
 </LinearLayout>

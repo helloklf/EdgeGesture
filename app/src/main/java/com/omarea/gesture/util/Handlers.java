@@ -228,7 +228,7 @@ public class Handlers {
             try {
                 Intent intent = getOpenAppIntent(accessibilityService);
                 if (windowMode) {
-                    intent.putExtra("form", app);
+                    intent.putExtra("app-window", app);
                 } else {
                     intent.putExtra("app", app);
                 }

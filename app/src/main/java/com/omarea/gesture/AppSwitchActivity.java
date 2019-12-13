@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.RequiresApi;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.lang.reflect.Method;
@@ -41,7 +40,12 @@ public class AppSwitchActivity extends Activity {
             } else if (currentIntent.hasExtra("form")) {
                 String appPackageName = currentIntent.getStringExtra("form");
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    startActivityAsFreeForm(appPackageName);
+                    switchToFreeForm(appPackageName);
+                }
+            } else if (currentIntent.hasExtra("app-window")) {
+                String appPackageName = currentIntent.getStringExtra("app-window");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    switchToFreeForm(appPackageName);
                 }
             } else if (currentIntent.hasExtra("app")) {
                 String appPackageName = currentIntent.getStringExtra("app");
@@ -77,8 +81,7 @@ public class AppSwitchActivity extends Activity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public ActivityOptions getActivityOptions() {
-        ActivityOptions options = ActivityOptions.makeTaskLaunchBehind();
+    public ActivityOptions setFreeFormMode(ActivityOptions options) {
         try {
             Method method = ActivityOptions.class.getMethod("setLaunchWindowingMode", int.class);
             method.invoke(options, 5);
@@ -92,12 +95,16 @@ public class AppSwitchActivity extends Activity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void startActivityAsFreeForm(String packageName) {
-        Intent intent = getPackageManager().getLaunchIntentForPackage(packageName);
-        // intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+    private void switchToFreeForm(String packageName) {
+        // ActivityOptions activityOptions = ActivityOptions.makeTaskLaunchBehind();
+        // 设置不合理的动画，可能导致切换窗口模式时奔溃，因此去掉动画
+        ActivityOptions activityOptions = ActivityOptions.makeCustomAnimation(getApplicationContext(), 0, 0);
 
-        ActivityOptions activityOptions = getActivityOptions();
+        Intent intent = getPackageManager().getLaunchIntentForPackage(packageName);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        // intent.setFlags(Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT | Intent.FLAG_ACTIVITY_NEW_TASK);
+        setFreeFormMode(activityOptions);
+
         // int left = 50;
         // int top = 100;
         // int right = 800;
@@ -110,7 +117,7 @@ public class AppSwitchActivity extends Activity {
     /*
     if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-        startActivityAsFreeForm(intent);
+        startAppAsWindow(intent);
     } else {
         PendingIntent pendingIntent = PendingIntent.getActivity(this.getApplicationContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         pendingIntent.send();
