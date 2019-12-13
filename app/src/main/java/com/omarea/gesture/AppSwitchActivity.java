@@ -12,6 +12,17 @@ import android.widget.Toast;
 import java.lang.reflect.Method;
 
 public class AppSwitchActivity extends Activity {
+    public static Intent getOpenAppIntent(final AccessibilityServiceKeyEvent accessibilityService) {
+        Intent intent = new Intent(accessibilityService, AppSwitchActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        return intent;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,9 +60,7 @@ public class AppSwitchActivity extends Activity {
                 }
             } else if (currentIntent.hasExtra("app")) {
                 String appPackageName = currentIntent.getStringExtra("app");
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    startActivity(appPackageName);
-                }
+                startActivity(appPackageName);
             } else if (currentIntent.hasExtra("home")) {
                 overridePendingTransition(R.anim.activity_close_enter, R.anim.activity_close_exit);
                 Intent intent = new Intent(Intent.ACTION_MAIN);

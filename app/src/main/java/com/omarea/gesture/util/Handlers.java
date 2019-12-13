@@ -12,6 +12,8 @@ import com.omarea.gesture.AppSwitchActivity;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.SpfConfigEx;
 import com.omarea.gesture.shell.KeepShellPublic;
+import com.omarea.gesture.ui.QuickPanel;
+
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,6 +38,7 @@ public class Handlers {
     final public static int CUSTOM_ACTION_APP = 1000001;
     final public static int CUSTOM_ACTION_APP_WINDOW = 1000002;
     final public static int CUSTOM_ACTION_SHELL = 1000006;
+    final public static int CUSTOM_ACTION_QUICK = 1000009;
 
     private static SharedPreferences config;
     private static SharedPreferences configEx;
@@ -44,13 +47,14 @@ public class Handlers {
     private final static ActionModel[] options = new ArrayList<ActionModel>() {{
         add(new ActionModel(GLOBAL_ACTION_NONE, "无"));
         add(new ActionModel(GLOBAL_ACTION_BACK, "返回键"));
-        add(new ActionModel(GLOBAL_ACTION_HOME, "主页键"));
+        add(new ActionModel(GLOBAL_ACTION_HOME, "Home键"));
         add(new ActionModel(GLOBAL_ACTION_RECENTS, "任务键"));
         add(new ActionModel(GLOBAL_ACTION_NOTIFICATIONS, "下拉通知"));
         add(new ActionModel(GLOBAL_ACTION_QUICK_SETTINGS, "快捷面板"));
         add(new ActionModel(GLOBAL_ACTION_POWER_DIALOG, "电源菜单"));
         add(new ActionModel(VITUAL_ACTION_PREV_APP, "上个应用"));
         add(new ActionModel(VITUAL_ACTION_NEXT_APP, "下个应用"));
+
         if (isXiaomi) {
             add(new ActionModel(VITUAL_ACTION_XIAO_AI, "小爱[ROOT]"));
         }
@@ -71,6 +75,7 @@ public class Handlers {
             add(new ActionModel(CUSTOM_ACTION_APP_WINDOW, "EX-应用窗口[试验]"));
         }
         add(new ActionModel(CUSTOM_ACTION_SHELL, "EX-运行脚本"));
+        add(new ActionModel(CUSTOM_ACTION_QUICK, "EX-常用应用"));
     }}.toArray(new ActionModel[0]);
 
     private static Process rootProcess = null;
@@ -141,6 +146,10 @@ public class Handlers {
                 openApp(accessibilityService, action);
                 break;
             }
+            case CUSTOM_ACTION_QUICK: {
+                openQuickPanel(accessibilityService);
+                break;
+            }
             default: {
                 accessibilityService.performGlobalAction(action.actionCode);
                 break;
@@ -148,20 +157,13 @@ public class Handlers {
         }
     }
 
-    private static Intent getOpenAppIntent(final AccessibilityServiceKeyEvent accessibilityService) {
-        Intent intent = new Intent(accessibilityService, AppSwitchActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        return intent;
+    private static void openQuickPanel(final AccessibilityServiceKeyEvent accessibilityService) {
+        new QuickPanel(accessibilityService).open(400, 1800);
     }
 
     private static void appSwitch(final AccessibilityServiceKeyEvent accessibilityService, final int action, final int animation) {
         try {
-            Intent intent = getOpenAppIntent(accessibilityService);
+            Intent intent = AppSwitchActivity.getOpenAppIntent(accessibilityService);
             intent.putExtra("animation", animation);
 
             switch (action) {
@@ -226,7 +228,7 @@ public class Handlers {
         String app = configEx.getString((windowMode? SpfConfigEx.prefix_app_window : SpfConfigEx.prefix_app) + action.exKey, "");
         if (app != null && !app.isEmpty()) {
             try {
-                Intent intent = getOpenAppIntent(accessibilityService);
+                Intent intent = AppSwitchActivity.getOpenAppIntent(accessibilityService);
                 if (windowMode) {
                     intent.putExtra("app-window", app);
                 } else {

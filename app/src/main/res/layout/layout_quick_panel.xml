@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center_vertical"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/quick_panel_bg">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:alpha="0.5"
+            android:textSize="14sp"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:text="@string/app_name"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+
+        <ImageButton
+            android:id="@+id/quick_edit"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@null"
+            android:padding="8dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/icon_edit" />
+        <ImageButton
+            android:id="@+id/quick_save"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@null"
+            android:padding="6dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/icon_ok" />
+    </LinearLayout>
+    <GridView
+        android:id="@+id/quick_apps"
+        android:layout_width="230dp"
+        android:layout_height="190dp"
+        android:paddingBottom="16dp"
+        android:numColumns="3"/>
+</LinearLayout>

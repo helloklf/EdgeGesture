@@ -14,6 +14,13 @@ import java.util.concurrent.locks.ReentrantLock;
  * Created by Hello on 2018/01/23.
  */
 public class KeepShell {
+    public KeepShell() {
+
+    }
+    public KeepShell(boolean rootMode) {
+        this.rootMode = rootMode;
+    }
+
     private boolean rootMode = true;
     private Process p = null;
     private OutputStream out = null;

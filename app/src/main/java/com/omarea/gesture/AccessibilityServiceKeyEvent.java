@@ -169,16 +169,19 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
         // Log.d("onAccessibilityEvent", event.getPackageName().toString());
         if (event != null) {
             CharSequence packageName = event.getPackageName();
-            if (packageName != null && !packageName.equals(getPackageName())) {
-                String packageNameStr = packageName.toString();
-                if (recents.ignoreApps == null) {
-                    recents.ignoreApps = getLauncherApps();
-                    recents.ignoreApps.addAll(getInputMethods());
-                }
-                if (canOpen(packageNameStr)) {
-                    recents.addRecent(packageNameStr);
+            if (packageName != null) {
+                if (!packageName.equals(getPackageName())) {
+                    String packageNameStr = packageName.toString();
+                    if (recents.ignoreApps == null) {
+                        recents.ignoreApps = getLauncherApps();
+                        recents.ignoreApps.addAll(getInputMethods());
+                    }
+                    if (canOpen(packageNameStr)) {
+                        recents.addRecent(packageNameStr);
+                    }
                 }
             }
+
         }
     }
 
