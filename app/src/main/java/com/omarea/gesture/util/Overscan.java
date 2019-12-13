@@ -26,7 +26,6 @@ public class Overscan {
 
     public boolean setOverscan(Context context) {
         int navigationHeight = getNavigationHeight(context);
-        Log.d("xxxxx", "" + navigationHeight);
         if (navigationHeight > 0 && canWriteSecureSettings(context)) {
             try {
                 Process process = Runtime.getRuntime().exec("sh");

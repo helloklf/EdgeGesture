@@ -16,7 +16,6 @@ public class AppSwitchActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(">>>>", "11");
         try {
             overridePendingTransition(0, 0);
             Intent currentIntent = getIntent();
