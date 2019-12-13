@@ -20,6 +20,8 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.omarea.gesture.AccessibilityServiceKeyEvent;
 import com.omarea.gesture.AppSwitchActivity;
 import com.omarea.gesture.DialogFrequentlyAppEdit;
@@ -227,6 +229,7 @@ public class QuickPanel {
 
         final View editBtn = view.findViewById(R.id.quick_edit);
         final View saveBtn = view.findViewById(R.id.quick_save);
+        final View questionBtn = view.findViewById(R.id.quick_question);
         saveBtn.setVisibility(View.GONE);
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -243,6 +246,13 @@ public class QuickPanel {
                 saveBtn.setVisibility(View.GONE);
                 saveConfig();
                 setFrequentlyAppList((GridView) view.findViewById(R.id.quick_apps), false);
+            }
+        });
+        questionBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                close();
+                Toast.makeText(accessibilityService, accessibilityService.getString(R.string.quick_question), Toast.LENGTH_LONG).show();
             }
         });
 

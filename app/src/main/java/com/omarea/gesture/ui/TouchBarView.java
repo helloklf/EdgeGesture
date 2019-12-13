@@ -65,6 +65,9 @@ public class TouchBarView extends View {
     private long lastEventTime = 0L;
     private int lastEvent = -1;
 
+    private float touchRawX;
+    private float touchRawY;
+
     public TouchBarView(Context context) {
         super(context);
         init();
@@ -95,7 +98,7 @@ public class TouchBarView extends View {
                 lastEventTime = System.currentTimeMillis();
                 Toast.makeText(context, this.getContext().getString(R.string.please_repeat), Toast.LENGTH_SHORT).show();
             } else {
-                Handlers.executeVirtualAction(accessibilityService, event);
+                Handlers.executeVirtualAction(accessibilityService, event, touchRawX, touchRawY);
             }
         }
     }
@@ -248,6 +251,9 @@ public class TouchBarView extends View {
         if (isGestureCompleted || !isTouchDown) {
             return true;
         }
+
+        touchRawX = event.getRawX();
+        touchRawY = event.getRawY();
 
         touchCurrentX = event.getX();
         touchCurrentY = event.getY();

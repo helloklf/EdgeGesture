@@ -65,6 +65,7 @@
     <string name="add">添加</string>
     <string name="save_succeed">保存成功</string>
     <string name="save_fail">保存失败</string>
+    <string name="quick_question">\n单击全屏打开应用\n长按窗口化打开应用\n窗口化仅支持部分系统</string>
 
     <string-array name="app_switch_black_list">
         <item>android</item>

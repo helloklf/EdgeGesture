@@ -9,7 +9,7 @@ import com.omarea.gesture.util.Handlers;
 
 public class TouchIconCache {
     private static Context mContext;
-    private static Bitmap touch_arrow_left, touch_arrow_right, touch_tasks, touch_home, touch_lock, touch_notice, touch_power, touch_settings, touch_split, touch_info, touch_screenshot, touch_switch, touch_jump_previous, touch_jump_next, touch_window; // 图标资源
+    private static Bitmap touch_arrow_left, touch_arrow_right, touch_tasks, touch_home, touch_lock, touch_notice, touch_power, touch_settings, touch_split, touch_info, touch_screenshot, touch_switch, touch_jump_previous, touch_jump_next, touch_window, touch_app, touch_grid, touch_shell, touch_app_window; // 图标资源
 
     public static void setContext(Context context) {
         mContext = context;
@@ -94,6 +94,30 @@ public class TouchIconCache {
                     touch_window = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.touch_window);
                 }
                 return touch_window;
+            }
+            case Handlers.CUSTOM_ACTION_APP: {
+                if (touch_app == null && mContext != null) {
+                    touch_app = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.touch_app);
+                }
+                return touch_app;
+            }
+            case Handlers.CUSTOM_ACTION_APP_WINDOW: {
+                if (touch_app_window == null && mContext != null) {
+                    touch_app_window = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.touch_app_window);
+                }
+                return touch_app_window;
+            }
+            case Handlers.CUSTOM_ACTION_SHELL: {
+                if (touch_shell == null && mContext != null) {
+                    touch_shell = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.touch_shell);
+                }
+                return touch_shell;
+            }
+            case Handlers.CUSTOM_ACTION_QUICK: {
+                if (touch_grid == null && mContext != null) {
+                    touch_grid = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.touch_grid);
+                }
+                return touch_grid;
             }
         }
         if (touch_info == null && mContext != null) {

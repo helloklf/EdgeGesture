@@ -4,9 +4,9 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingStart="16dp"
+    android:paddingStart="10dp"
     android:paddingTop="4dp"
-    android:paddingEnd="16dp"
+    android:paddingEnd="10dp"
     android:paddingBottom="4dp">
 
     <CheckBox
@@ -25,6 +25,7 @@
 
         <TextView
             android:id="@+id/item_title"
+            android:textColor="@android:color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"

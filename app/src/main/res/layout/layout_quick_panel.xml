@@ -10,6 +10,14 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/quick_question"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@null"
+            android:padding="6dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/quick_question" />
         <TextView
             android:layout_gravity="center_vertical"
             android:alpha="0.5"

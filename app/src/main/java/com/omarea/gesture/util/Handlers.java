@@ -87,7 +87,9 @@ public class Handlers {
     // 这导致应用切换手势和打开应用的操作变得体验很差
     // 目前还没找到解决办法
 
-    public static void executeVirtualAction(final AccessibilityServiceKeyEvent accessibilityService, final ActionModel action) {
+    public static void executeVirtualAction(
+            final AccessibilityServiceKeyEvent accessibilityService,
+            final ActionModel action, float touchRawX, float touchRawY) {
         switch (action.actionCode) {
             case GLOBAL_ACTION_NONE: {
                 break;
@@ -147,7 +149,7 @@ public class Handlers {
                 break;
             }
             case CUSTOM_ACTION_QUICK: {
-                openQuickPanel(accessibilityService);
+                openQuickPanel(accessibilityService, touchRawX, touchRawY);
                 break;
             }
             default: {
@@ -157,8 +159,8 @@ public class Handlers {
         }
     }
 
-    private static void openQuickPanel(final AccessibilityServiceKeyEvent accessibilityService) {
-        new QuickPanel(accessibilityService).open(400, 1800);
+    private static void openQuickPanel(final AccessibilityServiceKeyEvent accessibilityService, float touchRawX, float touchRawY) {
+        new QuickPanel(accessibilityService).open((int)touchRawX, (int)touchRawY);
     }
 
     private static void appSwitch(final AccessibilityServiceKeyEvent accessibilityService, final int action, final int animation) {

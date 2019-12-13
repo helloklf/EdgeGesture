@@ -146,6 +146,15 @@ public class iOSWhiteBar {
             private ValueAnimator moveYAnimation = null; // 动画程序（y轴定位）
             private ValueAnimator fareOutAnimation = null; // 动画程序（淡出）
 
+            private float touchRawX;
+            private float touchRawY;
+
+            private void performGlobalAction(ActionModel event) {
+                if (accessibilityService != null) {
+                    Handlers.executeVirtualAction(accessibilityService, event, touchRawX, touchRawY);
+                }
+            }
+
             private void setPosition(float x, float y) {
                 int limitX = (int) x;
                 if (limitX < -offsetLimitX) {
@@ -244,6 +253,9 @@ public class iOSWhiteBar {
                 if (isGestureCompleted || !isTouchDown) {
                     return true;
                 }
+
+                touchRawX = event.getRawX();
+                touchRawY = event.getRawY();
 
                 touchCurrentX = event.getX();
                 touchCurrentY = event.getY();
@@ -387,12 +399,6 @@ public class iOSWhiteBar {
                     vibrator.vibrate(new long[]{0, time, amplitude}, -1);
                 }
             }
-        }
-    }
-
-    private void performGlobalAction(ActionModel event) {
-        if (accessibilityService != null) {
-            Handlers.executeVirtualAction(accessibilityService, event);
         }
     }
 }
