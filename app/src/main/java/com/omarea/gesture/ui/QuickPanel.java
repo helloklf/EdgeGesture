@@ -9,6 +9,8 @@ import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -52,10 +54,12 @@ public class QuickPanel {
     private WindowManager.LayoutParams getLayoutParams(int x, int y) {
         final WindowManager.LayoutParams params = new WindowManager.LayoutParams();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            params.type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY;
-        } else {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP_MR1) {
             params.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && Settings.canDrawOverlays(accessibilityService)) {
+            params.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        } else {
+            params.type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY;
         }
 
         params.format = PixelFormat.TRANSLUCENT;
@@ -73,8 +77,8 @@ public class QuickPanel {
         }
         params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
 
-        // params.windowAnimations=android.R.style.Animation_Translucent;
-        params.windowAnimations=android.R.style.Animation_Dialog;
+        params.windowAnimations=android.R.style.Animation_Translucent;
+        // params.windowAnimations = android.R.style.Animation_Dialog;
 
         return params;
     }
