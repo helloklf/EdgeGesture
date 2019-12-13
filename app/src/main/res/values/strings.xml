@@ -63,6 +63,8 @@
     <string name="faq_animation">疑：使用定制动画时“返回桌面”不彻底\n答：因为的确不是模拟Home键点击，而是直接打开了桌面，当然也是为了规避常见问题第一条</string>
     <string name="coming_soon">该功能还未完成，敬请期待！</string>
     <string name="add">添加</string>
+    <string name="save_succeed">保存成功</string>
+    <string name="save_fail">保存失败</string>
 
     <string-array name="app_switch_black_list">
         <item>android</item>

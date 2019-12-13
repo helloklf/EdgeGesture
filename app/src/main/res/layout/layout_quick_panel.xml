@@ -40,6 +40,7 @@
     </LinearLayout>
     <GridView
         android:id="@+id/quick_apps"
+        android:scrollbars="none"
         android:layout_width="230dp"
         android:layout_height="190dp"
         android:paddingBottom="16dp"

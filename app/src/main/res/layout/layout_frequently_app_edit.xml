@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/frequently_edit_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:padding="8dp"
+            android:text="@string/app_name"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content" />
+        <ImageButton
+            android:id="@+id/quick_save"
+            android:layout_gravity="center_vertical"
+            android:tint="@color/colorPrimary"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@null"
+            android:padding="6dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/icon_ok" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/app_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>

@@ -20,15 +20,15 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.omarea.gesture.AccessibilityServiceKeyEvent;
 import com.omarea.gesture.AppSwitchActivity;
+import com.omarea.gesture.DialogFrequentlyAppEdit;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfigEx;
 import com.omarea.gesture.util.UITools;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Set;
 
 public class QuickPanel {
     private AccessibilityServiceKeyEvent accessibilityService;
@@ -70,6 +70,10 @@ public class QuickPanel {
             params.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
         }
         params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
+
+        // params.windowAnimations=android.R.style.Animation_Translucent;
+        params.windowAnimations=android.R.style.Animation_Dialog;
+
         return params;
     }
 
@@ -94,19 +98,26 @@ public class QuickPanel {
         }
     }
 
-    private ArrayList<AppInfo> listFrequentlyApps() {
+    private Set<String> getCurrentConfig() {
         SharedPreferences config = accessibilityService.getSharedPreferences(SpfConfigEx.configFile, Context.MODE_PRIVATE);
 
-        final String[] apps = config.getStringSet(SpfConfigEx.frequently_apps, new HashSet<String>(){{
+        return config.getStringSet(SpfConfigEx.frequently_apps, new HashSet<String>(){{
             add("com.tencent.mm");
             add("com.tencent.mobileqq");
             add("com.android.browser");
             add("com.netease.cloudmusic");
             add("com.sankuai.meituan");
             add("com.eg.android.AlipayGphone");
-            add("com.android.phone");
+            add("com.android.contacts");
             add("com.android.mms");
-        }}).toArray(new String[0]);
+        }});
+    }
+
+    private ArrayList<AppInfo> listFrequentlyApps() {
+        SharedPreferences config = accessibilityService.getSharedPreferences(SpfConfigEx.configFile, Context.MODE_PRIVATE);
+
+        final String[] apps = getCurrentConfig().toArray(new String[0]);
+
         ArrayList<AppInfo> appInfos = new ArrayList<>();
         final PackageManager pm = accessibilityService.getPackageManager();
         for (String app : apps) {
@@ -165,7 +176,8 @@ public class QuickPanel {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     if (position >= apps.size()) {
                         close();
-                        Toast.makeText(accessibilityService, accessibilityService.getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
+                        new DialogFrequentlyAppEdit(accessibilityService).openEdit(getCurrentConfig());
+                        // Toast.makeText(accessibilityService, accessibilityService.getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
                     } else {
                         apps.remove(position);
                         ((BaseAdapter)gridView.getAdapter()).notifyDataSetChanged();
