@@ -1,9 +1,11 @@
 package com.omarea.gesture.ui;
 
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.VibrationEffect;
@@ -142,14 +144,12 @@ public class iOSWhiteBar {
             private int offsetLimitY = dp2px(accessibilityService, 20);
             private int animationScaling = dp2px(accessibilityService, 2); // 手指移动多少像素时动画才移动1像素
             private boolean vibratorRun = false;
-            private ValueAnimator moveXAnimation = null; // 动画程序（x轴定位）
-            private ValueAnimator moveYAnimation = null; // 动画程序（y轴定位）
             private ValueAnimator fareOutAnimation = null; // 动画程序（淡出）
 
             private float touchRawX;
             private float touchRawY;
 
-            private void performGlobalAction(ActionModel event) {
+            private void performGlobalAction(final ActionModel event) {
                 if (accessibilityService != null) {
                     Handlers.executeVirtualAction(accessibilityService, event, touchRawX, touchRawY);
                 }
@@ -168,7 +168,6 @@ public class iOSWhiteBar {
                 } else if (limitY > offsetLimitY) {
                     limitY = offsetLimitY;
                 }
-                // animationTo(limitX, limitY, 5, new LinearInterpolator());
                 params.x = limitX;
                 params.y = limitY;
                 mWindowManager.updateViewLayout(view, params);
@@ -195,43 +194,31 @@ public class iOSWhiteBar {
             }
 
             private void animationTo(int x, int y, int duration, Interpolator interpolator) {
-                if (moveXAnimation != null && moveXAnimation.isRunning()) {
-                    moveXAnimation.cancel();
-                }
-                moveXAnimation = ValueAnimator.ofInt(params.x, x);
-
-                moveXAnimation.setDuration(duration);
-                moveXAnimation.setInterpolator(interpolator);
-                moveXAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                Path path = new Path();
+                path.moveTo(params.x, params.y);
+                path.lineTo(x, y);
+                ObjectAnimator objectAnimator = ObjectAnimator.ofInt(params, "x", "y", path);
+                objectAnimator.setInterpolator(interpolator);
+                objectAnimator.setAutoCancel(true);
+                objectAnimator.setDuration(duration);
+                objectAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
-                        params.x = (int) animation.getAnimatedValue();
-                        try {
-                            mWindowManager.updateViewLayout(view, params);
-                        } catch (Exception ignored) {
+                        animation.getValues();
+                        int x = (int) animation.getAnimatedValue("x");
+                        int y = (int)animation.getAnimatedValue("y");
+                        if (x != params.x || y != params.y) {
+                            params.x = x;
+                            params.y = y;
+                            try {
+                                mWindowManager.updateViewLayout(view, params);
+                            } catch (Exception ex) {
+                                animation.cancel();
+                            }
                         }
                     }
                 });
-                moveXAnimation.start();
-
-                if (moveYAnimation != null && moveYAnimation.isRunning()) {
-                    moveYAnimation.cancel();
-                }
-                moveYAnimation = ValueAnimator.ofInt(params.y, y);
-
-                moveYAnimation.setDuration(duration);
-                moveYAnimation.setInterpolator(interpolator);
-                moveYAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animation) {
-                        params.y = (int) animation.getAnimatedValue();
-                        try {
-                            mWindowManager.updateViewLayout(view, params);
-                        } catch (Exception ignored) {
-                        }
-                    }
-                });
-                moveYAnimation.start();
+                objectAnimator.start();
             }
 
             private boolean onTouchDown(MotionEvent event) {
