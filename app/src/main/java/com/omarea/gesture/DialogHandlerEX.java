@@ -24,11 +24,13 @@ public class DialogHandlerEX {
         final SharedPreferences configFile = context.getSharedPreferences(SpfConfigEx.configFile, Context.MODE_PRIVATE);
         final SharedPreferences.Editor config = configFile.edit();
         config.remove(SpfConfigEx.prefix_app + key);
+        config.remove(SpfConfigEx.prefix_app_window + key);
         config.remove(SpfConfigEx.prefix_shell + key);
 
         switch (customActionCode) {
-            case Handlers.CUSTOM_ACTION_APP: {
-                final String fullKey = SpfConfigEx.prefix_app + key;
+            case Handlers.CUSTOM_ACTION_APP:
+            case Handlers.CUSTOM_ACTION_APP_WINDOW: {
+                final String fullKey = (customActionCode == Handlers.CUSTOM_ACTION_APP ? SpfConfigEx.prefix_app:SpfConfigEx.prefix_app_window) + key;
 
                 final ArrayList<AppInfo> appInfos = new AppListHelper().loadAppList(context);
                 final String currentApp = configFile.getString(fullKey, "");

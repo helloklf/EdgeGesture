@@ -34,6 +34,7 @@ public class Handlers {
     final public static int VITUAL_ACTION_FORM = 900009;
 
     final public static int CUSTOM_ACTION_APP = 1000001;
+    final public static int CUSTOM_ACTION_APP_WINDOW = 1000002;
     final public static int CUSTOM_ACTION_SHELL = 1000006;
 
     private static SharedPreferences config;
@@ -57,7 +58,7 @@ public class Handlers {
         if (Build.VERSION.SDK_INT > 23) {
             add(new ActionModel(GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN, "分屏"));
             add(new ActionModel(VITUAL_ACTION_SWITCH_APP, "上个应用[原生]"));
-            add(new ActionModel(VITUAL_ACTION_FORM, "窗口化[试验]"));
+            add(new ActionModel(VITUAL_ACTION_FORM, "应用窗口化[试验]"));
         }
 
         if (Build.VERSION.SDK_INT > 27) {
@@ -66,6 +67,9 @@ public class Handlers {
         }
 
         add(new ActionModel(CUSTOM_ACTION_APP, "EX-打开应用"));
+        if (Build.VERSION.SDK_INT > 23) {
+            add(new ActionModel(CUSTOM_ACTION_APP_WINDOW, "EX-应用窗口[试验]"));
+        }
         add(new ActionModel(CUSTOM_ACTION_SHELL, "EX-运行脚本"));
     }}.toArray(new ActionModel[0]);
 
@@ -132,7 +136,8 @@ public class Handlers {
                 executeShell(accessibilityService, action);
                 break;
             }
-            case CUSTOM_ACTION_APP: {
+            case CUSTOM_ACTION_APP:
+            case CUSTOM_ACTION_APP_WINDOW: {
                 openApp(accessibilityService, action);
                 break;
             }
@@ -216,11 +221,17 @@ public class Handlers {
             configEx = accessibilityService.getSharedPreferences(SpfConfigEx.configFile, Context.MODE_PRIVATE);
         }
 
-        String app = configEx.getString(SpfConfigEx.prefix_app + action.exKey, "com.tencent.mm");
+        boolean windowMode = action.actionCode == Handlers.CUSTOM_ACTION_APP_WINDOW;
+
+        String app = configEx.getString((windowMode? SpfConfigEx.prefix_app_window : SpfConfigEx.prefix_app) + action.exKey, "");
         if (app != null && !app.isEmpty()) {
             try {
                 Intent intent = getOpenAppIntent(accessibilityService);
-                intent.putExtra("app", app);
+                if (windowMode) {
+                    intent.putExtra("form", app);
+                } else {
+                    intent.putExtra("app", app);
+                }
                 accessibilityService.startActivity(intent);
                 // PendingIntent pendingIntent = PendingIntent.getActivity(accessibilityService.getApplicationContext(), 0, intent, 0);
                 // pendingIntent.send();
