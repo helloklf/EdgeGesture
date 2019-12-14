@@ -14,13 +14,6 @@ import java.util.concurrent.locks.ReentrantLock;
  * Created by Hello on 2018/01/23.
  */
 public class KeepShell {
-    public KeepShell() {
-
-    }
-    public KeepShell(boolean rootMode) {
-        this.rootMode = rootMode;
-    }
-
     private boolean rootMode = true;
     private Process p = null;
     private OutputStream out = null;
@@ -46,6 +39,12 @@ public class KeepShell {
                     "exit 1\n" +
                     "fi\n";
     private byte[] br = "\n\n".getBytes(Charset.defaultCharset());
+    public KeepShell() {
+
+    }
+    public KeepShell(boolean rootMode) {
+        this.rootMode = rootMode;
+    }
 
     //尝试退出命令行程序
     public void tryExit() {

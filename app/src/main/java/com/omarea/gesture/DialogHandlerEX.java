@@ -30,7 +30,7 @@ public class DialogHandlerEX {
         switch (customActionCode) {
             case Handlers.CUSTOM_ACTION_APP:
             case Handlers.CUSTOM_ACTION_APP_WINDOW: {
-                final String fullKey = (customActionCode == Handlers.CUSTOM_ACTION_APP ? SpfConfigEx.prefix_app:SpfConfigEx.prefix_app_window) + key;
+                final String fullKey = (customActionCode == Handlers.CUSTOM_ACTION_APP ? SpfConfigEx.prefix_app : SpfConfigEx.prefix_app_window) + key;
 
                 final ArrayList<AppInfo> appInfos = new AppListHelper().loadAppList(context);
                 final String currentApp = configFile.getString(fullKey, "");
@@ -52,18 +52,21 @@ public class DialogHandlerEX {
                             public int getCount() {
                                 return appInfos.size();
                             }
+
                             @Override
                             public Object getItem(int position) {
                                 return appInfos.get(position);
                             }
+
                             @Override
                             public long getItemId(int position) {
                                 return position;
                             }
+
                             @Override
                             public View getView(int position, View convertView, ViewGroup parent) {
                                 LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-                                View view =layoutInflater.inflate(R.layout.layout_app_option, null);
+                                View view = layoutInflater.inflate(R.layout.layout_app_option, null);
                                 TextView title = view.findViewById(R.id.item_title);
                                 TextView desc = view.findViewById(R.id.item_desc);
                                 AppInfo appInfo = (AppInfo) getItem(position);

@@ -14,13 +14,20 @@ import java.lang.reflect.Method;
 public class AppSwitchActivity extends Activity {
     public static Intent getOpenAppIntent(final AccessibilityServiceKeyEvent accessibilityService) {
         Intent intent = new Intent(accessibilityService, AppSwitchActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         return intent;
+    }
+
+    public static void backHome(final AccessibilityServiceKeyEvent accessibilityServiceKeyEvent) {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        ActivityOptions activityOptions = ActivityOptions.makeCustomAnimation(accessibilityServiceKeyEvent, R.anim.activity_close_enter_2, R.anim.activity_close_exit_2);
+        // 很奇怪，在三星手机的OneUI（Android P）系统上，必须先overridePendingTransition再启动startActivity方可覆盖动画
+        accessibilityServiceKeyEvent.startActivity(intent, activityOptions.toBundle());
     }
 
     @Override
@@ -62,8 +69,8 @@ public class AppSwitchActivity extends Activity {
                 String appPackageName = currentIntent.getStringExtra("app");
                 startActivity(appPackageName);
             } else if (currentIntent.hasExtra("home")) {
-                overridePendingTransition(R.anim.activity_close_enter, R.anim.activity_close_exit);
                 Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 if (animation == SpfConfig.HOME_ANIMATION_CUSTOM) {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 }
@@ -86,7 +93,7 @@ public class AppSwitchActivity extends Activity {
             public void run() {
                 finish();
             }
-        }, 300);
+        }, 100);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)

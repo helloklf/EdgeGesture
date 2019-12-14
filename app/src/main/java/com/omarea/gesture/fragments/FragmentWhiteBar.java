@@ -31,6 +31,7 @@ public class FragmentWhiteBar extends FragmentSettingsBase {
         bindHandlerPicker(R.id.ios_bar_slide_up, SpfConfig.IOS_BAR_SLIDE_UP, SpfConfig.IOS_BAR_SLIDE_UP_DEFAULT);
         bindHandlerPicker(R.id.ios_bar_slide_up_hover, SpfConfig.IOS_BAR_SLIDE_UP_HOVER, SpfConfig.IOS_BAR_SLIDE_UP_HOVER_DEFAULT);
         bindColorPicker(R.id.ios_bar_color_shadow, SpfConfig.IOS_BAR_COLOR_SHADOW, SpfConfig.IOS_BAR_COLOR_SHADOW_DEFAULT);
+        bindColorPicker(R.id.ios_bar_color_stroke, SpfConfig.IOS_BAR_COLOR_STROKE, SpfConfig.IOS_BAR_COLOR_STROKE_DEFAULT);
 
         bindSeekBar(R.id.ios_bar_width_landscape, SpfConfig.IOS_BAR_WIDTH_LANDSCAPE, SpfConfig.IOS_BAR_WIDTH_DEFAULT_LANDSCAPE, true);
         bindSeekBar(R.id.ios_bar_width_portrait, SpfConfig.IOS_BAR_WIDTH_PORTRAIT, SpfConfig.IOS_BAR_WIDTH_DEFAULT_PORTRAIT, true);
@@ -38,6 +39,7 @@ public class FragmentWhiteBar extends FragmentSettingsBase {
         bindColorPicker(R.id.ios_bar_color_landscape, SpfConfig.IOS_BAR_COLOR_LANDSCAPE, SpfConfig.IOS_BAR_COLOR_LANDSCAPE_DEFAULT);
         bindColorPicker(R.id.ios_bar_color_portrait, SpfConfig.IOS_BAR_COLOR_PORTRAIT, SpfConfig.IOS_BAR_COLOR_PORTRAIT_DEFAULT);
         bindSeekBar(R.id.ios_bar_size_shadow, SpfConfig.IOS_BAR_SHADOW_SIZE, SpfConfig.IOS_BAR_SHADOW_SIZE_DEFAULT, true);
+        bindSeekBar(R.id.ios_bar_size_stroke, SpfConfig.IOS_BAR_STROKE_SIZE, SpfConfig.IOS_BAR_STROKE_SIZE_DEFAULT, true);
         bindSeekBar(R.id.ios_bar_total_height, SpfConfig.IOS_BAR_MARGIN_BOTTOM, SpfConfig.IOS_BAR_MARGIN_BOTTOM_DEFAULT, true);
         bindSeekBar(R.id.ios_bar_height, SpfConfig.IOS_BAR_HEIGHT, SpfConfig.IOS_BAR_HEIGHT_DEFAULT, true);
         bindCheckable(R.id.ios_bar_lock_hide, SpfConfig.IOS_BAR_LOCK_HIDE, SpfConfig.IOS_BAR_LOCK_HIDE_DEFAULT);

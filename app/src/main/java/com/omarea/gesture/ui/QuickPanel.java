@@ -10,7 +10,6 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -30,14 +29,16 @@ import com.omarea.gesture.DialogFrequentlyAppEdit;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfigEx;
 import com.omarea.gesture.util.UITools;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 public class QuickPanel {
-    private AccessibilityServiceKeyEvent accessibilityService;
     @SuppressLint("StaticFieldLeak")
     private static View view;
+    private AccessibilityServiceKeyEvent accessibilityService;
+    private ArrayList<AppInfo> apps;
 
     public QuickPanel(AccessibilityServiceKeyEvent context) {
         accessibilityService = context;
@@ -77,27 +78,17 @@ public class QuickPanel {
         }
         params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
 
-        params.windowAnimations=android.R.style.Animation_Translucent;
+        params.windowAnimations = android.R.style.Animation_Translucent;
         // params.windowAnimations = android.R.style.Animation_Dialog;
 
         return params;
-    }
-
-    class AppInfo {
-        AppInfo(String packageName) {
-            this.packageName = packageName;
-        }
-
-        String appName;
-        String packageName;
-        Drawable icon;
     }
 
     private void saveConfig() {
         SharedPreferences config = accessibilityService.getSharedPreferences(SpfConfigEx.configFile, Context.MODE_PRIVATE);
         if (apps != null) {
             HashSet<String> configApps = new HashSet<>();
-            for(AppInfo appInfo:apps) {
+            for (AppInfo appInfo : apps) {
                 configApps.add(appInfo.packageName);
             }
             config.edit().putStringSet(SpfConfigEx.frequently_apps, configApps).apply();
@@ -107,7 +98,7 @@ public class QuickPanel {
     private Set<String> getCurrentConfig() {
         SharedPreferences config = accessibilityService.getSharedPreferences(SpfConfigEx.configFile, Context.MODE_PRIVATE);
 
-        return config.getStringSet(SpfConfigEx.frequently_apps, new HashSet<String>(){{
+        return config.getStringSet(SpfConfigEx.frequently_apps, new HashSet<String>() {{
             add("com.tencent.mm");
             add("com.tencent.mobileqq");
             add("com.android.browser");
@@ -139,7 +130,6 @@ public class QuickPanel {
         return appInfos;
     }
 
-    private ArrayList<AppInfo> apps;
     private void setFrequentlyAppList(final GridView gridView, final boolean editMode) {
         if (apps == null) {
             apps = listFrequentlyApps();
@@ -150,14 +140,17 @@ public class QuickPanel {
             public int getCount() {
                 return editMode ? (apps.size() + 1) : apps.size();
             }
+
             @Override
             public Object getItem(int position) {
                 return apps.get(position);
             }
+
             @Override
             public long getItemId(int position) {
                 return position;
             }
+
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 if (position >= apps.size()) {
@@ -186,7 +179,7 @@ public class QuickPanel {
                         // Toast.makeText(accessibilityService, accessibilityService.getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
                     } else {
                         apps.remove(position);
-                        ((BaseAdapter)gridView.getAdapter()).notifyDataSetChanged();
+                        ((BaseAdapter) gridView.getAdapter()).notifyDataSetChanged();
                     }
                 }
             });
@@ -263,5 +256,14 @@ public class QuickPanel {
         setFrequentlyAppList((GridView) view.findViewById(R.id.quick_apps), false);
 
         mWindowManager.addView(view, getLayoutParams(x, y));
+    }
+
+    class AppInfo {
+        String appName;
+        String packageName;
+        Drawable icon;
+        AppInfo(String packageName) {
+            this.packageName = packageName;
+        }
     }
 }

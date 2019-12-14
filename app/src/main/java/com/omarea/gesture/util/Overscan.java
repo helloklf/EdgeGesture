@@ -3,7 +3,6 @@ package com.omarea.gesture.util;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.util.Log;
 
 import java.io.OutputStream;
 

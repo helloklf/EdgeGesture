@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.widget.Toast;
+
 import com.omarea.gesture.AccessibilityServiceKeyEvent;
 import com.omarea.gesture.ActionModel;
 import com.omarea.gesture.AppSwitchActivity;
@@ -160,7 +161,7 @@ public class Handlers {
     }
 
     private static void openQuickPanel(final AccessibilityServiceKeyEvent accessibilityService, float touchRawX, float touchRawY) {
-        new QuickPanel(accessibilityService).open((int)touchRawX, (int)touchRawY);
+        new QuickPanel(accessibilityService).open((int) touchRawX, (int) touchRawY);
     }
 
     private static void appSwitch(final AccessibilityServiceKeyEvent accessibilityService, final int action, final int animation) {
@@ -171,6 +172,7 @@ public class Handlers {
             switch (action) {
                 case GLOBAL_ACTION_HOME: {
                     intent.putExtra("home", true);
+                    // AppSwitchActivity.backHome(accessibilityService);
                     break;
                 }
                 case VITUAL_ACTION_FORM: {
@@ -227,7 +229,7 @@ public class Handlers {
 
         boolean windowMode = action.actionCode == Handlers.CUSTOM_ACTION_APP_WINDOW;
 
-        String app = configEx.getString((windowMode? SpfConfigEx.prefix_app_window : SpfConfigEx.prefix_app) + action.exKey, "");
+        String app = configEx.getString((windowMode ? SpfConfigEx.prefix_app_window : SpfConfigEx.prefix_app) + action.exKey, "");
         if (app != null && !app.isEmpty()) {
             try {
                 Intent intent = AppSwitchActivity.getOpenAppIntent(accessibilityService);
@@ -257,7 +259,7 @@ public class Handlers {
     }
 
     public static String getOption(int value) {
-        for (ActionModel actionModel:options) {
+        for (ActionModel actionModel : options) {
             if (actionModel.actionCode == value) {
                 return actionModel.title;
             }

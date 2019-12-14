@@ -238,6 +238,34 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="描边效果" />
+
+                    <SeekBar
+                        android:id="@+id/ios_bar_size_stroke"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:max="5"
+                        android:min="0"
+                        android:paddingStart="6dp"
+                        android:paddingEnd="6dp" />
+
+                    <Button
+                        android:id="@+id/ios_bar_color_stroke"
+                        style="@style/btn_color_picker" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
                     android:minHeight="30dp"
                     android:orientation="horizontal">
 

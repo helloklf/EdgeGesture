@@ -93,11 +93,13 @@ public class iOSWhiteBar {
         final boolean gameOptimization = config.getBoolean(SpfConfig.GAME_OPTIMIZATION, SpfConfig.GAME_OPTIMIZATION_DEFAULT);
         final float fateOutAlpha = config.getInt(SpfConfig.IOS_BAR_ALPHA_FADEOUT, SpfConfig.IOS_BAR_ALPHA_FADEOUT_DEFAULT) / 100f; // 0.2f;
         final int barColor = isLandscapf ? (config.getInt(SpfConfig.IOS_BAR_COLOR_LANDSCAPE, SpfConfig.IOS_BAR_COLOR_LANDSCAPE_DEFAULT)) : (config.getInt(SpfConfig.IOS_BAR_COLOR_PORTRAIT, SpfConfig.IOS_BAR_COLOR_PORTRAIT_DEFAULT));
-        final int shadowColor = config.getInt(SpfConfig.IOS_BAR_COLOR_SHADOW, SpfConfig.IOS_BAR_COLOR_SHADOW_DEFAULT);
-        final int shadowSize = config.getInt(SpfConfig.IOS_BAR_SHADOW_SIZE, SpfConfig.IOS_BAR_SHADOW_SIZE_DEFAULT);
-        final int lineWeight = config.getInt(SpfConfig.IOS_BAR_HEIGHT, SpfConfig.IOS_BAR_HEIGHT_DEFAULT);
-        final int marginBottom = config.getInt(SpfConfig.IOS_BAR_MARGIN_BOTTOM, SpfConfig.IOS_BAR_MARGIN_BOTTOM_DEFAULT);
-        final int totalHeight = marginBottom + lineWeight + (shadowSize * 2);
+        final int shadowColor = config.getInt(SpfConfig.IOS_BAR_COLOR_SHADOW, SpfConfig.IOS_BAR_COLOR_SHADOW_DEFAULT); // 阴影颜色
+        final int shadowSize = config.getInt(SpfConfig.IOS_BAR_SHADOW_SIZE, SpfConfig.IOS_BAR_SHADOW_SIZE_DEFAULT); // 阴影大小
+        final int lineWeight = config.getInt(SpfConfig.IOS_BAR_HEIGHT, SpfConfig.IOS_BAR_HEIGHT_DEFAULT); // 线宽度（百分比）
+        final int strokeWidth = config.getInt(SpfConfig.IOS_BAR_STROKE_SIZE, SpfConfig.IOS_BAR_STROKE_SIZE_DEFAULT); // 描边大小
+        final int strokeColor = config.getInt(SpfConfig.IOS_BAR_COLOR_STROKE, SpfConfig.IOS_BAR_COLOR_STROKE_DEFAULT); // 描边颜色
+        final int marginBottom = config.getInt(SpfConfig.IOS_BAR_MARGIN_BOTTOM, SpfConfig.IOS_BAR_MARGIN_BOTTOM_DEFAULT); // 底部边距
+        final int totalHeight = marginBottom + lineWeight + (shadowSize * 2) + (strokeWidth * 2);
 
         bar.setStyle(
                 ((int) (getScreenWidth(accessibilityService) * widthRatio)),
@@ -105,7 +107,9 @@ public class iOSWhiteBar {
                 barColor,
                 shadowColor,
                 shadowSize,
-                lineWeight);
+                lineWeight,
+                strokeWidth,
+                strokeColor);
 
         final WindowManager.LayoutParams params = new WindowManager.LayoutParams();
 
@@ -141,10 +145,11 @@ public class iOSWhiteBar {
             private int FLIP_DISTANCE = dp2px(accessibilityService, 50f); // 触摸灵敏度（滑动多长距离认为是手势）
             private float flingValue = dp2px(accessibilityService, 3f); // 小于此值认为是点击而非滑动
             private int offsetLimitX = dp2px(accessibilityService, 50);
-            private int offsetLimitY = dp2px(accessibilityService, 20);
+            private int offsetLimitY = dp2px(accessibilityService, 12);
             private int animationScaling = dp2px(accessibilityService, 2); // 手指移动多少像素时动画才移动1像素
             private boolean vibratorRun = false;
             private ValueAnimator fareOutAnimation = null; // 动画程序（淡出）
+            private ObjectAnimator objectAnimator = null; // 位置调整动画
 
             private float touchRawX;
             private float touchRawY;
@@ -197,7 +202,13 @@ public class iOSWhiteBar {
                 Path path = new Path();
                 path.moveTo(params.x, params.y);
                 path.lineTo(x, y);
-                ObjectAnimator objectAnimator = ObjectAnimator.ofInt(params, "x", "y", path);
+                if (objectAnimator != null) {
+                    objectAnimator.cancel();
+                    objectAnimator = null;
+                }
+
+                objectAnimator = ObjectAnimator.ofInt(params, "x", "y", path);
+                objectAnimator.setStartDelay(200);
                 objectAnimator.setInterpolator(interpolator);
                 objectAnimator.setAutoCancel(true);
                 objectAnimator.setDuration(duration);
@@ -206,7 +217,7 @@ public class iOSWhiteBar {
                     public void onAnimationUpdate(ValueAnimator animation) {
                         animation.getValues();
                         int x = (int) animation.getAnimatedValue("x");
-                        int y = (int)animation.getAnimatedValue("y");
+                        int y = (int) animation.getAnimatedValue("y");
                         if (x != params.x || y != params.y) {
                             params.x = x;
                             params.y = y;
@@ -214,6 +225,7 @@ public class iOSWhiteBar {
                                 mWindowManager.updateViewLayout(view, params);
                             } catch (Exception ex) {
                                 animation.cancel();
+                                objectAnimator = null;
                             }
                         }
                     }
@@ -229,9 +241,17 @@ public class iOSWhiteBar {
                 gestureStartTime = 0;
                 isLongTimeGesture = false;
                 vibratorRun = true;
+
                 if (fareOutAnimation != null) {
                     fareOutAnimation.cancel();
+                    fareOutAnimation = null;
                 }
+
+                if (objectAnimator != null) {
+                    objectAnimator.cancel();
+                    objectAnimator = null;
+                }
+
                 bar.setAlpha(1f);
                 return true;
             }
@@ -307,7 +327,7 @@ public class iOSWhiteBar {
             }
 
             void clearEffect() {
-                animationTo(originX, originY, 300, new OvershootInterpolator());
+                animationTo(originX, originY, 800, new OvershootInterpolator());
                 // if (isLandscapf) {
                 fadeOut();
                 // }

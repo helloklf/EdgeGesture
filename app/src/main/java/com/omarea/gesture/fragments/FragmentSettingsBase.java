@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +17,9 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.Checkable;
 import android.widget.CompoundButton;
-import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
 import com.omarea.gesture.ActionModel;
 import com.omarea.gesture.DialogHandlerEX;
 import com.omarea.gesture.R;
@@ -82,17 +81,20 @@ public class FragmentSettingsBase extends Fragment {
                     public int getCount() {
                         return items.length;
                     }
+
                     @Override
                     public Object getItem(int position) {
                         return items[position];
                     }
+
                     @Override
                     public long getItemId(int position) {
                         return items[position].actionCode;
                     }
+
                     @Override
                     public View getView(int position, View convertView, ViewGroup parent) {
-                        ActionModel actionModel = ((ActionModel)getItem(position));
+                        ActionModel actionModel = ((ActionModel) getItem(position));
                         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_action_option, null);
                         TextView textView = view.findViewById(R.id.item_title);
                         textView.setText(actionModel.title);
