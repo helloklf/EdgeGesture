@@ -53,6 +53,7 @@ public class FragmentWhiteBar extends FragmentSettingsBase {
         setViewBackground(context.findViewById(R.id.ios_bar_color_landscape), config.getInt(SpfConfig.IOS_BAR_COLOR_LANDSCAPE, SpfConfig.IOS_BAR_COLOR_LANDSCAPE_DEFAULT));
         setViewBackground(context.findViewById(R.id.ios_bar_color_portrait), config.getInt(SpfConfig.IOS_BAR_COLOR_PORTRAIT, SpfConfig.IOS_BAR_COLOR_PORTRAIT_DEFAULT));
         setViewBackground(context.findViewById(R.id.ios_bar_color_shadow), config.getInt(SpfConfig.IOS_BAR_COLOR_SHADOW, SpfConfig.IOS_BAR_COLOR_SHADOW_DEFAULT));
+        setViewBackground(context.findViewById(R.id.ios_bar_color_stroke), config.getInt(SpfConfig.IOS_BAR_COLOR_STROKE, SpfConfig.IOS_BAR_COLOR_STROKE_DEFAULT));
 
         context.findViewById(R.id.ios_bar_color_fadeout).setAlpha(config.getInt(SpfConfig.IOS_BAR_ALPHA_FADEOUT, SpfConfig.IOS_BAR_ALPHA_FADEOUT_DEFAULT) / 100f);
         updateActionText(R.id.ios_bar_slide_left, SpfConfig.IOS_BAR_SLIDE_LEFT, SpfConfig.IOS_BAR_SLIDE_LEFT_DEFAULT);

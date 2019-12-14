@@ -3,7 +3,10 @@ package com.omarea.gesture.util;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.util.Log;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 
 public class Overscan {
@@ -29,9 +32,16 @@ public class Overscan {
             try {
                 Process process = Runtime.getRuntime().exec("sh");
                 OutputStream outputStream = process.getOutputStream();
-                outputStream.write(("wm overscan 0,0,0,-" + navigationHeight).getBytes());
+                outputStream.write(("/system/bin/wm overscan 0,0,0,-" + navigationHeight).getBytes());
                 outputStream.write("\nexit\nexit\n".getBytes());
                 outputStream.flush();
+                InputStreamReader inputStreamReader = new InputStreamReader(process.getErrorStream());
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String line = bufferedReader.readLine();
+                while (line != null) {
+                    Log.e(">>>>", line);
+                    bufferedReader.readLine();
+                }
                 return process.waitFor() == 0;
             } catch (Exception ignored) {
             }
