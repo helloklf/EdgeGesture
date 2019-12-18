@@ -18,7 +18,11 @@ public class Recents {
     private int index = -1;
     private String currentTop = "";
 
-    public void addRecent(String packageName) {
+    public boolean addRecent(String packageName) {
+        if (currentTop.equals(packageName)) {
+            return false;
+        }
+
         synchronized (recents) {
             int searchResult = recents.indexOf(packageName);
             if (searchResult > -1) {
@@ -39,6 +43,7 @@ public class Recents {
             index = recents.indexOf(packageName);
             currentTop = packageName;
         }
+        return true;
     }
 
     public void setRecents(ArrayList<String> items, Context context) {

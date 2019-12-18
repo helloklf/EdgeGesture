@@ -13,18 +13,22 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Build;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
 
+import com.omarea.gesture.shell.ScreenColor;
 import com.omarea.gesture.ui.FloatVirtualTouchBar;
 import com.omarea.gesture.ui.TouchIconCache;
 import com.omarea.gesture.util.ForceHideNavBarThread;
+import com.omarea.gesture.util.GlobalState;
 import com.omarea.gesture.util.Overscan;
 import com.omarea.gesture.util.Recents;
 
@@ -106,9 +110,13 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
         }
     }
 
+    private boolean ignored(String packageName) {
+        return recents.ignoreApps.indexOf(packageName) > -1;
+    }
+
     // 检测应用是否是可以打开的
     private boolean canOpen(String packageName) {
-        if (recents.blackList.indexOf(packageName) > -1 || recents.ignoreApps.indexOf(packageName) > -1) {
+        if (recents.blackList.indexOf(packageName) > -1) {
             return false;
         } else if (recents.whiteList.indexOf(packageName) > -1) {
             return true;
@@ -164,18 +172,26 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
         return inputMethods;
     }
 
+    private String lastApp = "";
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-        // Log.d("onAccessibilityEvent", event.getPackageName().toString());
         if (event != null) {
             CharSequence packageName = event.getPackageName();
-            if (packageName != null) {
-                if (!packageName.equals(getPackageName())) {
-                    String packageNameStr = packageName.toString();
-                    if (recents.ignoreApps == null) {
-                        recents.ignoreApps = getLauncherApps();
-                        recents.ignoreApps.addAll(getInputMethods());
+            if (!(packageName == null || packageName.equals(getPackageName()))) {
+                Log.d(">>>>", "" + packageName);
+                if (GlobalState.updateBar != null) {
+                    if (!packageName.equals("android")) {
+                        ScreenColor.updateBarColor();
                     }
+                }
+                String packageNameStr = packageName.toString();
+                if (recents.ignoreApps == null) {
+                    recents.ignoreApps = getLauncherApps();
+                    recents.ignoreApps.addAll(getInputMethods());
+                }
+
+                if (!(packageNameStr.equals(lastApp) || ignored(packageNameStr))) {
+                    lastApp = packageNameStr;
                     if (canOpen(packageNameStr)) {
                         recents.addRecent(packageNameStr);
                     }

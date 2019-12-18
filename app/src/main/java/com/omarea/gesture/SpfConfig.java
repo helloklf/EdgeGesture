@@ -78,7 +78,7 @@ public class SpfConfig {
     public static final String IOS_BAR_WIDTH_LANDSCAPE = "ios_bar_width_landscape";
     public static final int IOS_BAR_WIDTH_DEFAULT_LANDSCAPE = 30; // 百分比
     public static final String IOS_BAR_WIDTH_PORTRAIT = "ios_bar_width_portrait";
-    public static final int IOS_BAR_WIDTH_DEFAULT_PORTRAIT = 36; // 百分比
+    public static final int IOS_BAR_WIDTH_DEFAULT_PORTRAIT = 37; // 百分比
     public static final String IOS_BAR_ALPHA_FADEOUT = "ios_bar_alpha_fadeout";
     public static final int IOS_BAR_ALPHA_FADEOUT_DEFAULT = 20; // 百分比
     public static final String IOS_BAR_COLOR_LANDSCAPE = "ios_bar_color_landscape";
@@ -88,13 +88,13 @@ public class SpfConfig {
     public static final String IOS_BAR_COLOR_SHADOW = "ios_bar_color_shadow";
     public static final int IOS_BAR_COLOR_SHADOW_DEFAULT = 0x88000000; // 默认阴影颜色
     public static final String IOS_BAR_SHADOW_SIZE = "ios_bar_shadow_size2";
-    public static final int IOS_BAR_SHADOW_SIZE_DEFAULT = 2; // ?dp
+    public static final int IOS_BAR_SHADOW_SIZE_DEFAULT = 1; // ?dp
     public static final String IOS_BAR_COLOR_STROKE = "ios_bar_color_stroke";
     public static final int IOS_BAR_COLOR_STROKE_DEFAULT = 0x88000000; // 默认阴影颜色
     public static final String IOS_BAR_STROKE_SIZE = "ios_bar_stroke_size";
-    public static final int IOS_BAR_STROKE_SIZE_DEFAULT = 0; // ?dp
+    public static final int IOS_BAR_STROKE_SIZE_DEFAULT = 1; // ?dp
     public static final String IOS_BAR_MARGIN_BOTTOM = "ios_bar_margin_bottom";
-    public static final int IOS_BAR_MARGIN_BOTTOM_DEFAULT = 7; // ?dp
+    public static final int IOS_BAR_MARGIN_BOTTOM_DEFAULT = 9; // ?dp
     public static final String IOS_BAR_HEIGHT = "ios_bar_height";
     public static final int IOS_BAR_HEIGHT_DEFAULT = 3; // ?dp
     public static final String IOS_BAR_LOCK_HIDE = "ios_bar_lock_hide";

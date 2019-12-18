@@ -253,6 +253,7 @@ public class iOSWhiteBar {
                 }
 
                 bar.setAlpha(1f);
+                bar.invalidate();
                 return true;
             }
 
@@ -375,6 +376,26 @@ public class iOSWhiteBar {
                 ReceiverLock.unRegister(accessibilityService);
                 if (config.getBoolean(SpfConfig.IOS_BAR_LOCK_HIDE, SpfConfig.IOS_BAR_LOCK_HIDE_DEFAULT)) {
                     ReceiverLock.autoRegister(accessibilityService, new ReceiverLockHandler(bar, accessibilityService));
+                }
+                if (config.getBoolean(SpfConfig.ROOT_GET_RECENTS, SpfConfig.ROOT_GET_RECENTS_DEFAULT)) {
+                    GlobalState.updateBar = new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                bar.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        bar.invalidate();
+                                    }
+                                });
+                            } catch (Exception ex) {
+                                GlobalState.updateBar = null;
+                            }
+                        }
+                    };
+                } else {
+                    GlobalState.updateBar = null;
+                    GlobalState.iosBarColor = -1;
                 }
             }
 

@@ -8,6 +8,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.omarea.gesture.util.GlobalState;
+
 public class iOSTouchBarView extends View {
     private Context context = getContext();
 
@@ -96,10 +98,14 @@ public class iOSTouchBarView extends View {
             canvas.drawRoundRect(margin, margin, getWidth() - margin, margin + lineWeight, 20, 20, p);
         }
 
-        p.setStyle(Paint.Style.FILL);
-        p.setColor(lineColor);
-        canvas.drawRoundRect(margin, margin, getWidth() - margin, margin + lineWeight, 20, 20, p);
-
-
+        if (GlobalState.iosBarColor != -1) {
+            p.setStyle(Paint.Style.FILL);
+            p.setColor(GlobalState.iosBarColor);
+            canvas.drawRoundRect(margin, margin, getWidth() - margin, margin + lineWeight, 20, 20, p);
+        } else {
+            p.setStyle(Paint.Style.FILL);
+            p.setColor(lineColor);
+            canvas.drawRoundRect(margin, margin, getWidth() - margin, margin + lineWeight, 20, 20, p);
+        }
     }
 }
