@@ -88,15 +88,21 @@ public class FloatVirtualTouchBar {
     public void hidePopupWindow() {
         if (this.iosBarView != null) {
             mWindowManager.removeView(this.iosBarView);
+            this.iosBarView = null;
+            GlobalState.iosBarColor = -1;
+            GlobalState.updateBar = null;
         }
         if (this.bottomView != null) {
             mWindowManager.removeView(this.bottomView);
+            this.bottomView = null;
         }
         if (this.leftView != null) {
             mWindowManager.removeView(this.leftView);
+            this.leftView = null;
         }
         if (this.rightView != null) {
             mWindowManager.removeView(this.rightView);
+            this.rightView = null;
         }
         // KeepShellPublic.doCmdSync("wm overscan reset");
     }
