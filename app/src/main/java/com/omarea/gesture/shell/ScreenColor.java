@@ -4,7 +4,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.util.Log;
+
 import com.omarea.gesture.util.GlobalState;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,9 +14,9 @@ import java.io.OutputStream;
 import java.nio.ByteBuffer;
 
 public class ScreenColor {
+    private static final Object threadRun = "";
     private static Process exec;
     private static Thread thread;
-    private static final Object threadRun = "";
     private static long updateTime = 0;
 
     public static void updateBarColor() {
@@ -25,13 +27,15 @@ public class ScreenColor {
                     exec.destroy();
                     exec = null;
                 }
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
             try {
                 if (thread != null) {
                     thread.interrupt();
                     thread = null;
                 }
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
 
         if (thread == null) {
@@ -41,7 +45,6 @@ public class ScreenColor {
                     boolean hasNext = false;
                     do {
                         try {
-                            Thread.sleep(100);
                             updateTime = System.currentTimeMillis();
                             long start = System.currentTimeMillis();
                             if (new ScreenColor().screenIsLightColor()) {
@@ -61,7 +64,7 @@ public class ScreenColor {
                         try {
                             synchronized (threadRun) {
                                 if (hasNext) {
-                                    thread.wait(1500);
+                                    thread.wait(1000);
                                     hasNext = false;
                                 } else {
                                     threadRun.wait();
@@ -96,7 +99,7 @@ public class ScreenColor {
 
     private boolean isWhiteTopColor(byte[] rawImage) {
         int r = 0, g = 0, b = 0, a = 0;
-        int index = 12 + (540 * 4) ; // 前面12位不属于像素信息，跳过12位，并以屏幕分辨率位1080p取顶部中间那个像素的颜色（32位色，每个像素4byte）
+        int index = 12 + (540 * 4); // 前面12位不属于像素信息，跳过12位，并以屏幕分辨率位1080p取顶部中间那个像素的颜色（32位色，每个像素4byte）
         r = rawImage[index];
         g = rawImage[index + 1];
         b = rawImage[index + 2];
@@ -117,10 +120,10 @@ public class ScreenColor {
         boolean usePng = false;
         byte[] bytes = getScreenCapBytes(usePng);
         if (usePng) {
-           Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-           int y = bitmap.getHeight() - 15;
-           int x = bitmap.getWidth() / 2 - 1;
-           return bitmap.getPixel(x, y);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            int y = bitmap.getHeight() - 15;
+            int x = bitmap.getWidth() / 2 - 1;
+            return bitmap.getPixel(x, y);
         } else {
             // 如果状态栏都是白色的，那这个界面肯定是白色啦
             if (isWhiteTopColor(bytes)) {

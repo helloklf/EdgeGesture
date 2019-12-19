@@ -92,8 +92,12 @@ public class iOSWhiteBar {
         }
 
         final boolean gameOptimization = config.getBoolean(SpfConfig.GAME_OPTIMIZATION, SpfConfig.GAME_OPTIMIZATION_DEFAULT);
-        final float fateOutAlpha = config.getInt(SpfConfig.IOS_BAR_ALPHA_FADEOUT, SpfConfig.IOS_BAR_ALPHA_FADEOUT_DEFAULT) / 100f; // 0.2f;
-        final int barColor = isLandscapf ? (config.getInt(SpfConfig.IOS_BAR_COLOR_LANDSCAPE, SpfConfig.IOS_BAR_COLOR_LANDSCAPE_DEFAULT)) : (config.getInt(SpfConfig.IOS_BAR_COLOR_PORTRAIT, SpfConfig.IOS_BAR_COLOR_PORTRAIT_DEFAULT));
+        final float fateOutAlpha = (isLandscapf ?
+                config.getInt(SpfConfig.IOS_BAR_ALPHA_FADEOUT_LANDSCAPE, SpfConfig.IOS_BAR_ALPHA_FADEOUT_PORTRAIT_DEFAULT) :
+                config.getInt(SpfConfig.IOS_BAR_ALPHA_FADEOUT_PORTRAIT, SpfConfig.IOS_BAR_ALPHA_FADEOUT_PORTRAIT_DEFAULT)) / 100f; // 0.2f;
+        final int barColor = (isLandscapf ?
+                (config.getInt(SpfConfig.IOS_BAR_COLOR_LANDSCAPE, SpfConfig.IOS_BAR_COLOR_LANDSCAPE_DEFAULT)) :
+                (config.getInt(SpfConfig.IOS_BAR_COLOR_PORTRAIT, SpfConfig.IOS_BAR_COLOR_PORTRAIT_DEFAULT)));
         final int shadowColor = config.getInt(SpfConfig.IOS_BAR_COLOR_SHADOW, SpfConfig.IOS_BAR_COLOR_SHADOW_DEFAULT); // 阴影颜色
         final int shadowSize = config.getInt(SpfConfig.IOS_BAR_SHADOW_SIZE, SpfConfig.IOS_BAR_SHADOW_SIZE_DEFAULT); // 阴影大小
         final int lineWeight = config.getInt(SpfConfig.IOS_BAR_HEIGHT, SpfConfig.IOS_BAR_HEIGHT_DEFAULT); // 线宽度（百分比）

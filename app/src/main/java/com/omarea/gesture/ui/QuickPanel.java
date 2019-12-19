@@ -262,6 +262,7 @@ public class QuickPanel {
         String appName;
         String packageName;
         Drawable icon;
+
         AppInfo(String packageName) {
             this.packageName = packageName;
         }

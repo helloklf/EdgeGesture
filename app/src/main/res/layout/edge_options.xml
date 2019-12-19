@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:scrollbars="none">
 
     <LinearLayout
         android:id="@+id/edge_options"
@@ -60,6 +60,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:minWidth="80dp"
                         android:text="@string/bottom_hot_area_width" />
 
                     <SeekBar
@@ -87,6 +88,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:minWidth="80dp"
                         android:text="@string/bottom_hot_area_height" />
 
                     <SeekBar
@@ -108,7 +110,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="@string/quick_slide" />
+                        android:minWidth="80dp"
+                        android:text="向上滑动" />
 
                     <Button
                         android:id="@+id/tap_bottom"
@@ -119,7 +122,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="@string/slide_hover" />
+                        android:minWidth="80dp"
+                        android:text="上滑悬停" />
 
                     <Button
                         android:id="@+id/hover_bottom"
@@ -172,6 +176,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:minWidth="80dp"
                         android:text="热区高度" />
 
                     <SeekBar
@@ -197,7 +202,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="@string/quick_slide" />
+                        android:minWidth="80dp"
+                        android:text="向右滑动" />
 
                     <Button
                         android:id="@+id/tap_left"
@@ -208,7 +214,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="@string/slide_hover" />
+                        android:minWidth="80dp"
+                        android:text="右滑悬停" />
 
                     <Button
                         android:id="@+id/hover_left"
@@ -261,6 +268,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:minWidth="80dp"
                         android:text="热区高度" />
 
                     <SeekBar
@@ -286,7 +294,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="@string/quick_slide" />
+                        android:minWidth="80dp"
+                        android:text="向左滑动" />
 
                     <Button
                         android:id="@+id/tap_right"
@@ -297,7 +306,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="@string/slide_hover" />
+                        android:minWidth="80dp"
+                        android:text="左滑悬停" />
 
                     <Button
                         android:id="@+id/hover_right"

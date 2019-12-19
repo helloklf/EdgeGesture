@@ -11,11 +11,11 @@
 
     <CheckBox
         android:id="@+id/item_state"
-        android:clickable="false"
-        android:focusable="false"
-        android:layout_margin="0dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:clickable="false"
+        android:focusable="false" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -25,11 +25,11 @@
 
         <TextView
             android:id="@+id/item_title"
-            android:textColor="@android:color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:text="@string/app_name"
+            android:textColor="@android:color/white"
             android:textSize="13dp" />
 
         <TextView
@@ -38,8 +38,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:text="@string/app_name"
-            android:textSize="10dp"
-            android:textColor="#ff888888" />
+            android:textColor="#ff888888"
+            android:textSize="10dp" />
     </LinearLayout>
 
 </LinearLayout>

@@ -79,8 +79,10 @@ public class SpfConfig {
     public static final int IOS_BAR_WIDTH_DEFAULT_LANDSCAPE = 30; // 百分比
     public static final String IOS_BAR_WIDTH_PORTRAIT = "ios_bar_width_portrait";
     public static final int IOS_BAR_WIDTH_DEFAULT_PORTRAIT = 37; // 百分比
-    public static final String IOS_BAR_ALPHA_FADEOUT = "ios_bar_alpha_fadeout";
-    public static final int IOS_BAR_ALPHA_FADEOUT_DEFAULT = 20; // 百分比
+    public static final String IOS_BAR_ALPHA_FADEOUT_PORTRAIT = "ios_bar_alpha_fadeout_portrait";
+    public static final int IOS_BAR_ALPHA_FADEOUT_PORTRAIT_DEFAULT = 20; // 百分比
+    public static final String IOS_BAR_ALPHA_FADEOUT_LANDSCAPE = "ios_bar_alpha_fadeout_landscape";
+    public static final int IOS_BAR_ALPHA_FADEOUT_LANDSCAPE_DEFAULT = 15; // 百分比
     public static final String IOS_BAR_COLOR_LANDSCAPE = "ios_bar_color_landscape";
     public static final int IOS_BAR_COLOR_LANDSCAPE_DEFAULT = 0xfff8f8f8; // 颜色
     public static final String IOS_BAR_COLOR_PORTRAIT = "ios_bar_color_portrait";

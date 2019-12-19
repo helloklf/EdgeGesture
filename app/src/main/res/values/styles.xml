@@ -60,6 +60,7 @@
         <item name="android:gravity">left|center_vertical</item>
         <item name="android:textSize">14sp</item>
         <item name="android:maxLines">1</item>
+        <item name="android:textColor">@color/colorAccent</item>
     </style>
 
     <style name="activityAnim">

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:scrollbars="none">
 
     <LinearLayout
         android:id="@+id/ios_bar_options"
@@ -15,7 +16,6 @@
             android:layout_margin="10dp"
             android:text="@string/white_bar_gesture"
             android:textAppearance="@android:style/TextAppearance.Material.Title" />
-
 
         <android.support.v7.widget.CardView style="@style/card_view">
 
@@ -61,7 +61,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:minWidth="80dp"
-                        android:text="向左滑动：" />
+                        android:text="向左滑动" />
 
                     <Button
                         android:id="@+id/ios_bar_slide_left"
@@ -73,7 +73,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:minWidth="80dp"
-                        android:text="向右滑动：" />
+                        android:text="向右滑动" />
 
                     <Button
                         android:id="@+id/ios_bar_slide_right"
@@ -91,7 +91,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:minWidth="80dp"
-                        android:text="向上滑动：" />
+                        android:text="向上滑动" />
 
                     <Button
                         android:id="@+id/ios_bar_slide_up"
@@ -103,7 +103,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:minWidth="80dp"
-                        android:text="上滑悬停：" />
+                        android:text="上滑悬停" />
 
                     <Button
                         android:id="@+id/ios_bar_slide_up_hover"
@@ -122,16 +122,23 @@
                 android:orientation="vertical"
                 android:padding="10dp">
 
+                <TextView
+                    style="@style/card_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="横屏" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:text="横屏宽度/颜色" />
+                        android:text="宽度/颜色" />
 
                     <SeekBar
                         android:id="@+id/ios_bar_width_landscape"
@@ -159,7 +166,51 @@
                     <TextView
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:text="竖屏宽度/颜色" />
+                        android:text="淡出不透明度" />
+
+                    <SeekBar
+                        android:id="@+id/ios_bar_alpha_fadeout_landscape"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:max="100"
+                        android:min="0"
+                        android:paddingStart="6dp"
+                        android:paddingEnd="6dp" />
+
+                    <Button
+                        android:id="@+id/ios_bar_color_fadeout_landscape"
+                        style="@style/btn_color_picker" />
+                </LinearLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView style="@style/card_view">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    style="@style/card_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="竖屏" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="宽度/颜色" />
 
                     <SeekBar
                         android:id="@+id/ios_bar_width_portrait"
@@ -190,7 +241,7 @@
                         android:text="淡出不透明度" />
 
                     <SeekBar
-                        android:id="@+id/ios_bar_alpha_fadeout"
+                        android:id="@+id/ios_bar_alpha_fadeout_portrait"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -201,9 +252,25 @@
                         android:paddingEnd="6dp" />
 
                     <Button
-                        android:id="@+id/ios_bar_color_fadeout"
+                        android:id="@+id/ios_bar_color_fadeout_portrait"
                         style="@style/btn_color_picker" />
                 </LinearLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView style="@style/card_view">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    style="@style/card_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="通用" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -341,9 +408,9 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:orientation="vertical">
 
                     <Switch

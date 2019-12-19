@@ -39,9 +39,11 @@ public class KeepShell {
                     "exit 1\n" +
                     "fi\n";
     private byte[] br = "\n\n".getBytes(Charset.defaultCharset());
+
     public KeepShell() {
 
     }
+
     public KeepShell(boolean rootMode) {
         this.rootMode = rootMode;
     }

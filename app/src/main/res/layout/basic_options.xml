@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:scrollbars="none">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -109,6 +110,7 @@
                         android:layout_marginTop="0dp"
                         android:layout_marginBottom="0dp"
                         android:text="悬停时长"
+                        android:minWidth="80dp"
                         android:textColor="?android:textColorPrimary"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -141,6 +143,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:minWidth="80dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="时长" />
@@ -161,6 +164,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:minWidth="80dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="强度" />

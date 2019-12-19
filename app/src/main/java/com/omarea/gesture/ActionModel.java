@@ -10,9 +10,11 @@ public class ActionModel implements Serializable {
     public String exKey;
     public String st;
     public String shellCommand;
+
     private ActionModel(int code) {
         this.actionCode = code;
     }
+
     public ActionModel(int code, String title) {
         this.actionCode = code;
         this.title = title;

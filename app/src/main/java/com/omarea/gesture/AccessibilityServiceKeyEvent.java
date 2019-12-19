@@ -5,7 +5,6 @@ import android.app.KeyguardManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -14,7 +13,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Build;
 import android.provider.Settings;
@@ -24,6 +22,7 @@ import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
+
 import com.omarea.gesture.shell.ScreenColor;
 import com.omarea.gesture.ui.FloatVirtualTouchBar;
 import com.omarea.gesture.ui.TouchIconCache;
@@ -31,6 +30,7 @@ import com.omarea.gesture.util.ForceHideNavBarThread;
 import com.omarea.gesture.util.GlobalState;
 import com.omarea.gesture.util.Overscan;
 import com.omarea.gesture.util.Recents;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -44,6 +44,7 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
     private BroadcastReceiver screenStateReceiver;
     private SharedPreferences config;
     private ContentResolver cr = null;
+    private String lastApp = "";
 
     private void startForeground() {
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -111,24 +112,6 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
         return recents.ignoreApps.indexOf(packageName) > -1;
     }
 
-    // 检测应用是否是可以打开的
-    private boolean canOpen(String packageName) {
-        if (recents.blackList.indexOf(packageName) > -1) {
-            return false;
-        } else if (recents.whiteList.indexOf(packageName) > -1) {
-            return true;
-        } else {
-            Intent launchIntent = getPackageManager().getLaunchIntentForPackage(packageName);
-            if (launchIntent != null) {
-                recents.whiteList.add(packageName);
-                return true;
-            } else {
-                recents.blackList.add(packageName);
-                return false;
-            }
-        }
-    }
-
     /*
     通过
     dumpsys activity top | grep ACTIVITY
@@ -146,6 +129,24 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
         }
     }
     */
+
+    // 检测应用是否是可以打开的
+    private boolean canOpen(String packageName) {
+        if (recents.blackList.indexOf(packageName) > -1) {
+            return false;
+        } else if (recents.whiteList.indexOf(packageName) > -1) {
+            return true;
+        } else {
+            Intent launchIntent = getPackageManager().getLaunchIntentForPackage(packageName);
+            if (launchIntent != null) {
+                recents.whiteList.add(packageName);
+                return true;
+            } else {
+                recents.blackList.add(packageName);
+                return false;
+            }
+        }
+    }
 
     // 启动器应用（桌面）
     private ArrayList<String> getLauncherApps() {
@@ -169,7 +170,6 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
         return inputMethods;
     }
 
-    private String lastApp = "";
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         if (event != null) {
