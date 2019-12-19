@@ -397,7 +397,7 @@ public class iOSWhiteBar {
                             }
                         }
                     };
-                    ScreenColor.updateBarColor();
+                    ScreenColor.updateBarColor(false);
                 }
             }
 

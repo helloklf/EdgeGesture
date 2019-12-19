@@ -47,6 +47,7 @@ public class FragmentWhiteBar extends FragmentSettingsBase {
         bindSeekBar(R.id.ios_bar_total_height, SpfConfig.IOS_BAR_MARGIN_BOTTOM, SpfConfig.IOS_BAR_MARGIN_BOTTOM_DEFAULT, true);
         bindSeekBar(R.id.ios_bar_height, SpfConfig.IOS_BAR_HEIGHT, SpfConfig.IOS_BAR_HEIGHT_DEFAULT, true);
         bindCheckable(R.id.ios_bar_lock_hide, SpfConfig.IOS_BAR_LOCK_HIDE, SpfConfig.IOS_BAR_LOCK_HIDE_DEFAULT);
+        bindCheckable(R.id.ios_bar_auto_color_fast, SpfConfig.IOS_BAR_COLOR_FAST, SpfConfig.IOS_BAR_COLOR_FAST_DEFAULT);
         setViewBackground(getActivity().findViewById(R.id.ios_bar_color_fadeout_portrait), 0xff888888);
         setViewBackground(getActivity().findViewById(R.id.ios_bar_color_fadeout_landscape), 0xff888888);
 
@@ -59,13 +60,17 @@ public class FragmentWhiteBar extends FragmentSettingsBase {
                 if (ele.isChecked()) {
                     if (config.getBoolean(SpfConfig.ROOT, SpfConfig.ROOT_DEFAULT)) {
                         config.edit().putBoolean(SpfConfig.IOS_BAR_AUTO_COLOR_ROOT, true).apply();
+                        getActivity().findViewById(R.id.ios_bar_auto_color_fast).setVisibility(View.VISIBLE);
                         restartService();
                     } else {
                         ele.setChecked(false);
                         Toast.makeText(getActivity().getApplicationContext(), getString(R.string.need_root_mode), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    config.edit().putBoolean(SpfConfig.IOS_BAR_AUTO_COLOR_ROOT, false).apply();
+                    config.edit().putBoolean(SpfConfig.IOS_BAR_AUTO_COLOR_ROOT, false).putBoolean(SpfConfig.IOS_BAR_COLOR_FAST, false).apply();
+                    Switch checkable = getActivity().findViewById(R.id.ios_bar_auto_color_fast);
+                    checkable.setVisibility(View.GONE);
+                    checkable.setChecked(false);
                     restartService();
                 }
             }

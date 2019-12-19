@@ -1,6 +1,7 @@
 package com.omarea.gesture;
 
 import android.accessibilityservice.AccessibilityService;
+import android.accessibilityservice.AccessibilityServiceInfo;
 import android.app.KeyguardManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -68,10 +69,6 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
     }
 
     private void forceHideNavBar() {
-        if (config == null) {
-            config = getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
-        }
-
         if (Build.MANUFACTURER.equals("samsung") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             if (cr == null) {
                 cr = getContentResolver();
@@ -87,10 +84,6 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
     }
 
     private void resumeNavBar() {
-        if (config == null) {
-            config = getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
-        }
-
         if (Build.MANUFACTURER.equals("samsung") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             try {
                 if (cr == null) {
@@ -179,6 +172,10 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
                 recents.ignoreApps.addAll(recents.inputMethods);
             }
 
+            if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED) {
+                Log.d(">>>>", "onAccessibilityEvent CC");
+            }
+
             CharSequence packageName = event.getPackageName();
             if (!(packageName == null || packageName.equals(getPackageName()))) {
                 String packageNameStr = packageName.toString();
@@ -186,7 +183,7 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
                 Log.d(">>>>", "" + packageName + " GlobalState.updateBar  " + GlobalState.updateBar);
                 if (GlobalState.updateBar != null && !(recents.inputMethods.indexOf(packageNameStr) > -1 && recents.inputMethods.indexOf(lastApp) > -1)) {
                     if (!packageName.equals("android")) {
-                        ScreenColor.updateBarColor();
+                        ScreenColor.updateBarColor(true);
                     }
                 }
 
@@ -222,6 +219,9 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
     @Override
     public void onServiceConnected() {
         super.onServiceConnected();
+        if (config == null) {
+            config = getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
+        }
 
         WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         Point point = new Point();
@@ -316,6 +316,17 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
 
     private void createPopupView() {
         hidePopupWindow();
+
+        AccessibilityServiceInfo accessibilityServiceInfo = getServiceInfo();
+        boolean barEnabled = isLandscapf ? config.getBoolean(SpfConfig.LANDSCAPE_IOS_BAR, SpfConfig.LANDSCAPE_IOS_BAR_DEFAULT) : config.getBoolean(SpfConfig.PORTRAIT_IOS_BAR, SpfConfig.PORTRAIT_IOS_BAR_DEFAULT);
+        // 是否激进模式
+        if (barEnabled && config.getBoolean(SpfConfig.IOS_BAR_COLOR_FAST, SpfConfig.IOS_BAR_COLOR_FAST_DEFAULT)) {
+            accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED | AccessibilityEvent.TYPE_WINDOWS_CHANGED | AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED;
+        } else {
+            accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED | AccessibilityEvent.TYPE_WINDOWS_CHANGED;
+        }
+        setServiceInfo(accessibilityServiceInfo);
+
         floatVitualTouchBar = new FloatVirtualTouchBar(this, isLandscapf);
     }
 

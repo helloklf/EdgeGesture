@@ -18,8 +18,9 @@ public class ScreenColor {
     private static Process exec;
     private static Thread thread;
     private static long updateTime = 0;
+    private static boolean hasNext = false;
 
-    public static void updateBarColor() {
+    public static void updateBarColor(boolean hasNext) {
         // 如果距离上次执行已经超过6秒，认位颜色获取进程已经崩溃，将其结束重启
         if (updateTime > -1 && System.currentTimeMillis() - updateTime > 6000) {
             try {
@@ -37,12 +38,12 @@ public class ScreenColor {
             } catch (Exception ignored) {
             }
         }
+        ScreenColor.hasNext = hasNext;
 
         if (thread == null) {
             thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    boolean hasNext = false;
                     do {
                         try {
                             updateTime = System.currentTimeMillis();
@@ -63,15 +64,15 @@ public class ScreenColor {
                         }
                         try {
                             synchronized (threadRun) {
-                                if (hasNext) {
+                                if (ScreenColor.hasNext) {
                                     thread.wait(1000);
-                                    hasNext = false;
+                                    ScreenColor.hasNext = false;
                                 } else {
                                     threadRun.wait();
-                                    hasNext = true;
                                 }
                             }
                         } catch (Exception ex) {
+                            thread.interrupt();
                             thread = null;
                             break;
                         }
