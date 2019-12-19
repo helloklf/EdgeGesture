@@ -23,7 +23,6 @@ import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
-
 import com.omarea.gesture.shell.ScreenColor;
 import com.omarea.gesture.ui.FloatVirtualTouchBar;
 import com.omarea.gesture.ui.TouchIconCache;
@@ -31,7 +30,6 @@ import com.omarea.gesture.util.ForceHideNavBarThread;
 import com.omarea.gesture.util.GlobalState;
 import com.omarea.gesture.util.Overscan;
 import com.omarea.gesture.util.Recents;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -45,8 +43,6 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
     private BroadcastReceiver screenStateReceiver;
     private SharedPreferences config;
     private ContentResolver cr = null;
-    private int screenWidth;
-    private int screenHeight;
 
     private void startForeground() {
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -176,18 +172,21 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         if (event != null) {
+            if (recents.ignoreApps == null) {
+                recents.ignoreApps = getLauncherApps();
+                recents.inputMethods = getInputMethods();
+                recents.ignoreApps.addAll(recents.inputMethods);
+            }
+
             CharSequence packageName = event.getPackageName();
             if (!(packageName == null || packageName.equals(getPackageName()))) {
-                Log.d(">>>>", "" + packageName);
-                if (GlobalState.updateBar != null) {
+                String packageNameStr = packageName.toString();
+
+                Log.d(">>>>", "" + packageName + " GlobalState.updateBar  " + GlobalState.updateBar);
+                if (GlobalState.updateBar != null && !(recents.inputMethods.indexOf(packageNameStr) > -1 && recents.inputMethods.indexOf(lastApp) > -1)) {
                     if (!packageName.equals("android")) {
                         ScreenColor.updateBarColor();
                     }
-                }
-                String packageNameStr = packageName.toString();
-                if (recents.ignoreApps == null) {
-                    recents.ignoreApps = getLauncherApps();
-                    recents.ignoreApps.addAll(getInputMethods());
                 }
 
                 if (!(packageNameStr.equals(lastApp) || ignored(packageNameStr))) {
@@ -227,8 +226,8 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
         WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         Point point = new Point();
         wm.getDefaultDisplay().getRealSize(point);
-        screenWidth = point.x;
-        screenHeight = point.y;
+        GlobalState.displayWidth = point.x;
+        GlobalState.displayHeight = point.y;
 
         TouchIconCache.setContext(this.getBaseContext());
 
@@ -298,6 +297,7 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+
         if (floatVitualTouchBar != null && newConfig != null) {
             isLandscapf = newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE;
 
@@ -305,9 +305,9 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
             WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
             Point point = new Point();
             wm.getDefaultDisplay().getRealSize(point);
-            if (point.x != screenWidth || point.y != screenHeight) {
-                screenWidth = point.x;
-                screenHeight = point.y;
+            if (point.x != GlobalState.displayWidth || point.y != GlobalState.displayHeight) {
+                GlobalState.displayWidth = point.x;
+                GlobalState.displayHeight = point.y;
                 createPopupView();
                 forceHideNavBar();
             }

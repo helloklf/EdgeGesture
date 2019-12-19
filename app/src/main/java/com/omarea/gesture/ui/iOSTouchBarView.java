@@ -3,6 +3,7 @@ package com.omarea.gesture.ui;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
@@ -92,17 +93,27 @@ public class iOSTouchBarView extends View {
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if (strokeWidth > 0) {
-            p.setStyle(Paint.Style.STROKE);
-            p.setColor(strokeColor);
-            canvas.drawRoundRect(margin, margin, getWidth() - margin, margin + lineWeight, 20, 20, p);
-        }
-
         if (GlobalState.iosBarColor != -1) {
+            if (strokeWidth > 0) {
+                p.setStyle(Paint.Style.STROKE);
+                if (GlobalState.iosBarColor == Color.WHITE) {
+                    p.setColor(Color.BLACK);
+                } else {
+                    p.setColor(Color.WHITE);
+                }
+                canvas.drawRoundRect(margin, margin, getWidth() - margin, margin + lineWeight, 20, 20, p);
+            }
+
             p.setStyle(Paint.Style.FILL);
             p.setColor(GlobalState.iosBarColor);
             canvas.drawRoundRect(margin, margin, getWidth() - margin, margin + lineWeight, 20, 20, p);
         } else {
+            if (strokeWidth > 0) {
+                p.setStyle(Paint.Style.STROKE);
+                p.setColor(strokeColor);
+                canvas.drawRoundRect(margin, margin, getWidth() - margin, margin + lineWeight, 20, 20, p);
+            }
+
             p.setStyle(Paint.Style.FILL);
             p.setColor(lineColor);
             canvas.drawRoundRect(margin, margin, getWidth() - margin, margin + lineWeight, 20, 20, p);

@@ -15,15 +15,34 @@ public class ScreenColor {
     private static Process exec;
     private static Thread thread;
     private static final Object threadRun = "";
+    private static long updateTime = 0;
 
     public static void updateBarColor() {
+        // 如果距离上次执行已经超过6秒，认位颜色获取进程已经崩溃，将其结束重启
+        if (updateTime > -1 && System.currentTimeMillis() - updateTime > 6000) {
+            try {
+                if (exec != null) {
+                    exec.destroy();
+                    exec = null;
+                }
+            } catch (Exception ignored) {}
+            try {
+                if (thread != null) {
+                    thread.interrupt();
+                    thread = null;
+                }
+            } catch (Exception ignored) {}
+        }
+
         if (thread == null) {
             thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    boolean hasNext = false;
                     do {
                         try {
-                            Thread.sleep(50);
+                            Thread.sleep(100);
+                            updateTime = System.currentTimeMillis();
                             long start = System.currentTimeMillis();
                             if (new ScreenColor().screenIsLightColor()) {
                                 Log.d(">>>>", "变黑色");
@@ -36,11 +55,18 @@ public class ScreenColor {
                                 GlobalState.updateBar.run();
                             }
                             Log.d(">>>>", "time " + (System.currentTimeMillis() - start));
-                        } catch (Exception ex) {
+                            updateTime = -1;
+                        } catch (Exception ignored) {
                         }
                         try {
                             synchronized (threadRun) {
-                                threadRun.wait();
+                                if (hasNext) {
+                                    thread.wait(1500);
+                                    hasNext = false;
+                                } else {
+                                    threadRun.wait();
+                                    hasNext = true;
+                                }
                             }
                         } catch (Exception ex) {
                             thread = null;
@@ -59,11 +85,13 @@ public class ScreenColor {
 
     public boolean screenIsLightColor() {
         int pixel = getScreenBottomColor();
-        int redValue = Color.red(pixel);
-        int blueValue = Color.blue(pixel);
-        int greenValue = Color.green(pixel);
+        int r = Color.red(pixel);
+        int g = Color.green(pixel);
+        int b = Color.blue(pixel);
 
-        return (redValue > 180 && blueValue > 180 && greenValue > 180);
+        Log.d(">>>>", "rgb(" + r + "," + g + "," + b + ")");
+
+        return (r > 180 && g > 180 && b > 180);
     }
 
     private boolean isWhiteTopColor(byte[] rawImage) {
@@ -101,7 +129,7 @@ public class ScreenColor {
 
             int r = 0, g = 0, b = 0, a = 0;
             // int index = 12; // 1080 * (2340 - 15) + 540;
-            int index = bytes.length - (540 * 4) - 5;// 后面5byte 不知道是什么，总之也不是像素信息
+            int index = bytes.length - 8;// 后面4byte 不知道是什么，总之也不是像素信息
             r = bytes[index];
             g = bytes[index + 1];
             b = bytes[index + 2];
@@ -116,12 +144,10 @@ public class ScreenColor {
                 b = 255;
             }
             Log.d(">>>>", "raw:" + bytes.length);
-            Log.d(">>>>", "rgba(" + r + "," + g + "," + b + "," + a + ")");
+            Log.d(">>>>", "raw rgba(" + r + "," + g + "," + b + "," + a + ")");
             return Color.argb(a, r, g, b);
         }
     }
-
-    private static final byte[] endTag = "echo '----end tag----'\n".getBytes();
 
     /***
      *
@@ -129,10 +155,10 @@ public class ScreenColor {
      * @return
      */
     private byte[] getScreenCapBytes(boolean usePng) {
-        int cacheSize = 4096 * 100;
+        int cacheSize = 1024 * 1024 * 4; // 4M
         byte[] tempBuffer = new byte[cacheSize];
-        StringBuilder buffer = new StringBuilder();
-        ByteBuffer byteBuffer = ByteBuffer.allocate(2160 * 3840 * 4); // 默认缓冲区大小为4K 32bit 的大小
+        int size = GlobalState.displayHeight * GlobalState.displayWidth * 4 + (12 + 4); // 截图大小为 分辨率 * 32bit(4Byte) + 头尾(16Byte)
+        ByteBuffer byteBuffer = ByteBuffer.allocate(size);
         //LogUtils.i("获取屏幕图片bytes");
 
         try {
@@ -142,39 +168,43 @@ public class ScreenColor {
 
             OutputStream outputStream = exec.getOutputStream();
             if (usePng) {
-                outputStream.write("screencap -p\n".getBytes());
+                outputStream.write("screencap -p 2> /dev/null\n".getBytes());
             } else {
-                outputStream.write("screencap\n".getBytes());
+                outputStream.write("screencap 2> /dev/null\n".getBytes());
             }
-            outputStream.write(endTag);
             outputStream.flush();
             try {
                 final InputStream inputStream = exec.getInputStream();
                 BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-                //清空缓存内容
-                buffer.setLength(0);
                 int count;
+                int totalCount = 0;
                 while ((count = bufferedInputStream.read(tempBuffer)) > 0) {
-                    if (count == 16) {
-                        // "----end tag----\n" = 16byte
-                        Log.d(">>>> read end tag", "count " + count);
-                        break;
+                    totalCount += count;
+                    if (count > byteBuffer.remaining()) {
+                        exec.destroy();
+                        byteBuffer.put(tempBuffer, 0, byteBuffer.remaining());
                     } else {
-                        Log.d(">>>> read", "count " + count);
                         byteBuffer.put(tempBuffer, 0, count);
                     }
+                    if (totalCount == size) {
+                        break;
+                    }
                 }
+                Log.d(">>>>", "frame end");
             } catch (final IOException e) {
+                Log.d(">>>>", "frame IOException");
                 exec.destroy();
                 exec = null;
             }
         } catch (IOException e) {
+            Log.d(">>>>", "frame IOException");
             exec.destroy();
             exec = null;
         }
         byteBuffer.flip();
         byte[] out = new byte[byteBuffer.limit()];
         byteBuffer.get(out, 0, out.length);
+        // byteBuffer.reset();
         return out;
     }
 }

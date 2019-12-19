@@ -47,6 +47,7 @@
     <string name="root_get_recents">ROOT增强</string>
     <string name="root_get_recents_desc">使用ROOT权限检查后台状态，避免使用上一个/下一个应用操作时，打开已经关闭的应用（会降低响应速度）</string>
     <string name="no_root">未能获得ROOT权限</string>
+    <string name="need_root_mode">请先开启“ROOT增强”选项！</string>
     <string name="simple_gesture">简易手势</string>
     <string name="white_bar_gesture">小白条手势</string>
     <string name="three_section_gesture">底边三段式</string>

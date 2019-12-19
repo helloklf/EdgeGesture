@@ -339,6 +339,24 @@
                         style="@style/switch_desc"
                         android:text="手机屏幕锁定时，隐藏小白条" />
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <Switch
+                        android:id="@+id/ios_bar_auto_color_root"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="自动取色(ROOT)"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        style="@style/switch_desc"
+                        android:text="根据屏幕右下角颜色，自动调整小白条外观" />
+                </LinearLayout>
             </LinearLayout>
         </android.support.v7.widget.CardView>
     </LinearLayout>

@@ -184,7 +184,7 @@ public class Handlers {
                     if (config == null) {
                         config = accessibilityService.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
                     }
-                    if (config.getBoolean(SpfConfig.ROOT_GET_RECENTS, SpfConfig.ROOT_GET_RECENTS_DEFAULT)) {
+                    if (config.getBoolean(SpfConfig.ROOT, SpfConfig.ROOT_DEFAULT)) {
                         // 单个app：dumpsys activity com.android.browser | grep ACTIVITY | cut -F3 | cut -f1 -d '/'
                         // recent： dumpsys activity r | grep TaskRecord | grep A= | cut -F7 | cut -f2 -d '='
                         // top Activity（慢）： dumpsys activity top | grep ACTIVITY | cut -F3 | cut -f1 -d '/'

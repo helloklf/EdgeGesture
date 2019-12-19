@@ -15,6 +15,7 @@ public class Recents {
     };
     // 忽略的应用
     public ArrayList<String> ignoreApps = null;
+    public ArrayList<String> inputMethods = null;
     private int index = -1;
     private String currentTop = "";
 

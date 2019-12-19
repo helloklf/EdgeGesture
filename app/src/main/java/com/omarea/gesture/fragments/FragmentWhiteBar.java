@@ -6,6 +6,9 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Checkable;
+import android.widget.Switch;
+import android.widget.Toast;
 
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
@@ -44,6 +47,27 @@ public class FragmentWhiteBar extends FragmentSettingsBase {
         bindSeekBar(R.id.ios_bar_height, SpfConfig.IOS_BAR_HEIGHT, SpfConfig.IOS_BAR_HEIGHT_DEFAULT, true);
         bindCheckable(R.id.ios_bar_lock_hide, SpfConfig.IOS_BAR_LOCK_HIDE, SpfConfig.IOS_BAR_LOCK_HIDE_DEFAULT);
         setViewBackground(getActivity().findViewById(R.id.ios_bar_color_fadeout), 0xff888888);
+
+        Switch ios_bar_auto_color_root = getActivity().findViewById(R.id.ios_bar_auto_color_root);
+        ios_bar_auto_color_root.setChecked(config.getBoolean(SpfConfig.IOS_BAR_AUTO_COLOR_ROOT, SpfConfig.IOS_BAR_AUTO_COLOR_ROOT_DEFAULT));
+        ios_bar_auto_color_root.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Checkable ele = (Checkable) v;
+                if (ele.isChecked()) {
+                    if (config.getBoolean(SpfConfig.ROOT, SpfConfig.ROOT_DEFAULT)) {
+                        config.edit().putBoolean(SpfConfig.IOS_BAR_AUTO_COLOR_ROOT, true).apply();
+                        restartService();
+                    } else {
+                        ele.setChecked(false);
+                        Toast.makeText(getActivity().getApplicationContext(), getString(R.string.need_root_mode), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    config.edit().putBoolean(SpfConfig.IOS_BAR_AUTO_COLOR_ROOT, false).apply();
+                    restartService();
+                }
+            }
+        });
 
         updateView();
     }

@@ -67,21 +67,21 @@ public class FragmentOther extends FragmentSettingsBase {
 
         // 使用ROOT获取最近任务
         Switch root_get_recents = activity.findViewById(R.id.root_get_recents);
-        root_get_recents.setChecked(config.getBoolean(SpfConfig.ROOT_GET_RECENTS, SpfConfig.ROOT_GET_RECENTS_DEFAULT));
+        root_get_recents.setChecked(config.getBoolean(SpfConfig.ROOT, SpfConfig.ROOT_DEFAULT));
         root_get_recents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Checkable ele = (Checkable) v;
                 if (ele.isChecked()) {
                     if (KeepShellPublic.checkRoot()) {
-                        config.edit().putBoolean(SpfConfig.ROOT_GET_RECENTS, true).apply();
+                        config.edit().putBoolean(SpfConfig.ROOT, true).apply();
                         restartService();
                     } else {
                         ele.setChecked(false);
                         Toast.makeText(activity.getApplicationContext(), getString(R.string.no_root), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    config.edit().putBoolean(SpfConfig.ROOT_GET_RECENTS, false).apply();
+                    config.edit().putBoolean(SpfConfig.ROOT, false).putBoolean(SpfConfig.IOS_BAR_AUTO_COLOR_ROOT, false).apply();
                     restartService();
                 }
             }

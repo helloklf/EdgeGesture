@@ -88,7 +88,7 @@ public class SpfConfig {
     public static final String IOS_BAR_COLOR_SHADOW = "ios_bar_color_shadow";
     public static final int IOS_BAR_COLOR_SHADOW_DEFAULT = 0x88000000; // 默认阴影颜色
     public static final String IOS_BAR_SHADOW_SIZE = "ios_bar_shadow_size2";
-    public static final int IOS_BAR_SHADOW_SIZE_DEFAULT = 1; // ?dp
+    public static final int IOS_BAR_SHADOW_SIZE_DEFAULT = 0; // ?dp
     public static final String IOS_BAR_COLOR_STROKE = "ios_bar_color_stroke";
     public static final int IOS_BAR_COLOR_STROKE_DEFAULT = 0x88000000; // 默认阴影颜色
     public static final String IOS_BAR_STROKE_SIZE = "ios_bar_stroke_size";
@@ -99,12 +99,13 @@ public class SpfConfig {
     public static final int IOS_BAR_HEIGHT_DEFAULT = 3; // ?dp
     public static final String IOS_BAR_LOCK_HIDE = "ios_bar_lock_hide";
     public static final Boolean IOS_BAR_LOCK_HIDE_DEFAULT = false;
+    public static final String IOS_BAR_AUTO_COLOR_ROOT = "ios_bar_auto_color_root";
+    public static final Boolean IOS_BAR_AUTO_COLOR_ROOT_DEFAULT = false;
 
-    // 游戏防误触
-    public static final String GAME_OPTIMIZATION = "GAME_OPTIMIZATION";
+    public static final String GAME_OPTIMIZATION = "GAME_OPTIMIZATION"; // 游戏防误触
     public static final Boolean GAME_OPTIMIZATION_DEFAULT = true;
-    public static final String ROOT_GET_RECENTS = "ROOT_GET_RECENTS =";
-    public static final Boolean ROOT_GET_RECENTS_DEFAULT = false;
+    public static final String ROOT = "root"; // ROOT增强
+    public static final Boolean ROOT_DEFAULT = false;
     public static final String THREE_SECTION_WIDTH = "THREE_SECTION_WIDTH";
     public static final int THREE_SECTION_WIDTH_DEFAULT = 100;
     public static final String THREE_SECTION_HEIGHT = "THREE_SECTION_HEIGHT";
