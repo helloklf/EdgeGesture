@@ -57,15 +57,7 @@ public class ReceiverLock extends BroadcastReceiver {
         String action = p1.getAction();
         if (action != null) {
             if (action.equals(Intent.ACTION_SCREEN_OFF)) {
-                try {
-                    callbacks.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            callbacks.sendMessage(callbacks.obtainMessage(EVENT_SCREEN_OFF));
-                        }
-                    }, 500);
-                } catch (Exception ignored) {
-                }
+                callbacks.sendMessage(callbacks.obtainMessage(EVENT_SCREEN_OFF));
                 // } else if (action.equals(Intent.ACTION_USER_PRESENT) || action.equals(Intent.ACTION_USER_UNLOCKED) || action.equals(Intent.ACTION_SCREEN_ON)) {
             } else if (action.equals(Intent.ACTION_USER_PRESENT) || action.equals(Intent.ACTION_USER_UNLOCKED)) {
                 try {
@@ -76,7 +68,7 @@ public class ReceiverLock extends BroadcastReceiver {
                                 callbacks.sendMessage(callbacks.obtainMessage(EVENT_SCREEN_ON));
                             }
                         }
-                    }, 500);
+                    }, 1000);
                 } catch (Exception ignored) {
                 }
             } else if (action.equals(Intent.ACTION_SCREEN_ON)) {

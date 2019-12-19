@@ -5,6 +5,7 @@ import android.app.KeyguardManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -196,7 +197,6 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
                     }
                 }
             }
-
         }
     }
 
