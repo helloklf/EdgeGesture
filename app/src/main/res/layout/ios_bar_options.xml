@@ -440,7 +440,7 @@
 
                     <TextView
                         style="@style/switch_desc"
-                        android:text="积极响应界面变化，调整小白条颜色（更耗电）" />
+                        android:text="只要界面内容变化，立即刷新小白条颜色（非常耗电）" />
                 </LinearLayout>
             </LinearLayout>
         </android.support.v7.widget.CardView>

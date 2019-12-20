@@ -172,27 +172,27 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
                 recents.ignoreApps.addAll(recents.inputMethods);
             }
 
-            if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED) {
-                Log.d(">>>>", "onAccessibilityEvent CC");
-            }
-
+            boolean isWCC = event.getEventType() == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED;
             CharSequence packageName = event.getPackageName();
             if (!(packageName == null || packageName.equals(getPackageName()))) {
                 String packageNameStr = packageName.toString();
 
-                Log.d(">>>>", "" + packageName + " GlobalState.updateBar  " + GlobalState.updateBar);
-                if (GlobalState.updateBar != null && !(recents.inputMethods.indexOf(packageNameStr) > -1 && recents.inputMethods.indexOf(lastApp) > -1)) {
+                if (GlobalState.updateBar != null &&
+                        !((packageNameStr.equals("com.android.systemui") || (recents.inputMethods.indexOf(packageNameStr) > -1 && recents.inputMethods.indexOf(lastApp) > -1)))) {
                     if (!packageName.equals("android")) {
-                        ScreenColor.updateBarColor(true);
+                        ScreenColor.updateBarColor(!isWCC);
                     }
+                    Log.d(">>>>", "" + packageName + " CC");
+
+                    return;
                 }
 
-                if (!(packageNameStr.equals(lastApp) || ignored(packageNameStr))) {
-                    lastApp = packageNameStr;
-                    if (canOpen(packageNameStr)) {
+                if (!isWCC) {
+                    if (!ignored(packageNameStr) && canOpen(packageNameStr)) {
                         recents.addRecent(packageNameStr);
                     }
                 }
+                lastApp = packageNameStr;
             }
         }
     }
@@ -310,6 +310,7 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
                 GlobalState.displayHeight = point.y;
                 createPopupView();
                 forceHideNavBar();
+                ScreenColor.stopProcess();
             }
         }
     }
