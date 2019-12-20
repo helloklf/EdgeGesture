@@ -163,6 +163,7 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
         return inputMethods;
     }
 
+    // TODO:判断是否进入全屏状态，以便在游戏和视频过程中降低功耗
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         if (event != null) {

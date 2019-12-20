@@ -33,7 +33,7 @@
 
         <activity
             android:name=".AppSwitchActivity"
-            android:excludeFromRecents="true"
+            android:excludeFromRecents="false"
             android:launchMode="standard"
             android:screenOrientation="behind"
             android:theme="@style/appSwitch">
@@ -45,7 +45,7 @@
         <activity
             android:name=".StartActivity"
             android:enabled="true"
-            android:excludeFromRecents="true"
+            android:excludeFromRecents="false"
             android:launchMode="singleTask"
             android:screenOrientation="sensor">
             <intent-filter>
