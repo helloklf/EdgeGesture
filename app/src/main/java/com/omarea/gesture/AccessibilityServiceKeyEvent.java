@@ -307,11 +307,15 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
             Point point = new Point();
             wm.getDefaultDisplay().getRealSize(point);
             if (point.x != GlobalState.displayWidth || point.y != GlobalState.displayHeight) {
+                // 分辨率改变时 屏幕取色重启进程
+                if (GlobalState.displayWidth * GlobalState.displayHeight != point.x * point.y) {
+                    ScreenColor.stopProcess();
+                }
+
                 GlobalState.displayWidth = point.x;
                 GlobalState.displayHeight = point.y;
                 createPopupView();
                 forceHideNavBar();
-                ScreenColor.stopProcess();
             }
         }
     }
