@@ -185,13 +185,13 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
                     }
                     Log.d(">>>>", "" + packageName + " CC");
 
-                    return;
+                    if (isWCC) {
+                        return;
+                    }
                 }
 
-                if (!isWCC) {
-                    if (!ignored(packageNameStr) && canOpen(packageNameStr)) {
-                        recents.addRecent(packageNameStr);
-                    }
+                if (!ignored(packageNameStr) && canOpen(packageNameStr)) {
+                    recents.addRecent(packageNameStr);
                 }
                 lastApp = packageNameStr;
             }
@@ -326,7 +326,11 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
         AccessibilityServiceInfo accessibilityServiceInfo = getServiceInfo();
         boolean barEnabled = isLandscapf ? config.getBoolean(SpfConfig.LANDSCAPE_IOS_BAR, SpfConfig.LANDSCAPE_IOS_BAR_DEFAULT) : config.getBoolean(SpfConfig.PORTRAIT_IOS_BAR, SpfConfig.PORTRAIT_IOS_BAR_DEFAULT);
         // 是否激进模式
-        if (barEnabled && config.getBoolean(SpfConfig.IOS_BAR_COLOR_FAST, SpfConfig.IOS_BAR_COLOR_FAST_DEFAULT)) {
+        if (barEnabled &&
+                config.getBoolean(SpfConfig.ROOT, SpfConfig.ROOT_DEFAULT) &&
+                config.getBoolean(SpfConfig.IOS_BAR_AUTO_COLOR_ROOT, SpfConfig.IOS_BAR_AUTO_COLOR_ROOT_DEFAULT) &&
+                config.getBoolean(SpfConfig.IOS_BAR_COLOR_FAST, SpfConfig.IOS_BAR_COLOR_FAST_DEFAULT)
+        ) {
             accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED | AccessibilityEvent.TYPE_WINDOWS_CHANGED | AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED;
         } else {
             accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED | AccessibilityEvent.TYPE_WINDOWS_CHANGED;

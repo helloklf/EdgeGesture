@@ -81,7 +81,7 @@ public class FragmentOther extends FragmentSettingsBase {
                         Toast.makeText(activity.getApplicationContext(), getString(R.string.no_root), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    config.edit().putBoolean(SpfConfig.ROOT, false).putBoolean(SpfConfig.IOS_BAR_AUTO_COLOR_ROOT, false).apply();
+                    config.edit().putBoolean(SpfConfig.ROOT, false).putBoolean(SpfConfig.IOS_BAR_AUTO_COLOR_ROOT, false).putBoolean(SpfConfig.IOS_BAR_COLOR_FAST, false).apply();
                     restartService();
                 }
             }

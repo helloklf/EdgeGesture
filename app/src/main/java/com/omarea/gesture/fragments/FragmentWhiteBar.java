@@ -53,6 +53,10 @@ public class FragmentWhiteBar extends FragmentSettingsBase {
 
         Switch ios_bar_auto_color_root = getActivity().findViewById(R.id.ios_bar_auto_color_root);
         ios_bar_auto_color_root.setChecked(config.getBoolean(SpfConfig.IOS_BAR_AUTO_COLOR_ROOT, SpfConfig.IOS_BAR_AUTO_COLOR_ROOT_DEFAULT));
+        if (!ios_bar_auto_color_root.isChecked()) {
+            Switch checkable = getActivity().findViewById(R.id.ios_bar_auto_color_fast);
+            checkable.setEnabled(false);
+        }
         ios_bar_auto_color_root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,7 +64,7 @@ public class FragmentWhiteBar extends FragmentSettingsBase {
                 if (ele.isChecked()) {
                     if (config.getBoolean(SpfConfig.ROOT, SpfConfig.ROOT_DEFAULT)) {
                         config.edit().putBoolean(SpfConfig.IOS_BAR_AUTO_COLOR_ROOT, true).apply();
-                        getActivity().findViewById(R.id.ios_bar_auto_color_fast).setVisibility(View.VISIBLE);
+                        getActivity().findViewById(R.id.ios_bar_auto_color_fast).setEnabled(true);
                         restartService();
                     } else {
                         ele.setChecked(false);
@@ -69,7 +73,7 @@ public class FragmentWhiteBar extends FragmentSettingsBase {
                 } else {
                     config.edit().putBoolean(SpfConfig.IOS_BAR_AUTO_COLOR_ROOT, false).putBoolean(SpfConfig.IOS_BAR_COLOR_FAST, false).apply();
                     Switch checkable = getActivity().findViewById(R.id.ios_bar_auto_color_fast);
-                    checkable.setVisibility(View.GONE);
+                    checkable.setEnabled(false);
                     checkable.setChecked(false);
                     restartService();
                 }
