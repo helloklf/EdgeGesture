@@ -13,11 +13,19 @@ public class Recents {
     // 已经可以肯定不是可以打开的应用
     public ArrayList<String> blackList = new ArrayList<String>() {
     };
+
     // 忽略的应用
     public ArrayList<String> ignoreApps = null;
     public ArrayList<String> inputMethods = null;
     private int index = -1;
     private String currentTop = "";
+
+    public void clear() {
+        synchronized (recents) {
+            recents.clear();
+            currentTop = "";
+        }
+    }
 
     public boolean addRecent(String packageName) {
         if (currentTop.equals(packageName)) {

@@ -11,7 +11,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 
-public class ScreenColor {
+public class ScreenColor2 {
     private static final Object threadRun = "";
     private static final Object screencapRead = "";
     private static ScreenCapThread thread;
@@ -42,6 +42,7 @@ public class ScreenColor {
                     Thread.sleep(100);
                     updateTime = System.currentTimeMillis();
                     long start = System.currentTimeMillis();
+                    updateTime = -1;
                     writeCommand();
                     try {
                         synchronized (screencapRead) {
@@ -50,7 +51,6 @@ public class ScreenColor {
                         }
                     } catch (Exception ignored) {
                     }
-                    updateTime = -1;
                     Log.d(">>>>", "time " + (System.currentTimeMillis() - start));
                 } catch (Exception ignored) {
                 }
@@ -97,7 +97,7 @@ public class ScreenColor {
         if (updateTime > -1 && System.currentTimeMillis() - updateTime > 6000) {
             stopProcess();
         }
-        ScreenColor.hasNext = true;
+        ScreenColor2.hasNext = true;
 
         if (thread != null && !thread.isAlive()) {
             Log.e(">>>> ", " 获取线程状态有点奇怪");
@@ -132,78 +132,6 @@ public class ScreenColor {
     static class ReadThread extends Thread {
         private BufferedInputStream bufferedInputStream;
 
-        // 像素采集
-        private static class PixelGather {
-            private int frameSize;
-            private int position;
-            private static final int fileHeader = 12; // 文件头部长度
-            private static final int fileFooter = 4; // 文件脚部长度
-            private ByteBuffer buffer; // 真实的缓冲区
-            // 除了头部和脚部，则没4Byte(RGBA)代表一个像素，例如左上角第一个像素就是 bytes[16] ~ bytes[19]
-
-            // 用于取样的像素在帧数据中的位置
-            // 采样的像素点数量建议设为 单数，因为最终会对比 暗色/亮色 点的数量
-            private int[] samplingPixel = {
-                    fileHeader + (GlobalState.displayWidth / 4 * 4), // y: 0, x: 0.25
-                    fileHeader + (GlobalState.displayWidth / 4 * 3 * 4), // y: 0, x: 0.75
-                    fileHeader + (((GlobalState.displayWidth * GlobalState.displayHeight) - (GlobalState.displayWidth / 4)) * 4), // y: 1, x : 0.25
-                    fileHeader + (((GlobalState.displayWidth * GlobalState.displayHeight) - (GlobalState.displayWidth / 2)) * 4), // y: 1, x : 0.5
-                    fileHeader + (((GlobalState.displayWidth * GlobalState.displayHeight) - (GlobalState.displayWidth / 4 * 3)) * 4) // y: 1, x : 0.75
-            };
-
-            private PixelGather(int frameSize) {
-                this.frameSize = frameSize;
-                // 32位的像素，每个占用 4 字节
-                this.buffer = ByteBuffer.allocate(samplingPixel.length * 4);
-            }
-
-            static PixelGather frameBuffer(int height, int width) {
-                return new PixelGather(fileHeader + (height * width * 4) + fileFooter);
-            }
-
-            void put(byte[] bytes, int offset, int count) {
-                if (position + count > frameSize) {
-                    throw new IndexOutOfBoundsException("数据写入量超出缓冲区可用空间");
-                }
-                if (count != 0) {
-                    int rangeLeft = position;
-                    int rangeRight = position + count;
-
-                    for (int pixel : samplingPixel) {
-                        sampling(bytes, offset, count, pixel);
-                    }
-                }
-                position += count;
-            }
-
-            void sampling(byte[] bytes, int offset, int count, int pixel) {
-                int rangeLeft = position;
-                int rangeRight = position + count;
-
-                // 判断像素是否在区域内
-                if (pixel + 3 >= rangeLeft && pixel + 3 <= rangeRight) {
-                    // Log.d("AAAAA", "position " + position + "  rangeLeft " + rangeLeft + " rangeRight" + rangeRight);
-                    int targetIndex = position > pixel ? position : pixel;
-                    for (; targetIndex <= pixel + 3; targetIndex++) {
-                        buffer.put(bytes[targetIndex - position + offset]);
-                    }
-                }
-            }
-
-            int remaining() {
-                return this.frameSize - position;
-            }
-
-            void clear() {
-                position = 0;
-                buffer.clear();
-            }
-
-            byte[] array() {
-                return buffer.array();
-            }
-        }
-
         ReadThread(InputStream inputStream) {
             bufferedInputStream = new BufferedInputStream(inputStream);
         }
@@ -214,21 +142,22 @@ public class ScreenColor {
                 return;
             }
 
-            int lightPixelCount = 0;
-            int darkPixelCount = 0;
-            for (int i = 0; i < bytes.length; i += 4) {
-                if (pixelIsLightColor(bytes, i)) {
-                    lightPixelCount++;
-                } else {
-                    darkPixelCount++;
-                }
+            boolean isLightColor = false;
+            // 如果状态栏都是白色的，那这个界面肯定是白色啦
+            // 前面12位不属于像素信息，跳过12位，并以屏幕分辨率位1080p取顶部中间那个像素的颜色（32位色，每个像素4byte）
+            // TODO:状态栏取色，考虑是否要继续使用
+            // if (pixelIsLightColor(bytes, 12 + ((GlobalState.displayWidth / 2) * 4))) {
+            //     isLightColor = true;
+            // }
+            if (!isLightColor) {
+                isLightColor = pixelIsLightColor(bytes, bytes.length - 8); // 后面4byte 不知道是什么，总之也不是像素信息
             }
 
-            if (lightPixelCount > darkPixelCount) {
-                Log.d(">>>>", "变黑色 " + "light:dark = " + lightPixelCount + ":" + darkPixelCount);
+            if (isLightColor) {
+                Log.d(">>>>", "变黑色");
                 GlobalState.iosBarColor = Color.BLACK;
             } else {
-                Log.d(">>>>", "变白色 " + "light:dark = " + lightPixelCount + ":" + darkPixelCount);
+                Log.d(">>>>", "变白色");
                 GlobalState.iosBarColor = Color.WHITE;
             }
 
@@ -247,7 +176,7 @@ public class ScreenColor {
         }
 
         private boolean pixelIsLightColor(byte[] rawImage, int index) {
-            if (index > -1 && (index + 3) <= rawImage.length) {
+            if (index > -1 && (index + 3) < rawImage.length) {
                 int r = 0, g = 0, b = 0, a = 0;
                 r = rawImage[index];
                 g = rawImage[index + 1];
@@ -264,15 +193,15 @@ public class ScreenColor {
                 }
                 return (r > 180 && b > 180 && g > 180);
             }
-            // Log.d(">>>>", "pixel overflow, index:" + index + "  array:" + rawImage.length);
             return false;
         }
 
         @Override
         public void run() {
-            int cacheSize = 1024 * 1024; // 1M
+            int cacheSize = 1024 * 1024 * 4; // 4M
             byte[] tempBuffer = new byte[cacheSize];
-            PixelGather byteBuffer = PixelGather.frameBuffer(GlobalState.displayHeight, GlobalState.displayWidth);
+            int size = GlobalState.displayHeight * GlobalState.displayWidth * 4 + (12 + 4); // 截图大小为 分辨率 * 32bit(4Byte) + 头尾(16Byte)
+            ByteBuffer byteBuffer = ByteBuffer.allocate(size);
 
             try {
                 int count;

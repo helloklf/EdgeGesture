@@ -16,6 +16,7 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.omarea.gesture.DialogAppSwitchExclusive;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.StartActivity;
@@ -84,6 +85,14 @@ public class FragmentOther extends FragmentSettingsBase {
                     config.edit().putBoolean(SpfConfig.ROOT, false).putBoolean(SpfConfig.IOS_BAR_AUTO_COLOR_ROOT, false).putBoolean(SpfConfig.IOS_BAR_COLOR_FAST, false).apply();
                     restartService();
                 }
+            }
+        });
+
+        // 跳过切换
+        getActivity().findViewById(R.id.app_switch_exclusive).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DialogAppSwitchExclusive().openDialog(getActivity());
             }
         });
 

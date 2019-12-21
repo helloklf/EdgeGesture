@@ -13,7 +13,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 
-public class ScreenColorOld {
+public class ScreenColor1 {
     private static final Object threadRun = "";
     private static Process exec;
     private static Thread thread;
@@ -38,7 +38,7 @@ public class ScreenColorOld {
             } catch (Exception ignored) {
             }
         }
-        ScreenColorOld.hasNext = hasNext;
+        ScreenColor1.hasNext = hasNext;
 
         if (thread == null) {
             thread = new Thread(new Runnable() {
@@ -48,7 +48,7 @@ public class ScreenColorOld {
                         try {
                             updateTime = System.currentTimeMillis();
                             long start = System.currentTimeMillis();
-                            if (new ScreenColorOld().screenIsLightColor()) {
+                            if (new ScreenColor1().screenIsLightColor()) {
                                 Log.d(">>>>", "变黑色");
                                 GlobalState.iosBarColor = Color.BLACK;
                             } else {
@@ -64,9 +64,9 @@ public class ScreenColorOld {
                         }
                         try {
                             synchronized (threadRun) {
-                                if (ScreenColorOld.hasNext) {
+                                if (ScreenColor1.hasNext) {
                                     thread.wait(1000);
-                                    ScreenColorOld.hasNext = false;
+                                    ScreenColor1.hasNext = false;
                                 } else {
                                     threadRun.wait();
                                 }

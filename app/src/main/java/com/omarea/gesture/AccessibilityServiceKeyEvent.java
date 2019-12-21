@@ -23,6 +23,7 @@ import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import com.omarea.gesture.shell.ScreenColor;
 import com.omarea.gesture.ui.FloatVirtualTouchBar;
@@ -44,6 +45,7 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
     private BroadcastReceiver serviceDisable = null;
     private BroadcastReceiver screenStateReceiver;
     private SharedPreferences config;
+    private SharedPreferences appSwitchBlackList;
     private ContentResolver cr = null;
     private String lastApp = "";
 
@@ -190,7 +192,7 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
                     }
                 }
 
-                if (!ignored(packageNameStr) && canOpen(packageNameStr)) {
+                if (!ignored(packageNameStr) && canOpen(packageNameStr) && !appSwitchBlackList.contains(packageNameStr)) {
                     recents.addRecent(packageNameStr);
                 }
                 lastApp = packageNameStr;
@@ -223,6 +225,9 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
         if (config == null) {
             config = getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
         }
+        if (appSwitchBlackList == null) {
+            appSwitchBlackList = getSharedPreferences(SpfConfig.AppSwitchBlackList, Context.MODE_PRIVATE);
+        }
 
         WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         Point point = new Point();
@@ -236,11 +241,19 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
             configChanged = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    createPopupView();
+                    if (intent != null && intent.getAction() != null && intent.getAction().equals(getString(R.string.app_switch_changed))) {
+                        if (recents != null) {
+                            recents.clear();
+                            Toast.makeText(getApplicationContext(), "OK！", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        createPopupView();
+                    }
                 }
             };
 
             registerReceiver(configChanged, new IntentFilter(getString(R.string.action_config_changed)));
+            registerReceiver(configChanged, new IntentFilter(getString(R.string.app_switch_changed)));
         }
         if (serviceDisable == null) {
             serviceDisable = new BroadcastReceiver() {
