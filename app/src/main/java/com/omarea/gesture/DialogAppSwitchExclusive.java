@@ -36,7 +36,7 @@ public class DialogAppSwitchExclusive {
                                 status[which] = isChecked;
                             }
                         })
-                .setPositiveButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         final SharedPreferences.Editor config = configFile.edit();

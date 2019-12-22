@@ -1,6 +1,7 @@
 package com.omarea.gesture.shell;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.util.Log;
 
 import com.omarea.gesture.util.GlobalState;
@@ -137,9 +138,9 @@ public class ScreenColor {
             private int frameSize;
             private int position;
             private static final int fileHeader = 12; // 文件头部长度
-            private static final int fileFooter = 4; // 文件脚部长度
+            private static final int fileFooter = (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) ? 4 : 0; // 文件脚部长度（Android 8.1 即SDK27 以前没有这4Byte！）
             private ByteBuffer buffer; // 真实的缓冲区
-            // 除了头部和脚部，则没4Byte(RGBA)代表一个像素，例如左上角第一个像素就是 bytes[16] ~ bytes[19]
+            // 除了头部和脚部，则每4Byte(RGBA)代表一个像素，例如左上角第一个像素就是 bytes[16] ~ bytes[19]
 
             // 用于取样的像素在帧数据中的位置
             // 采样的像素点数量建议设为 单数，因为最终会对比 暗色/亮色 点的数量

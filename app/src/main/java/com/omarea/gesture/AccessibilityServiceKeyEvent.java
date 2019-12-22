@@ -182,10 +182,10 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
 
                 if (GlobalState.updateBar != null &&
                         !((packageNameStr.equals("com.android.systemui") || (recents.inputMethods.indexOf(packageNameStr) > -1 && recents.inputMethods.indexOf(lastApp) > -1)))) {
-                    if (!packageName.equals("android")) {
+                    if (!(packageName.equals("android") || packageName.equals("com.omarea.vtools") || packageName.equals("com.omarea.filter"))) {
                         ScreenColor.updateBarColor(!isWCC);
+                        Log.d(">>>>", "" + packageName + " CC");
                     }
-                    Log.d(">>>>", "" + packageName + " CC");
 
                     if (isWCC) {
                         return;
