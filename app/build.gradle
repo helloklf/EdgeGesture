@@ -7,8 +7,8 @@ android {
         applicationId "com.omarea.gesture"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 61
-        versionName "1.3.7 preview"
+        versionCode 62
+        versionName "1.3.8 preview"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

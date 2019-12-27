@@ -20,7 +20,6 @@ import android.view.WindowManager;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
-
 import com.omarea.gesture.AccessibilityServiceKeyEvent;
 import com.omarea.gesture.ActionModel;
 import com.omarea.gesture.R;
@@ -37,6 +36,7 @@ public class iOSWhiteBar {
     private SharedPreferences config;
     private Boolean isLandscapf;
     private Vibrator vibrator;
+    private float pressure = 0;
 
     public iOSWhiteBar(AccessibilityServiceKeyEvent accessibilityService, Boolean isLandscapf) {
         this.accessibilityService = accessibilityService;
@@ -246,6 +246,7 @@ public class iOSWhiteBar {
                 gestureStartTime = 0;
                 isLongTimeGesture = false;
                 vibratorRun = true;
+                pressure = event.getPressure();
 
                 if (fareOutAnimation != null) {
                     fareOutAnimation.cancel();
@@ -266,6 +267,7 @@ public class iOSWhiteBar {
                 if (isGestureCompleted || !isTouchDown) {
                     return true;
                 }
+                pressure = event.getPressure();
 
                 touchRawX = event.getRawX();
                 touchRawY = event.getRawY();
@@ -325,6 +327,16 @@ public class iOSWhiteBar {
                     } else if (moveX > FLIP_DISTANCE) { // 向右滑动
                         performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_RIGHT, SpfConfig.IOS_BAR_SLIDE_RIGHT_DEFAULT));
                     }
+                } else {
+                    int pressureAction = config.getInt(SpfConfig.IOS_BAR_PRESS, SpfConfig.IOS_BAR_PRESS_DEFAULT);
+                    float pressureMin = config.getFloat(SpfConfig.IOS_BAR_PRESS_MIN, SpfConfig.IOS_BAR_PRESS_MIN_DEFAULT);
+                    if (pressureAction != SpfConfig.IOS_BAR_TOUCH_DEFAULT && pressureMin != SpfConfig.IOS_BAR_PRESS_MIN_DEFAULT && pressure >= pressureMin) {
+                        // 按压
+                        performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_PRESS, SpfConfig.IOS_BAR_PRESS_DEFAULT));
+                    } else {
+                        // 轻触
+                        performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_TOUCH, SpfConfig.IOS_BAR_TOUCH_DEFAULT));
+                    }
                 }
 
                 clearEffect();
@@ -333,6 +345,8 @@ public class iOSWhiteBar {
             }
 
             void clearEffect() {
+                pressure = 0;
+
                 animationTo(originX, originY, 800, new OvershootInterpolator());
                 // if (isLandscapf) {
                 fadeOut();
@@ -342,6 +356,8 @@ public class iOSWhiteBar {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event != null) {
+                    String text = "Pressure:" + event.getPressure() + "  size:" + event.getSize();
+                    Log.d("MTE", text);
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN: {
                             return onTouchDown(event);

@@ -59,7 +59,7 @@ public class ScreenColor {
                 try {
                     synchronized (threadRun) {
                         if (hasNext) {
-                            threadRun.wait(1000);
+                            threadRun.wait(600);
                             hasNext = false;
                         } else {
                             threadRun.wait();

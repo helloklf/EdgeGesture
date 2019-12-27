@@ -111,6 +111,36 @@
                         android:text="@string/edge_action" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:minWidth="80dp"
+                        android:text="轻触" />
+
+                    <Button
+                        android:id="@+id/ios_bar_touch"
+                        style="@style/btn_handler_picker"
+                        android:text="@string/edge_action" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:minWidth="80dp"
+                        android:text="按压" />
+
+                    <Button
+                        android:id="@+id/ios_bar_press"
+                        style="@style/btn_handler_picker"
+                        android:text="@string/edge_action" />
+                </LinearLayout>
+
             </LinearLayout>
         </android.support.v7.widget.CardView>
 

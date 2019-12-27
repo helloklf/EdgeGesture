@@ -74,6 +74,13 @@ public class SpfConfig {
     public static final int IOS_BAR_SLIDE_UP_DEFAULT = Handlers.GLOBAL_ACTION_HOME;
     public static final String IOS_BAR_SLIDE_UP_HOVER = "ios_bar_slide_up_hover";
     public static final int IOS_BAR_SLIDE_UP_HOVER_DEFAULT = Handlers.GLOBAL_ACTION_RECENTS;
+    public static final String IOS_BAR_TOUCH = "ios_bar_touch"; // 轻触
+    public static final int IOS_BAR_TOUCH_DEFAULT = Handlers.GLOBAL_ACTION_NONE;
+    public static final String IOS_BAR_PRESS = "ios_bar_press"; // 按压
+    public static final int IOS_BAR_PRESS_DEFAULT = Handlers.GLOBAL_ACTION_NONE;
+    public static final String IOS_BAR_PRESS_MIN = "ios_bar_press_min"; // 按压（最小力度）
+    public static final int IOS_BAR_PRESS_MIN_DEFAULT = -1;
+
     // iOS小白条样式
     public static final String IOS_BAR_WIDTH_LANDSCAPE = "ios_bar_width_landscape";
     public static final int IOS_BAR_WIDTH_DEFAULT_LANDSCAPE = 30; // 百分比
