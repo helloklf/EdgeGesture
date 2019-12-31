@@ -106,60 +106,6 @@ public class FragmentWhiteBar extends FragmentSettingsBase {
         updateActionText(R.id.ios_bar_slide_up_hover, SpfConfig.IOS_BAR_SLIDE_UP_HOVER, SpfConfig.IOS_BAR_SLIDE_UP_HOVER_DEFAULT);
         updateActionText(R.id.ios_bar_touch, SpfConfig.IOS_BAR_TOUCH, SpfConfig.IOS_BAR_TOUCH_DEFAULT);
         updateActionText(R.id.ios_bar_press, SpfConfig.IOS_BAR_PRESS, SpfConfig.IOS_BAR_PRESS_DEFAULT);
-
-        pressureConfig();
-    }
-
-    // 压感配置
-    private void pressureConfig() {
-        boolean pressureAllowed = config.getInt(SpfConfig.IOS_BAR_PRESS, SpfConfig.IOS_BAR_PRESS_DEFAULT) != SpfConfig.IOS_BAR_PRESS_DEFAULT;
-        float pressureMin = config.getFloat(SpfConfig.IOS_BAR_PRESS_MIN, SpfConfig.IOS_BAR_PRESS_MIN_DEFAULT);
-
-        // 如果启用了压感动作，并且还没有配置压感力度
-        if (pressureAllowed && pressureMin == SpfConfig.IOS_BAR_PRESS_MIN_DEFAULT) {
-            View layout = LayoutInflater.from(getActivity()).inflate(R.layout.layout_pressure_config, null);
-            View icon = layout.findViewById(R.id.fingerprint_icon);
-            final TextView pressureValue = layout.findViewById(R.id.pressure_value);
-            final float[] pressure = {SpfConfig.IOS_BAR_PRESS_MIN_DEFAULT};
-            final float[] size = {SpfConfig.IOS_BAR_PRESS_MIN_DEFAULT};
-            icon.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    pressure[0] = event.getPressure();
-                    size[0] = event.getSize();
-                    pressureValue.setText("Pressure: " + pressure[0] + "\n" + "Size: " + size[0]);
-                    return false;
-                }
-            });
-            new AlertDialog.Builder(getActivity())
-                    .setTitle(getString(R.string.pressure_config))
-                    .setView(layout)
-                    .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if (pressure[0] == SpfConfig.IOS_BAR_PRESS_MIN_DEFAULT) {
-                                // 不设置压感，那就给你关掉压感动作
-                                config.edit().remove(SpfConfig.IOS_BAR_PRESS).apply();
-                                updateView();
-                                Toast.makeText(getActivity(), getString(R.string.pressure_invalid), Toast.LENGTH_SHORT).show();
-                            } else {
-                                config.edit().putFloat(SpfConfig.IOS_BAR_PRESS_MIN, pressure[0]).apply();
-                            }
-                        }
-                    })
-                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // 不设置压感，那就给你关掉压感动作
-                            config.edit().remove(SpfConfig.IOS_BAR_PRESS).apply();
-                            updateView();
-                        }
-                    })
-                    .setCancelable(false)
-                    .create()
-                    .show();
-
-        }
     }
 
     @Override

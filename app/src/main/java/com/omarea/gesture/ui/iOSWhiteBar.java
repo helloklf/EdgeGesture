@@ -20,6 +20,7 @@ import android.view.WindowManager;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
+
 import com.omarea.gesture.AccessibilityServiceKeyEvent;
 import com.omarea.gesture.ActionModel;
 import com.omarea.gesture.R;
@@ -38,10 +39,13 @@ public class iOSWhiteBar {
     private Vibrator vibrator;
     private float pressure = 0;
 
+    float pressureMin;
+
     public iOSWhiteBar(AccessibilityServiceKeyEvent accessibilityService, Boolean isLandscapf) {
         this.accessibilityService = accessibilityService;
         this.isLandscapf = isLandscapf;
         config = accessibilityService.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
+        pressureMin = config.getFloat(SpfConfig.IOS_BAR_PRESS_MIN, SpfConfig.IOS_BAR_PRESS_MIN_DEFAULT);
     }
 
     /**
@@ -141,6 +145,8 @@ public class iOSWhiteBar {
         View.OnTouchListener onTouchListener = new View.OnTouchListener() {
             private float touchStartX = 0F; // 触摸开始位置
             private float touchStartY = 0F; // 触摸开始位置
+            private float touchStartRawX = 0F; // 触摸开始位置
+            private float touchStartRawY = 0F; // 触摸开始位置
             private boolean isTouchDown = false;
             private boolean isGestureCompleted = false;
             private long gestureStartTime = 0L; // 手势开始时间（是指滑动到一定距离，认定触摸手势生效的时间）
@@ -155,13 +161,15 @@ public class iOSWhiteBar {
             private boolean vibratorRun = false;
             private ValueAnimator fareOutAnimation = null; // 动画程序（淡出）
             private ObjectAnimator objectAnimator = null; // 位置调整动画
+            private int slideThresholdY = dp2px(accessibilityService, 5); // 滑动多少像素才认为算是滑动，而非点击
+            private int slideThresholdX = dp2px(accessibilityService, 10); // 滑动多少像素才认为算是滑动，而非点击
 
-            private float touchRawX;
-            private float touchRawY;
+            private float touchCurrentRawX;
+            private float touchCurrentRawY;
 
             private void performGlobalAction(final ActionModel event) {
                 if (accessibilityService != null) {
-                    Handlers.executeVirtualAction(accessibilityService, event, touchRawX, touchRawY);
+                    Handlers.executeVirtualAction(accessibilityService, event, touchCurrentRawX, touchCurrentRawY);
                 }
             }
 
@@ -238,15 +246,40 @@ public class iOSWhiteBar {
                 objectAnimator.start();
             }
 
-            private boolean onTouchDown(MotionEvent event) {
+            private void setPressure(MotionEvent event) {
+                float p = event.getPressure();
+                if (p > pressure) {
+                    pressure = event.getPressure();
+                }
+
+                if (pressureMin != SpfConfig.IOS_BAR_PRESS_MIN_DEFAULT && pressure > pressureMin) {
+                    if (vibratorRun) {
+                        touchVibrator(true);
+                        vibratorRun = false;
+                    }
+                    performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_PRESS, SpfConfig.IOS_BAR_PRESS_DEFAULT));
+                    isGestureCompleted = true;
+                    clearEffect();
+                }
+            }
+
+            private long lastTouchDown = 0L;
+
+            private boolean onTouchDown(final MotionEvent event) {
                 isTouchDown = true;
                 isGestureCompleted = false;
                 touchStartX = event.getX();
                 touchStartY = event.getY();
+                touchStartRawX = event.getRawX();
+                touchStartRawY = event.getRawY();
+                touchCurrentRawX = event.getRawX();
+                touchCurrentRawY = event.getRawY();
+                touchCurrentX = event.getX();
+                touchCurrentY = event.getY();
                 gestureStartTime = 0;
                 isLongTimeGesture = false;
                 vibratorRun = true;
-                pressure = event.getPressure();
+                lastTouchDown = event.getDownTime();
 
                 if (fareOutAnimation != null) {
                     fareOutAnimation.cancel();
@@ -260,6 +293,32 @@ public class iOSWhiteBar {
 
                 bar.setAlpha(1f);
                 bar.invalidate();
+
+                setPressure(event);
+                if (pressureMin == SpfConfig.IOS_BAR_PRESS_MIN_DEFAULT) {
+                    bar.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            // 上滑悬停
+                            if (isTouchDown && !isGestureCompleted && lastTouchDown == event.getDownTime()) {
+                                if (Math.abs(touchStartRawX - touchCurrentRawX) < slideThresholdX && Math.abs(touchStartRawY - touchCurrentRawY) < slideThresholdY) {
+                                    int pressureAction = config.getInt(SpfConfig.IOS_BAR_PRESS, SpfConfig.IOS_BAR_PRESS_DEFAULT);
+                                    if (pressureAction != SpfConfig.IOS_BAR_TOUCH_DEFAULT) {
+                                        isLongTimeGesture = true;
+                                        if (vibratorRun) {
+                                            touchVibrator(true);
+                                            vibratorRun = false;
+                                        }
+                                        performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_PRESS, SpfConfig.IOS_BAR_PRESS_DEFAULT));
+                                        isGestureCompleted = true;
+                                        clearEffect();
+                                    }
+                                }
+                            }
+                        }
+                    }, 280);
+                }
+
                 return true;
             }
 
@@ -267,10 +326,9 @@ public class iOSWhiteBar {
                 if (isGestureCompleted || !isTouchDown) {
                     return true;
                 }
-                pressure = event.getPressure();
 
-                touchRawX = event.getRawX();
-                touchRawY = event.getRawY();
+                touchCurrentRawX = event.getRawX();
+                touchCurrentRawY = event.getRawY();
 
                 touchCurrentX = event.getX();
                 touchCurrentY = event.getY();
@@ -302,6 +360,9 @@ public class iOSWhiteBar {
                 }
 
                 setPosition(originX + ((touchCurrentX - touchStartX) / animationScaling), originY + ((touchStartY - touchCurrentY) / animationScaling));
+
+                setPressure(event);
+
                 return false;
             }
 
@@ -312,6 +373,7 @@ public class iOSWhiteBar {
 
                 isTouchDown = false;
                 isGestureCompleted = true;
+                lastTouchDown = 0L;
 
                 float moveX = event.getX() - touchStartX;
                 float moveY = touchStartY - event.getY();
@@ -329,13 +391,20 @@ public class iOSWhiteBar {
                     }
                 } else {
                     int pressureAction = config.getInt(SpfConfig.IOS_BAR_PRESS, SpfConfig.IOS_BAR_PRESS_DEFAULT);
-                    float pressureMin = config.getFloat(SpfConfig.IOS_BAR_PRESS_MIN, SpfConfig.IOS_BAR_PRESS_MIN_DEFAULT);
                     if (pressureAction != SpfConfig.IOS_BAR_TOUCH_DEFAULT && pressureMin != SpfConfig.IOS_BAR_PRESS_MIN_DEFAULT && pressure >= pressureMin) {
                         // 按压
                         performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_PRESS, SpfConfig.IOS_BAR_PRESS_DEFAULT));
+                        int action = config.getInt(SpfConfig.IOS_BAR_PRESS, SpfConfig.IOS_BAR_PRESS_DEFAULT);
+                        if (action != SpfConfig.IOS_BAR_PRESS_DEFAULT) {
+                            touchVibrator(true);
+                        }
                     } else {
                         // 轻触
                         performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_TOUCH, SpfConfig.IOS_BAR_TOUCH_DEFAULT));
+                        int action = config.getInt(SpfConfig.IOS_BAR_TOUCH, SpfConfig.IOS_BAR_TOUCH_DEFAULT);
+                        if (action != SpfConfig.IOS_BAR_TOUCH_DEFAULT) {
+                            touchVibrator();
+                        }
                     }
                 }
 
@@ -431,12 +500,19 @@ public class iOSWhiteBar {
     }
 
     private void touchVibrator() {
+        touchVibrator(false);
+    }
+
+    private void touchVibrator(boolean longTime) {
         if (vibrator == null) {
             vibrator = (Vibrator) (accessibilityService.getSystemService(Context.VIBRATOR_SERVICE));
         }
         if (vibrator.hasVibrator()) {
             vibrator.cancel();
             int time = config.getInt(SpfConfig.VIBRATOR_TIME, SpfConfig.VIBRATOR_TIME_DEFAULT);
+            if (longTime) {
+                time = (int) (time * 1.5);
+            }
             int amplitude = config.getInt(SpfConfig.VIBRATOR_AMPLITUDE, SpfConfig.VIBRATOR_AMPLITUDE_DEFAULT);
             if (time > 0 && amplitude > 0) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

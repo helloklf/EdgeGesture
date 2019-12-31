@@ -164,14 +164,13 @@ public class FragmentOther extends FragmentSettingsBase {
         View icon = layout.findViewById(R.id.fingerprint_icon);
         final TextView pressureValue = layout.findViewById(R.id.pressure_value);
         final float[] pressure = {SpfConfig.IOS_BAR_PRESS_MIN_DEFAULT};
-        final float[] size = {SpfConfig.IOS_BAR_PRESS_MIN_DEFAULT};
-        pressureValue.setText("Pressure: " + pressureMin + "\n" + "Size: 0");
+        pressureValue.setText("Pressure: " + pressureMin);
         icon.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 pressure[0] = event.getPressure();
-                size[0] = event.getSize();
-                pressureValue.setText("Pressure: " + pressure[0] + "\n" + "Size: " + size[0]);
+                // event.getSize();
+                pressureValue.setText("Pressure: " + pressure[0]);
                 return false;
             }
         });
@@ -191,6 +190,14 @@ public class FragmentOther extends FragmentSettingsBase {
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .setNeutralButton(R.string.use_long_press, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // 换成长按
+                        config.edit().putFloat(SpfConfig.IOS_BAR_PRESS_MIN, -1).apply();
+                        updateView();
                     }
                 })
                 .setCancelable(false)

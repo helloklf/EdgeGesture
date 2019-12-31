@@ -272,18 +272,19 @@ public class Handlers {
     }
 
     private static void openXiaoAi() {
-            /*
-            try {
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.addCategory(Intent.CATEGORY_LAUNCHER);
-                ComponentName xiaoAi = new ComponentName("com.miui.voiceassist", "com.xiaomi.voiceassistant.AiSettings.AiShortcutActivit");
-                intent.setComponent(xiaoAi);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                accessibilityService.startActivity(intent);
-            } catch (Exception ex) {
-                Toast.makeText(accessibilityService, "" + ex.getMessage(), Toast.LENGTH_LONG).show();
-            }
-            */
+        /*
+         try {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_LAUNCHER);
+            // com.miui.voiceassist/com.xiaomi.voiceassistant.AiSettings.AiShortcutActivity
+            ComponentName xiaoAi = new ComponentName("com.miui.voiceassist", "com.xiaomi.voiceassistant.AiSettings.AiShortcutActivity");
+            intent.setComponent(xiaoAi);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            accessibilityService.startActivity(intent);
+        } catch (Exception ex) {
+            Toast.makeText(accessibilityService, "" + ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
+        */
         if (rootProcess == null) {
             try {
                 rootProcess = Runtime.getRuntime().exec("su");

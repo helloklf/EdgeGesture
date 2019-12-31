@@ -78,7 +78,7 @@ public class SpfConfig {
     public static final int IOS_BAR_TOUCH_DEFAULT = Handlers.GLOBAL_ACTION_NONE;
     public static final String IOS_BAR_PRESS = "ios_bar_press"; // 按压
     public static final int IOS_BAR_PRESS_DEFAULT = Handlers.GLOBAL_ACTION_NONE;
-    public static final String IOS_BAR_PRESS_MIN = "ios_bar_press_min"; // 按压（最小力度）
+    public static final String IOS_BAR_PRESS_MIN = "ios_bar_press_min_2"; // 按压（最小力度）
     public static final int IOS_BAR_PRESS_MIN_DEFAULT = -1;
 
     // iOS小白条样式
