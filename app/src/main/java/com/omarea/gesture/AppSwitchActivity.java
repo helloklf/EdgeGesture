@@ -25,7 +25,7 @@ public class AppSwitchActivity extends Activity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addCategory(Intent.CATEGORY_HOME);
-        ActivityOptions activityOptions = ActivityOptions.makeCustomAnimation(accessibilityServiceKeyEvent, R.anim.activity_close_enter_2, R.anim.activity_close_exit_2);
+        ActivityOptions activityOptions = ActivityOptions.makeCustomAnimation(accessibilityServiceKeyEvent, R.anim.gesture_activity_close_enter_2, R.anim.gesture_activity_close_exit_2);
         // 很奇怪，在三星手机的OneUI（Android P）系统上，必须先overridePendingTransition再启动startActivity方可覆盖动画
         accessibilityServiceKeyEvent.startActivity(intent, activityOptions.toBundle());
     }
@@ -44,16 +44,16 @@ public class AppSwitchActivity extends Activity {
             if (currentIntent.hasExtra("next")) {
                 String appPackageName = currentIntent.getStringExtra("next");
                 if (animation == SpfConfig.HOME_ANIMATION_CUSTOM) {
-                    switchApp(appPackageName, R.anim.activity_open_enter_2, R.anim.activity_open_exit_2);
+                    switchApp(appPackageName, R.anim.gesture_activity_open_enter_2, R.anim.gesture_activity_open_exit_2);
                 } else {
-                    switchApp(appPackageName, R.anim.activity_open_enter, R.anim.activity_open_exit);
+                    switchApp(appPackageName, R.anim.gesture_activity_open_enter, R.anim.gesture_activity_open_exit);
                 }
             } else if (currentIntent.hasExtra("prev")) {
                 String appPackageName = currentIntent.getStringExtra("prev");
                 if (animation == SpfConfig.HOME_ANIMATION_CUSTOM) {
-                    switchApp(appPackageName, R.anim.activity_close_enter_2, R.anim.activity_close_exit_2);
+                    switchApp(appPackageName, R.anim.gesture_activity_close_enter_2, R.anim.gesture_activity_close_exit_2);
                 } else {
-                    switchApp(appPackageName, R.anim.activity_close_enter, R.anim.activity_close_exit);
+                    switchApp(appPackageName, R.anim.gesture_activity_close_enter, R.anim.gesture_activity_close_exit);
                 }
             } else if (currentIntent.hasExtra("form")) {
                 String appPackageName = currentIntent.getStringExtra("form");
@@ -76,11 +76,11 @@ public class AppSwitchActivity extends Activity {
                 }
                 intent.addCategory(Intent.CATEGORY_HOME);
                 if (animation == SpfConfig.HOME_ANIMATION_CUSTOM) {
-                    ActivityOptions activityOptions = ActivityOptions.makeCustomAnimation(this.getApplicationContext(), R.anim.activity_close_enter_2, R.anim.activity_close_exit_2);
+                    ActivityOptions activityOptions = ActivityOptions.makeCustomAnimation(this.getApplicationContext(), R.anim.gesture_activity_close_enter_2, R.anim.gesture_activity_close_exit_2);
                     // 很奇怪，在三星手机的OneUI（Android P）系统上，必须先overridePendingTransition再启动startActivity方可覆盖动画
-                    overridePendingTransition(R.anim.home_enter, R.anim.app_exit);
+                    overridePendingTransition(R.anim.gesture_home_enter, R.anim.gesture_app_exit);
                     startActivity(intent, activityOptions.toBundle());
-                    overridePendingTransition(R.anim.home_enter, R.anim.app_exit);
+                    overridePendingTransition(R.anim.gesture_home_enter, R.anim.gesture_app_exit);
                 } else {
                     startActivity(intent);
                 }
@@ -107,7 +107,7 @@ public class AppSwitchActivity extends Activity {
     }
 
     private void startActivity(String packageName) {
-        switchApp(packageName, R.anim.app_open_enter, R.anim.app_open_exit);
+        switchApp(packageName, R.anim.gesture_app_open_enter, R.anim.gesture_app_open_exit);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

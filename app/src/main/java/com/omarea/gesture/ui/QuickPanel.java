@@ -156,7 +156,7 @@ public class QuickPanel {
                 if (position >= apps.size()) {
                     return LayoutInflater.from(accessibilityService).inflate(R.layout.layout_quick_panel_add, null);
                 } else {
-                    View view = LayoutInflater.from(accessibilityService).inflate(R.layout.layout_quick_panel_item, null);
+                    View view = LayoutInflater.from(accessibilityService).inflate(R.layout.gesture_layout_quick_panel_item, null);
                     AppInfo appInfo = (AppInfo) getItem(position);
                     ImageView imageView = view.findViewById(R.id.qp_icon);
                     TextView nameView = view.findViewById(R.id.qp_name);

@@ -11,7 +11,7 @@
         android:layout_height="40dp"
         android:layout_gravity="center_horizontal"
         android:padding="8dp"
-        android:src="@drawable/icon_add" />
+        android:src="@drawable/gesture_icon_add" />
 
     <TextView
         android:layout_width="match_parent"

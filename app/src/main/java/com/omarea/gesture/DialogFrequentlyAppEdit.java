@@ -80,7 +80,7 @@ public class DialogFrequentlyAppEdit {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-                View view = layoutInflater.inflate(R.layout.layout_app_option2, null);
+                View view = layoutInflater.inflate(R.layout.gesture_layout_app_option2, null);
                 TextView title = view.findViewById(R.id.item_title);
                 TextView desc = view.findViewById(R.id.item_desc);
                 CheckBox state = view.findViewById(R.id.item_state);

@@ -21,21 +21,21 @@ public class SettingsActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        setContentView(R.layout.activity_gesture_settings);
 
         try {
             final TabHost tabHost = findViewById(R.id.main_tabhost);
             tabHost.setup();
             tabHost.addTab(tabHost.newTabSpec("Basic")
-                    .setContent(R.id.main_tab_0).setIndicator("", getDrawable(R.drawable.tab_switch)));
+                    .setContent(R.id.main_tab_0).setIndicator("", getDrawable(R.drawable.gesture_tab_switch)));
             tabHost.addTab(tabHost.newTabSpec("WhiteBar")
-                    .setContent(R.id.main_tab_1).setIndicator("", getDrawable(R.drawable.tab_apple)));
+                    .setContent(R.id.main_tab_1).setIndicator("", getDrawable(R.drawable.gesture_tab_apple)));
             tabHost.addTab(tabHost.newTabSpec("Edge")
-                    .setContent(R.id.main_tab_2).setIndicator("", getDrawable(R.drawable.tab_lab)));
+                    .setContent(R.id.main_tab_2).setIndicator("", getDrawable(R.drawable.gesture_tab_lab)));
             tabHost.addTab(tabHost.newTabSpec("ThreeSection")
-                    .setContent(R.id.main_tab_3).setIndicator("", getDrawable(R.drawable.tab_edge)));
+                    .setContent(R.id.main_tab_3).setIndicator("", getDrawable(R.drawable.gesture_tab_edge)));
             tabHost.addTab(tabHost.newTabSpec("Other")
-                    .setContent(R.id.main_tab_4).setIndicator("", getDrawable(R.drawable.tab_settings)));
+                    .setContent(R.id.main_tab_4).setIndicator("", getDrawable(R.drawable.gesture_tab_settings)));
 
             getFragmentManager().beginTransaction()
                     .replace(R.id.main_tab_0, new FragmentBasic()).commit();

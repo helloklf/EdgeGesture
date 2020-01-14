@@ -18,7 +18,7 @@
             android:background="@null"
             android:padding="6dp"
             android:scaleType="centerInside"
-            android:src="@drawable/quick_question" />
+            android:src="@drawable/gesture_quick_question" />
 
         <TextView
             android:layout_width="0dp"
@@ -38,7 +38,7 @@
             android:background="@null"
             android:padding="8dp"
             android:scaleType="centerInside"
-            android:src="@drawable/icon_edit" />
+            android:src="@drawable/gesture_icon_edit" />
 
         <ImageButton
             android:id="@+id/quick_save"
@@ -47,7 +47,7 @@
             android:background="@null"
             android:padding="6dp"
             android:scaleType="centerInside"
-            android:src="@drawable/icon_ok" />
+            android:src="@drawable/gesture_icon_ok" />
     </LinearLayout>
 
     <GridView

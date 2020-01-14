@@ -28,7 +28,7 @@
             android:background="@null"
             android:padding="6dp"
             android:scaleType="centerInside"
-            android:src="@drawable/icon_ok"
+            android:src="@drawable/gesture_icon_ok"
             android:tint="@color/colorPrimary" />
     </LinearLayout>
 

@@ -15,7 +15,7 @@ public class FragmentThreeSection extends FragmentSettingsBase {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.three_section_options, container, false);
+        return inflater.inflate(R.layout.gesture_three_section_options, container, false);
     }
 
     @Override

@@ -54,10 +54,10 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel("fg", "辅助服务进程", NotificationManager.IMPORTANCE_LOW);
             manager.createNotificationChannel(notificationChannel);
-            Notification notification = new Notification.Builder(this, "fg").setTicker("").setSmallIcon(R.drawable.logo).build();
+            Notification notification = new Notification.Builder(this, "fg").setTicker("").setSmallIcon(R.drawable.gesture_logo).build();
             startForeground(1, notification);
         } else {
-            Notification notification = new Notification.Builder(this).setTicker("").setSmallIcon(R.drawable.logo).build();
+            Notification notification = new Notification.Builder(this).setTicker("").setSmallIcon(R.drawable.gesture_logo).build();
             //id 不能为0
             startForeground(1, notification);
         }

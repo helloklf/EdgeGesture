@@ -120,7 +120,7 @@ public class FloatVirtualTouchBar {
     }
 
     private View setBottomView(final AccessibilityServiceKeyEvent context) {
-        final View view = LayoutInflater.from(context).inflate(R.layout.fw_vitual_touch_bar, null);
+        final View view = LayoutInflater.from(context).inflate(R.layout.gesture_fw_vitual_touch_bar, null);
 
         TouchBarView bar = view.findViewById(R.id.bottom_touch_bar);
         if (GlobalState.testMode) {
@@ -172,7 +172,7 @@ public class FloatVirtualTouchBar {
     }
 
     private View setThreeSectionView(final AccessibilityServiceKeyEvent context) {
-        final View view = LayoutInflater.from(context).inflate(R.layout.fw_three_section, null);
+        final View view = LayoutInflater.from(context).inflate(R.layout.gesture_fw_three_section, null);
 
         ThreeSectionView bar = view.findViewById(R.id.core_area);
         if (GlobalState.testMode) {
@@ -245,7 +245,7 @@ public class FloatVirtualTouchBar {
 
     @SuppressLint("ClickableViewAccessibility")
     private View setLeftView(final AccessibilityServiceKeyEvent context) {
-        final View view = LayoutInflater.from(context).inflate(R.layout.fw_vitual_touch_bar, null);
+        final View view = LayoutInflater.from(context).inflate(R.layout.gesture_fw_vitual_touch_bar, null);
         TouchBarView bar = view.findViewById(R.id.bottom_touch_bar);
         if (GlobalState.testMode) {
             // bar.setBackgroundColor(Color.argb(128, 0, 0, 0));
@@ -289,7 +289,7 @@ public class FloatVirtualTouchBar {
 
     @SuppressLint("ClickableViewAccessibility")
     private View setRightView(final AccessibilityServiceKeyEvent context) {
-        final View view = LayoutInflater.from(context).inflate(R.layout.fw_vitual_touch_bar, null);
+        final View view = LayoutInflater.from(context).inflate(R.layout.gesture_fw_vitual_touch_bar, null);
 
         TouchBarView bar = view.findViewById(R.id.bottom_touch_bar);
         if (GlobalState.testMode) {

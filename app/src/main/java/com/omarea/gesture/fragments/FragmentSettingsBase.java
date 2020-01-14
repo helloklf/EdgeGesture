@@ -95,7 +95,7 @@ public class FragmentSettingsBase extends Fragment {
                     @Override
                     public View getView(int position, View convertView, ViewGroup parent) {
                         ActionModel actionModel = ((ActionModel) getItem(position));
-                        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_action_option, null);
+                        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gesture_layout_action_option, null);
                         TextView textView = view.findViewById(R.id.item_title);
                         textView.setText(actionModel.title);
                         if (position == finalIndex) {
@@ -155,7 +155,7 @@ public class FragmentSettingsBase extends Fragment {
      * @param defValue
      */
     private void openColorPicker(final String key, final int defValue) {
-        View view = getActivity().getLayoutInflater().inflate(R.layout.color_picker, null);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.gesture_color_picker, null);
         int currentColor = config.getInt(key, defValue);
         final SeekBar alphaBar = view.findViewById(R.id.color_alpha);
         final SeekBar redBar = view.findViewById(R.id.color_red);

@@ -66,7 +66,7 @@ public class DialogHandlerEX {
                             @Override
                             public View getView(int position, View convertView, ViewGroup parent) {
                                 LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-                                View view = layoutInflater.inflate(R.layout.layout_app_option, null);
+                                View view = layoutInflater.inflate(R.layout.gesture_layout_app_option, null);
                                 TextView title = view.findViewById(R.id.item_title);
                                 TextView desc = view.findViewById(R.id.item_desc);
                                 AppInfo appInfo = (AppInfo) getItem(position);
@@ -94,7 +94,7 @@ public class DialogHandlerEX {
                 final String fullKey = SpfConfigEx.prefix_shell + key;
 
                 alertDialog.setTitle(context.getString(R.string.custom_shell));
-                View view = LayoutInflater.from(context).inflate(R.layout.layout_ex_shell, null);
+                View view = LayoutInflater.from(context).inflate(R.layout.gesture_layout_ex_shell, null);
                 final EditText editText = view.findViewById(R.id.ex_shell);
                 editText.setText(configFile.getString(fullKey, ""));
 

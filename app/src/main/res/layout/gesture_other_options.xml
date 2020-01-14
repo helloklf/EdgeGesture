@@ -144,7 +144,7 @@
                         android:background="@null"
                         android:padding="10dp"
                         android:scaleType="centerInside"
-                        android:src="@drawable/disable"
+                        android:src="@drawable/gesture_disable"
                         android:tint="#aaa" />
                 </LinearLayout>
 

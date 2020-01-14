@@ -78,7 +78,7 @@ public class iOSWhiteBar {
     public View getView() {
         final WindowManager mWindowManager = (WindowManager) (accessibilityService.getSystemService(Context.WINDOW_SERVICE));
 
-        final View view = LayoutInflater.from(accessibilityService).inflate(R.layout.fw_ios_touch_bar, null);
+        final View view = LayoutInflater.from(accessibilityService).inflate(R.layout.gesture_fw_ios_touch_bar, null);
 
         final iOSTouchBarView bar = view.findViewById(R.id.bottom_touch_bar);
         /*
@@ -279,7 +279,8 @@ public class iOSWhiteBar {
                 gestureStartTime = 0;
                 isLongTimeGesture = false;
                 vibratorRun = true;
-                lastTouchDown = event.getDownTime();
+                final long downTime = event.getDownTime();
+                lastTouchDown = downTime;
 
                 if (fareOutAnimation != null) {
                     fareOutAnimation.cancel();
@@ -300,7 +301,7 @@ public class iOSWhiteBar {
                         @Override
                         public void run() {
                             // 上滑悬停
-                            if (isTouchDown && !isGestureCompleted && lastTouchDown == event.getDownTime()) {
+                            if (isTouchDown && !isGestureCompleted && lastTouchDown == downTime) {
                                 if (Math.abs(touchStartRawX - touchCurrentRawX) < slideThresholdX && Math.abs(touchStartRawY - touchCurrentRawY) < slideThresholdY) {
                                     int pressureAction = config.getInt(SpfConfig.IOS_BAR_PRESS, SpfConfig.IOS_BAR_PRESS_DEFAULT);
                                     if (pressureAction != SpfConfig.IOS_BAR_TOUCH_DEFAULT) {
