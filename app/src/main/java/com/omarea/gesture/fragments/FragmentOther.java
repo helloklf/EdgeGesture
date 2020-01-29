@@ -6,7 +6,6 @@ import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,7 +16,6 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.omarea.gesture.DialogAppSwitchExclusive;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
@@ -25,9 +23,8 @@ import com.omarea.gesture.StartActivity;
 import com.omarea.gesture.shell.KeepShellPublic;
 
 public class FragmentOther extends FragmentSettingsBase {
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.gesture_other_options, container, false);
     }
 

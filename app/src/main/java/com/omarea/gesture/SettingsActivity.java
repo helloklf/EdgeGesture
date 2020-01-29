@@ -2,9 +2,13 @@ package com.omarea.gesture;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.UiModeManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
 import android.widget.TabHost;
 
 import com.omarea.gesture.fragments.FragmentBasic;
@@ -14,12 +18,36 @@ import com.omarea.gesture.fragments.FragmentThreeSection;
 import com.omarea.gesture.fragments.FragmentWhiteBar;
 import com.omarea.gesture.util.GlobalState;
 
+import static android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+
 
 public class SettingsActivity extends Activity {
-    private boolean inited = false;
+    private boolean inLightMode = false;
+
+    private void setTheme(boolean restart) {
+        UiModeManager uiModeManager = (UiModeManager) getSystemService(Context.UI_MODE_SERVICE);
+        boolean isNightMode = uiModeManager.getNightMode() == UiModeManager.MODE_NIGHT_YES;
+
+        if (!isNightMode) {
+            setTheme(R.style.gestureAppThemeLight);
+            // 设置白色状态栏
+            View window = this.getWindow().getDecorView();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                window.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                window.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            };
+        }
+
+        if (inLightMode != isNightMode && restart) {
+            recreate();
+        }
+        inLightMode = isNightMode;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setTheme(false);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gesture_settings);
 
@@ -62,8 +90,11 @@ public class SettingsActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+
         GlobalState.testMode = true;
         updateView();
+
+        setTheme(true);
     }
 
     @Override

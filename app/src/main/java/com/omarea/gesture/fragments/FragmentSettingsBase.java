@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,6 @@ import android.widget.Checkable;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
 import com.omarea.gesture.ActionModel;
 import com.omarea.gesture.DialogHandlerEX;
 import com.omarea.gesture.R;
@@ -31,7 +29,7 @@ public class FragmentSettingsBase extends Fragment {
     protected SharedPreferences config;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         config = getActivity().getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
 
         super.onCreate(savedInstanceState);

@@ -6,9 +6,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.RequiresApi;
 import android.widget.Toast;
-
 import java.lang.reflect.Method;
 
 public class AppSwitchActivity extends Activity {
@@ -96,21 +94,18 @@ public class AppSwitchActivity extends Activity {
         }, 100);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public ActivityOptions setFreeFormMode(ActivityOptions options) {
+    public void setFreeFormMode(ActivityOptions options) {
         try {
             Method method = ActivityOptions.class.getMethod("setLaunchWindowingMode", int.class);
             method.invoke(options, 5);
         } catch (Exception e) { /* Gracefully fail */ }
 
-        return options;
     }
 
     private void startActivity(String packageName) {
         switchApp(packageName, R.anim.gesture_app_open_enter, R.anim.gesture_app_open_exit);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private void switchToFreeForm(String packageName) {
         // ActivityOptions activityOptions = ActivityOptions.makeTaskLaunchBehind();
         // 设置不合理的动画，可能导致切换窗口模式时奔溃，因此去掉动画

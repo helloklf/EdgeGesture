@@ -5,23 +5,19 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <android.support.v7.widget.CardView style="@style/card_view">
+    <LinearLayout
+        style="@style/card_view"
+        android:orientation="vertical"
+        android:padding="10dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <Switch
+            android:id="@+id/enable_service"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp">
-
-            <Switch
-                android:id="@+id/enable_service"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/enable_service"
-                android:textStyle="bold" />
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
+            android:layout_gravity="center_horizontal"
+            android:text="@string/enable_service"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
