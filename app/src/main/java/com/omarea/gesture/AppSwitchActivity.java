@@ -23,7 +23,7 @@ public class AppSwitchActivity extends Activity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addCategory(Intent.CATEGORY_HOME);
-        ActivityOptions activityOptions = ActivityOptions.makeCustomAnimation(accessibilityServiceGesture, R.anim.gesture_activity_close_enter_2, R.anim.gesture_activity_close_exit_2);
+        ActivityOptions activityOptions = ActivityOptions.makeCustomAnimation(accessibilityServiceGesture, R.anim.gesture_prev_enter_2, R.anim.gesture_prev_exit_2);
         // 很奇怪，在三星手机的OneUI（Android P）系统上，必须先overridePendingTransition再启动startActivity方可覆盖动画
         accessibilityServiceGesture.startActivity(intent, activityOptions.toBundle());
     }
@@ -42,16 +42,16 @@ public class AppSwitchActivity extends Activity {
             if (currentIntent.hasExtra("next")) {
                 String appPackageName = currentIntent.getStringExtra("next");
                 if (animation == SpfConfig.HOME_ANIMATION_CUSTOM) {
-                    switchApp(appPackageName, R.anim.gesture_activity_open_enter_2, R.anim.gesture_activity_open_exit_2);
+                    switchApp(appPackageName, R.anim.gesture_next_enter_2, R.anim.gesture_next_exit_2);
                 } else {
-                    switchApp(appPackageName, R.anim.gesture_activity_open_enter, R.anim.gesture_activity_open_exit);
+                    switchApp(appPackageName, R.anim.gesture_next_enter, R.anim.gesture_next_exit);
                 }
             } else if (currentIntent.hasExtra("prev")) {
                 String appPackageName = currentIntent.getStringExtra("prev");
                 if (animation == SpfConfig.HOME_ANIMATION_CUSTOM) {
-                    switchApp(appPackageName, R.anim.gesture_activity_close_enter_2, R.anim.gesture_activity_close_exit_2);
+                    switchApp(appPackageName, R.anim.gesture_prev_enter_2, R.anim.gesture_prev_exit_2);
                 } else {
-                    switchApp(appPackageName, R.anim.gesture_activity_close_enter, R.anim.gesture_activity_close_exit);
+                    switchApp(appPackageName, R.anim.gesture_prev_enter, R.anim.gesture_prev_exit);
                 }
             } else if (currentIntent.hasExtra("form")) {
                 String appPackageName = currentIntent.getStringExtra("form");
@@ -74,14 +74,14 @@ public class AppSwitchActivity extends Activity {
                 if (animation == SpfConfig.HOME_ANIMATION_CUSTOM || animation == SpfConfig.HOME_ANIMATION_BASIC) {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     boolean anim2 = animation == SpfConfig.HOME_ANIMATION_CUSTOM;
-                    int homeAnim = anim2 ? R.anim.gesture_home_enter : R.anim.gesture_home_basic;
-                    int appAnim = anim2 ? R.anim.gesture_app_exit : R.anim.gesture_app_exit_basic;
+                    int homeAnim;
+                    int appAnim;
                     if (value.equals("prev")) {
-                        homeAnim = anim2 ? R.anim.gesture_activity_close_enter_2 : R.anim.gesture_activity_close_enter;
-                        appAnim = anim2 ? R.anim.gesture_activity_close_exit_2 : R.anim.gesture_activity_close_exit;
+                        homeAnim = anim2 ? R.anim.gesture_prev_enter_2 : R.anim.gesture_prev_enter;
+                        appAnim = anim2 ? R.anim.gesture_prev_exit_2 : R.anim.gesture_prev_exit;
                     } else if (value.equals("next")) {
-                        homeAnim = anim2 ? R.anim.gesture_activity_open_enter_2 : R.anim.gesture_activity_open_enter;
-                        appAnim = anim2 ? R.anim.gesture_activity_open_exit_2 : R.anim.gesture_activity_open_exit;
+                        homeAnim = anim2 ? R.anim.gesture_next_enter_2 : R.anim.gesture_next_enter;
+                        appAnim = anim2 ? R.anim.gesture_next_exit_2 : R.anim.gesture_next_exit;
                     } else {
                         homeAnim = anim2 ? R.anim.gesture_home_enter : R.anim.gesture_home_basic;
                         appAnim = anim2 ? R.anim.gesture_app_exit : R.anim.gesture_app_exit_basic;
