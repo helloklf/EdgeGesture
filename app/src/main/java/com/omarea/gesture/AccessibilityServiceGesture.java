@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class AccessibilityServiceKeyEvent extends AccessibilityService {
+public class AccessibilityServiceGesture extends AccessibilityService {
     public Recents recents = new Recents();
     boolean isLandscapf = false;
     private FloatVirtualTouchBar floatVitualTouchBar = null;
@@ -104,7 +104,7 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
     }
 
     private boolean ignored(String packageName) {
-        return recents.ignoreApps.indexOf(packageName) > -1;
+        return recents.inputMethods.indexOf(packageName) > -1;
     }
 
     /*
@@ -160,7 +160,7 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         ArrayList<String> inputMethods = new ArrayList<>();
         for (InputMethodInfo inputMethodInfo : imm.getInputMethodList()) {
-            recents.ignoreApps.add(inputMethodInfo.getPackageName());
+            inputMethods.add(inputMethodInfo.getPackageName());
         }
         return inputMethods;
     }
@@ -169,10 +169,9 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         if (event != null) {
-            if (recents.ignoreApps == null) {
-                recents.ignoreApps = getLauncherApps();
+            if (recents.inputMethods == null) {
                 recents.inputMethods = getInputMethods();
-                recents.ignoreApps.addAll(recents.inputMethods);
+                recents.launcherApps = getLauncherApps();
             }
 
             boolean isWCC = event.getEventType() == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED;
@@ -192,9 +191,12 @@ public class AccessibilityServiceKeyEvent extends AccessibilityService {
                     }
                 }
 
-                if (!ignored(packageNameStr) && canOpen(packageNameStr) && !appSwitchBlackList.contains(packageNameStr)) {
+                if (recents.launcherApps.contains(packageNameStr)) {
+                    recents.addRecent(Intent.CATEGORY_HOME);
+                } else if (!ignored(packageNameStr) && canOpen(packageNameStr) && !appSwitchBlackList.contains(packageNameStr)) {
                     recents.addRecent(packageNameStr);
                 }
+
                 lastApp = packageNameStr;
             }
         }

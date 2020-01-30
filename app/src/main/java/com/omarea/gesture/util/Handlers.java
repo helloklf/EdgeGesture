@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.widget.Toast;
 
-import com.omarea.gesture.AccessibilityServiceKeyEvent;
+import com.omarea.gesture.AccessibilityServiceGesture;
 import com.omarea.gesture.ActionModel;
 import com.omarea.gesture.AppSwitchActivity;
 import com.omarea.gesture.SpfConfig;
@@ -89,7 +89,7 @@ public class Handlers {
     // 目前还没找到解决办法
 
     public static void executeVirtualAction(
-            final AccessibilityServiceKeyEvent accessibilityService,
+            final AccessibilityServiceGesture accessibilityService,
             final ActionModel action, float touchRawX, float touchRawY) {
         switch (action.actionCode) {
             case GLOBAL_ACTION_NONE: {
@@ -160,18 +160,18 @@ public class Handlers {
         }
     }
 
-    private static void openQuickPanel(final AccessibilityServiceKeyEvent accessibilityService, float touchRawX, float touchRawY) {
+    private static void openQuickPanel(final AccessibilityServiceGesture accessibilityService, float touchRawX, float touchRawY) {
         new QuickPanel(accessibilityService).open((int) touchRawX, (int) touchRawY);
     }
 
-    private static void appSwitch(final AccessibilityServiceKeyEvent accessibilityService, final int action, final int animation) {
+    private static void appSwitch(final AccessibilityServiceGesture accessibilityService, final int action, final int animation) {
         try {
             Intent intent = AppSwitchActivity.getOpenAppIntent(accessibilityService);
             intent.putExtra("animation", animation);
 
             switch (action) {
                 case GLOBAL_ACTION_HOME: {
-                    intent.putExtra("home", true);
+                    intent.putExtra("home", "");
                     // AppSwitchActivity.backHome(accessibilityService);
                     break;
                 }
@@ -199,7 +199,11 @@ public class Handlers {
                     if (action == VITUAL_ACTION_PREV_APP) {
                         String targetApp = accessibilityService.recents.movePrevious();
                         if (targetApp != null) {
-                            intent.putExtra("prev", targetApp);
+                            if (!targetApp.equals(Intent.CATEGORY_HOME)) {
+                                intent.putExtra("prev", targetApp);
+                            } else {
+                                intent.putExtra("home", "prev");
+                            }
                         } else {
                             Toast.makeText(accessibilityService, "<<", Toast.LENGTH_SHORT).show();
                             return;
@@ -207,7 +211,11 @@ public class Handlers {
                     } else {
                         String targetApp = accessibilityService.recents.moveNext();
                         if (targetApp != null) {
-                            intent.putExtra("next", targetApp);
+                            if (!targetApp.equals(Intent.CATEGORY_HOME)) {
+                                intent.putExtra("next", targetApp);
+                            } else {
+                                intent.putExtra("home", "next");
+                            }
                         } else {
                             Toast.makeText(accessibilityService, ">>", Toast.LENGTH_SHORT).show();
                             return;
@@ -222,7 +230,7 @@ public class Handlers {
         }
     }
 
-    private static void openApp(AccessibilityServiceKeyEvent accessibilityService, ActionModel action) {
+    private static void openApp(AccessibilityServiceGesture accessibilityService, ActionModel action) {
         if (configEx == null) {
             configEx = accessibilityService.getSharedPreferences(SpfConfigEx.configFile, Context.MODE_PRIVATE);
         }
@@ -247,7 +255,7 @@ public class Handlers {
         }
     }
 
-    private static void executeShell(AccessibilityServiceKeyEvent accessibilityService, ActionModel action) {
+    private static void executeShell(AccessibilityServiceGesture accessibilityService, ActionModel action) {
         if (configEx == null) {
             configEx = accessibilityService.getSharedPreferences(SpfConfigEx.configFile, Context.MODE_PRIVATE);
         }

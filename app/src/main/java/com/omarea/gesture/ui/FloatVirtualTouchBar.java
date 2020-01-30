@@ -13,7 +13,7 @@ import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Toast;
 
-import com.omarea.gesture.AccessibilityServiceKeyEvent;
+import com.omarea.gesture.AccessibilityServiceGesture;
 import com.omarea.gesture.ActionModel;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
@@ -28,7 +28,7 @@ public class FloatVirtualTouchBar {
     private View rightView = null;
     private SharedPreferences config;
 
-    public FloatVirtualTouchBar(AccessibilityServiceKeyEvent context, boolean islandscape) {
+    public FloatVirtualTouchBar(AccessibilityServiceGesture context, boolean islandscape) {
         this.islandscape = islandscape;
 
         config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
@@ -119,7 +119,7 @@ public class FloatVirtualTouchBar {
         return value;
     }
 
-    private View setBottomView(final AccessibilityServiceKeyEvent context) {
+    private View setBottomView(final AccessibilityServiceGesture context) {
         final View view = LayoutInflater.from(context).inflate(R.layout.gesture_fw_vitual_touch_bar, null);
 
         TouchBarView bar = view.findViewById(R.id.bottom_touch_bar);
@@ -171,7 +171,7 @@ public class FloatVirtualTouchBar {
         return view;
     }
 
-    private View setThreeSectionView(final AccessibilityServiceKeyEvent context) {
+    private View setThreeSectionView(final AccessibilityServiceGesture context) {
         final View view = LayoutInflater.from(context).inflate(R.layout.gesture_fw_three_section, null);
 
         ThreeSectionView bar = view.findViewById(R.id.core_area);
@@ -244,7 +244,7 @@ public class FloatVirtualTouchBar {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private View setLeftView(final AccessibilityServiceKeyEvent context) {
+    private View setLeftView(final AccessibilityServiceGesture context) {
         final View view = LayoutInflater.from(context).inflate(R.layout.gesture_fw_vitual_touch_bar, null);
         TouchBarView bar = view.findViewById(R.id.bottom_touch_bar);
         if (GlobalState.testMode) {
@@ -288,7 +288,7 @@ public class FloatVirtualTouchBar {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private View setRightView(final AccessibilityServiceKeyEvent context) {
+    private View setRightView(final AccessibilityServiceGesture context) {
         final View view = LayoutInflater.from(context).inflate(R.layout.gesture_fw_vitual_touch_bar, null);
 
         TouchBarView bar = view.findViewById(R.id.bottom_touch_bar);

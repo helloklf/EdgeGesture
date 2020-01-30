@@ -23,7 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.omarea.gesture.AccessibilityServiceKeyEvent;
+import com.omarea.gesture.AccessibilityServiceGesture;
 import com.omarea.gesture.AppSwitchActivity;
 import com.omarea.gesture.DialogFrequentlyAppEdit;
 import com.omarea.gesture.R;
@@ -37,10 +37,10 @@ import java.util.Set;
 public class QuickPanel {
     @SuppressLint("StaticFieldLeak")
     private static View view;
-    private AccessibilityServiceKeyEvent accessibilityService;
+    private AccessibilityServiceGesture accessibilityService;
     private ArrayList<AppInfo> apps;
 
-    public QuickPanel(AccessibilityServiceKeyEvent context) {
+    public QuickPanel(AccessibilityServiceGesture context) {
         accessibilityService = context;
     }
 

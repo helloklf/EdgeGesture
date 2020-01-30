@@ -21,7 +21,7 @@ import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 
-import com.omarea.gesture.AccessibilityServiceKeyEvent;
+import com.omarea.gesture.AccessibilityServiceGesture;
 import com.omarea.gesture.ActionModel;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
@@ -33,7 +33,7 @@ import com.omarea.gesture.util.ReceiverLockHandler;
 import com.omarea.gesture.util.ScreenState;
 
 public class iOSWhiteBar {
-    private AccessibilityServiceKeyEvent accessibilityService;
+    private AccessibilityServiceGesture accessibilityService;
     private SharedPreferences config;
     private Boolean isLandscapf;
     private Vibrator vibrator;
@@ -41,7 +41,7 @@ public class iOSWhiteBar {
 
     float pressureMin;
 
-    public iOSWhiteBar(AccessibilityServiceKeyEvent accessibilityService, Boolean isLandscapf) {
+    public iOSWhiteBar(AccessibilityServiceGesture accessibilityService, Boolean isLandscapf) {
         this.accessibilityService = accessibilityService;
         this.isLandscapf = isLandscapf;
         config = accessibilityService.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);

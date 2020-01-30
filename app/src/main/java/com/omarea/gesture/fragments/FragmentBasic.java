@@ -176,7 +176,7 @@ public class FragmentBasic extends FragmentSettingsBase {
     }
 
     private boolean serviceRunning() {
-        return serviceRunning(getActivity(), "AccessibilityServiceKeyEvent");
+        return serviceRunning(getActivity(), "AccessibilityServiceGesture");
     }
 
     private boolean canWriteGlobalSettings() {

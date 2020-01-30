@@ -17,6 +17,7 @@ public class iOSTouchBarView extends View {
     private float shadowSize = 16f;
     private float lineWeight = 16f;
     private float strokeWidth = 0f;
+    private float strokeR = 0f;
     private int lineColor = 0;
     private int strokeColor = 0;
     private float margin = 24f;
@@ -51,6 +52,7 @@ public class iOSTouchBarView extends View {
         this.shadowSize = dp2px(context, shadowSizeDp);
         this.lineWeight = dp2px(context, lineWeightDp);
         this.strokeWidth = dp2px(context, strokeWidth);
+        this.strokeR = this.strokeWidth / 2;
         this.margin = this.shadowSize + (this.lineWeight / 2f) + this.strokeWidth;
         this.lineColor = color;
         this.strokeColor = strokeColor;
@@ -100,7 +102,7 @@ public class iOSTouchBarView extends View {
                 } else {
                     p.setColor(Color.WHITE);
                 }
-                canvas.drawRoundRect(margin, margin, getWidth() - margin, margin + lineWeight, 20, 20, p);
+                canvas.drawRoundRect(margin - strokeR, margin - strokeR, getWidth() - margin + strokeR, margin + lineWeight +  strokeR, 20, 20, p);
             }
 
             p.setStyle(Paint.Style.FILL);
@@ -110,7 +112,7 @@ public class iOSTouchBarView extends View {
             if (strokeWidth > 0) {
                 p.setStyle(Paint.Style.STROKE);
                 p.setColor(strokeColor);
-                canvas.drawRoundRect(margin, margin, getWidth() - margin, margin + lineWeight, 20, 20, p);
+                canvas.drawRoundRect(margin - strokeR, margin - strokeR, getWidth() - margin + strokeR, margin + lineWeight +  strokeR, 20, 20, p);
             }
 
             p.setStyle(Paint.Style.FILL);

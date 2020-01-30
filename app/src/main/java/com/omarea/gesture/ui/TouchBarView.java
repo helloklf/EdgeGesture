@@ -19,7 +19,7 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.Toast;
 
-import com.omarea.gesture.AccessibilityServiceKeyEvent;
+import com.omarea.gesture.AccessibilityServiceGesture;
 import com.omarea.gesture.ActionModel;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
@@ -57,7 +57,7 @@ public class TouchBarView extends View {
 
     private ActionModel eventTouch;
     private ActionModel eventHover;
-    private AccessibilityServiceKeyEvent accessibilityService;
+    private AccessibilityServiceGesture accessibilityService;
     private boolean isLandscapf = false;
     private boolean gameOptimization = false;
 
@@ -164,7 +164,7 @@ public class TouchBarView extends View {
         this.setLayoutParams(lp);
     }
 
-    void setEventHandler(ActionModel shortTouch, ActionModel touchHover, final AccessibilityServiceKeyEvent context) {
+    void setEventHandler(ActionModel shortTouch, ActionModel touchHover, final AccessibilityServiceGesture context) {
         this.eventTouch = shortTouch;
         this.eventHover = touchHover;
         this.accessibilityService = context;

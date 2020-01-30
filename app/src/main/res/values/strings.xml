@@ -41,8 +41,8 @@
     <string name="overscan_guide_desc">通过USB调试执行以下代码，并重启本应用。软件会帮你自动禁用系统手势~</string>
     <string name="animation_mode">动画模式</string>
     <string name="animation_mode_default">默认动画</string>
-    <string name="animation_mode_basic">基本动画</string>
-    <string name="animation_mode_custom">定制动画</string>
+    <string name="animation_mode_basic">定制动画1</string>
+    <string name="animation_mode_custom">定制动画2</string>
     <string name="animation_mode_desc">使用非默认的动画模式，需要授权本应用“后台运行”、“后台弹出界面”等权限，否则可能操作无反应</string>
     <string name="game_optimization">游戏防误触</string>
     <string name="game_optimization_desc">横屏时降低小白条高度；其它边缘手势则需要重复手势以确认</string>
@@ -79,42 +79,4 @@
     <string name="pressure_config">设置压感力度</string>
     <string name="pressure_config_desc">设置小白条按压手势触发力度，但并非所有设备都支持压感</string>
 
-    <string-array name="app_switch_black_list">
-        <item>android</item>
-        <item>com.android.systemui</item>
-        <item>com.miui.home</item>
-        <item>com.miui.freeform</item>
-        <item>com.miui.touchassistant</item>
-        <item>com.miui.contentextension</item>
-        <item>com.miui.systemAdSolution</item>
-        <item>com.miui.securitycenter</item>
-        <item>com.omarea.vtools</item>
-        <item>com.omarea.filter</item>
-        <item>com.omarea.gesture</item>
-        <item>com.zbar.lib</item>
-        <item>eu.chainfire.supersu</item>
-        <item>dev.nick.app.screencast</item>
-        <item>eu.chainfire.perfmon</item>
-        <item>com.c4x.roundcorner</item>
-        <item>com.sohu.inputmethod.sogou.xiaomi</item>
-        <item>com.sohu.inputmethod.sogou</item>
-        <item>com.tencent.gamehelper.smoba</item>
-        <item>com.miui.systemadsolution</item>
-        <item>com.waterdaaan.cpufloat</item>
-        <item>com.miui.contentextension</item>
-        <item>com.miui.systemAdSolution</item>
-        <item>com.sec.app.screenrecorder</item>
-        <item>com.cyngn.screencast</item>
-        <item>com.lbe.security.miui</item>
-        <item>com.bst.airmessage</item>
-        <item>com.gamebench.metricscollector</item>
-        <item>com.samsung.android.game.gametools</item>
-        <item>com.samsung.android.app.cocktailbarservice</item>
-        <item>com.samsung.android.app.assistantmenu</item>
-        <item>com.samsung.android.app.aodservice</item>
-        <item>com.samsung.android.MtpApplication</item>
-        <item>com.android.vpndialogs</item>
-        <item>com.android.documentsui</item>
-        <item>com.android.wallpapercropper</item>
-    </string-array>
 </resources>

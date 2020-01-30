@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.Toast;
 
-import com.omarea.gesture.AccessibilityServiceKeyEvent;
+import com.omarea.gesture.AccessibilityServiceGesture;
 import com.omarea.gesture.ActionModel;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
@@ -52,7 +52,7 @@ public class ThreeSectionView extends View {
     private ActionModel eventCenterHover;
     private ActionModel eventRightSlide;
     private ActionModel eventRightHover;
-    private AccessibilityServiceKeyEvent accessibilityService;
+    private AccessibilityServiceGesture accessibilityService;
     private boolean isLandscapf = false;
     private boolean gameOptimization = false;
 
@@ -166,7 +166,7 @@ public class ThreeSectionView extends View {
         this.setLayoutParams(lp);
     }
 
-    void setEventHandler(ActionModel leftSlide, ActionModel leftHover, ActionModel centerSlide, ActionModel centerHover, ActionModel rightSlide, ActionModel rightHover, final AccessibilityServiceKeyEvent context) {
+    void setEventHandler(ActionModel leftSlide, ActionModel leftHover, ActionModel centerSlide, ActionModel centerHover, ActionModel rightSlide, ActionModel rightHover, final AccessibilityServiceGesture context) {
         this.eventLeftSlide = leftSlide;
         this.eventLeftHover = leftHover;
         this.eventCenterSlide = centerSlide;

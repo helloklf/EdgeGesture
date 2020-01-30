@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 public class Recents {
     private final ArrayList<String> recents = new ArrayList<>();
-    private final int sizeLimit = 60;
     // TODO:关闭辅助服务时清理以下数据
     // 已经确保可以打开的应用
     public ArrayList<String> whiteList = new ArrayList<>();
@@ -14,9 +13,8 @@ public class Recents {
     public ArrayList<String> blackList = new ArrayList<String>() {
     };
 
-    // 忽略的应用
-    public ArrayList<String> ignoreApps = null;
     public ArrayList<String> inputMethods = null;
+    public ArrayList<String> launcherApps = null;
     private int index = -1;
     private String currentTop = "";
 
@@ -36,12 +34,6 @@ public class Recents {
             int searchResult = recents.indexOf(packageName);
             if (searchResult > -1) {
                 recents.remove(searchResult);
-            }
-            if (recents.size() >= sizeLimit) {
-                recents.remove(0);
-                if (index >= recents.size()) {
-                    index = recents.size() - 1;
-                }
             }
 
             if (index > -1) {
@@ -83,7 +75,7 @@ public class Recents {
 
             ArrayList<String> lostedItems = new ArrayList<>();
             for (String recent : recents) {
-                if (items.indexOf(recent) < 0) {
+                if (items.indexOf(recent) < 0 && !launcherApps.contains(recent)) {
                     lostedItems.add(recent);
                 }
             }

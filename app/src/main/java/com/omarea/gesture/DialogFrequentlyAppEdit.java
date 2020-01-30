@@ -26,10 +26,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class DialogFrequentlyAppEdit {
-    private AccessibilityServiceKeyEvent accessibilityService;
+    private AccessibilityServiceGesture accessibilityService;
 
-    public DialogFrequentlyAppEdit(AccessibilityServiceKeyEvent accessibilityServiceKeyEvent) {
-        accessibilityService = accessibilityServiceKeyEvent;
+    public DialogFrequentlyAppEdit(AccessibilityServiceGesture accessibilityServiceGesture) {
+        accessibilityService = accessibilityServiceGesture;
     }
 
     private WindowManager.LayoutParams getLayoutParams() {
