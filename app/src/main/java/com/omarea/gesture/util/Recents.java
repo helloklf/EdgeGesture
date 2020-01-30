@@ -1,6 +1,7 @@
 package com.omarea.gesture.util;
 
 import android.content.Context;
+import android.content.Intent;
 
 import java.util.ArrayList;
 
@@ -75,7 +76,7 @@ public class Recents {
 
             ArrayList<String> lostedItems = new ArrayList<>();
             for (String recent : recents) {
-                if (items.indexOf(recent) < 0 && !launcherApps.contains(recent)) {
+                if (!recent.equals(Intent.CATEGORY_HOME) && items.indexOf(recent) < 0) {
                     lostedItems.add(recent);
                 }
             }
