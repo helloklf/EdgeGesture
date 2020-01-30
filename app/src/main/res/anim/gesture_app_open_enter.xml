@@ -4,9 +4,9 @@
     android:zAdjustment="top">
     <alpha
         android:duration="@android:integer/config_mediumAnimTime"
-        android:interpolator="@android:anim/decelerate_interpolator"
         android:fillAfter="true"
         android:fromAlpha="0.4"
+        android:interpolator="@android:anim/decelerate_interpolator"
         android:toAlpha="1" />
     <translate
         android:duration="@android:integer/config_shortAnimTime"

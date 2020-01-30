@@ -14,8 +14,8 @@
         android:toYScale="1" />
     <alpha
         android:duration="350"
-        android:interpolator="@android:anim/accelerate_interpolator"
         android:fillAfter="true"
         android:fromAlpha="0.2"
+        android:interpolator="@android:anim/accelerate_interpolator"
         android:toAlpha="1" />
 </set>

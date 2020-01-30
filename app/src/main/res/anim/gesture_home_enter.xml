@@ -20,8 +20,8 @@
         android:toYScale="1" />
     <alpha
         android:duration="@android:integer/config_longAnimTime"
-        android:interpolator="@android:anim/linear_interpolator"
         android:fillAfter="true"
         android:fromAlpha="0"
+        android:interpolator="@android:anim/linear_interpolator"
         android:toAlpha="1" />
 </set>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <set xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shareInterpolator="false"
     android:duration="@android:integer/config_mediumAnimTime"
+    android:shareInterpolator="false"
     android:zAdjustment="top">
     <translate
         android:fillAfter="true"
@@ -18,8 +18,8 @@
         android:toXScale="0.99"
         android:toYScale="0.99" />
     <alpha
-        android:interpolator="@android:anim/linear_interpolator"
         android:fillAfter="true"
         android:fromAlpha="1"
+        android:interpolator="@android:anim/linear_interpolator"
         android:toAlpha="0.1" />
 </set>
