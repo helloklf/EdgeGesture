@@ -223,7 +223,6 @@ public class TouchBarView extends View {
                     return false;
                 }
                 default: {
-                    Log.d("MotionEvent", "com.omarea.gesture OTHER" + event.getAction());
                 }
             }
         } else {

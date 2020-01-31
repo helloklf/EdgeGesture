@@ -49,16 +49,13 @@ public class ScreenColor1 {
                             updateTime = System.currentTimeMillis();
                             long start = System.currentTimeMillis();
                             if (new ScreenColor1().screenIsLightColor()) {
-                                Log.d(">>>>", "变黑色");
                                 GlobalState.iosBarColor = Color.BLACK;
                             } else {
-                                Log.d(">>>>", "变白色");
                                 GlobalState.iosBarColor = Color.WHITE;
                             }
                             if (GlobalState.updateBar != null) {
                                 GlobalState.updateBar.run();
                             }
-                            Log.d(">>>>", "time " + (System.currentTimeMillis() - start));
                             updateTime = -1;
                         } catch (Exception ignored) {
                         }
@@ -91,8 +88,6 @@ public class ScreenColor1 {
         int r = Color.red(pixel);
         int g = Color.green(pixel);
         int b = Color.blue(pixel);
-
-        Log.d(">>>>", "rgb(" + r + "," + g + "," + b + ")");
 
         return (r > 180 && g > 180 && b > 180);
     }
@@ -146,8 +141,6 @@ public class ScreenColor1 {
             if (b == -1) {
                 b = 255;
             }
-            Log.d(">>>>", "raw:" + bytes.length);
-            Log.d(">>>>", "raw rgba(" + r + "," + g + "," + b + "," + a + ")");
             return Color.argb(a, r, g, b);
         }
     }
@@ -194,14 +187,11 @@ public class ScreenColor1 {
                         break;
                     }
                 }
-                Log.d(">>>>", "frame end");
             } catch (final IOException e) {
-                Log.d(">>>>", "frame IOException");
                 exec.destroy();
                 exec = null;
             }
         } catch (IOException e) {
-            Log.d(">>>>", "frame IOException");
             exec.destroy();
             exec = null;
         }

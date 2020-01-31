@@ -52,7 +52,6 @@ public class ScreenColor {
                     } catch (Exception ignored) {
                     }
                     updateTime = -1;
-                    Log.d(">>>>", "time " + (System.currentTimeMillis() - start));
                 } catch (Exception ignored) {
                 }
                 notifyed = false;
@@ -86,7 +85,6 @@ public class ScreenColor {
                 outputStream.flush();
 
             } catch (IOException e) {
-                Log.d(">>>>", "frame IOException");
                 exec.destroy();
                 exec = null;
             }
@@ -226,10 +224,8 @@ public class ScreenColor {
             }
 
             if (lightPixelCount > darkPixelCount) {
-                Log.d(">>>>", "变黑色 " + "light:dark = " + lightPixelCount + ":" + darkPixelCount);
                 GlobalState.iosBarColor = Color.BLACK;
             } else {
-                Log.d(">>>>", "变白色 " + "light:dark = " + lightPixelCount + ":" + darkPixelCount);
                 GlobalState.iosBarColor = Color.WHITE;
             }
 
@@ -305,7 +301,6 @@ public class ScreenColor {
                     }
                 }
             } catch (final IOException e) {
-                Log.d(">>>>", "frame IOException");
             }
         }
     }

@@ -1,10 +1,12 @@
 package com.omarea.gesture.util;
 
 import android.accessibilityservice.AccessibilityService;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.omarea.gesture.AccessibilityServiceGesture;
@@ -40,6 +42,7 @@ public class Handlers {
     final public static int CUSTOM_ACTION_APP_WINDOW = 1000002;
     final public static int CUSTOM_ACTION_SHELL = 1000006;
     final public static int CUSTOM_ACTION_QUICK = 1000009;
+    final public static int OMAREA_FILTER_SCREENSHOT = 1100000;
 
     private static SharedPreferences config;
     private static SharedPreferences configEx;
@@ -77,6 +80,7 @@ public class Handlers {
         }
         add(new ActionModel(CUSTOM_ACTION_SHELL, "EX-运行脚本"));
         add(new ActionModel(CUSTOM_ACTION_QUICK, "EX-常用应用"));
+        add(new ActionModel(OMAREA_FILTER_SCREENSHOT, "屏幕滤镜-正常截图"));
     }}.toArray(new ActionModel[0]);
 
     private static Process rootProcess = null;
@@ -87,7 +91,6 @@ public class Handlers {
     // 由于Google限制，再按下Home键以后，后台应用如果想要打开Activity则需要等待5秒，参考 stopAppSwitches 相关逻辑
     // 这导致应用切换手势和打开应用的操作变得体验很差
     // 目前还没找到解决办法
-
     public static void executeVirtualAction(
             final AccessibilityServiceGesture accessibilityService,
             final ActionModel action, float touchRawX, float touchRawY) {
@@ -153,10 +156,26 @@ public class Handlers {
                 openQuickPanel(accessibilityService, touchRawX, touchRawY);
                 break;
             }
+            case OMAREA_FILTER_SCREENSHOT: {
+                omareaFilterScreenShot(accessibilityService);
+                break;
+            }
             default: {
                 accessibilityService.performGlobalAction(action.actionCode);
                 break;
             }
+        }
+    }
+
+    private static void omareaFilterScreenShot(final AccessibilityServiceGesture accessibilityServiceGesture) {
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setComponent(new ComponentName("com.omarea.filter", "com.omarea.filter.ScreenCapActivity"));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            accessibilityServiceGesture.startActivity(intent);
+        } catch (Exception ex) {
+            Toast.makeText(accessibilityServiceGesture, "[正常截图]是我另一款软件(屏幕滤镜)的功能，你似乎并没有在使用那款软件！", Toast.LENGTH_LONG).show();
         }
     }
 

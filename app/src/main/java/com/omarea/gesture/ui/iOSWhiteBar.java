@@ -138,7 +138,7 @@ public class iOSWhiteBar {
         params.y = originY;
 
         params.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
-        params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS | WindowManager.LayoutParams.FLAG_LAYOUT_IN_OVERSCAN;
+        params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE; // | WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS | WindowManager.LayoutParams.FLAG_LAYOUT_IN_OVERSCAN;
 
         mWindowManager.addView(view, params);
 
@@ -426,8 +426,6 @@ public class iOSWhiteBar {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event != null) {
-                    String text = "Pressure:" + event.getPressure() + "  size:" + event.getSize();
-                    Log.d("MTE", text);
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN: {
                             return onTouchDown(event);
@@ -446,7 +444,6 @@ public class iOSWhiteBar {
                             return false;
                         }
                         default: {
-                            Log.d("MotionEvent", "com.omarea.gesture OTHER" + event.getAction());
                         }
                     }
                 } else {

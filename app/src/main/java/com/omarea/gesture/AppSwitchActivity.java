@@ -83,8 +83,8 @@ public class AppSwitchActivity extends Activity {
                         homeAnim = anim2 ? R.anim.gesture_next_enter_2 : R.anim.gesture_next_enter;
                         appAnim = anim2 ? R.anim.gesture_next_exit_2 : R.anim.gesture_next_exit;
                     } else {
-                        homeAnim = anim2 ? R.anim.gesture_home_enter : R.anim.gesture_home_basic;
-                        appAnim = anim2 ? R.anim.gesture_app_exit : R.anim.gesture_app_exit_basic;
+                        homeAnim = anim2 ? R.anim.gesture_back_home_2 : R.anim.gesture_back_home;
+                        appAnim = anim2 ? R.anim.gesture_app_exit_2 : R.anim.gesture_app_exit;
                     }
                     ActivityOptions activityOptions = ActivityOptions.makeCustomAnimation(this.getApplicationContext(), homeAnim, appAnim);
                     // 很奇怪，在三星手机的OneUI（Android P）系统上，必须先overridePendingTransition再启动startActivity方可覆盖动画
