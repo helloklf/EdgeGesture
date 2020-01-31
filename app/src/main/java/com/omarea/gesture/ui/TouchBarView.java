@@ -12,13 +12,11 @@ import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.Toast;
-
 import com.omarea.gesture.AccessibilityServiceGesture;
 import com.omarea.gesture.ActionModel;
 import com.omarea.gesture.R;
@@ -181,8 +179,8 @@ public class TouchBarView extends View {
                 }
             } else if (barPosition == LEFT || barPosition == RIGHT) {
                 lp.width = FLIP_DISTANCE;
-                if (touchStartY < effectWidth * 0.8) {
-                    touchStartY += effectWidth * 0.8;
+                if (touchStartY < effectWidth) {
+                    touchStartY = effectWidth;
                 }
             }
             this.setLayoutParams(lp);
@@ -371,6 +369,7 @@ public class TouchBarView extends View {
 
         va.setDuration(200);
         va.setInterpolator(new AccelerateInterpolator());
+        va.setStartDelay(100);
         va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {

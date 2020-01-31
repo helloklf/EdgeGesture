@@ -177,7 +177,6 @@ public class ScreenColor1 {
                 while ((count = bufferedInputStream.read(tempBuffer)) > 0) {
                     totalCount += count;
                     if (count > byteBuffer.remaining()) {
-                        Log.e(">>>>", "" + totalCount);
                         exec.destroy();
                         byteBuffer.put(tempBuffer, 0, byteBuffer.remaining());
                     } else {

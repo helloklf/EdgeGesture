@@ -78,7 +78,6 @@ public class ScreenColor {
                     new ReadThread(exec.getInputStream()).start();
                 }
 
-                Log.e(">>>>", "screencap");
                 OutputStream outputStream = exec.getOutputStream();
                 outputStream.write("screencap 2> /dev/null\n".getBytes());
 
@@ -98,9 +97,6 @@ public class ScreenColor {
         }
         ScreenColor.hasNext = true;
 
-        if (thread != null && !thread.isAlive()) {
-            Log.e(">>>> ", " 获取线程状态有点奇怪");
-        }
         if (thread != null && thread.isAlive() && !thread.isInterrupted()) {
             synchronized (threadRun) {
                 if (!notifyed && (thread.getState() == Thread.State.WAITING || thread.getState() == Thread.State.TIMED_WAITING)) {
@@ -119,7 +115,6 @@ public class ScreenColor {
     public static void stopProcess() {
         if (thread != null) {
             try {
-                Log.e(">>>>", "分辨率改变重启取色进程");
                 thread.interrupt();
                 thread = null;
                 notifyed = false;
@@ -209,7 +204,6 @@ public class ScreenColor {
 
         private void setBarColor(byte[] bytes) {
             if (bytes.length == 0) {
-                Log.e(">>>>", "Size is Zero");
                 return;
             }
 
