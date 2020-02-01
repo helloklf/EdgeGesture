@@ -138,7 +138,26 @@
                     android:padding="10dp"
                     android:scaleType="centerInside"
                     android:src="@drawable/gesture_disable"
-                    android:tint="#aaa" />
+                    android:tint="?android:colorAccent" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Switch
+                    android:id="@+id/app_switch_home"
+                    style="@style/card_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/app_switch_home" />
+
+                <TextView
+                    style="@style/switch_desc"
+                    android:layout_marginTop="6dp"
+                    android:text="@string/app_switch_home_desc" />
             </LinearLayout>
 
             <LinearLayout

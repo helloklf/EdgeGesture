@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,6 +22,8 @@ import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.StartActivity;
 import com.omarea.gesture.shell.KeepShellPublic;
+import com.omarea.gesture.util.GlobalState;
+import com.omarea.gesture.util.Recents;
 
 public class FragmentOther extends FragmentSettingsBase {
     @Override
@@ -95,18 +98,32 @@ public class FragmentOther extends FragmentSettingsBase {
             }
         });
 
+        // 切换到桌面
+        Switch app_switch_home = getActivity().findViewById(R.id.app_switch_home);
+        app_switch_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                config.edit().putBoolean(SpfConfig.SWITCH_TO_HOME, ((Switch)v).isChecked()).apply();
+                try {
+                    Intent intent = new Intent(getString(R.string.app_switch_changed));
+                    getActivity().sendBroadcast(intent);
+                } catch (Exception ignored) {
+                }
+            }
+        });
+        app_switch_home.setChecked(config.getBoolean(SpfConfig.SWITCH_TO_HOME, SpfConfig.SWITCH_TO_HOME_DEFAULT));
+
+        // 压感设置
         getActivity().findViewById(R.id.other_pressure_config).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 pressureConfig();
             }
         });
-
         updateView();
     }
 
     private void updateView() {
-        Activity activity = getActivity();
         setHomeAnimationText();
     }
 

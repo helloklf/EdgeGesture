@@ -126,6 +126,9 @@ public class SpfConfig {
     // 硬件加速
     public static String HARDWARE_ACCELERATED = "HARDWARE_ACCELERATED";
     public static boolean HARDWARE_ACCELERATED_DEFAULT = false;
+    // 切换到桌面
+    public static String SWITCH_TO_HOME = "SWITCH_TO_HOME";
+    public static boolean SWITCH_TO_HOME_DEFAULT = true;
     // 三星优化(自动禁用系统手势)
     public static String SAMSUNG_OPTIMIZE = "SAMSUNG_OPTIMIZE";
     public static boolean SAMSUNG_OPTIMIZE_DEFAULT = false;
