@@ -300,7 +300,6 @@ public class iOSWhiteBar {
                     bar.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            // 上滑悬停
                             if (isTouchDown && !isGestureCompleted && lastTouchDown == downTime) {
                                 if (Math.abs(touchStartRawX - touchCurrentRawX) < slideThresholdX && Math.abs(touchStartRawY - touchCurrentRawY) < slideThresholdY) {
                                     int pressureAction = config.getInt(SpfConfig.IOS_BAR_PRESS, SpfConfig.IOS_BAR_PRESS_DEFAULT);

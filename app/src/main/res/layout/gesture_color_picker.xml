@@ -26,6 +26,8 @@
                 android:text="A" />
 
             <SeekBar
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
                 android:id="@+id/color_alpha"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -49,6 +51,8 @@
                 android:text="R" />
 
             <SeekBar
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
                 android:id="@+id/color_red"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -73,6 +77,8 @@
                 android:text="G" />
 
             <SeekBar
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
                 android:id="@+id/color_green"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -96,6 +102,8 @@
                 android:text="B" />
 
             <SeekBar
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
                 android:id="@+id/color_blue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
