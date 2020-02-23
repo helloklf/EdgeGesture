@@ -2,6 +2,7 @@ package com.omarea.gesture.util;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -26,9 +27,9 @@ public class Recents {
         }
     }
 
-    public boolean addRecent(String packageName) {
+    public void addRecent(String packageName) {
         if (currentTop.equals(packageName)) {
-            return false;
+            return;
         }
 
         synchronized (recents) {
@@ -36,6 +37,7 @@ public class Recents {
             if (searchResult > -1) {
                 recents.remove(searchResult);
             }
+            // Log.d(">>>>", "add " + index + "  " + packageName);
 
             if (index > -1) {
                 recents.add(index, packageName);
@@ -44,11 +46,19 @@ public class Recents {
             }
             index = recents.indexOf(packageName);
             currentTop = packageName;
+
+            /*
+            StringBuilder packages = new StringBuilder("  ");
+            for (String item:recents) {
+                packages.append(item);
+                packages.append(", ");
+            }
+            Log.d(">>>>", packages.toString());
+            */
         }
-        return true;
     }
 
-    public void setRecents(ArrayList<String> items, Context context) {
+    void setRecents(ArrayList<String> items, Context context) {
         synchronized (recents) {
             /*
             if (recents.size() < 4) {
@@ -95,36 +105,47 @@ public class Recents {
         }
     }
 
-    public String getCurrent() {
+    String getCurrent() {
         return currentTop;
     }
 
-    public String movePrevious() {
+    String movePrevious(boolean switchToHome) {
+        String previous;
         synchronized (recents) {
             if (index < recents.size() - 1) {
                 index += 1;
-                return recents.get(index);
+                previous = recents.get(index);
             } else if (recents.size() > 0) {
                 index = 0;
-                return recents.get(0);
+                previous = recents.get(0);
             } else {
-                return null;
+                previous = null;
             }
         }
+        if (Intent.CATEGORY_HOME.equals(previous) && !switchToHome && recents.size() > 1) {
+            return movePrevious(switchToHome);
+        }
+        return previous;
     }
 
-    public String moveNext() {
+    String moveNext(boolean switchToHome) {
+        String next;
         synchronized (recents) {
             if (index > 0) {
                 index -= 1;
-                return recents.get(index);
+                next = recents.get(index);
             } else if (recents.size() > 0) {
                 int size = recents.size();
                 index = size - 1;
-                return recents.get(index);
+                next = recents.get(index);
             } else {
-                return null;
+                next = null;
             }
         }
+        if (Intent.CATEGORY_HOME.equals(next) && !switchToHome && recents.size() > 1) {
+            return moveNext(switchToHome);
+        }
+
+        return next;
     }
 }

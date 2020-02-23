@@ -18,6 +18,7 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.util.ForceHideNavBarThread;
@@ -69,6 +70,21 @@ public class FragmentBasic extends FragmentSettingsBase {
         bindSeekBar(R.id.bar_hover_time, SpfConfig.CONFIG_HOVER_TIME, SpfConfig.CONFIG_HOVER_TIME_DEFAULT, true);
         bindSeekBar(R.id.vibrator_time, SpfConfig.VIBRATOR_TIME, SpfConfig.VIBRATOR_TIME_DEFAULT, true);
         bindSeekBar(R.id.vibrator_amplitude, SpfConfig.VIBRATOR_AMPLITUDE, SpfConfig.VIBRATOR_AMPLITUDE_DEFAULT, true);
+        bindSeekBar(R.id.vibrator_time_long, SpfConfig.VIBRATOR_TIME_LONG, SpfConfig.VIBRATOR_TIME_LONG_DEFAULT, true);
+        bindSeekBar(R.id.vibrator_amplitude_long, SpfConfig.VIBRATOR_AMPLITUDE_LONG, SpfConfig.VIBRATOR_AMPLITUDE_LONG_DEFAULT, true);
+
+        // 震动 跟随系统默认
+        final View vibrator_custom = getActivity().findViewById(R.id.vibrator_custom);
+        final Switch vibrator_use_system = getActivity().findViewById(R.id.vibrator_use_system);
+        vibrator_use_system.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                config.edit().putBoolean(SpfConfig.VIBRATOR_USE_SYSTEM, vibrator_use_system.isChecked()).apply();
+                vibrator_custom.setVisibility(vibrator_use_system.isChecked() ? View.GONE : View.VISIBLE);
+            }
+        });
+        vibrator_use_system.setChecked(config.getBoolean(SpfConfig.VIBRATOR_USE_SYSTEM, SpfConfig.VIBRATOR_USE_SYSTEM_DEFAULT));
+        vibrator_custom.setVisibility(vibrator_use_system.isChecked() ? View.GONE : View.VISIBLE);
 
         if (Build.MANUFACTURER.equals("samsung") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             if (canWriteGlobalSettings()) {

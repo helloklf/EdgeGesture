@@ -8,9 +8,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
-import android.os.Build;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,6 +16,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.widget.Toast;
 import com.omarea.gesture.AccessibilityServiceGesture;
 import com.omarea.gesture.ActionModel;
+import com.omarea.gesture.Gesture;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.util.Handlers;
@@ -48,7 +46,6 @@ public class TouchBarView extends View {
     private boolean isGestureCompleted = false;
     private float iconRadius = dp2px(context, 8f);
     private float currentGraphSize = 0f;
-    private Vibrator vibrator = (Vibrator) (context.getSystemService(Context.VIBRATOR_SERVICE));
     private boolean vibratorRun = false;
     private boolean drawIcon = true; // 是否绘制图标
     private float flingValue = dp2px(context, 3f); // 小于此值认为是点击而非滑动
@@ -110,21 +107,6 @@ public class TouchBarView extends View {
     private void onTouchHover() {
         if (accessibilityService != null) {
             performGlobalAction(eventHover);
-        }
-    }
-
-    void touchVibrator() {
-        if (vibrator.hasVibrator()) {
-            vibrator.cancel();
-            int time = config.getInt(SpfConfig.VIBRATOR_TIME, SpfConfig.VIBRATOR_TIME_DEFAULT);
-            int amplitude = config.getInt(SpfConfig.VIBRATOR_AMPLITUDE, SpfConfig.VIBRATOR_AMPLITUDE_DEFAULT);
-            if (time > 0 && amplitude > 0) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    vibrator.vibrate(VibrationEffect.createOneShot(time, amplitude));
-                } else {
-                    vibrator.vibrate(new long[]{0, time, amplitude}, -1);
-                }
-            }
         }
     }
 
@@ -278,7 +260,8 @@ public class TouchBarView extends View {
                         if (isTouchDown && !isGestureCompleted && currentTime == gestureStartTime) {
                             isLongTimeGesture = true;
                             if (vibratorRun) {
-                                touchVibrator();
+                                Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE_HOVER, getRootView());
+
                                 vibratorRun = false;
                             }
                             if (barPosition == BOTTOM) {

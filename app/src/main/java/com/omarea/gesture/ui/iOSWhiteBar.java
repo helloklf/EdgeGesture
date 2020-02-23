@@ -23,6 +23,7 @@ import android.view.animation.OvershootInterpolator;
 
 import com.omarea.gesture.AccessibilityServiceGesture;
 import com.omarea.gesture.ActionModel;
+import com.omarea.gesture.Gesture;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.shell.ScreenColor;
@@ -36,7 +37,6 @@ public class iOSWhiteBar {
     private AccessibilityServiceGesture accessibilityService;
     private SharedPreferences config;
     private Boolean isLandscapf;
-    private Vibrator vibrator;
     private float pressure = 0;
 
     float pressureMin;
@@ -254,7 +254,8 @@ public class iOSWhiteBar {
 
                 if (pressureMin != SpfConfig.IOS_BAR_PRESS_MIN_DEFAULT && pressure > pressureMin) {
                     if (vibratorRun) {
-                        touchVibrator(true);
+                        Gesture.vibrate(Gesture.VibrateMode.VIBRATE_PRESS, view);
+
                         vibratorRun = false;
                     }
                     performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_PRESS, SpfConfig.IOS_BAR_PRESS_DEFAULT));
@@ -306,7 +307,7 @@ public class iOSWhiteBar {
                                     if (pressureAction != SpfConfig.IOS_BAR_TOUCH_DEFAULT) {
                                         isLongTimeGesture = true;
                                         if (vibratorRun) {
-                                            touchVibrator(true);
+                                            Gesture.vibrate(Gesture.VibrateMode.VIBRATE_PRESS, view);
                                             vibratorRun = false;
                                         }
                                         performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_PRESS, SpfConfig.IOS_BAR_PRESS_DEFAULT));
@@ -344,7 +345,7 @@ public class iOSWhiteBar {
                                 if (isTouchDown && !isGestureCompleted && currentTime == gestureStartTime) {
                                     isLongTimeGesture = true;
                                     if (vibratorRun) {
-                                        touchVibrator();
+                                        Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE_HOVER, view);
                                         vibratorRun = false;
                                     }
                                     performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_UP_HOVER, SpfConfig.IOS_BAR_SLIDE_UP_HOVER_DEFAULT));
@@ -380,13 +381,19 @@ public class iOSWhiteBar {
 
                 if (Math.abs(moveX) > flingValue || Math.abs(moveY) > flingValue) {
                     if (moveY > FLIP_DISTANCE) {
-                        if (isLongTimeGesture) // 上滑悬停
+                        if (isLongTimeGesture) { // 上滑悬停
+                            Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE_HOVER, view);
                             performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_UP_HOVER, SpfConfig.IOS_BAR_SLIDE_UP_HOVER_DEFAULT));
-                        else // 上滑
+                        }
+                        else { // 上滑
+                            // Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);
                             performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_UP, SpfConfig.IOS_BAR_SLIDE_UP_DEFAULT));
+                        }
                     } else if (moveX < -FLIP_DISTANCE) { // 向左滑动
+                        // Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);
                         performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_LEFT, SpfConfig.IOS_BAR_SLIDE_LEFT_DEFAULT));
                     } else if (moveX > FLIP_DISTANCE) { // 向右滑动
+                        // Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);
                         performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_RIGHT, SpfConfig.IOS_BAR_SLIDE_RIGHT_DEFAULT));
                     }
                 } else {
@@ -396,14 +403,14 @@ public class iOSWhiteBar {
                         performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_PRESS, SpfConfig.IOS_BAR_PRESS_DEFAULT));
                         int action = config.getInt(SpfConfig.IOS_BAR_PRESS, SpfConfig.IOS_BAR_PRESS_DEFAULT);
                         if (action != SpfConfig.IOS_BAR_PRESS_DEFAULT) {
-                            touchVibrator(true);
+                            Gesture.vibrate(Gesture.VibrateMode.VIBRATE_PRESS, view);
                         }
                     } else {
                         // 轻触
                         performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_TOUCH, SpfConfig.IOS_BAR_TOUCH_DEFAULT));
                         int action = config.getInt(SpfConfig.IOS_BAR_TOUCH, SpfConfig.IOS_BAR_TOUCH_DEFAULT);
                         if (action != SpfConfig.IOS_BAR_TOUCH_DEFAULT) {
-                            touchVibrator();
+                            Gesture.vibrate(Gesture.VibrateMode.VIBRATE_CLICK, view);
                         }
                     }
                 }
@@ -494,30 +501,5 @@ public class iOSWhiteBar {
         }
 
         return view;
-    }
-
-    private void touchVibrator() {
-        touchVibrator(false);
-    }
-
-    private void touchVibrator(boolean longTime) {
-        if (vibrator == null) {
-            vibrator = (Vibrator) (accessibilityService.getSystemService(Context.VIBRATOR_SERVICE));
-        }
-        if (vibrator.hasVibrator()) {
-            vibrator.cancel();
-            int time = config.getInt(SpfConfig.VIBRATOR_TIME, SpfConfig.VIBRATOR_TIME_DEFAULT);
-            if (longTime) {
-                time = (int) (time * 1.5);
-            }
-            int amplitude = config.getInt(SpfConfig.VIBRATOR_AMPLITUDE, SpfConfig.VIBRATOR_AMPLITUDE_DEFAULT);
-            if (time > 0 && amplitude > 0) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    vibrator.vibrate(VibrationEffect.createOneShot(time, amplitude));
-                } else {
-                    vibrator.vibrate(new long[]{0, time, amplitude}, -1);
-                }
-            }
-        }
     }
 }

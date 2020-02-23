@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.omarea.gesture.AccessibilityServiceGesture;
 import com.omarea.gesture.ActionModel;
+import com.omarea.gesture.Gesture;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.util.Handlers;
@@ -42,7 +43,6 @@ public class ThreeSectionView extends View {
     private boolean isGestureCompleted = false;
     private float iconRadius = dp2px(context, 8f);
     private float currentGraphSize = 0f;
-    private Vibrator vibrator = (Vibrator) (context.getSystemService(Context.VIBRATOR_SERVICE));
     private boolean vibratorRun = false;
     private float flingValue = dp2px(context, 3f); // 小于此值认为是点击而非滑动
 
@@ -122,21 +122,6 @@ public class ThreeSectionView extends View {
                 performGlobalAction(eventCenterHover);
             } else {
                 performGlobalAction(eventLeftHover);
-            }
-        }
-    }
-
-    void touchVibrator() {
-        if (vibrator.hasVibrator()) {
-            vibrator.cancel();
-            int time = config.getInt(SpfConfig.VIBRATOR_TIME, SpfConfig.VIBRATOR_TIME_DEFAULT);
-            int amplitude = config.getInt(SpfConfig.VIBRATOR_AMPLITUDE, SpfConfig.VIBRATOR_AMPLITUDE_DEFAULT);
-            if (time > 0 && amplitude > 0) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    vibrator.vibrate(VibrationEffect.createOneShot(time, amplitude));
-                } else {
-                    vibrator.vibrate(new long[]{0, time, amplitude}, -1);
-                }
             }
         }
     }
@@ -280,7 +265,7 @@ public class ThreeSectionView extends View {
                         if (isTouchDown && !isGestureCompleted && currentTime == gestureStartTime) {
                             isLongTimeGesture = true;
                             if (vibratorRun) {
-                                touchVibrator();
+                                Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE_HOVER, getRootView());
                                 vibratorRun = false;
                             }
                             onTouchHover();

@@ -23,9 +23,9 @@
         <LinearLayout
             android:id="@+id/overscan_guide"
             style="@style/card_view"
-            android:visibility="gone"
             android:layout_margin="10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="match_parent"
@@ -61,9 +61,9 @@
         <LinearLayout
             android:id="@+id/overscan_options"
             style="@style/card_view"
-            android:visibility="gone"
             android:layout_margin="10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <Switch
                 android:id="@+id/overscan_switch"
@@ -96,8 +96,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
                     android:layout_marginBottom="0dp"
-                    android:text="悬停时长"
                     android:minWidth="80dp"
+                    android:text="悬停时长"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -116,62 +116,143 @@
                 android:text="说明：该设置决定悬停多久才算触发手势，悬停时长调太短可能会导致手势不灵敏，或短滑操作难以触发"
                 android:textColor="#888"
                 android:textSize="11dp" />
+        </LinearLayout>
 
-            <TextView
-                style="@style/card_title"
-                android:layout_marginTop="20dp"
-                android:text="震动反馈" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:minWidth="80dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="时长" />
-
-                <SeekBar
-                    android:id="@+id/vibrator_time"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:max="100" />
-            </LinearLayout>
+        <LinearLayout
+            style="@style/card_view"
+            android:orientation="vertical"
+            android:padding="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:minWidth="80dp"
+                    style="@style/card_title"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="震动反馈" />
+
+                <Switch
+                    android:id="@+id/vibrator_use_system"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="强度" />
-
-                <SeekBar
-                    android:id="@+id/vibrator_amplitude"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:max="255" />
+                    android:text="系统默认 " />
             </LinearLayout>
 
-            <TextView
+            <LinearLayout
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:id="@+id/vibrator_custom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="说明：根据自己的系统调节震动反馈效果，线性马达的时长可以调小，而转子马达由于响应速度较慢，时长必需要更大一些。"
-                android:textColor="#888"
-                android:textSize="11dp" />
+                android:orientation="vertical">
 
+                <TextView
+                    style="@style/card_title"
+                    android:layout_marginTop="20dp"
+                    android:text="轻触/点击" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="40dp"
+                        android:text="时长" />
+
+                    <SeekBar
+                        android:id="@+id/vibrator_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:max="100" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="40dp"
+                        android:text="强度" />
+
+                    <SeekBar
+                        android:id="@+id/vibrator_amplitude"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:max="255" />
+                </LinearLayout>
+
+                <TextView
+                    style="@style/card_title"
+                    android:layout_marginTop="20dp"
+                    android:text="悬停/按压" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="40dp"
+                        android:text="时长" />
+
+                    <SeekBar
+                        android:id="@+id/vibrator_time_long"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:max="100" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="40dp"
+                        android:text="强度" />
+
+                    <SeekBar
+                        android:id="@+id/vibrator_amplitude_long"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:max="255" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="说明：根据自己的系统调节震动反馈效果，线性马达的时长可以调小，而转子马达由于响应速度较慢，时长必需要更大一些。"
+                    android:textColor="#888"
+                    android:textSize="11dp" />
+
+            </LinearLayout>
         </LinearLayout>
 
         <include layout="@layout/gesture_faq_options" />

@@ -48,7 +48,6 @@ public class AccessibilityServiceGesture extends AccessibilityService {
     private SharedPreferences appSwitchBlackList;
     private ContentResolver cr = null;
     private String lastApp = "";
-    private boolean switchToHome = false;
 
     private void startForeground() {
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -192,11 +191,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
                 }
 
                 if (recents.launcherApps.contains(packageNameStr)) {
-                    if (switchToHome) {
-                        recents.addRecent(Intent.CATEGORY_HOME);
-                    } else {
-                        return;
-                    }
+                    recents.addRecent(Intent.CATEGORY_HOME);
                 } else if (!ignored(packageNameStr) && canOpen(packageNameStr) && !appSwitchBlackList.contains(packageNameStr)) {
                     recents.addRecent(packageNameStr);
                 }
@@ -230,7 +225,6 @@ public class AccessibilityServiceGesture extends AccessibilityService {
         super.onServiceConnected();
         if (config == null) {
             config = getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
-            switchToHome = config.getBoolean(SpfConfig.SWITCH_TO_HOME, SpfConfig.SWITCH_TO_HOME_DEFAULT);
         }
         if (appSwitchBlackList == null) {
             appSwitchBlackList = getSharedPreferences(SpfConfig.AppSwitchBlackList, Context.MODE_PRIVATE);
@@ -253,7 +247,6 @@ public class AccessibilityServiceGesture extends AccessibilityService {
                             recents.clear();
                             Toast.makeText(getApplicationContext(), "OK！", Toast.LENGTH_SHORT).show();
                         }
-                        switchToHome = config.getBoolean(SpfConfig.SWITCH_TO_HOME, SpfConfig.SWITCH_TO_HOME_DEFAULT);
                     } else {
                         createPopupView();
                     }

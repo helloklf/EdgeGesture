@@ -56,10 +56,16 @@ public class SpfConfig {
     public static final int CONFIG_HOT_SIDE_WIDTH_DEFAULT = 12; // 侧边热区宽度
     public static final String CONFIG_HOT_BOTTOM_HEIGHT = "CONFIG_HOT_BOTTOM_HEIGHT";
     public static final int CONFIG_HOT_BOTTOM_HEIGHT_DEFAULT = 9; // 底部热区高度
+    public static final String VIBRATOR_USE_SYSTEM = "VIBRATOR_USE_SYSTEM"; // 是否使用系统默认的震动设置
+    public static final boolean VIBRATOR_USE_SYSTEM_DEFAULT = true; // 是否使用系统默认的震动设置 默认值
     public static final String VIBRATOR_TIME = "VIBRATOR_TIME"; // 震动时长
     public static final int VIBRATOR_TIME_DEFAULT = 10; // 震动时长 默认值
     public static final String VIBRATOR_AMPLITUDE = "VIBRATOR_AMPLITUDE"; // 震动强度
     public static final int VIBRATOR_AMPLITUDE_DEFAULT = 255; // 震动强度 默认值
+    public static final String VIBRATOR_TIME_LONG = "VIBRATOR_TIME_LONG"; // 震动时长
+    public static final int VIBRATOR_TIME_LONG_DEFAULT = 16; // 震动时长 默认值
+    public static final String VIBRATOR_AMPLITUDE_LONG = "VIBRATOR_AMPLITUDE_LONG"; // 震动强度
+    public static final int VIBRATOR_AMPLITUDE_LONG_DEFAULT = 255; // 震动强度 默认值
     // iOS小白条开关
     public static final String LANDSCAPE_IOS_BAR = "landscape_ios_bar";
     public static final boolean LANDSCAPE_IOS_BAR_DEFAULT = true;
