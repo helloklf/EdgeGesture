@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Toast;
+
 import java.lang.reflect.Method;
 
 public class AppSwitchActivity extends Activity {

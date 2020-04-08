@@ -108,8 +108,10 @@ public class SpfConfig {
     public static final int IOS_BAR_COLOR_STROKE_DEFAULT = 0xff000000; // 默认描边颜色
     public static final String IOS_BAR_STROKE_SIZE = "ios_bar_stroke_size";
     public static final int IOS_BAR_STROKE_SIZE_DEFAULT = 1; // ?dp
-    public static final String IOS_BAR_MARGIN_BOTTOM = "ios_bar_margin_bottom";
-    public static final int IOS_BAR_MARGIN_BOTTOM_DEFAULT = 9; // ?dp
+    public static final String IOS_BAR_MARGIN_BOTTOM_PORTRAIT = "ios_bar_margin_bottom_portrait";
+    public static final int IOS_BAR_MARGIN_BOTTOM_PORTRAIT_DEFAULT = 9; // ?dp
+    public static final String IOS_BAR_MARGIN_BOTTOM_LANDSCAPE = "ios_bar_margin_bottom_landscape";
+    public static final int IOS_BAR_MARGIN_BOTTOM_LANDSCAPE_DEFAULT = 6; // ?dp
     public static final String IOS_BAR_HEIGHT = "ios_bar_height";
     public static final int IOS_BAR_HEIGHT_DEFAULT = 3; // ?dp
     public static final String IOS_BAR_LOCK_HIDE = "ios_bar_lock_hide";

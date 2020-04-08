@@ -17,13 +17,12 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.omarea.gesture.DialogAppSwitchExclusive;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.StartActivity;
 import com.omarea.gesture.shell.KeepShellPublic;
-import com.omarea.gesture.util.GlobalState;
-import com.omarea.gesture.util.Recents;
 
 public class FragmentOther extends FragmentSettingsBase {
     @Override

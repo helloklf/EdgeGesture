@@ -206,6 +206,32 @@
                     android:id="@+id/ios_bar_color_fadeout_landscape"
                     style="@style/btn_color_picker" />
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:minHeight="30dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="底部间距" />
+
+                <SeekBar
+                    android:id="@+id/ios_bar_margin_bottom_landscape"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="30dp"
+                    android:layout_weight="1"
+                    android:max="30"
+                    android:min="0"
+                    android:paddingStart="6dp"
+                    android:paddingEnd="6dp" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -274,6 +300,32 @@
                     android:id="@+id/ios_bar_color_fadeout_portrait"
                     style="@style/btn_color_picker" />
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:minHeight="30dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="底部间距" />
+
+                <SeekBar
+                    android:id="@+id/ios_bar_margin_bottom_portrait"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="30dp"
+                    android:layout_weight="1"
+                    android:max="30"
+                    android:min="0"
+                    android:paddingStart="6dp"
+                    android:paddingEnd="6dp" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -341,32 +393,6 @@
                 <Button
                     android:id="@+id/ios_bar_color_stroke"
                     style="@style/btn_color_picker" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center_vertical"
-                android:minHeight="30dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:text="底部间距" />
-
-                <SeekBar
-                    android:id="@+id/ios_bar_total_height"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginRight="30dp"
-                    android:layout_weight="1"
-                    android:max="30"
-                    android:min="0"
-                    android:paddingStart="6dp"
-                    android:paddingEnd="6dp" />
             </LinearLayout>
 
             <LinearLayout

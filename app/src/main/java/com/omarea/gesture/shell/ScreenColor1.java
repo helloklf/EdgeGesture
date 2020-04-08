@@ -3,7 +3,6 @@ package com.omarea.gesture.shell;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.util.Log;
 
 import com.omarea.gesture.util.GlobalState;
 

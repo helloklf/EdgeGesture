@@ -18,6 +18,7 @@ import android.widget.Checkable;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
 import com.omarea.gesture.ActionModel;
 import com.omarea.gesture.DialogHandlerEX;
 import com.omarea.gesture.R;

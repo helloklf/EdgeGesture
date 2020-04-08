@@ -1,7 +1,6 @@
 package com.omarea.gesture.shell;
 
 import android.graphics.Color;
-import android.util.Log;
 
 import com.omarea.gesture.util.GlobalState;
 

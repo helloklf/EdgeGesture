@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.omarea.gesture.util.GlobalState;
 
 public class iOSTouchBarView extends View {

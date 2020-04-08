@@ -5,9 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+
 import com.omarea.gesture.util.AppInfo;
 import com.omarea.gesture.util.AppListHelper;
-import com.omarea.gesture.util.Recents;
 
 import java.util.ArrayList;
 import java.util.Set;
