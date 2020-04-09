@@ -94,7 +94,7 @@ public class ScreenColor {
         if (updateTime > -1 && System.currentTimeMillis() - updateTime > 6000) {
             stopProcess();
         }
-        ScreenColor.hasNext = true;
+        ScreenColor.hasNext = hasNext;
 
         if (thread != null && thread.isAlive() && !thread.isInterrupted()) {
             synchronized (threadRun) {
