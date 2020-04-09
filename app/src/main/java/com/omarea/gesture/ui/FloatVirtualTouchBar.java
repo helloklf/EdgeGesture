@@ -89,7 +89,7 @@ public class FloatVirtualTouchBar {
         if (this.iosBarView != null) {
             mWindowManager.removeView(this.iosBarView);
             this.iosBarView = null;
-            GlobalState.iosBarColor = -1;
+            GlobalState.iosBarColor = Integer.MIN_VALUE;
             GlobalState.updateBar = null;
         }
         if (this.bottomView != null) {
