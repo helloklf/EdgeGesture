@@ -23,15 +23,12 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
-
-import com.omarea.gesture.shell.ScreenColor;
 import com.omarea.gesture.ui.FloatVirtualTouchBar;
 import com.omarea.gesture.ui.TouchIconCache;
 import com.omarea.gesture.util.ForceHideNavBarThread;
 import com.omarea.gesture.util.GlobalState;
 import com.omarea.gesture.util.Overscan;
 import com.omarea.gesture.util.Recents;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -181,7 +178,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
                 if (GlobalState.updateBar != null &&
                         !((packageNameStr.equals("com.android.systemui") || (recents.inputMethods.indexOf(packageNameStr) > -1 && recents.inputMethods.indexOf(lastApp) > -1)))) {
                     if (!(packageName.equals("android") || packageName.equals("com.omarea.vtools") || packageName.equals("com.omarea.filter"))) {
-                        ScreenColor.updateBarColor(!isWCC);
+                        WhiteBarColor.updateBarColor(!isWCC);
                     }
 
                     if (isWCC) {
@@ -322,7 +319,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
             if (point.x != GlobalState.displayWidth || point.y != GlobalState.displayHeight) {
                 // 分辨率改变时 屏幕取色重启进程
                 if (GlobalState.displayWidth * GlobalState.displayHeight != point.x * point.y) {
-                    ScreenColor.stopProcess();
+                    WhiteBarColor.updateDisplaySize();
                 }
 
                 GlobalState.displayWidth = point.x;

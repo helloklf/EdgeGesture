@@ -95,7 +95,7 @@ public class iOSTouchBarView extends View {
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if (GlobalState.iosBarColor != -1) {
+        if (GlobalState.iosBarColor != Integer.MIN_VALUE) {
             if (strokeWidth > 0) {
                 p.setStyle(Paint.Style.STROKE);
                 if (GlobalState.iosBarColor == Color.WHITE) {

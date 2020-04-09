@@ -14,3 +14,4 @@
 app/release_mini/*
 app/release/*
 .externalNativeBuild
+*.class

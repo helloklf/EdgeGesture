@@ -1,9 +1,4 @@
-package com.omarea.gesture.shell;
-
-import android.graphics.Color;
-import android.os.Build;
-
-import com.omarea.gesture.util.GlobalState;
+package shell;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -11,7 +6,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 
-@Deprecated
 public class ScreenColor {
     private static final Object threadRun = "";
     private static final Object screencapRead = "";
@@ -74,7 +68,7 @@ public class ScreenColor {
         private void writeCommand() {
             try {
                 if (exec == null) {
-                    exec = Runtime.getRuntime().exec("su");
+                    exec = Runtime.getRuntime().exec("sh");
                     new ReadThread(exec.getInputStream()).start();
                 }
 
@@ -90,12 +84,13 @@ public class ScreenColor {
         }
     }
 
-    public static void updateBarColor(boolean dual) {
+    public static void updateBarColor(boolean hasNext) {
+
         // 如果距离上次执行已经超过6秒，认位颜色获取进程已经崩溃，将其结束重启
         if (updateTime > -1 && System.currentTimeMillis() - updateTime > 6000) {
             stopProcess();
         }
-        hasNext = dual;
+        ScreenColor.hasNext = true;
 
         if (thread != null && thread.isAlive() && !thread.isInterrupted()) {
             synchronized (threadRun) {
@@ -131,7 +126,7 @@ public class ScreenColor {
             private int frameSize;
             private int position;
             private static final int fileHeader = 12; // 文件头部长度
-            private static final int fileFooter = (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) ? 4 : 0; // 文件脚部长度（Android 8.1 即SDK27 以前没有这4Byte！）
+            private static final int fileFooter = 4; // FIXME:文件脚部长度（Android 8.1 即SDK27 以前没有这4Byte！）
             private ByteBuffer buffer; // 真实的缓冲区
             // 除了头部和脚部，则每4Byte(RGBA)代表一个像素，例如左上角第一个像素就是 bytes[16] ~ bytes[19]
 
@@ -218,9 +213,11 @@ public class ScreenColor {
             }
 
             if (lightPixelCount > darkPixelCount) {
-                GlobalState.iosBarColor = Color.BLACK;
+                System.out.println("Gesture ADB Process: iOS White Bar Color Set To {Color.Black}");
+                GlobalState.iosBarColor = 0xFF000000;
             } else {
-                GlobalState.iosBarColor = Color.WHITE;
+                System.out.println("Gesture ADB Process: iOS White Bar Color Set To {Color.White}");
+                GlobalState.iosBarColor = 0xFFFFFFFF;
             }
 
             if (GlobalState.updateBar != null) {

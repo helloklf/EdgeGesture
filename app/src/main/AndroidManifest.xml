@@ -12,8 +12,10 @@
     <uses-permission
         android:name="android.permission.WRITE_SECURE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:usesCleartextTraffic="true"
         android:name=".Gesture"
         android:allowBackup="true"
         android:hardwareAccelerated="false"
