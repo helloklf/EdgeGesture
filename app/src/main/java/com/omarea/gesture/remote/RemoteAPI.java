@@ -1,9 +1,8 @@
 package com.omarea.gesture.remote;
 
-import android.graphics.Color;
 import android.os.Build;
 import android.util.Log;
-
+import com.omarea.gesture.util.GlobalState;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,14 +10,19 @@ import java.net.URL;
 import java.net.URLConnection;
 
 public class RemoteAPI {
-    private static String host = "http://localhost:8888/";
+    private static String host = "http://localhost:31008/";
+
+    public static boolean isOnline() {
+        String result = loadContent("version");
+        return result != null && !result.isEmpty();
+    }
 
     public static String[] getRecents() {
         return loadContent((Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) ? "recent-9" : "recent-10").split("\n");
     }
 
     public static int getBarAutoColor() {
-        String colorStr = loadContent("bar-color");
+        String colorStr = loadContent("bar-color?" + GlobalState.displayWidth + "x" + GlobalState.displayHeight);
         Log.e("GestureRemote", "R " + colorStr);
 
         if (!(colorStr == null || colorStr.isEmpty())) {

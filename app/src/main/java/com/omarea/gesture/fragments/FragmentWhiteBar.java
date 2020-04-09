@@ -53,7 +53,7 @@ public class FragmentWhiteBar extends FragmentSettingsBase {
         setViewBackground(getActivity().findViewById(R.id.ios_bar_color_fadeout_landscape), 0xff888888);
 
         Switch ios_bar_auto_color_root = getActivity().findViewById(R.id.ios_bar_auto_color_root);
-        ios_bar_auto_color_root.setChecked(config.getBoolean(SpfConfig.IOS_BAR_AUTO_COLOR_ROOT, SpfConfig.IOS_BAR_AUTO_COLOR_ROOT_DEFAULT));
+        ios_bar_auto_color_root.setChecked(config.getBoolean(SpfConfig.IOS_BAR_AUTO_COLOR, SpfConfig.IOS_BAR_AUTO_COLOR_DEFAULT));
         if (!ios_bar_auto_color_root.isChecked()) {
             Switch checkable = getActivity().findViewById(R.id.ios_bar_auto_color_fast);
             checkable.setEnabled(false);
@@ -64,7 +64,7 @@ public class FragmentWhiteBar extends FragmentSettingsBase {
                 Checkable ele = (Checkable) v;
                 if (ele.isChecked()) {
                     if (config.getBoolean(SpfConfig.ROOT, SpfConfig.ROOT_DEFAULT)) {
-                        config.edit().putBoolean(SpfConfig.IOS_BAR_AUTO_COLOR_ROOT, true).apply();
+                        config.edit().putBoolean(SpfConfig.IOS_BAR_AUTO_COLOR, true).apply();
                         getActivity().findViewById(R.id.ios_bar_auto_color_fast).setEnabled(true);
                         restartService();
                     } else {
@@ -72,7 +72,7 @@ public class FragmentWhiteBar extends FragmentSettingsBase {
                         Toast.makeText(getActivity().getApplicationContext(), getString(R.string.need_root_mode), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    config.edit().putBoolean(SpfConfig.IOS_BAR_AUTO_COLOR_ROOT, false).putBoolean(SpfConfig.IOS_BAR_COLOR_FAST, false).apply();
+                    config.edit().putBoolean(SpfConfig.IOS_BAR_AUTO_COLOR, false).putBoolean(SpfConfig.IOS_BAR_COLOR_FAST, false).apply();
                     Switch checkable = getActivity().findViewById(R.id.ios_bar_auto_color_fast);
                     checkable.setEnabled(false);
                     checkable.setChecked(false);

@@ -8,31 +8,12 @@ import java.util.List;
 public class KeepShellPublic {
     private static KeepShell keepShell = null;
 
-    public static Boolean doCmdSync(List<String> commands) {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        for (String cmd : commands) {
-            stringBuilder.append(cmd);
-            stringBuilder.append("\n\n");
-        }
-
-        return doCmdSync(stringBuilder.toString()) != "error";
-    }
-
     //执行脚本
     public static String doCmdSync(String cmd) {
         if (keepShell == null) {
             keepShell = new KeepShell();
         }
         return keepShell.doCmdSync(cmd);
-    }
-
-    //执行脚本
-    public static Boolean checkRoot() {
-        if (keepShell == null) {
-            keepShell = new KeepShell();
-        }
-        return keepShell.checkRoot();
     }
 
     public static void tryExit() {

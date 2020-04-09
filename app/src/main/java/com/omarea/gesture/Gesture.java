@@ -76,5 +76,7 @@ public class Gesture extends Application {
         StrictMode.setThreadPolicy(policy);
 
         context = this;
+
+        new AdbProcessExtractor().extract(context);
     }
 }

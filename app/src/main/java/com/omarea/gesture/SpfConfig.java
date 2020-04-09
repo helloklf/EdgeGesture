@@ -66,12 +66,12 @@ public class SpfConfig {
     public static final int VIBRATOR_TIME_LONG_DEFAULT = 16; // 震动时长 默认值
     public static final String VIBRATOR_AMPLITUDE_LONG = "VIBRATOR_AMPLITUDE_LONG"; // 震动强度
     public static final int VIBRATOR_AMPLITUDE_LONG_DEFAULT = 255; // 震动强度 默认值
-    // iOS小白条开关
+    // iOS小横条开关
     public static final String LANDSCAPE_IOS_BAR = "landscape_ios_bar";
     public static final boolean LANDSCAPE_IOS_BAR_DEFAULT = true;
     public static final String PORTRAIT_IOS_BAR = "portrait_ios_bar";
     public static final boolean PORTRAIT_IOS_BAR_DEFAULT = false;
-    // iOS小白条动作
+    // iOS小横条动作
     public static final String IOS_BAR_SLIDE_LEFT = "ios_bar_slide_left";
     public static final int IOS_BAR_SLIDE_LEFT_DEFAULT = Handlers.VITUAL_ACTION_NEXT_APP;
     public static final String IOS_BAR_SLIDE_RIGHT = "ios_bar_slide_right";
@@ -87,7 +87,7 @@ public class SpfConfig {
     public static final String IOS_BAR_PRESS_MIN = "ios_bar_press_min_2"; // 按压（最小力度）
     public static final int IOS_BAR_PRESS_MIN_DEFAULT = -1;
 
-    // iOS小白条样式
+    // iOS小横条样式
     public static final String IOS_BAR_WIDTH_LANDSCAPE = "ios_bar_width_landscape";
     public static final int IOS_BAR_WIDTH_DEFAULT_LANDSCAPE = 30; // 百分比
     public static final String IOS_BAR_WIDTH_PORTRAIT = "ios_bar_width_portrait";
@@ -116,8 +116,8 @@ public class SpfConfig {
     public static final int IOS_BAR_HEIGHT_DEFAULT = 3; // ?dp
     public static final String IOS_BAR_LOCK_HIDE = "ios_bar_lock_hide";
     public static final Boolean IOS_BAR_LOCK_HIDE_DEFAULT = false;
-    public static final String IOS_BAR_AUTO_COLOR_ROOT = "ios_bar_auto_color_root";
-    public static final Boolean IOS_BAR_AUTO_COLOR_ROOT_DEFAULT = false;
+    public static final String IOS_BAR_AUTO_COLOR = "ios_bar_auto_color_root";
+    public static final Boolean IOS_BAR_AUTO_COLOR_DEFAULT = false;
     public static final String IOS_BAR_COLOR_FAST = "ios_bar_color_fast";
     public static final Boolean IOS_BAR_COLOR_FAST_DEFAULT = false;
 

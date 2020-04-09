@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        style="@style/card_view"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                style="@style/card_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="增强模式" />
+
+            <ImageView
+                android:id="@+id/enhanced_mode"
+                android:src="@drawable/adb_off"
+                android:layout_width="35dp"
+                android:layout_height="35dp" />
+        </LinearLayout>
+
+        <TextView
+            android:paddingStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="增强会为您解决以下烦恼：\n\n    切换应用时会打开已清除的后台\n    小横条不会自动反转颜色\n\n你先找台电脑，然后点右侧的图标！"
+            android:textSize="12dp" />
+    </LinearLayout>
+
+</LinearLayout>

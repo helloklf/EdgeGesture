@@ -17,8 +17,8 @@
             android:textAppearance="@android:style/TextAppearance.Material.Title" />
 
         <include layout="@layout/gesture_switch_options" />
-
         <include layout="@layout/samsung_options" />
+        <include layout="@layout/enhanced_mode" />
 
         <LinearLayout
             android:id="@+id/overscan_guide"

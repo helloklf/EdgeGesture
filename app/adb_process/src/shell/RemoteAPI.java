@@ -7,12 +7,21 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class RemoteAPI extends Thread {
-
+public class RemoteAPI {
     private void routerMatch(String request, Socket socket) {
         System.out.println("Gesture Router Match：" + request);
-        if (request.startsWith("/bar-color")) {
-            responseEnd(socket, "" + (0xffffffff));
+        if (request.startsWith("/version")) {
+            responseEnd(socket, "0.1.0(1)");
+        } else if (request.startsWith("/bar-color")) {
+            if (request.matches("^/bar-color\\?[\\d]{1,4}x[\\d]{1,4}$")) {
+                try {
+                    String[] cols = request.substring(request.indexOf("?") + 1).split("x");
+                    GlobalState.displayWidth = Integer.parseInt(cols[0]);
+                    GlobalState.displayHeight = Integer.parseInt(cols[1]);
+                } catch (Exception ignored) {
+                }
+            }
+            responseEnd(socket, "" + new ScreenColor().autoBarColor());
         } else if (request.startsWith("/recent-9")) {
             responseEnd(socket, KeepShellPublic.doCmdSync("dumpsys activity r | grep realActivity | cut -f2 -d '=' | cut -f1 -d '/'"));
         } else if (request.startsWith("/recent-10")) {
@@ -22,11 +31,10 @@ public class RemoteAPI extends Thread {
         }
     }
 
-    @Override
-    public void run() {
+    public void start() {
         try {
             /*监听端口号，只要是8888就能接收到*/
-            ServerSocket ss = new ServerSocket(8888);
+            ServerSocket ss = new ServerSocket(31008);
 
             while (true) {
                 /*实例化客户端，固定套路，通过服务端接受的对象，生成相应的客户端实例*/

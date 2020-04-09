@@ -11,38 +11,15 @@ import java.util.concurrent.locks.ReentrantLock;
  * Created by Hello on 2018/01/23.
  */
 public class KeepShell {
-    private boolean rootMode = true;
     private Process p = null;
     private OutputStream out = null;
     private BufferedReader reader = null;
-    //获取ROOT超时时间
-    private long GET_ROOT_TIMEOUT = 20000L;
     private ReentrantLock mLock = new ReentrantLock();
     private long LOCK_TIMEOUT = 10000L;
     private long enterLockTime = 0L;
-    private String checkRootState =
-            "if [[ $(id -u 2>&1) == '0' ]] || [[ $($UID) == '0' ]] || [[ $(whoami 2>&1) == 'root' ]] || [[ $(set | grep 'USER_ID=0') == 'USER_ID=0' ]]; then\n" +
-                    "  echo 'root'\n" +
-                    "else\n" +
-                    "if [[ -d /cache ]]; then\n" +
-                    "  echo 1 > /cache/vtools_root\n" +
-                    "  if [[ -f /cache/vtools_root ]] && [[ $(cat /cache/vtools_root) == '1' ]]; then\n" +
-                    "    echo root\n" +
-                    "    rm -rf /cache/vtools_root\n" +
-                    "    return\n" +
-                    "  fi\n" +
-                    "fi\n" +
-                    "exit 1\n" +
-                    "exit 1\n" +
-                    "fi\n";
     private byte[] br = "\n\n".getBytes(Charset.defaultCharset());
 
     public KeepShell() {
-
-    }
-
-    public KeepShell(boolean rootMode) {
-        this.rootMode = rootMode;
     }
 
     //尝试退出命令行程序
@@ -64,23 +41,6 @@ public class KeepShell {
         p = null;
     }
 
-    Boolean checkRoot() {
-        String r = doCmdSync(checkRootState);
-        if (r.equals("error") || r.contains("permission denied") || r.contains("not allowed") || r.equals("not found")) {
-            if (rootMode) {
-                tryExit();
-            }
-            return false;
-        } else if (r.equals("root")) {
-            return true;
-        } else {
-            if (rootMode) {
-                tryExit();
-            }
-            return false;
-        }
-    }
-
     private void getRuntimeShell() {
         if (p != null)
             return;
@@ -90,13 +50,9 @@ public class KeepShell {
                 try {
                     mLock.lockInterruptibly();
                     enterLockTime = System.currentTimeMillis();
-                    p = (rootMode) ? ShellExecutor.getSuperUserRuntime() : ShellExecutor.getRuntime();
+                    p = ShellExecutor.getRuntime();
                     out = p.getOutputStream();
                     reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-                    if (rootMode) {
-                        out.write(checkRootState.getBytes(Charset.defaultCharset()));
-                        out.flush();
-                    }
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -106,6 +62,7 @@ public class KeepShell {
                                     errorReader.readLine();
                                 }
                             } catch (Exception ex) {
+                                System.out.println("Gesture ADB Error " + ex.getMessage());
                             }
                         }
                     }).start();
@@ -182,7 +139,7 @@ public class KeepShell {
                 } else {
                     return "error";
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 tryExit();
                 return "error";
             } finally {

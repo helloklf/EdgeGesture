@@ -23,12 +23,14 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
+
 import com.omarea.gesture.ui.FloatVirtualTouchBar;
 import com.omarea.gesture.ui.TouchIconCache;
 import com.omarea.gesture.util.ForceHideNavBarThread;
 import com.omarea.gesture.util.GlobalState;
 import com.omarea.gesture.util.Overscan;
 import com.omarea.gesture.util.Recents;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -317,11 +319,6 @@ public class AccessibilityServiceGesture extends AccessibilityService {
             Point point = new Point();
             wm.getDefaultDisplay().getRealSize(point);
             if (point.x != GlobalState.displayWidth || point.y != GlobalState.displayHeight) {
-                // 分辨率改变时 屏幕取色重启进程
-                if (GlobalState.displayWidth * GlobalState.displayHeight != point.x * point.y) {
-                    WhiteBarColor.updateDisplaySize();
-                }
-
                 GlobalState.displayWidth = point.x;
                 GlobalState.displayHeight = point.y;
                 createPopupView();
@@ -336,10 +333,9 @@ public class AccessibilityServiceGesture extends AccessibilityService {
         AccessibilityServiceInfo accessibilityServiceInfo = getServiceInfo();
         boolean barEnabled = isLandscapf ? config.getBoolean(SpfConfig.LANDSCAPE_IOS_BAR, SpfConfig.LANDSCAPE_IOS_BAR_DEFAULT) : config.getBoolean(SpfConfig.PORTRAIT_IOS_BAR, SpfConfig.PORTRAIT_IOS_BAR_DEFAULT);
         // 是否激进模式
-        if (barEnabled &&
-                config.getBoolean(SpfConfig.ROOT, SpfConfig.ROOT_DEFAULT) &&
-                config.getBoolean(SpfConfig.IOS_BAR_AUTO_COLOR_ROOT, SpfConfig.IOS_BAR_AUTO_COLOR_ROOT_DEFAULT) &&
-                config.getBoolean(SpfConfig.IOS_BAR_COLOR_FAST, SpfConfig.IOS_BAR_COLOR_FAST_DEFAULT)
+        if (barEnabled && GlobalState.enhancedMode &&
+            config.getBoolean(SpfConfig.IOS_BAR_AUTO_COLOR, SpfConfig.IOS_BAR_AUTO_COLOR_DEFAULT) &&
+            config.getBoolean(SpfConfig.IOS_BAR_COLOR_FAST, SpfConfig.IOS_BAR_COLOR_FAST_DEFAULT)
         ) {
             accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED | AccessibilityEvent.TYPE_WINDOWS_CHANGED | AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED;
         } else {

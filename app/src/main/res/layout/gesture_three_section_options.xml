@@ -212,7 +212,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="注意：“三段式手势”、“底边手势”、“小白条手势”并没有做共存优化！" />
+            android:text="注意：“三段式手势”、“底边手势”、“小横条手势”并没有做共存优化！" />
     </LinearLayout>
 
 </ScrollView>

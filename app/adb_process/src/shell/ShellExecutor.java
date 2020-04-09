@@ -8,10 +8,6 @@ public class ShellExecutor {
         return runtime.exec(run);
     }
 
-    public static Process getSuperUserRuntime() throws IOException {
-        return getProcess("su");
-    }
-
     public static Process getRuntime() throws IOException {
         return getProcess("sh");
     }

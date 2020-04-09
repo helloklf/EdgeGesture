@@ -466,7 +466,7 @@ public class iOSWhiteBar {
                 if (config.getBoolean(SpfConfig.IOS_BAR_LOCK_HIDE, SpfConfig.IOS_BAR_LOCK_HIDE_DEFAULT)) {
                     ReceiverLock.autoRegister(accessibilityService, new ReceiverLockHandler(bar, accessibilityService));
                 }
-                if (config.getBoolean(SpfConfig.IOS_BAR_AUTO_COLOR_ROOT, SpfConfig.IOS_BAR_AUTO_COLOR_ROOT_DEFAULT)) {
+                if (config.getBoolean(SpfConfig.IOS_BAR_AUTO_COLOR, SpfConfig.IOS_BAR_AUTO_COLOR_DEFAULT)) {
                     GlobalState.updateBar = new Runnable() {
                         @Override
                         public void run() {

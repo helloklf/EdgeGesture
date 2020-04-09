@@ -441,7 +441,7 @@
 
                 <TextView
                     style="@style/switch_desc"
-                    android:text="手机屏幕锁定时，隐藏小白条" />
+                    android:text="手机屏幕锁定时，隐藏小横条" />
             </LinearLayout>
 
             <LinearLayout
@@ -459,7 +459,7 @@
 
                 <TextView
                     style="@style/switch_desc"
-                    android:text="根据屏幕右下角颜色，自动调整小白条外观" />
+                    android:text="根据屏幕右下角颜色，自动调整小横条外观" />
             </LinearLayout>
 
             <LinearLayout
@@ -477,7 +477,7 @@
 
                 <TextView
                     style="@style/switch_desc"
-                    android:text="只要界面内容变化，立即刷新小白条颜色（非常耗电）" />
+                    android:text="只要界面内容变化，立即刷新小横条颜色（非常耗电）" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
