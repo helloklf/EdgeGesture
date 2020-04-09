@@ -10,7 +10,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 public class RemoteAPI {
-    private static String host = "http://localhost:31008/";
+    private static String host = "http://localhost:8906/";
 
     public static boolean isOnline() {
         String result = loadContent("version");

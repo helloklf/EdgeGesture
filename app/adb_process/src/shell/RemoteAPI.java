@@ -34,7 +34,7 @@ public class RemoteAPI {
     public void start() {
         try {
             /*监听端口号，只要是8888就能接收到*/
-            ServerSocket ss = new ServerSocket(31008);
+            ServerSocket ss = new ServerSocket(8906);
 
             while (true) {
                 /*实例化客户端，固定套路，通过服务端接受的对象，生成相应的客户端实例*/
