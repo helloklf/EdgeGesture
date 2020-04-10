@@ -11,7 +11,7 @@ public class EnhancedModeGuide {
     public void show(Context context, String shell) {
         View view = LayoutInflater.from(context).inflate(R.layout.layout_enhanced_mode_guide, null);
         EditText editText = view.findViewById(R.id.enhanced_mode_shell);
-        editText.setText(shell);
+        editText.setText("adb shell " + shell);
 
         new AlertDialog.Builder(context).setView(view).setPositiveButton(context.getString(R.string.btn_ok), new DialogInterface.OnClickListener() {
             @Override

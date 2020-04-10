@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
+import com.omarea.gesture.util.GlobalState;
 
 public class FragmentWhiteBar extends FragmentSettingsBase {
     @Override
@@ -63,7 +64,7 @@ public class FragmentWhiteBar extends FragmentSettingsBase {
             public void onClick(View v) {
                 Checkable ele = (Checkable) v;
                 if (ele.isChecked()) {
-                    if (config.getBoolean(SpfConfig.ROOT, SpfConfig.ROOT_DEFAULT)) {
+                    if (GlobalState.enhancedMode || config.getBoolean(SpfConfig.ROOT, SpfConfig.ROOT_DEFAULT)) {
                         config.edit().putBoolean(SpfConfig.IOS_BAR_AUTO_COLOR, true).apply();
                         getActivity().findViewById(R.id.ios_bar_auto_color_fast).setEnabled(true);
                         restartService();
