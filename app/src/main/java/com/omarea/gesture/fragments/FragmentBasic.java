@@ -2,10 +2,12 @@ package com.omarea.gesture.fragments;
 
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -169,13 +171,7 @@ public class FragmentBasic extends FragmentSettingsBase {
             */
         }
 
-        GlobalState.enhancedMode = RemoteAPI.isOnline();
         ImageView enhanced_mode = activity.findViewById(R.id.enhanced_mode);
-        if (GlobalState.enhancedMode) {
-            enhanced_mode.setImageDrawable(activity.getDrawable(R.drawable.adb_on));
-        } else {
-            enhanced_mode.setImageDrawable(activity.getDrawable(R.drawable.adb_off));
-        }
         enhanced_mode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -194,12 +190,35 @@ public class FragmentBasic extends FragmentSettingsBase {
         });
 
         updateView();
+        activity.registerReceiver(broadcastReceiver, new IntentFilter(getString(R.string.action_adb_process)));
     }
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateView();
+            if (GlobalState.enhancedMode) {
+                setResultCode(0);
+                setResultData("EnhancedMode √");
+            } else {
+                setResultCode(5);
+                setResultData("EnhancedMode ×");
+            }
+        }
+    };
 
     private void updateView() {
         Activity activity = getActivity();
 
         ((Checkable) activity.findViewById(R.id.enable_service)).setChecked(serviceRunning());
+
+        GlobalState.enhancedMode = RemoteAPI.isOnline();
+        ImageView enhanced_mode = activity.findViewById(R.id.enhanced_mode);
+        if (GlobalState.enhancedMode) {
+            enhanced_mode.setImageDrawable(activity.getDrawable(R.drawable.adb_on));
+        } else {
+            enhanced_mode.setImageDrawable(activity.getDrawable(R.drawable.adb_off));
+        }
     }
 
     @Override
@@ -226,5 +245,11 @@ public class FragmentBasic extends FragmentSettingsBase {
 
     private boolean canWriteGlobalSettings() {
         return new Overscan().canWriteSecureSettings(getActivity());
+    }
+
+    @Override
+    public void onPause() {
+        getActivity().unregisterReceiver(broadcastReceiver);
+        super.onPause();
     }
 }

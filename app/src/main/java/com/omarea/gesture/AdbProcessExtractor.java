@@ -62,6 +62,8 @@ public class AdbProcessExtractor {
                 stringBuilder.append(new File((cacheDirPath + "/" + "adb_process.dex")).getAbsolutePath());
                 stringBuilder.append(" /data/local/tmp/gesture_process.dex\n");
                 stringBuilder.append("nohup app_process -Djava.class.path=/data/local/tmp/gesture_process.dex /data/local/tmp Main >/dev/null 2>&1 &");
+                stringBuilder.append("\nam broadcast -a com.omarea.gesture.ConfigChanged 1>/dev/null");
+                stringBuilder.append("\nam broadcast -a com.omarea.gesture.AdbProcess");
 
                 File outFile = new File((cacheDirPath + "/" + "up.sh"));
                 FileOutputStream outputStream = new FileOutputStream(outFile);
