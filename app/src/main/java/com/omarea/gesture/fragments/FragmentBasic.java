@@ -15,13 +15,18 @@ import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.Checkable;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.omarea.gesture.AdbProcessExtractor;
+import com.omarea.gesture.EnhancedModeGuide;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
+import com.omarea.gesture.remote.RemoteAPI;
 import com.omarea.gesture.util.ForceHideNavBarThread;
+import com.omarea.gesture.util.GlobalState;
 import com.omarea.gesture.util.Overscan;
 import com.omarea.gesture.util.ResumeNavBar;
 
@@ -163,6 +168,30 @@ public class FragmentBasic extends FragmentSettingsBase {
             }
             */
         }
+
+        GlobalState.enhancedMode = RemoteAPI.isOnline();
+        ImageView enhanced_mode = activity.findViewById(R.id.enhanced_mode);
+        if (GlobalState.enhancedMode) {
+            enhanced_mode.setImageDrawable(activity.getDrawable(R.drawable.adb_on));
+        } else {
+            enhanced_mode.setImageDrawable(activity.getDrawable(R.drawable.adb_off));
+        }
+        enhanced_mode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GlobalState.enhancedMode = RemoteAPI.isOnline();
+                if (GlobalState.enhancedMode) {
+                    Toast.makeText(activity, "别点啦！增强模式已经好了", Toast.LENGTH_SHORT).show();
+                } else {
+                    String shell = new AdbProcessExtractor().extract(activity);
+                    if (shell != null) {
+                        new EnhancedModeGuide().show(activity, shell);
+                    } else {
+                        Toast.makeText(activity, "无法提取外接程序文件", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
 
         updateView();
     }

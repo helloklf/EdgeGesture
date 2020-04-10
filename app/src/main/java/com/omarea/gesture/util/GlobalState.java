@@ -6,4 +6,6 @@ public class GlobalState {
     public static Runnable updateBar;
     public static int displayHeight = 2340;
     public static int displayWidth = 1080;
+    // 增强模式（需要Root或者ADB）
+    public static boolean enhancedMode = false;
 }

@@ -22,7 +22,7 @@ import com.omarea.gesture.ActionModel;
 import com.omarea.gesture.Gesture;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
-import com.omarea.gesture.shell.ScreenColor;
+import com.omarea.gesture.WhiteBarColor;
 import com.omarea.gesture.util.GlobalState;
 import com.omarea.gesture.util.Handlers;
 import com.omarea.gesture.util.ReceiverLock;
@@ -466,7 +466,7 @@ public class iOSWhiteBar {
                 if (config.getBoolean(SpfConfig.IOS_BAR_LOCK_HIDE, SpfConfig.IOS_BAR_LOCK_HIDE_DEFAULT)) {
                     ReceiverLock.autoRegister(accessibilityService, new ReceiverLockHandler(bar, accessibilityService));
                 }
-                if (config.getBoolean(SpfConfig.IOS_BAR_AUTO_COLOR_ROOT, SpfConfig.IOS_BAR_AUTO_COLOR_ROOT_DEFAULT)) {
+                if (config.getBoolean(SpfConfig.IOS_BAR_AUTO_COLOR, SpfConfig.IOS_BAR_AUTO_COLOR_DEFAULT)) {
                     GlobalState.updateBar = new Runnable() {
                         @Override
                         public void run() {
@@ -474,14 +474,14 @@ public class iOSWhiteBar {
                                 bar.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        bar.invalidate();
+                                    bar.invalidate();
                                     }
                                 });
                             } catch (Exception ex) {
                             }
                         }
                     };
-                    ScreenColor.updateBarColor(false);
+                    WhiteBarColor.updateBarColor(false);
                 }
             }
 

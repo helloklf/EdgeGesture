@@ -1,14 +1,11 @@
-package com.omarea.gesture.shell;
+package shell;
 
 import java.io.IOException;
 
 public class ShellExecutor {
     private static Process getProcess(String run) throws IOException {
-        return Runtime.getRuntime().exec(run);
-    }
-
-    public static Process getSuperUserRuntime() throws IOException {
-        return getProcess("su");
+        Runtime runtime = Runtime.getRuntime();
+        return runtime.exec(run);
     }
 
     public static Process getRuntime() throws IOException {

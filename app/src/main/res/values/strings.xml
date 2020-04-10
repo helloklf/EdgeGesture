@@ -21,7 +21,7 @@
     <string name="rotate_tips">旋转屏幕，可查看横屏状态下的手势热区</string>
     <string name="copy_success">复制成功</string>
     <string name="copy_fail">复制失败</string>
-    <string name="ios_bar">小白条手势</string>
+    <string name="ios_bar">小横条手势</string>
     <string name="side_bottom">底边手势</string>
     <string name="side_right">右边手势</string>
     <string name="three_section">三段手势</string>
@@ -45,13 +45,13 @@
     <string name="animation_mode_custom">定制动画2</string>
     <string name="animation_mode_desc">使用非默认的动画模式，需要授权本应用“后台运行”、“后台弹出界面”等权限，否则可能操作无反应</string>
     <string name="game_optimization">游戏防误触</string>
-    <string name="game_optimization_desc">横屏时降低小白条高度；其它边缘手势则需要重复手势以确认</string>
+    <string name="game_optimization_desc">横屏时降低小横条高度；其它边缘手势则需要重复手势以确认</string>
     <string name="root_get_recents">ROOT增强</string>
-    <string name="root_get_recents_desc">使用ROOT权限检查后台状态，避免使用上一个/下一个应用操作时，打开已经关闭的应用（会降低响应速度）</string>
+    <string name="root_get_recents_desc">使用ROOT权限激活增强模式</string>
     <string name="no_root">未能获得ROOT权限</string>
-    <string name="need_root_mode">请先开启“ROOT增强”选项！</string>
+    <string name="need_root_mode">请先激活“增强模式”！</string>
     <string name="simple_gesture">简易手势</string>
-    <string name="white_bar_gesture">小白条手势</string>
+    <string name="white_bar_gesture">小横条手势</string>
     <string name="three_section_gesture">底边三段式</string>
     <string name="other_settings">其它设置</string>
     <string name="basic_settings">基础设置</string>
@@ -79,6 +79,7 @@
     <string name="pressure_invalid">压感数值无效，已关闭压感手势</string>
     <string name="pressure_invalid_2">压感数值无效</string>
     <string name="pressure_config">设置压感力度</string>
-    <string name="pressure_config_desc">设置小白条按压手势触发力度，但并非所有设备都支持压感</string>
+    <string name="pressure_config_desc">设置小横条按压手势触发力度，但并非所有设备都支持压感</string>
+    <string name="btn_ok">确定</string>
 
 </resources>

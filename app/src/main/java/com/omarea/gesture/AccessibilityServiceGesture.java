@@ -24,7 +24,6 @@ import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import com.omarea.gesture.shell.ScreenColor;
 import com.omarea.gesture.ui.FloatVirtualTouchBar;
 import com.omarea.gesture.ui.TouchIconCache;
 import com.omarea.gesture.util.ForceHideNavBarThread;
@@ -181,7 +180,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
                 if (GlobalState.updateBar != null &&
                         !((packageNameStr.equals("com.android.systemui") || (recents.inputMethods.indexOf(packageNameStr) > -1 && recents.inputMethods.indexOf(lastApp) > -1)))) {
                     if (!(packageName.equals("android") || packageName.equals("com.omarea.vtools") || packageName.equals("com.omarea.filter"))) {
-                        ScreenColor.updateBarColor(!isWCC);
+                        WhiteBarColor.updateBarColor(!isWCC);
                     }
 
                     if (isWCC) {
@@ -225,6 +224,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
         if (config == null) {
             config = getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
         }
+
         if (appSwitchBlackList == null) {
             appSwitchBlackList = getSharedPreferences(SpfConfig.AppSwitchBlackList, Context.MODE_PRIVATE);
         }
@@ -247,6 +247,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
                             Toast.makeText(getApplicationContext(), "OK！", Toast.LENGTH_SHORT).show();
                         }
                     } else {
+                        new AdbProcessExtractor().updateAdbProcessState(context);
                         createPopupView();
                     }
                 }
@@ -292,6 +293,8 @@ public class AccessibilityServiceGesture extends AccessibilityService {
         forceHideNavBar();
 
         Collections.addAll(recents.blackList, getResources().getStringArray(R.array.app_switch_black_list));
+
+        new AdbProcessExtractor().updateAdbProcessState(this);
         // startForeground();
     }
 
@@ -320,11 +323,6 @@ public class AccessibilityServiceGesture extends AccessibilityService {
             Point point = new Point();
             wm.getDefaultDisplay().getRealSize(point);
             if (point.x != GlobalState.displayWidth || point.y != GlobalState.displayHeight) {
-                // 分辨率改变时 屏幕取色重启进程
-                if (GlobalState.displayWidth * GlobalState.displayHeight != point.x * point.y) {
-                    ScreenColor.stopProcess();
-                }
-
                 GlobalState.displayWidth = point.x;
                 GlobalState.displayHeight = point.y;
                 createPopupView();
@@ -339,9 +337,8 @@ public class AccessibilityServiceGesture extends AccessibilityService {
         AccessibilityServiceInfo accessibilityServiceInfo = getServiceInfo();
         boolean barEnabled = isLandscapf ? config.getBoolean(SpfConfig.LANDSCAPE_IOS_BAR, SpfConfig.LANDSCAPE_IOS_BAR_DEFAULT) : config.getBoolean(SpfConfig.PORTRAIT_IOS_BAR, SpfConfig.PORTRAIT_IOS_BAR_DEFAULT);
         // 是否激进模式
-        if (barEnabled &&
-                config.getBoolean(SpfConfig.ROOT, SpfConfig.ROOT_DEFAULT) &&
-                config.getBoolean(SpfConfig.IOS_BAR_AUTO_COLOR_ROOT, SpfConfig.IOS_BAR_AUTO_COLOR_ROOT_DEFAULT) &&
+        if (barEnabled && GlobalState.enhancedMode &&
+                config.getBoolean(SpfConfig.IOS_BAR_AUTO_COLOR, SpfConfig.IOS_BAR_AUTO_COLOR_DEFAULT) &&
                 config.getBoolean(SpfConfig.IOS_BAR_COLOR_FAST, SpfConfig.IOS_BAR_COLOR_FAST_DEFAULT)
         ) {
             accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED | AccessibilityEvent.TYPE_WINDOWS_CHANGED | AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED;

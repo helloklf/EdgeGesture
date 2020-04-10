@@ -13,6 +13,7 @@ import com.omarea.gesture.ActionModel;
 import com.omarea.gesture.AppSwitchActivity;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.SpfConfigEx;
+import com.omarea.gesture.remote.RemoteAPI;
 import com.omarea.gesture.shell.KeepShellPublic;
 import com.omarea.gesture.ui.QuickPanel;
 
@@ -202,16 +203,10 @@ public class Handlers {
                     if (config == null) {
                         config = accessibilityService.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
                     }
-                    if (config.getBoolean(SpfConfig.ROOT, SpfConfig.ROOT_DEFAULT)) {
-                        // 单个app：dumpsys activity com.android.browser | grep ACTIVITY | cut -F3 | cut -f1 -d '/'
-                        // recent： dumpsys activity r | grep TaskRecord | grep A= | cut -F7 | cut -f2 -d '='
-                        // top Activity（慢）： dumpsys activity top | grep ACTIVITY | cut -F3 | cut -f1 -d '/'
+                    if (GlobalState.enhancedMode) {
                         ArrayList<String> recents = new ArrayList<>();
-                        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-                            Collections.addAll(recents, KeepShellPublic.doCmdSync("dumpsys activity r | grep realActivity | cut -f2 -d '=' | cut -f1 -d '/'").split("\n"));
-                        } else {
-                            Collections.addAll(recents, KeepShellPublic.doCmdSync("dumpsys activity r | grep mActivityComponent | cut -f2 -d '=' | cut -f1 -d '/'").split("\n"));
-                        }
+                        // ADB
+                        Collections.addAll(recents, RemoteAPI.getRecents());
                         accessibilityService.recents.setRecents(recents, accessibilityService);
                     }
                     if (action == VITUAL_ACTION_PREV_APP) {

@@ -18,11 +18,13 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.omarea.gesture.AdbProcessExtractor;
 import com.omarea.gesture.DialogAppSwitchExclusive;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.StartActivity;
 import com.omarea.gesture.shell.KeepShellPublic;
+import com.omarea.gesture.util.GlobalState;
 
 public class FragmentOther extends FragmentSettingsBase {
     @Override
@@ -83,7 +85,7 @@ public class FragmentOther extends FragmentSettingsBase {
                         Toast.makeText(activity.getApplicationContext(), getString(R.string.no_root), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    config.edit().putBoolean(SpfConfig.ROOT, false).putBoolean(SpfConfig.IOS_BAR_AUTO_COLOR_ROOT, false).putBoolean(SpfConfig.IOS_BAR_COLOR_FAST, false).apply();
+                    config.edit().putBoolean(SpfConfig.ROOT, false).apply();
                     restartService();
                 }
             }
