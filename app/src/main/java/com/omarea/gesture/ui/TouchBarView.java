@@ -205,7 +205,7 @@ public class TouchBarView extends View {
 
         if (a - b > FLIP_DISTANCE) {
             if (gestureStartTime < 1) {
-                GlobalState.updateEdgeFeedbackIcon(TouchIconCache.getIcon(eventTouch.actionCode));
+                GlobalState.updateEdgeFeedbackIcon(TouchIconCache.getIcon(eventTouch.actionCode), false);
 
                 final long currentTime = System.currentTimeMillis();
                 gestureStartTime = currentTime;
@@ -224,7 +224,7 @@ public class TouchBarView extends View {
                                 isGestureCompleted = true;
                                 cleartEffect();
                             } else {
-                                GlobalState.updateEdgeFeedbackIcon(TouchIconCache.getIcon(eventHover.actionCode));
+                                GlobalState.updateEdgeFeedbackIcon(TouchIconCache.getIcon(eventHover.actionCode), true);
 
                                 GlobalState.updateEdgeFeedback(touchRawX, touchRawY);
                             }
@@ -233,7 +233,7 @@ public class TouchBarView extends View {
                 }, config.getInt(SpfConfig.CONFIG_HOVER_TIME, SpfConfig.CONFIG_HOVER_TIME_DEFAULT));
             }
         } else {
-            GlobalState.updateEdgeFeedbackIcon(null);
+            GlobalState.updateEdgeFeedbackIcon(null, false);
             vibratorRun = true;
             gestureStartTime = 0;
         }

@@ -26,9 +26,9 @@ public class GlobalState {
         }
     }
 
-    public static void updateEdgeFeedbackIcon(Bitmap bitmap) {
+    public static void updateEdgeFeedbackIcon(Bitmap bitmap, boolean oversize) {
         if(visualFeedbackView != null) {
-            visualFeedbackView.updateEdgeFeedbackIcon(bitmap);
+            visualFeedbackView.updateEdgeFeedbackIcon(bitmap, oversize);
         }
     }
 
