@@ -22,6 +22,7 @@ import com.omarea.gesture.util.GlobalState;
 public class FloatVirtualTouchBar {
     private static WindowManager mWindowManager = null;
     private boolean islandscape;
+    private View visualFeedbackView = null;
     private View iosBarView = null;
     private View bottomView = null;
     private View leftView = null;
@@ -34,6 +35,7 @@ public class FloatVirtualTouchBar {
         config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
         mWindowManager = (WindowManager) (context.getSystemService(Context.WINDOW_SERVICE));
         try {
+            this.visualFeedbackView = setVisualFeedbackView(context);
             if (islandscape) {
                 if (config.getBoolean(SpfConfig.THREE_SECTION_LANDSCAPE, SpfConfig.THREE_SECTION_LANDSCAPE_DEFAULT)) {
                     this.bottomView = setThreeSectionView(context);
@@ -104,6 +106,10 @@ public class FloatVirtualTouchBar {
             mWindowManager.removeView(this.rightView);
             this.rightView = null;
         }
+        if (this.visualFeedbackView != null) {
+            mWindowManager.removeView(this.visualFeedbackView);
+            this.visualFeedbackView = null;
+        }
         // KeepShellPublic.doCmdSync("wm overscan reset");
     }
 
@@ -117,6 +123,34 @@ public class FloatVirtualTouchBar {
             return 1;
         }
         return value;
+    }
+
+    private View setVisualFeedbackView(final AccessibilityServiceGesture context) {
+        final View view = new VisualFeedbackView(context);
+
+        final LayoutParams params = new LayoutParams();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            params.type = LayoutParams.TYPE_ACCESSIBILITY_OVERLAY;
+        } else {
+            params.type = LayoutParams.TYPE_SYSTEM_ALERT;
+        }
+
+        params.format = PixelFormat.TRANSLUCENT;
+
+        params.width = LayoutParams.MATCH_PARENT;
+        params.height = LayoutParams.MATCH_PARENT;
+
+        params.gravity = Gravity.TOP | Gravity.LEFT;
+        params.flags = LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_NOT_TOUCHABLE | LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            params.layoutInDisplayCutoutMode  = LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+        }
+
+        mWindowManager.addView(view, params);
+
+        return view;
     }
 
     private View setBottomView(final AccessibilityServiceGesture context) {
@@ -165,6 +199,10 @@ public class FloatVirtualTouchBar {
 
         params.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
         params.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            params.layoutInDisplayCutoutMode  = LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+        }
 
         mWindowManager.addView(view, params);
 
@@ -281,6 +319,10 @@ public class FloatVirtualTouchBar {
         params.gravity = Gravity.START | Gravity.BOTTOM;
         params.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS;
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            params.layoutInDisplayCutoutMode  = LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+        }
+
         mWindowManager.addView(view, params);
         // view.setOnTouchListener(getTouchPierceListener(params, view));
 
@@ -324,6 +366,10 @@ public class FloatVirtualTouchBar {
 
         params.gravity = Gravity.END | Gravity.BOTTOM;
         params.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            params.layoutInDisplayCutoutMode  = LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+        }
 
         mWindowManager.addView(view, params);
         // view.setOnTouchListener(getTouchPierceListener(params, view));
