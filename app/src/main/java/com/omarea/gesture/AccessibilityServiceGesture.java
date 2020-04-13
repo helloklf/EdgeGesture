@@ -241,13 +241,23 @@ public class AccessibilityServiceGesture extends AccessibilityService {
             configChanged = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    if (intent != null && intent.getAction() != null && intent.getAction().equals(getString(R.string.app_switch_changed))) {
+                    String action = intent != null ? intent.getAction() : null;
+                    if (action != null && action.equals(getString(R.string.app_switch_changed))) {
                         if (recents != null) {
                             recents.clear();
                             Toast.makeText(getApplicationContext(), "OK！", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         new AdbProcessExtractor().updateAdbProcessState(context);
+                        if (action != null && action.equals(getString(R.string.action_adb_process))) {
+                            if (GlobalState.enhancedMode) {
+                                setResultCode(0);
+                                setResultData("EnhancedMode √");
+                            } else {
+                                setResultCode(5);
+                                setResultData("EnhancedMode ×");
+                            }
+                        }
                         createPopupView();
                     }
                 }
@@ -255,6 +265,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
 
             registerReceiver(configChanged, new IntentFilter(getString(R.string.action_config_changed)));
             registerReceiver(configChanged, new IntentFilter(getString(R.string.app_switch_changed)));
+            registerReceiver(configChanged, new IntentFilter(getString(R.string.action_adb_process)));
         }
         if (serviceDisable == null) {
             serviceDisable = new BroadcastReceiver() {

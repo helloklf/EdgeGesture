@@ -454,7 +454,7 @@
                     android:id="@+id/ios_bar_auto_color_root"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="自动取色(ROOT)"
+                    android:text="自动取色(增强模式)"
                     android:textStyle="bold" />
 
                 <TextView

@@ -60,15 +60,18 @@ public class AdbProcessExtractor {
                 // nohup app_process -Djava.class.path=/data/data/com.omarea.gesture/files/app_process.dex /sdcard Main
                 stringBuilder.append("cp ");
                 stringBuilder.append(new File((cacheDirPath + "/" + "adb_process.dex")).getAbsolutePath());
-                stringBuilder.append(" /data/local/tmp/gesture_process.dex\n");
-                stringBuilder.append("nohup app_process -Djava.class.path=/data/local/tmp/gesture_process.dex /data/local/tmp Main >/dev/null 2>&1 &");
+                stringBuilder.append(" /data/local/tmp/gesture_process.dex");
+                stringBuilder.append("\nnohup app_process -Djava.class.path=/data/local/tmp/gesture_process.dex /data/local/tmp Main >/dev/null 2>&1 &");
+                stringBuilder.append("\nsleep 5");
+                stringBuilder.append("\nam broadcast -a com.omarea.gesture.ConfigChanged 1>/dev/null");
+                stringBuilder.append("\nam broadcast -a com.omarea.gesture.AdbProcess");
 
                 File outFile = new File((cacheDirPath + "/" + "up.sh"));
                 FileOutputStream outputStream = new FileOutputStream(outFile);
                 outputStream.write(stringBuilder.toString().getBytes());
                 outFile.setExecutable(true, false);
 
-                return "sh " + outFile.getAbsolutePath();
+                return outFile.getAbsolutePath();
             } catch (Exception ignored) {
             }
         }
@@ -82,7 +85,7 @@ public class AdbProcessExtractor {
         boolean rootMode = config.getBoolean(SpfConfig.ROOT, SpfConfig.ROOT_DEFAULT);
         GlobalState.enhancedMode = RemoteAPI.isOnline();
         if (rootMode && !GlobalState.enhancedMode) {
-            String shell = extract(context);
+            String shell = "sh " + extract(context) + " >/dev/null 2>&1 &";
             if (shell != null) {
                 KeepShellPublic.doCmdSync(shell);
                 GlobalState.enhancedMode = RemoteAPI.isOnline();

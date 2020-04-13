@@ -38,7 +38,7 @@
             android:paddingStart="20dp"
             android:layout_marginTop="10dp"
             android:textSize="12dp"
-            android:text="详细操作步骤见：https://github.com/helloklf/EdgeGesture/docs/EnhancedMode.md"
+            android:text="详细操作步骤见：https://github.com/helloklf/EdgeGesture/blob/master/docs/EnhancedMode.md"
             android:autoLink="web"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></TextView>

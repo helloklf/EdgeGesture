@@ -50,6 +50,9 @@ public class RemoteAPI {
 
     private static String readResponse(URLConnection connection) {
         try {
+            connection.setConnectTimeout(500);
+            connection.setReadTimeout(3000);
+
             StringBuffer stringBuffer = new StringBuffer();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line = null;
