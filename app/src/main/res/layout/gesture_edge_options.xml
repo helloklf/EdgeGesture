@@ -69,10 +69,6 @@
                     android:max="100"
                     android:min="0"
                     android:progress="100" />
-
-                <Button
-                    android:id="@+id/bar_color_bottom"
-                    style="@style/btn_color_picker" />
             </LinearLayout>
 
             <LinearLayout
@@ -181,9 +177,6 @@
                     android:max="100"
                     android:min="0" />
 
-                <Button
-                    android:id="@+id/bar_color_left"
-                    style="@style/btn_color_picker" />
             </LinearLayout>
 
             <LinearLayout
@@ -272,9 +265,6 @@
                     android:max="100"
                     android:min="0" />
 
-                <Button
-                    android:id="@+id/bar_color_right"
-                    style="@style/btn_color_picker" />
             </LinearLayout>
 
             <LinearLayout
@@ -315,19 +305,36 @@
 
             <TextView
                 style="@style/card_title"
-                android:text="@string/side_hot_area_width" />
+                android:text="基本外观" />
 
-            <SeekBar
-                android:id="@+id/edge_side_width"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_marginTop="10dp"
-                android:max="40"
-                android:paddingStart="6dp"
-                android:paddingEnd="6dp" />
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:minWidth="80dp"
+                    android:text="大小/颜色" />
+                <SeekBar
+                    android:id="@+id/edge_side_width"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:max="40"
+                    android:paddingStart="6dp"
+                    android:paddingEnd="6dp" />
+
+                <Button
+                    android:id="@+id/bar_edge_color"
+                    style="@style/btn_color_picker" />
+            </LinearLayout>
 
             <TextView
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/hot_area_desc"

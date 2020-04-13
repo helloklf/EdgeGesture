@@ -3,6 +3,7 @@ package com.omarea.gesture.ui;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -13,11 +14,14 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
-
+import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.util.GlobalState;
 import com.omarea.gesture.util.UITools;
 
 public class VisualFeedbackView extends View {
+    // 画笔
+    private Paint paint = new Paint();
+
     public VisualFeedbackView(Context context) {
         super(context);
         init();
@@ -35,6 +39,14 @@ public class VisualFeedbackView extends View {
 
     private void init() {
         GlobalState.visualFeedbackView = this;
+
+        paint.setStrokeWidth(6);
+        paint.setColor(Color.BLACK);
+        paint.setStyle(Paint.Style.FILL);
+        paint.setAntiAlias(true);
+
+        SharedPreferences config = getContext().getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
+        paint.setColor(config.getInt(SpfConfig.CONFIG_EDGE_COLOR, SpfConfig.CONFIG_EDGE_COLOR_DEFAULT));
     }
 
     @Override
@@ -234,12 +246,6 @@ public class VisualFeedbackView extends View {
     protected void onDraw(Canvas canvas) {
         float graphW = GRAPH_MAX_SIZE;
         float graphH;
-
-        Paint paint = new Paint();
-        paint.setStrokeWidth(6);
-        paint.setColor(Color.BLACK);
-        paint.setStyle(Paint.Style.FILL);
-        paint.setAntiAlias(true);
 
         if (!isInvalid()) {
             // 视觉效果绘制中点

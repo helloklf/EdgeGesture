@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -42,7 +41,6 @@ public class TouchBarView extends View {
     private boolean isLandscapf = false;
     private boolean gameOptimization = false;
 
-    private Paint p = new Paint();
     private long lastEventTime = 0L;
     private int lastEvent = -1;
 
@@ -65,10 +63,6 @@ public class TouchBarView extends View {
     }
 
     private void init() {
-        p.setAntiAlias(true);
-        p.setStyle(Paint.Style.FILL);
-        p.setColor(0xee101010);
-
         config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
     }
 
@@ -102,15 +96,6 @@ public class TouchBarView extends View {
         this.gameOptimization = gameOptimization;
 
         setSize(width, height);
-        if (barPosition == BOTTOM) {
-            p.setColor(config.getInt(SpfConfig.CONFIG_BOTTOM_COLOR, SpfConfig.CONFIG_BOTTOM_COLOR_DEFAULT));
-        } else {
-            if (barPosition == LEFT) {
-                p.setColor(config.getInt(SpfConfig.CONFIG_LEFT_COLOR, SpfConfig.CONFIG_LEFT_COLOR_DEFAULT));
-            } else if (barPosition == RIGHT) {
-                p.setColor(config.getInt(SpfConfig.CONFIG_RIGHT_COLOR, SpfConfig.CONFIG_RIGHT_COLOR_DEFAULT));
-            }
-        }
     }
 
     private void setSize(int width, int height) {
