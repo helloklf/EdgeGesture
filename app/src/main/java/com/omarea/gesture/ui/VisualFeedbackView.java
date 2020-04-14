@@ -14,6 +14,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.OvershootInterpolator;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.util.GlobalState;
 import com.omarea.gesture.util.UITools;
@@ -88,6 +89,9 @@ public class VisualFeedbackView extends View {
         this.startRawX = startRawX;
         this.startRawY = startRawY;
         this.sideMode = sideMode;
+        this.oversize = false;
+        this.zoomRatio = 1f;
+
         this.updateEdgeFeedbackIcon(null, false);
 
         invalidate();
@@ -106,17 +110,42 @@ public class VisualFeedbackView extends View {
     // 设置视觉反馈提示图标
     public void updateEdgeFeedbackIcon(Bitmap bitmap, boolean oversize) {
         this.actionIcon = bitmap;
-        this.oversize = oversize;
+        if (oversize != this.oversize) {
+            this.oversize = oversize;
+            stopAnimation();
+
+            if (oversize) {
+                feedbackDrawAnimation = ValueAnimator.ofFloat(1, 1.15f);
+            } else {
+                feedbackDrawAnimation = ValueAnimator.ofFloat(1.15f, 1);
+            }
+            feedbackDrawAnimation.setDuration(100);
+            feedbackDrawAnimation.setStartDelay(0);
+            feedbackDrawAnimation.setInterpolator(new OvershootInterpolator());
+            feedbackDrawAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                zoomRatio = (float) animation.getAnimatedValue();
+                invalidate();
+                }
+            });
+            feedbackDrawAnimation.start();
+        }
     }
 
-    // 手势视觉反馈淡出动画
-    private ValueAnimator feedbackAnimation;
+    // 手势视觉反馈相关动画
+    private ValueAnimator feedbackDrawAnimation;
+    private ValueAnimator feedbackExitAnimation;
 
     // 停止动画
     private void stopAnimation() {
-        if (feedbackAnimation != null) {
-            feedbackAnimation.cancel();
-            feedbackAnimation = null;
+        if (feedbackDrawAnimation != null) {
+            feedbackDrawAnimation.cancel();
+            feedbackDrawAnimation = null;
+        }
+        if (feedbackExitAnimation != null) {
+            feedbackExitAnimation.cancel();
+            feedbackExitAnimation = null;
         }
     }
 
@@ -124,41 +153,18 @@ public class VisualFeedbackView extends View {
     public void clearEdgeFeedback() {
         stopAnimation();
 
-        if (sideMode == TouchBarView.BOTTOM) {
-            feedbackAnimation = ValueAnimator.ofFloat(this.currentRawY, this.getHeight());
-        } else if (sideMode == TouchBarView.LEFT) {
-            feedbackAnimation = ValueAnimator.ofFloat(this.currentRawX, 0);
-        } else if (sideMode == TouchBarView.RIGHT) {
-            feedbackAnimation = ValueAnimator.ofFloat(this.currentRawX, this.getWidth());
-        } else {
-            targetRawX = INVALID_VALUE;
-            targetRawY = INVALID_VALUE;
-            invalidate();
-            return;
-        }
-
-        feedbackAnimation.setDuration(260);
-        feedbackAnimation.setStartDelay(40);
-        feedbackAnimation.setInterpolator(new DecelerateInterpolator());
-        feedbackAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        feedbackDrawAnimation = ValueAnimator.ofFloat(zoomRatio, 0f);
+        feedbackDrawAnimation.setDuration(280);
+        feedbackDrawAnimation.setStartDelay(100);
+        feedbackDrawAnimation.setInterpolator(new DecelerateInterpolator());
+        feedbackDrawAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                float value = (float) animation.getAnimatedValue();
-
-                if (sideMode == TouchBarView.BOTTOM) {
-                    currentRawY = value;
-                    invalidate();
-                } else if (sideMode == TouchBarView.LEFT) {
-                    currentRawX = value;
-                    invalidate();
-                } else if (sideMode == TouchBarView.RIGHT) {
-                    currentRawX = value;
-                    invalidate();
-                }
+            zoomRatio = (float) animation.getAnimatedValue();
+            invalidate();
             }
         });
-
-        feedbackAnimation.addListener(new ValueAnimator.AnimatorListener() {
+        feedbackDrawAnimation.addListener(new ValueAnimator.AnimatorListener() {
             @Override
             public void onAnimationEnd(Animator animation, boolean isReverse) {
                 targetRawX = INVALID_VALUE;
@@ -185,7 +191,71 @@ public class VisualFeedbackView extends View {
             public void onAnimationRepeat(Animator animation) {
             }
         });
-        feedbackAnimation.start();
+
+        feedbackDrawAnimation.start();
+    }
+
+    private void clearEdgeFeedbackStep2() {
+        if (sideMode == TouchBarView.BOTTOM) {
+            feedbackExitAnimation = ValueAnimator.ofFloat(currentRawY, getHeight());
+        } else if (sideMode == TouchBarView.LEFT) {
+            feedbackExitAnimation = ValueAnimator.ofFloat(currentRawX, 0);
+        } else if (sideMode == TouchBarView.RIGHT) {
+            feedbackExitAnimation = ValueAnimator.ofFloat(currentRawX, getWidth());
+        } else {
+            targetRawX = INVALID_VALUE;
+            targetRawY = INVALID_VALUE;
+            invalidate();
+            return;
+        }
+
+        feedbackExitAnimation.setDuration(220);
+        feedbackExitAnimation.setStartDelay(120);
+        feedbackExitAnimation.setInterpolator(new DecelerateInterpolator());
+        feedbackExitAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float value = (float) animation.getAnimatedValue();
+
+                if (sideMode == TouchBarView.BOTTOM) {
+                    currentRawY = value;
+                } else if (sideMode == TouchBarView.LEFT) {
+                    currentRawX = value;
+                } else if (sideMode == TouchBarView.RIGHT) {
+                    currentRawX = value;
+                }
+            }
+        });
+
+        feedbackExitAnimation.addListener(new ValueAnimator.AnimatorListener() {
+            @Override
+            public void onAnimationEnd(Animator animation, boolean isReverse) {
+                targetRawX = INVALID_VALUE;
+                targetRawY = INVALID_VALUE;
+                invalidate();
+            }
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                invalidate();
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                targetRawX = INVALID_VALUE;
+                targetRawY = INVALID_VALUE;
+                invalidate();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
+        });
+        feedbackExitAnimation.start();
     }
 
     // 更新视觉显示
@@ -203,6 +273,15 @@ public class VisualFeedbackView extends View {
 
     // 这记录的一条弧线的关键点坐标，数据格式为 x,y,x,y...
     float[] shape = new float[]{
+        0.115f, 0.167f,
+        0.620f, 0.350f,
+        1.000f, 0.500f,
+        0.620f, 0.650f,
+        0.115f, 0.833f,
+        0.000f, 1.000f
+    };
+    /*
+    float[] shapeOrigin = new float[]{
             0.115f, 0.167f,
             0.620f, 0.350f,
             1.000f, 0.500f,
@@ -210,21 +289,20 @@ public class VisualFeedbackView extends View {
             0.115f, 0.833f,
             0.000f, 1.000f
     };
+    */
 
     // 视觉反馈图形显示尺寸
-    float GRAPH_MAX_SIZE = UITools.dp2px(getContext(), 220);
+    float GRAPH_MAX_SIZE = UITools.dp2px(getContext(), 200);
     float GRAPH_MAX_WEIGH = UITools.dp2px(getContext(), 38);
+    // 缩放比例
+    float zoomRatio = 1f;
 
     // 根据滑动距离计算视觉反馈显示大小
     private float graphSize(float startRaw, float currentRaw) {
         if (Math.abs(currentRaw - startRaw) > FLIP_DISTANCE) {
-            if (oversize) {
-                return GRAPH_MAX_WEIGH * 1.2f;
-            } else {
-                return GRAPH_MAX_WEIGH;
-            }
+            return GRAPH_MAX_WEIGH * zoomRatio;
         } else {
-            return (Math.abs(currentRaw - startRaw) / FLIP_DISTANCE) * GRAPH_MAX_WEIGH;
+            return (Math.abs(currentRaw - startRaw) / FLIP_DISTANCE) * GRAPH_MAX_WEIGH * zoomRatio;
         }
     }
 
@@ -236,7 +314,7 @@ public class VisualFeedbackView extends View {
         if (actionIcon != null) {
             canvas.drawBitmap(actionIcon,
                     null,
-                    new RectF(startX, startY, startX + iconRadius * 2, startY + iconRadius * 2),
+                    new RectF(startX, startY, startX + iconRadius * 2 * zoomRatio, startY + iconRadius * 2 * zoomRatio),
                     null
             );
         }
@@ -244,7 +322,7 @@ public class VisualFeedbackView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        float graphW = GRAPH_MAX_SIZE;
+        float graphW = zoomRatio > 0.7f ? (GRAPH_MAX_SIZE * zoomRatio) : (GRAPH_MAX_SIZE * 0.7f);
         float graphH;
 
         if (!isInvalid()) {
@@ -275,7 +353,7 @@ public class VisualFeedbackView extends View {
                 canvas.drawPath(path, paint);
 
                 if (graphH >= GRAPH_MAX_WEIGH && actionIcon != null) {
-                    drawIcon(canvas, drawStartX + iconRadius, drawStartY + (graphW / 2) - iconRadius);
+                    drawIcon(canvas, drawStartX + iconRadius * zoomRatio, drawStartY + (graphW / 2) - iconRadius * zoomRatio);
                 }
             }
             // 底部边缘手势视觉反馈
@@ -302,7 +380,7 @@ public class VisualFeedbackView extends View {
                 canvas.drawPath(path, paint);
 
                 if (graphH >= GRAPH_MAX_WEIGH && actionIcon != null) {
-                    drawIcon(canvas, drawStartX + (graphW / 2) - iconRadius, drawStartY - iconRadius * 3);
+                    drawIcon(canvas, drawStartX + (graphW / 2) - iconRadius * zoomRatio, drawStartY - iconRadius * 3 * zoomRatio);
                 }
             }
             // 右侧边缘手势视觉反馈
@@ -328,7 +406,7 @@ public class VisualFeedbackView extends View {
                 canvas.drawPath(path, paint);
 
                 if (graphH >= iconRadius * 3 && actionIcon != null) {
-                    drawIcon(canvas, drawStartX - iconRadius * 3, drawStartY + (graphW / 2) - iconRadius);
+                    drawIcon(canvas, drawStartX - iconRadius * 3 * zoomRatio, drawStartY + (graphW / 2) - iconRadius * zoomRatio);
                 }
             }
             // Unknown

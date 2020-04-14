@@ -166,7 +166,6 @@ public class TouchBarView extends View {
         if (isGestureCompleted || !isTouchDown) {
             return true;
         }
-        Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, getRootView());
 
         touchRawX = event.getRawX();
         touchRawY = event.getRawY();
@@ -204,18 +203,18 @@ public class TouchBarView extends View {
 
                                 vibratorRun = false;
                             }
+                            GlobalState.updateEdgeFeedbackIcon(TouchIconCache.getIcon(eventHover.actionCode), true);
                             if (barPosition == BOTTOM) {
                                 onTouchHover();
                                 isGestureCompleted = true;
                                 cleartEffect();
                             } else {
-                                GlobalState.updateEdgeFeedbackIcon(TouchIconCache.getIcon(eventHover.actionCode), true);
-
                                 GlobalState.updateEdgeFeedback(touchRawX, touchRawY);
                             }
                         }
                     }
                 }, config.getInt(SpfConfig.CONFIG_HOVER_TIME, SpfConfig.CONFIG_HOVER_TIME_DEFAULT));
+                Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, getRootView());
             }
         } else {
             GlobalState.updateEdgeFeedbackIcon(null, false);

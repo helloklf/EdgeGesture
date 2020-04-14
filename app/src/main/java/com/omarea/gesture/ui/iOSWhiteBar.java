@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
+
 import com.omarea.gesture.AccessibilityServiceGesture;
 import com.omarea.gesture.ActionModel;
 import com.omarea.gesture.Gesture;
@@ -103,7 +104,7 @@ public class iOSWhiteBar {
         final int lineWeight = config.getInt(SpfConfig.IOS_BAR_HEIGHT, SpfConfig.IOS_BAR_HEIGHT_DEFAULT); // 线宽度（百分比）
         final int strokeWidth = config.getInt(SpfConfig.IOS_BAR_STROKE_SIZE, SpfConfig.IOS_BAR_STROKE_SIZE_DEFAULT); // 描边大小
         final int strokeColor = config.getInt(SpfConfig.IOS_BAR_COLOR_STROKE, SpfConfig.IOS_BAR_COLOR_STROKE_DEFAULT); // 描边颜色
-        final int marginBottom = (isLandscapf ? config.getInt(SpfConfig.IOS_BAR_MARGIN_BOTTOM_LANDSCAPE, SpfConfig.IOS_BAR_MARGIN_BOTTOM_LANDSCAPE_DEFAULT):config.getInt(SpfConfig.IOS_BAR_MARGIN_BOTTOM_PORTRAIT, SpfConfig.IOS_BAR_MARGIN_BOTTOM_PORTRAIT_DEFAULT)); // 底部边距
+        final int marginBottom = (isLandscapf ? config.getInt(SpfConfig.IOS_BAR_MARGIN_BOTTOM_LANDSCAPE, SpfConfig.IOS_BAR_MARGIN_BOTTOM_LANDSCAPE_DEFAULT) : config.getInt(SpfConfig.IOS_BAR_MARGIN_BOTTOM_PORTRAIT, SpfConfig.IOS_BAR_MARGIN_BOTTOM_PORTRAIT_DEFAULT)); // 底部边距
         final int totalHeight = marginBottom + lineWeight + (shadowSize * 2) + (strokeWidth * 2);
 
         bar.setStyle(
@@ -349,6 +350,7 @@ public class iOSWhiteBar {
                                 }
                             }
                         }, config.getInt(SpfConfig.CONFIG_HOVER_TIME, SpfConfig.CONFIG_HOVER_TIME_DEFAULT));
+                        Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);
                     }
                 } else {
                     vibratorRun = true;
@@ -379,8 +381,7 @@ public class iOSWhiteBar {
                         if (isLongTimeGesture) { // 上滑悬停
                             Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE_HOVER, view);
                             performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_UP_HOVER, SpfConfig.IOS_BAR_SLIDE_UP_HOVER_DEFAULT));
-                        }
-                        else { // 上滑
+                        } else { // 上滑
                             // Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);
                             performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_UP, SpfConfig.IOS_BAR_SLIDE_UP_DEFAULT));
                         }
@@ -474,7 +475,7 @@ public class iOSWhiteBar {
                                 bar.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                    bar.invalidate();
+                                        bar.invalidate();
                                     }
                                 });
                             } catch (Exception ex) {
