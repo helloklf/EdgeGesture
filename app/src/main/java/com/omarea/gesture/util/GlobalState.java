@@ -1,6 +1,7 @@
 package com.omarea.gesture.util;
 
 import android.graphics.Bitmap;
+
 import com.omarea.gesture.ui.VisualFeedbackView;
 
 public class GlobalState {
@@ -15,25 +16,25 @@ public class GlobalState {
     public static VisualFeedbackView visualFeedbackView;
 
     public static void startEdgeFeedback(float startRawX, float startRawY, int sideMode) {
-        if(visualFeedbackView != null) {
+        if (visualFeedbackView != null) {
             visualFeedbackView.startEdgeFeedback(startRawX, startRawY, sideMode);
         }
     }
 
     public static void updateEdgeFeedback(float currentRawX, float currentRawY) {
-        if(visualFeedbackView != null) {
+        if (visualFeedbackView != null) {
             visualFeedbackView.updateEdgeFeedback(currentRawX, currentRawY);
         }
     }
 
     public static void updateEdgeFeedbackIcon(Bitmap bitmap, boolean oversize) {
-        if(visualFeedbackView != null) {
+        if (visualFeedbackView != null) {
             visualFeedbackView.updateEdgeFeedbackIcon(bitmap, oversize);
         }
     }
 
     public static void clearEdgeFeedback() {
-        if(visualFeedbackView != null) {
+        if (visualFeedbackView != null) {
             visualFeedbackView.clearEdgeFeedback();
         }
     }

@@ -63,6 +63,8 @@ public class SpfConfig {
     public static final int VIBRATOR_TIME_LONG_DEFAULT = 16; // 震动时长 默认值
     public static final String VIBRATOR_AMPLITUDE_LONG = "VIBRATOR_AMPLITUDE_LONG"; // 震动强度
     public static final int VIBRATOR_AMPLITUDE_LONG_DEFAULT = 255; // 震动强度 默认值
+    public static final String VIBRATOR_QUICK_SLIDE = "VIBRATOR_QUICK_SLIDE"; // 是否开启快速滑动的震动反馈
+    public static final boolean VIBRATOR_QUICK_SLIDE_DEFAULT = false; // 是否开启快速滑动的震动反馈 默认值
     // iOS小横条开关
     public static final String LANDSCAPE_IOS_BAR = "landscape_ios_bar";
     public static final boolean LANDSCAPE_IOS_BAR_DEFAULT = true;

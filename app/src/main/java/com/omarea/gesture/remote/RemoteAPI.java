@@ -2,7 +2,9 @@ package com.omarea.gesture.remote;
 
 import android.os.Build;
 import android.util.Log;
+
 import com.omarea.gesture.util.GlobalState;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

@@ -253,6 +253,25 @@
                     android:textSize="11dp" />
 
             </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Switch
+                    android:id="@+id/vibrator_quick_slide"
+                    style="@style/card_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="滑动反馈" />
+
+                <TextView
+                    style="@style/switch_desc"
+                    android:layout_marginTop="6dp"
+                    android:text="开启快速滑动手势的震动反馈" />
+            </LinearLayout>
         </LinearLayout>
 
         <include layout="@layout/gesture_faq_options" />

@@ -17,13 +17,6 @@ public class Gesture extends Application {
     private static Vibrator vibrator;
     private static SharedPreferences config;
 
-    public static enum VibrateMode {
-        VIBRATE_CLICK,
-        VIBRATE_PRESS,
-        VIBRATE_SLIDE_HOVER,
-        VIBRATE_SLIDE
-    }
-
     public static void vibrate(VibrateMode mode, View view) {
         if (vibrator == null) {
             config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
@@ -33,25 +26,34 @@ public class Gesture extends Application {
         if (vibrator.hasVibrator()) {
             if (config.getBoolean(SpfConfig.VIBRATOR_USE_SYSTEM, SpfConfig.VIBRATOR_USE_SYSTEM_DEFAULT)) {
                 switch (mode) {
-                    case VIBRATE_CLICK:{
+                    case VIBRATE_CLICK: {
                         view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
                         return;
                     }
-                    case VIBRATE_PRESS:{
+                    case VIBRATE_PRESS: {
                         view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
                         return;
                     }
-                    case VIBRATE_SLIDE_HOVER:{
+                    case VIBRATE_SLIDE_HOVER: {
                         view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
                         return;
                     }
-                    case VIBRATE_SLIDE:{
-                        view.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK);
+                    case VIBRATE_SLIDE: {
+                        if (config.getBoolean(SpfConfig.VIBRATOR_QUICK_SLIDE, SpfConfig.VIBRATOR_QUICK_SLIDE_DEFAULT)) {
+                            view.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK);
+                        }
                         return;
                     }
-                    default:{  }
+                    default: {
+                    }
                 }
             } else {
+                if (mode == VibrateMode.VIBRATE_SLIDE) {
+                    if (!config.getBoolean(SpfConfig.VIBRATOR_QUICK_SLIDE, SpfConfig.VIBRATOR_QUICK_SLIDE_DEFAULT)) {
+                        return;
+                    }
+                }
+
                 boolean longTime = mode == VibrateMode.VIBRATE_SLIDE_HOVER || mode == VibrateMode.VIBRATE_PRESS;
 
                 vibrator.cancel();
@@ -76,5 +78,12 @@ public class Gesture extends Application {
         StrictMode.setThreadPolicy(policy);
 
         context = this;
+    }
+
+    public static enum VibrateMode {
+        VIBRATE_CLICK,
+        VIBRATE_PRESS,
+        VIBRATE_SLIDE_HOVER,
+        VIBRATE_SLIDE
     }
 }

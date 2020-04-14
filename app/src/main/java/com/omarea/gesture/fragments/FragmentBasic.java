@@ -35,6 +35,20 @@ import com.omarea.gesture.util.ResumeNavBar;
 import java.util.List;
 
 public class FragmentBasic extends FragmentSettingsBase {
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateView();
+            if (GlobalState.enhancedMode) {
+                setResultCode(0);
+                setResultData("EnhancedMode √");
+            } else {
+                setResultCode(5);
+                setResultData("EnhancedMode ×");
+            }
+        }
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.gesture_basic_options, container, false);
@@ -79,6 +93,7 @@ public class FragmentBasic extends FragmentSettingsBase {
         bindSeekBar(R.id.vibrator_amplitude, SpfConfig.VIBRATOR_AMPLITUDE, SpfConfig.VIBRATOR_AMPLITUDE_DEFAULT, true);
         bindSeekBar(R.id.vibrator_time_long, SpfConfig.VIBRATOR_TIME_LONG, SpfConfig.VIBRATOR_TIME_LONG_DEFAULT, true);
         bindSeekBar(R.id.vibrator_amplitude_long, SpfConfig.VIBRATOR_AMPLITUDE_LONG, SpfConfig.VIBRATOR_AMPLITUDE_LONG_DEFAULT, true);
+        bindCheckable(R.id.vibrator_quick_slide, SpfConfig.VIBRATOR_QUICK_SLIDE, SpfConfig.VIBRATOR_QUICK_SLIDE_DEFAULT);
 
         // 震动 跟随系统默认
         final View vibrator_custom = getActivity().findViewById(R.id.vibrator_custom);
@@ -192,20 +207,6 @@ public class FragmentBasic extends FragmentSettingsBase {
         updateView();
         activity.registerReceiver(broadcastReceiver, new IntentFilter(getString(R.string.action_adb_process)));
     }
-
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            updateView();
-            if (GlobalState.enhancedMode) {
-                setResultCode(0);
-                setResultData("EnhancedMode √");
-            } else {
-                setResultCode(5);
-                setResultData("EnhancedMode ×");
-            }
-        }
-    };
 
     private void updateView() {
         Activity activity = getActivity();

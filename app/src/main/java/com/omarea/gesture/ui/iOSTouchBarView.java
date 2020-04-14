@@ -103,7 +103,7 @@ public class iOSTouchBarView extends View {
                 } else {
                     p.setColor(Color.WHITE);
                 }
-                canvas.drawRoundRect(margin - strokeR, margin - strokeR, getWidth() - margin + strokeR, margin + lineWeight +  strokeR, 20, 20, p);
+                canvas.drawRoundRect(margin - strokeR, margin - strokeR, getWidth() - margin + strokeR, margin + lineWeight + strokeR, 20, 20, p);
             }
 
             p.setStyle(Paint.Style.FILL);
@@ -113,7 +113,7 @@ public class iOSTouchBarView extends View {
             if (strokeWidth > 0) {
                 p.setStyle(Paint.Style.STROKE);
                 p.setColor(strokeColor);
-                canvas.drawRoundRect(margin - strokeR, margin - strokeR, getWidth() - margin + strokeR, margin + lineWeight +  strokeR, 20, 20, p);
+                canvas.drawRoundRect(margin - strokeR, margin - strokeR, getWidth() - margin + strokeR, margin + lineWeight + strokeR, 20, 20, p);
             }
 
             p.setStyle(Paint.Style.FILL);
