@@ -6,8 +6,8 @@ import com.omarea.gesture.remote.RemoteAPI;
 import com.omarea.gesture.util.GlobalState;
 
 public class WhiteBarColor {
-    private static ScreenCapThread thread;
     private static final Object threadRun = "";
+    private static ScreenCapThread thread;
     private static boolean hasNext = false;
     private static boolean notifyed = false; // 是否已经notify过，并且还未进入wait清除notifyed状态，避免多次notify进入队列
 

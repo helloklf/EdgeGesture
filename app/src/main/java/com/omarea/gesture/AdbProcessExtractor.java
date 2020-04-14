@@ -2,9 +2,11 @@ package com.omarea.gesture;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import com.omarea.gesture.remote.RemoteAPI;
 import com.omarea.gesture.shell.KeepShellPublic;
 import com.omarea.gesture.util.GlobalState;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;

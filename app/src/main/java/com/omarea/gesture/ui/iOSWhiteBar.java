@@ -31,12 +31,11 @@ import com.omarea.gesture.util.ReceiverLockHandler;
 import com.omarea.gesture.util.ScreenState;
 
 public class iOSWhiteBar {
+    float pressureMin;
     private AccessibilityServiceGesture accessibilityService;
     private SharedPreferences config;
     private Boolean isLandscapf;
     private float pressure = 0;
-
-    float pressureMin;
 
     public iOSWhiteBar(AccessibilityServiceGesture accessibilityService, Boolean isLandscapf) {
         this.accessibilityService = accessibilityService;
@@ -162,6 +161,7 @@ public class iOSWhiteBar {
 
             private float touchCurrentRawX;
             private float touchCurrentRawY;
+            private long lastTouchDown = 0L;
 
             private void performGlobalAction(final ActionModel event) {
                 if (accessibilityService != null) {
@@ -259,8 +259,6 @@ public class iOSWhiteBar {
                     clearEffect();
                 }
             }
-
-            private long lastTouchDown = 0L;
 
             private boolean onTouchDown(final MotionEvent event) {
                 isTouchDown = true;
