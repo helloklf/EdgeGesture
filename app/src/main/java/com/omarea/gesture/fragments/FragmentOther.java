@@ -18,6 +18,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.omarea.gesture.AdbProcessExtractor;
 import com.omarea.gesture.DialogAppSwitchExclusive;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
@@ -77,6 +78,7 @@ public class FragmentOther extends FragmentSettingsBase {
                 if (ele.isChecked()) {
                     if (KeepShellPublic.checkRoot()) {
                         config.edit().putBoolean(SpfConfig.ROOT, true).apply();
+                        new AdbProcessExtractor().updateAdbProcessState(getActivity(), true);
                         restartService();
                     } else {
                         ele.setChecked(false);

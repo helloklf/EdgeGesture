@@ -1,5 +1,6 @@
 package shell;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -22,6 +23,14 @@ public class RemoteAPI {
                 }
             }
             responseEnd(socket, "" + new ScreenColor().autoBarColor());
+        } else if (request.startsWith("/nav-light-color")) {
+            // dumpsys window visible | grep LIGHT_
+            // LIGHT_STATUS_BAR
+            // LIGHT_NAVIGATION_BAR
+            String result = KeepShellPublic.doCmdSync("dumpsys window visible | grep LIGHT_");
+            boolean isLight = result.contains("LIGHT_STATUS_BAR") || result.contains("LIGHT_NAVIGATION_BAR");
+            // System.out.println(result + ">" + isLight);
+            responseEnd(socket, (isLight ? "true" : "false"));
         } else if (request.startsWith("/recent-9")) {
             responseEnd(socket, KeepShellPublic.doCmdSync("dumpsys activity r | grep realActivity | cut -f2 -d '=' | cut -f1 -d '/'"));
         } else if (request.startsWith("/recent-10")) {

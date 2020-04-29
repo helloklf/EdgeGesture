@@ -24,17 +24,22 @@ public class RemoteAPI {
     }
 
     public static int getBarAutoColor() {
+        // TODO:改为可配置而非自动
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            String isLightColor = loadContent("nav-light-color");
+            if (isLightColor != null && isLightColor.equals("true")) {
+                Log.d("getBarAutoColor", "FastWhite");
+                return 0xFF000000;
+            }
+        }
+
         String colorStr = loadContent("bar-color?" + GlobalState.displayWidth + "x" + GlobalState.displayHeight);
-        Log.e("GestureRemote", "R " + colorStr);
 
         if (!(colorStr == null || colorStr.isEmpty())) {
             try {
                 return Integer.parseInt(colorStr);
-            } catch (Exception ex) {
-                Log.e("GestureRemote", "" + ex.getMessage());
+            } catch (Exception ignored) {
             }
-        } else {
-            Log.e("GestureRemote", "Color " + colorStr);
         }
         return Integer.MIN_VALUE;
     }
@@ -45,7 +50,6 @@ public class RemoteAPI {
             URL url = new URL(host + api);
             return readResponse(url.openConnection());
         } catch (Exception ex) {
-            Log.e("GestureRemote", "" + ex.getMessage());
             return "";
         }
     }
@@ -55,7 +59,7 @@ public class RemoteAPI {
             connection.setConnectTimeout(500);
             connection.setReadTimeout(3000);
 
-            StringBuffer stringBuffer = new StringBuffer();
+            StringBuilder stringBuffer = new StringBuilder();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line = null;
             while (true) {
@@ -68,8 +72,7 @@ public class RemoteAPI {
                 }
             }
             return stringBuffer.toString().trim();
-        } catch (IOException e) {
-            Log.e("GestureRemote", "" + e.getMessage());
+        } catch (IOException ignored) {
         }
         return null;
     }

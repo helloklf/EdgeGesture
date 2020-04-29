@@ -179,7 +179,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
 
                 if (GlobalState.updateBar != null &&
                         !((packageNameStr.equals("com.android.systemui") || (recents.inputMethods.indexOf(packageNameStr) > -1 && recents.inputMethods.indexOf(lastApp) > -1)))) {
-                    if (!(packageName.equals("android") || packageName.equals("com.omarea.vtools") || packageName.equals("com.omarea.filter"))) {
+                    if (!(packageName.equals("android") || packageName.equals("com.omarea.filter"))) {
                         WhiteBarColor.updateBarColor(!isWCC);
                     }
 
@@ -248,7 +248,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
                             Toast.makeText(getApplicationContext(), "OK！", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        new AdbProcessExtractor().updateAdbProcessState(context);
+                        new AdbProcessExtractor().updateAdbProcessState(context, false);
                         if (action != null && action.equals(getString(R.string.action_adb_process))) {
                             if (GlobalState.enhancedMode) {
                                 setResultCode(0);
@@ -305,7 +305,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
 
         Collections.addAll(recents.blackList, getResources().getStringArray(R.array.app_switch_black_list));
 
-        new AdbProcessExtractor().updateAdbProcessState(this);
+        new AdbProcessExtractor().updateAdbProcessState(this, true);
         // startForeground();
     }
 

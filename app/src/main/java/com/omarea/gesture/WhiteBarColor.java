@@ -1,7 +1,5 @@
 package com.omarea.gesture;
 
-import android.util.Log;
-
 import com.omarea.gesture.remote.RemoteAPI;
 import com.omarea.gesture.util.GlobalState;
 
@@ -37,7 +35,7 @@ public class WhiteBarColor {
             do {
                 int color = RemoteAPI.getBarAutoColor();
                 if (color != Integer.MIN_VALUE) {
-                    Log.d("GestureRemote", "Color is " + color);
+                    // Log.d("GestureRemote", "Color is " + color);
                     GlobalState.iosBarColor = color;
 
                     if (GlobalState.updateBar != null) {
@@ -52,6 +50,10 @@ public class WhiteBarColor {
                             hasNext = false;
                         } else {
                             threadRun.wait();
+                            // 延缓截图，以免在动画播放期间过早的截图导致颜色取到的还是黑色背景
+                            if (hasNext) {
+                                Thread.sleep(300);
+                            }
                         }
                     }
                 } catch (Exception ex) {

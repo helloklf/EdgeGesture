@@ -190,9 +190,12 @@ public class FragmentBasic extends FragmentSettingsBase {
         enhanced_mode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                new AdbProcessExtractor().updateAdbProcessState(getActivity(), true);
+
                 GlobalState.enhancedMode = RemoteAPI.isOnline();
                 if (GlobalState.enhancedMode) {
                     Toast.makeText(activity, "别点啦！增强模式已经好了", Toast.LENGTH_SHORT).show();
+                    updateView();
                 } else {
                     String shell = new AdbProcessExtractor().extract(activity);
                     if (shell != null) {

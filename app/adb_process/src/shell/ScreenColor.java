@@ -1,11 +1,11 @@
 package shell;
 
+import com.sun.org.apache.xpath.internal.operations.String;
+
 import java.io.BufferedInputStream;
 import java.nio.ByteBuffer;
 
 public class ScreenColor {
-    private BufferedInputStream bufferedInputStream;
-
     // 像素采集
     private static class PixelGather {
         private int frameSize;
@@ -127,30 +127,60 @@ public class ScreenColor {
     public int autoBarColor() {
         try {
             Process exec = Runtime.getRuntime().exec("screencap");
-            bufferedInputStream = new BufferedInputStream(exec.getInputStream());
 
-            int cacheSize = 1024 * 1024; // 1M
-            byte[] tempBuffer = new byte[cacheSize];
             PixelGather byteBuffer = PixelGather.frameBuffer(GlobalState.displayHeight, GlobalState.displayWidth);
 
-            int count;
-            while ((count = bufferedInputStream.read(tempBuffer)) > 0) {
-                int remaining = byteBuffer.remaining();
-                if (count > remaining) { // 读取了超过一帧
-                    byteBuffer.put(tempBuffer, 0, remaining);
-                    break;
-                } else if (count == remaining) { // 刚好读满一帧
-                    byteBuffer.put(tempBuffer, 0, count);
-                    break;
-                } else { // 不到一帧，继续读
-                    byteBuffer.put(tempBuffer, 0, count);
-                }
+            Thread thread = new PixelGatherThread(byteBuffer, new BufferedInputStream(exec.getInputStream()));
+            thread.start();
+            synchronized (byteBuffer) {
+                byteBuffer.wait(3500);
             }
+            try {
+                exec.destroy();
+            } catch (Exception ignored) {}
+
             // 更新颜色
             return computeBarColor(byteBuffer.array());
         } catch (Exception e) {
             System.out.println("Gesture ADB BarColor " + e.getMessage());
         }
         return Integer.MIN_VALUE;
+    }
+
+    class PixelGatherThread extends Thread {
+        private PixelGather byteBuffer;
+        private BufferedInputStream bufferedInputStream;
+
+        PixelGatherThread(PixelGather pixelGather, BufferedInputStream bufferedInputStream) {
+            this.byteBuffer = pixelGather;
+            this.bufferedInputStream = bufferedInputStream;
+        }
+
+        @Override
+        public void run() {
+            try {
+                int count;
+                int cacheSize = 1024 * 1024; // 1M
+                byte[] tempBuffer = new byte[cacheSize];
+                while ((count = bufferedInputStream.read(tempBuffer)) > 0) {
+                    int remaining = byteBuffer.remaining();
+                    if (count > remaining) { // 读取了超过一帧
+                        byteBuffer.put(tempBuffer, 0, remaining);
+                        break;
+                    } else if (count == remaining) { // 刚好读满一帧
+                        byteBuffer.put(tempBuffer, 0, count);
+                        break;
+                    } else { // 不到一帧，继续读
+                        byteBuffer.put(tempBuffer, 0, count);
+                    }
+                }
+            } catch (Exception ignored) {
+
+            } finally {
+                synchronized (byteBuffer) {
+                    byteBuffer.notify();
+                }
+            }
+        }
     }
 }

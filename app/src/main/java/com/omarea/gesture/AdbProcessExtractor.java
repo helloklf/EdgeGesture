@@ -2,6 +2,7 @@ package com.omarea.gesture;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.omarea.gesture.remote.RemoteAPI;
 import com.omarea.gesture.shell.KeepShellPublic;
@@ -48,47 +49,23 @@ public class AdbProcessExtractor {
     }
 
     public String extract(Context context) {
-        if (extractFile(context, "adb_process.dex")) {
-            try {
-                File cacheDir = context.getExternalCacheDir();
-                String cacheDirPath = cacheDir.getAbsolutePath();
-
-                cacheDir.mkdirs();
-
-                cacheDir.setExecutable(true, false);
-                cacheDir.setWritable(true, false);
-
-                StringBuilder stringBuilder = new StringBuilder();
-                // nohup app_process -Djava.class.path=/data/data/com.omarea.gesture/files/app_process.dex /sdcard Main
-                stringBuilder.append("cp ");
-                stringBuilder.append(new File((cacheDirPath + "/" + "adb_process.dex")).getAbsolutePath());
-                stringBuilder.append(" /data/local/tmp/gesture_process.dex");
-                stringBuilder.append("\nnohup app_process -Djava.class.path=/data/local/tmp/gesture_process.dex /data/local/tmp Main >/dev/null 2>&1 &");
-                stringBuilder.append("\nsleep 5");
-                stringBuilder.append("\nam broadcast -a com.omarea.gesture.ConfigChanged 1>/dev/null");
-                stringBuilder.append("\nam broadcast -a com.omarea.gesture.AdbProcess");
-
-                File outFile = new File((cacheDirPath + "/" + "up.sh"));
-                FileOutputStream outputStream = new FileOutputStream(outFile);
-                outputStream.write(stringBuilder.toString().getBytes());
-                outFile.setExecutable(true, false);
-
-                return outFile.getAbsolutePath();
-            } catch (Exception ignored) {
-            }
+        if (extractFile(context, "adb_process.dex") && extractFile(context, "up.sh")) {
+            File cacheDir = context.getExternalCacheDir();
+            return cacheDir.getAbsolutePath() + "/up.sh";
         }
         return null;
     }
 
     // 尝试连接AdbProcess，或使用root权限激活AdbProcess并连接
-    public boolean updateAdbProcessState(Context context) {
+    public boolean updateAdbProcessState(Context context, boolean useRootStartService) {
         SharedPreferences config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
         // 检测外部程序运行状态或使用root权限主动激活外部进程
         boolean rootMode = config.getBoolean(SpfConfig.ROOT, SpfConfig.ROOT_DEFAULT);
         GlobalState.enhancedMode = RemoteAPI.isOnline();
-        if (rootMode && !GlobalState.enhancedMode) {
-            String shell = "sh " + extract(context) + " >/dev/null 2>&1 &";
-            if (shell != null) {
+        if (useRootStartService && rootMode && !GlobalState.enhancedMode) {
+            String file = extract(context);
+            if (file != null) {
+                String shell = "sh " + file + " >/dev/null 2>&1 &";
                 KeepShellPublic.doCmdSync(shell);
                 GlobalState.enhancedMode = RemoteAPI.isOnline();
             }

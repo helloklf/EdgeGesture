@@ -11,7 +11,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
@@ -71,6 +70,7 @@ public class VisualFeedbackView extends View {
         super(context, attributeSet);
         init();
     }
+
     public VisualFeedbackView(Context context, AttributeSet attributeSet, int defStyleAttr) {
         super(context, attributeSet, defStyleAttr);
         init();
@@ -104,24 +104,27 @@ public class VisualFeedbackView extends View {
         this.startRawY = startRawY;
         this.sideMode = sideMode;
         this.oversize = false;
-        // this.zoomRatio = 1f;
 
         this.updateEdgeFeedbackIcon(null, false);
 
         stopAnimation();
 
-        feedbackDrawAnimation = ValueAnimator.ofFloat(0.5f, 1f);
-        feedbackDrawAnimation.setDuration(200);
-        feedbackDrawAnimation.setStartDelay(0);
-        feedbackDrawAnimation.setInterpolator(new OvershootInterpolator());
-        feedbackDrawAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                zoomRatio = (float) animation.getAnimatedValue();
-                invalidate();
-            }
-        });
-        feedbackDrawAnimation.start();
+        if (isHardwareAccelerated()) {
+            feedbackDrawAnimation = ValueAnimator.ofFloat(0.5f, 1f);
+            feedbackDrawAnimation.setDuration(200);
+            feedbackDrawAnimation.setStartDelay(0);
+            feedbackDrawAnimation.setInterpolator(new OvershootInterpolator());
+            feedbackDrawAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    zoomRatio = (float) animation.getAnimatedValue();
+                    invalidate();
+                }
+            });
+            feedbackDrawAnimation.start();
+        } else {
+            this.zoomRatio = 1f;
+        }
 
         // updateFeedback();
     }
@@ -162,13 +165,16 @@ public class VisualFeedbackView extends View {
 
     // 停止动画
     private void stopAnimation() {
-        if (feedbackDrawAnimation != null) {
-            feedbackDrawAnimation.cancel();
-            feedbackDrawAnimation = null;
-        }
-        if (feedbackExitAnimation != null) {
-            feedbackExitAnimation.cancel();
-            feedbackExitAnimation = null;
+        try {
+            if (feedbackDrawAnimation != null) {
+                feedbackDrawAnimation.cancel();
+                feedbackDrawAnimation = null;
+            }
+            if (feedbackExitAnimation != null) {
+                feedbackExitAnimation.cancel();
+                feedbackExitAnimation = null;
+            }
+        } catch (Exception ignored) {
         }
     }
     /*
@@ -233,69 +239,6 @@ public class VisualFeedbackView extends View {
         });
 
         feedbackExitAnimation = animation;
-        feedbackExitAnimation.start();
-    }
-
-    private void clearEdgeFeedbackStep2() {
-        if (sideMode == TouchBarView.BOTTOM) {
-            feedbackExitAnimation = ValueAnimator.ofFloat(currentRawY, getHeight());
-        } else if (sideMode == TouchBarView.LEFT) {
-            feedbackExitAnimation = ValueAnimator.ofFloat(currentRawX, 0);
-        } else if (sideMode == TouchBarView.RIGHT) {
-            feedbackExitAnimation = ValueAnimator.ofFloat(currentRawX, getWidth());
-        } else {
-            targetRawX = INVALID_VALUE;
-            targetRawY = INVALID_VALUE;
-            invalidate();
-            return;
-        }
-
-        feedbackExitAnimation.setDuration(220);
-        feedbackExitAnimation.setStartDelay(120);
-        feedbackExitAnimation.setInterpolator(new DecelerateInterpolator());
-        feedbackExitAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float value = (float) animation.getAnimatedValue();
-
-                if (sideMode == TouchBarView.BOTTOM) {
-                    currentRawY = value;
-                } else if (sideMode == TouchBarView.LEFT) {
-                    currentRawX = value;
-                } else if (sideMode == TouchBarView.RIGHT) {
-                    currentRawX = value;
-                }
-            }
-        });
-
-        feedbackExitAnimation.addListener(new ValueAnimator.AnimatorListener() {
-            @Override
-            public void onAnimationEnd(Animator animation, boolean isReverse) {
-                targetRawX = INVALID_VALUE;
-                targetRawY = INVALID_VALUE;
-                invalidate();
-            }
-
-            @Override
-            public void onAnimationStart(Animator animation) {
-                invalidate();
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                targetRawX = INVALID_VALUE;
-                targetRawY = INVALID_VALUE;
-                invalidate();
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-            }
-        });
         feedbackExitAnimation.start();
     }
 
@@ -425,7 +368,7 @@ public class VisualFeedbackView extends View {
             else {
                 return;
             }
-            Log.d("GestureFeedback", "" + graphH);
+            // Log.d("GestureFeedback", "" + graphH);
         } else {
             /*
             float drawStartX = 0f;
