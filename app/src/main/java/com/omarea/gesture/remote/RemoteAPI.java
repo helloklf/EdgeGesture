@@ -45,13 +45,31 @@ public class RemoteAPI {
     }
 
 
-    private static String loadContent(String api) {
+    private final static Object networkWaitLock = new Object();
+
+    private static String loadContent(final String api) {
+        final String[] result = {""};
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                synchronized (networkWaitLock) {
+                    try {
+                        URL url = new URL(host + api);
+                        result[0] = readResponse(url.openConnection());
+                    } catch (Exception ignored) {
+                    } finally {
+                        networkWaitLock.notify();
+                    }
+                }
+            }
+        }).start();
         try {
-            URL url = new URL(host + api);
-            return readResponse(url.openConnection());
-        } catch (Exception ex) {
-            return "";
+            synchronized (networkWaitLock) {
+                networkWaitLock.wait(5000);
+            }
+        } catch (Exception ignored) {
         }
+        return result[0];
     }
 
     private static String readResponse(URLConnection connection) {

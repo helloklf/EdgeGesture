@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.omarea.gesture.AccessibilityServiceGesture;
 import com.omarea.gesture.ActionModel;
 import com.omarea.gesture.AppSwitchActivity;
+import com.omarea.gesture.Gesture;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.SpfConfigEx;
 import com.omarea.gesture.remote.RemoteAPI;
@@ -51,7 +52,6 @@ public class Handlers {
     private static SharedPreferences config;
     private static SharedPreferences configEx;
     private static boolean isXiaomi = Build.MANUFACTURER.equals("Xiaomi") && Build.BRAND.equals("Xiaomi");
-    private static Handler handler = new Handler();
 
     private final static ActionModel[] options = new ArrayList<ActionModel>() {{
         add(new ActionModel(GLOBAL_ACTION_NONE, "无"));
@@ -283,7 +283,7 @@ public class Handlers {
             }
             // ro.miui.ui.version.name=V12
             if (action == GLOBAL_ACTION_HOME && isMiui12 && GlobalState.enhancedMode) {
-                handler.postDelayed(new Runnable() {
+                Gesture.handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         accessibilityService.performGlobalAction(GLOBAL_ACTION_HOME);

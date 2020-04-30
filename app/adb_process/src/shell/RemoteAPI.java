@@ -9,6 +9,24 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class RemoteAPI {
+    private String subPackageName(String recents) {
+        StringBuilder stringBuilder = new StringBuilder();
+        try {
+            if (recents != null) {
+                String[] rows = recents.split("\n");
+                for (String row : rows) {
+                    if (row.contains("=") && row.contains("/")) {
+                        stringBuilder.append(row.substring(row.indexOf("=") + 1, row.indexOf("/")));
+                        stringBuilder.append("\n");
+                    }
+                }
+            }
+        } catch (Exception ignored) {
+        }
+        // System.out.println(stringBuilder.toString());
+        return stringBuilder.toString();
+    }
+
     private void routerMatch(String request, Socket socket) {
         System.out.println("Gesture Router Match：" + request);
         if (request.startsWith("/version")) {
@@ -32,9 +50,9 @@ public class RemoteAPI {
             // System.out.println(result + ">" + isLight);
             responseEnd(socket, (isLight ? "true" : "false"));
         } else if (request.startsWith("/recent-9")) {
-            responseEnd(socket, KeepShellPublic.doCmdSync("dumpsys activity r | grep realActivity | cut -f2 -d '=' | cut -f1 -d '/'"));
+            responseEnd(socket, subPackageName(KeepShellPublic.doCmdSync("dumpsys activity r | grep realActivity")));
         } else if (request.startsWith("/recent-10")) {
-            responseEnd(socket, KeepShellPublic.doCmdSync("dumpsys activity r | grep mActivityComponent | cut -f2 -d '=' | cut -f1 -d '/'"));
+            responseEnd(socket, subPackageName(KeepShellPublic.doCmdSync("dumpsys activity r | grep mActivityComponent")));
         } else if (request.startsWith("/fix-delay")) {
             KeepShellPublic.doCmdSync("am start -n com.omarea.gesture/com.omarea.gesture.FixAppSwitchDelay");
         } else {

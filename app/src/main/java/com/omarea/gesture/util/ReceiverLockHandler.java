@@ -23,7 +23,7 @@ public class ReceiverLockHandler extends Handler {
                     if (msg.what == ReceiverLock.EVENT_SCREEN_ON) {
                         bar.setVisibility(View.VISIBLE);
                     } else if (msg.what == ReceiverLock.EVENT_SCREEN_OFF) {
-                        bar.setVisibility(View.GONE);
+                        bar.setVisibility(View.INVISIBLE);
                     }
                 }
             } else {

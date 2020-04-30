@@ -163,6 +163,9 @@ public class FloatVirtualTouchBar {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             params.layoutInDisplayCutoutMode = LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
         }
+        // 设为GONE 避免出现 “由于某个应用遮挡了权限请求界面，因此设置应用无法验证您的回应” 提示
+        // 在需要显示动画时在切换为可见
+        view.setVisibility(View.GONE);
 
         mWindowManager.addView(view, params);
 

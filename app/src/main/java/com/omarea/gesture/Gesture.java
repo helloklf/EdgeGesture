@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -14,6 +15,7 @@ import android.view.View;
 public class Gesture extends Application {
     @SuppressLint("StaticFieldLeak")
     public static Context context;
+    public static final Handler handler = new Handler();
     private static Vibrator vibrator;
     private static SharedPreferences config;
 

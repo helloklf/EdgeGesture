@@ -66,7 +66,12 @@ public class AdbProcessExtractor {
             if (file != null) {
                 String shell = "sh " + file + " >/dev/null 2>&1 &";
                 KeepShellPublic.doCmdSync(shell);
-                GlobalState.enhancedMode = RemoteAPI.isOnline();
+                Gesture.handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        GlobalState.enhancedMode = RemoteAPI.isOnline();
+                    }
+                }, 5000);
             }
         }
         return GlobalState.enhancedMode;

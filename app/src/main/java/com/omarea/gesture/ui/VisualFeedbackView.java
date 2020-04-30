@@ -98,6 +98,7 @@ public class VisualFeedbackView extends View {
 
     // 设置手势开始位置，以便确定视觉反馈效果显示起点
     public void startEdgeFeedback(float startRawX, float startRawY, int sideMode) {
+        this.setVisibility(VISIBLE);
         stopAnimation();
 
         this.startRawX = startRawX;
@@ -216,6 +217,7 @@ public class VisualFeedbackView extends View {
                 targetRawX = INVALID_VALUE;
                 targetRawY = INVALID_VALUE;
                 invalidate();
+                setVisibility(GONE);
             }
 
             @Override
@@ -227,6 +229,7 @@ public class VisualFeedbackView extends View {
                 targetRawX = INVALID_VALUE;
                 targetRawY = INVALID_VALUE;
                 invalidate();
+                setVisibility(GONE);
             }
 
             @Override
