@@ -1,6 +1,7 @@
 package com.omarea.gesture.util;
 
 import android.graphics.Bitmap;
+
 import com.omarea.gesture.ui.VisualFeedbackView;
 
 public class GlobalState {

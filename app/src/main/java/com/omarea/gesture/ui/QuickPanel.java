@@ -179,6 +179,20 @@ public class QuickPanel {
                     }
                 }
             });
+            gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    if (position >= apps.size()) {
+                        close();
+                        new DialogFrequentlyAppEdit(accessibilityService).openEdit(getCurrentConfig());
+                        // Toast.makeText(accessibilityService, accessibilityService.getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
+                    } else {
+                        apps.remove(position);
+                        ((BaseAdapter) gridView.getAdapter()).notifyDataSetChanged();
+                    }
+                    return true;
+                }
+            });
         } else {
             gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
