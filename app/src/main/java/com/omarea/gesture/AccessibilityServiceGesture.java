@@ -190,8 +190,10 @@ public class AccessibilityServiceGesture extends AccessibilityService {
 
                 if (recents.launcherApps.contains(packageNameStr)) {
                     recents.addRecent(Intent.CATEGORY_HOME);
+                    GlobalState.lastBackHomeTime = System.currentTimeMillis();
                 } else if (!ignored(packageNameStr) && canOpen(packageNameStr) && !appSwitchBlackList.contains(packageNameStr)) {
                     recents.addRecent(packageNameStr);
+                    GlobalState.lastBackHomeTime = 0;
                 }
 
                 lastApp = packageNameStr;

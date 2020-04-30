@@ -28,6 +28,8 @@ import com.omarea.gesture.AppSwitchActivity;
 import com.omarea.gesture.DialogFrequentlyAppEdit;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfigEx;
+import com.omarea.gesture.remote.RemoteAPI;
+import com.omarea.gesture.util.GlobalState;
 
 import java.util.ArrayList;
 
@@ -183,6 +185,9 @@ public class QuickPanel {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent = AppSwitchActivity.getOpenAppIntent(accessibilityService);
                     intent.putExtra("app", apps.get(position).packageName);
+                    if (GlobalState.enhancedMode && System.currentTimeMillis() - GlobalState.lastBackHomeTime < 4800) {
+                        RemoteAPI.fixDelay();
+                    }
                     accessibilityService.startActivity(intent);
 
                     close();
@@ -194,6 +199,9 @@ public class QuickPanel {
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent = AppSwitchActivity.getOpenAppIntent(accessibilityService);
                     intent.putExtra("app-window", apps.get(position).packageName);
+                    if (GlobalState.enhancedMode && System.currentTimeMillis() - GlobalState.lastBackHomeTime < 4800) {
+                        RemoteAPI.fixDelay();
+                    }
                     accessibilityService.startActivity(intent);
 
                     close();

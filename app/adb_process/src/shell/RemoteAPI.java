@@ -35,6 +35,8 @@ public class RemoteAPI {
             responseEnd(socket, KeepShellPublic.doCmdSync("dumpsys activity r | grep realActivity | cut -f2 -d '=' | cut -f1 -d '/'"));
         } else if (request.startsWith("/recent-10")) {
             responseEnd(socket, KeepShellPublic.doCmdSync("dumpsys activity r | grep mActivityComponent | cut -f2 -d '=' | cut -f1 -d '/'"));
+        } else if (request.startsWith("/fix-delay")) {
+            KeepShellPublic.doCmdSync("am start -n com.omarea.gesture/com.omarea.gesture.FixAppSwitchDelay");
         } else {
             responseEnd(socket, "error");
         }

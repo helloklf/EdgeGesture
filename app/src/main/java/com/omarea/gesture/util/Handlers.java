@@ -239,6 +239,9 @@ public class Handlers {
                     break;
                 }
             }
+            if (GlobalState.enhancedMode && System.currentTimeMillis() - GlobalState.lastBackHomeTime < 4800) {
+                RemoteAPI.fixDelay();
+            }
             accessibilityService.startActivity(intent);
         } catch (Exception ex) {
             Toast.makeText(accessibilityService, "AppSwitch Exception >> " + ex.getMessage(), Toast.LENGTH_SHORT).show();
@@ -260,6 +263,9 @@ public class Handlers {
                     intent.putExtra("app-window", app);
                 } else {
                     intent.putExtra("app", app);
+                }
+                if (GlobalState.enhancedMode && System.currentTimeMillis() - GlobalState.lastBackHomeTime < 4800) {
+                    RemoteAPI.fixDelay();
                 }
                 accessibilityService.startActivity(intent);
                 // PendingIntent pendingIntent = PendingIntent.getActivity(accessibilityService.getApplicationContext(), 0, intent, 0);
@@ -312,7 +318,7 @@ public class Handlers {
             try {
                 rootProcess = Runtime.getRuntime().exec("su");
                 rootOutputStream = rootProcess.getOutputStream();
-            } catch (Exception ex) {
+            } catch (Exception ignored) {
             }
         }
         if (rootProcess != null && rootOutputStream != null) {

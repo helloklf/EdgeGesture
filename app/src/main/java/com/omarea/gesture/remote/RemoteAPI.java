@@ -76,4 +76,13 @@ public class RemoteAPI {
         }
         return null;
     }
+
+    public static void fixDelay() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                loadContent("fix-delay");
+            }
+        }).start();
+    }
 }
