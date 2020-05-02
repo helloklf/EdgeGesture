@@ -23,13 +23,20 @@ public class RemoteAPI {
         return loadContent((Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) ? "recent-9" : "recent-10").split("\n");
     }
 
-    public static int getBarAutoColor() {
+    public static int getBarAutoColor(boolean delayScreenCap) {
         // TODO:改为可配置而非自动
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             String isLightColor = loadContent("nav-light-color");
             if (isLightColor != null && isLightColor.equals("true")) {
                 Log.d("getBarAutoColor", "FastWhite");
                 return 0xFF000000;
+            }
+        }
+        if (delayScreenCap) {
+            // 延缓截图，以免在动画播放期间过早的截图导致颜色取到的还是黑色背景
+            try {
+                Thread.sleep(300);
+            } catch (Exception ignored) {
             }
         }
 

@@ -504,7 +504,7 @@ public class iOSWhiteBar {
                             }
                         }
                     };
-                    WhiteBarColor.updateBarColor(false);
+                    WhiteBarColor.updateBarColorSingle();
                 }
             }
 
