@@ -19,24 +19,23 @@ public class FragmentEdge extends FragmentSettingsBase {
     public void onResume() {
         super.onResume();
 
+        bindColorPicker(R.id.bar_edge_color, SpfConfig.CONFIG_EDGE_COLOR, SpfConfig.CONFIG_EDGE_COLOR_DEFAULT);
+
         bindCheckable(R.id.allow_bottom_landscape, SpfConfig.CONFIG_BOTTOM_ALLOW_LANDSCAPE, SpfConfig.CONFIG_BOTTOM_ALLOW_LANDSCAPE_DEFAULT);
         bindCheckable(R.id.allow_bottom_portrait, SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT, SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT_DEFAULT);
         bindSeekBar(R.id.bar_width_bottom, SpfConfig.CONFIG_BOTTOM_WIDTH, SpfConfig.CONFIG_BOTTOM_WIDTH_DEFAULT, true);
-        bindColorPicker(R.id.bar_color_bottom, SpfConfig.CONFIG_BOTTOM_COLOR, SpfConfig.CONFIG_BOTTOM_COLOR_DEFAULT);
         bindHandlerPicker(R.id.tap_bottom, SpfConfig.CONFIG_BOTTOM_EVENT, SpfConfig.CONFIG_BOTTOM_EVENT_DEFAULT);
         bindHandlerPicker(R.id.hover_bottom, SpfConfig.CONFIG_BOTTOM_EVENT_HOVER, SpfConfig.CONFIG_BOTTOM_EVENT_HOVER_DEFAULT);
 
         bindCheckable(R.id.allow_right_landscape, SpfConfig.CONFIG_RIGHT_ALLOW_LANDSCAPE, SpfConfig.CONFIG_RIGHT_ALLOW_LANDSCAPE_DEFAULT);
         bindCheckable(R.id.allow_right_portrait, SpfConfig.CONFIG_RIGHT_ALLOW_PORTRAIT, SpfConfig.CONFIG_RIGHT_ALLOW_PORTRAIT_DEFAULT);
         bindSeekBar(R.id.bar_height_right, SpfConfig.CONFIG_RIGHT_HEIGHT, SpfConfig.CONFIG_RIGHT_HEIGHT_DEFAULT, true);
-        bindColorPicker(R.id.bar_color_right, SpfConfig.CONFIG_RIGHT_COLOR, SpfConfig.CONFIG_RIGHT_COLOR_DEFAULT);
         bindHandlerPicker(R.id.tap_right, SpfConfig.CONFIG_RIGHT_EVENT, SpfConfig.CONFIG_RIGHT_EVENT_DEFAULT);
         bindHandlerPicker(R.id.hover_right, SpfConfig.CONFIG_RIGHT_EVENT_HOVER, SpfConfig.CONFIG_RIGHT_EVENT_HOVER_DEFAULT);
 
         bindCheckable(R.id.allow_left_landscape, SpfConfig.CONFIG_LEFT_ALLOW_LANDSCAPE, SpfConfig.CONFIG_LEFT_ALLOW_LANDSCAPE_DEFAULT);
         bindCheckable(R.id.allow_left_portrait, SpfConfig.CONFIG_LEFT_ALLOW_PORTRAIT, SpfConfig.CONFIG_LEFT_ALLOW_PORTRAIT_DEFAULT);
         bindSeekBar(R.id.bar_height_left, SpfConfig.CONFIG_LEFT_HEIGHT, SpfConfig.CONFIG_LEFT_HEIGHT_DEFAULT, true);
-        bindColorPicker(R.id.bar_color_left, SpfConfig.CONFIG_LEFT_COLOR, SpfConfig.CONFIG_LEFT_COLOR_DEFAULT);
         bindHandlerPicker(R.id.tap_left, SpfConfig.CONFIG_LEFT_EVENT, SpfConfig.CONFIG_LEFT_EVENT_DEFAULT);
         bindHandlerPicker(R.id.hover_left, SpfConfig.CONFIG_LEFT_EVENT_HOVER, SpfConfig.CONFIG_LEFT_EVENT_HOVER_DEFAULT);
 
@@ -49,9 +48,7 @@ public class FragmentEdge extends FragmentSettingsBase {
 
     private void updateView() {
         Activity activity = getActivity();
-        setViewBackground(activity.findViewById(R.id.bar_color_bottom), config.getInt(SpfConfig.CONFIG_BOTTOM_COLOR, SpfConfig.CONFIG_BOTTOM_COLOR_DEFAULT));
-        setViewBackground(activity.findViewById(R.id.bar_color_left), config.getInt(SpfConfig.CONFIG_LEFT_COLOR, SpfConfig.CONFIG_LEFT_COLOR_DEFAULT));
-        setViewBackground(activity.findViewById(R.id.bar_color_right), config.getInt(SpfConfig.CONFIG_RIGHT_COLOR, SpfConfig.CONFIG_RIGHT_COLOR_DEFAULT));
+        setViewBackground(activity.findViewById(R.id.bar_edge_color), config.getInt(SpfConfig.CONFIG_EDGE_COLOR, SpfConfig.CONFIG_EDGE_COLOR_DEFAULT));
 
         updateActionText(R.id.tap_bottom, SpfConfig.CONFIG_BOTTOM_EVENT, SpfConfig.CONFIG_BOTTOM_EVENT_DEFAULT);
         updateActionText(R.id.hover_bottom, SpfConfig.CONFIG_BOTTOM_EVENT_HOVER, SpfConfig.CONFIG_BOTTOM_EVENT_HOVER_DEFAULT);

@@ -28,11 +28,10 @@ import com.omarea.gesture.AppSwitchActivity;
 import com.omarea.gesture.DialogFrequentlyAppEdit;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfigEx;
-import com.omarea.gesture.util.UITools;
+import com.omarea.gesture.remote.RemoteAPI;
+import com.omarea.gesture.util.GlobalState;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 public class QuickPanel {
     @SuppressLint("StaticFieldLeak")
@@ -69,10 +68,11 @@ public class QuickPanel {
         params.height = WindowManager.LayoutParams.WRAP_CONTENT;
 
         if (x > 0 && y > 0) {
-            params.gravity = Gravity.START | Gravity.TOP;
+            params.gravity = Gravity.END | Gravity.CENTER_VERTICAL;
+            // params.gravity = Gravity.START | Gravity.TOP;
 
-            params.x = x - UITools.dp2px(accessibilityService, 115);
-            params.y = y - UITools.dp2px(accessibilityService, 110);
+            // params.x = x - UITools.dp2px(accessibilityService, 115);
+            // params.y = y - UITools.dp2px(accessibilityService, 110);
         } else {
             params.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
         }
@@ -87,37 +87,33 @@ public class QuickPanel {
     private void saveConfig() {
         SharedPreferences config = accessibilityService.getSharedPreferences(SpfConfigEx.configFile, Context.MODE_PRIVATE);
         if (apps != null) {
-            HashSet<String> configApps = new HashSet<>();
+            StringBuilder configApps = new StringBuilder();
             for (AppInfo appInfo : apps) {
-                configApps.add(appInfo.packageName);
+                configApps.append(appInfo.packageName);
+                configApps.append(",");
             }
-            config.edit().putStringSet(SpfConfigEx.frequently_apps, configApps).apply();
+            config.edit().putString(SpfConfigEx.frequently_apps, configApps.toString()).apply();
         }
     }
 
-    private Set<String> getCurrentConfig() {
+    private String[] getCurrentConfig() {
         SharedPreferences config = accessibilityService.getSharedPreferences(SpfConfigEx.configFile, Context.MODE_PRIVATE);
 
-        return config.getStringSet(SpfConfigEx.frequently_apps, new HashSet<String>() {{
-            add("com.tencent.mm");
-            add("com.tencent.mobileqq");
-            add("com.android.browser");
-            add("com.netease.cloudmusic");
-            add("com.sankuai.meituan");
-            add("com.eg.android.AlipayGphone");
-            add("com.android.contacts");
-            add("com.android.mms");
-        }});
+        return config.getString(SpfConfigEx.frequently_apps,
+                "com.android.contacts,com.android.mms,com.android.browser,com.android.camera,com.tencent.mm,com.tencent.mobileqq,com.eg.android.AlipayGphone,com.netease.cloudmusic,com.omarea.vtools").split(",");
     }
 
     private ArrayList<AppInfo> listFrequentlyApps() {
         SharedPreferences config = accessibilityService.getSharedPreferences(SpfConfigEx.configFile, Context.MODE_PRIVATE);
 
-        final String[] apps = getCurrentConfig().toArray(new String[0]);
+        final String[] apps = getCurrentConfig();
 
         ArrayList<AppInfo> appInfos = new ArrayList<>();
         final PackageManager pm = accessibilityService.getPackageManager();
         for (String app : apps) {
+            if (app.isEmpty()) {
+                continue;
+            }
             try {
                 AppInfo appInfo = new AppInfo(app);
                 ApplicationInfo applicationInfo = pm.getApplicationInfo(app, 0);
@@ -183,12 +179,29 @@ public class QuickPanel {
                     }
                 }
             });
+            gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    if (position >= apps.size()) {
+                        close();
+                        new DialogFrequentlyAppEdit(accessibilityService).openEdit(getCurrentConfig());
+                        // Toast.makeText(accessibilityService, accessibilityService.getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
+                    } else {
+                        apps.remove(position);
+                        ((BaseAdapter) gridView.getAdapter()).notifyDataSetChanged();
+                    }
+                    return true;
+                }
+            });
         } else {
             gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent = AppSwitchActivity.getOpenAppIntent(accessibilityService);
                     intent.putExtra("app", apps.get(position).packageName);
+                    if (GlobalState.enhancedMode && System.currentTimeMillis() - GlobalState.lastBackHomeTime < 4800) {
+                        RemoteAPI.fixDelay();
+                    }
                     accessibilityService.startActivity(intent);
 
                     close();
@@ -200,6 +213,9 @@ public class QuickPanel {
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent = AppSwitchActivity.getOpenAppIntent(accessibilityService);
                     intent.putExtra("app-window", apps.get(position).packageName);
+                    if (GlobalState.enhancedMode && System.currentTimeMillis() - GlobalState.lastBackHomeTime < 4800) {
+                        RemoteAPI.fixDelay();
+                    }
                     accessibilityService.startActivity(intent);
 
                     close();

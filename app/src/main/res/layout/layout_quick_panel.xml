@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/quick_panel_bg"
+    android:background="@drawable/quick_panel_bg_right"
+    android:padding="12dp"
     android:gravity="center_vertical"
     android:orientation="vertical">
 
@@ -13,8 +14,8 @@
 
         <ImageButton
             android:id="@+id/quick_question"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:background="@null"
             android:padding="6dp"
             android:scaleType="centerInside"
@@ -33,8 +34,8 @@
 
         <ImageButton
             android:id="@+id/quick_edit"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:background="@null"
             android:padding="8dp"
             android:scaleType="centerInside"
@@ -42,8 +43,8 @@
 
         <ImageButton
             android:id="@+id/quick_save"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:background="@null"
             android:padding="6dp"
             android:scaleType="centerInside"
@@ -52,9 +53,10 @@
 
     <GridView
         android:id="@+id/quick_apps"
-        android:layout_width="230dp"
-        android:layout_height="190dp"
-        android:numColumns="3"
+        android:layout_width="130dp"
+        android:layout_height="440dp"
+        android:numColumns="2"
+        android:layout_marginTop="16dp"
         android:paddingBottom="16dp"
         android:scrollbars="none" />
 </LinearLayout>

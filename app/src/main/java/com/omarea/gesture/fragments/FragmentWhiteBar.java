@@ -9,6 +9,7 @@ import android.widget.Checkable;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.omarea.gesture.AdbProcessExtractor;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.util.GlobalState;
@@ -67,6 +68,7 @@ public class FragmentWhiteBar extends FragmentSettingsBase {
                     if (GlobalState.enhancedMode || config.getBoolean(SpfConfig.ROOT, SpfConfig.ROOT_DEFAULT)) {
                         config.edit().putBoolean(SpfConfig.IOS_BAR_AUTO_COLOR, true).apply();
                         getActivity().findViewById(R.id.ios_bar_auto_color_fast).setEnabled(true);
+                        new AdbProcessExtractor().updateAdbProcessState(getActivity(), true);
                         restartService();
                     } else {
                         ele.setChecked(false);

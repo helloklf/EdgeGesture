@@ -30,7 +30,6 @@
     <string name="edge_action">行为</string>
     <string name="slide_hover">滑动悬停</string>
     <string name="quick_slide">快速滑动</string>
-    <string name="side_hot_area_width">侧边热区宽度</string>
     <string name="bottom_hot_area_height">热区高度</string>
     <string name="bottom_hot_area_width">热区宽度</string>
     <string name="hot_area_desc">注意：用于手势操作的热区会阻挡操作，在确保手势操作灵敏的情况下，尽量不要调太大！</string>

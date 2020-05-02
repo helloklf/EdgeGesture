@@ -22,8 +22,7 @@ import com.omarea.gesture.util.AppListHelper;
 import com.omarea.gesture.util.UITools;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Arrays;
 
 public class DialogFrequentlyAppEdit {
     private AccessibilityServiceGesture accessibilityService;
@@ -52,14 +51,20 @@ public class DialogFrequentlyAppEdit {
         return params;
     }
 
-    public void openEdit(Set<String> current) {
+    private ArrayList<String> configApps;
+
+    public void openEdit(final String[] current) {
+        configApps = new ArrayList<>(Arrays.asList(current));
+
         final WindowManager mWindowManager = (WindowManager) (accessibilityService.getSystemService(Context.WINDOW_SERVICE));
 
-        final ArrayList<AppInfo> appInfos = new AppListHelper().loadAppList(accessibilityService);
-        final Boolean[] status = new Boolean[appInfos.size()];
-        for (int i = 0; i < appInfos.size(); i++) {
-            status[i] = current.contains(appInfos.get(i).packageName);
+        final ArrayList<AppInfo> appInfos = new ArrayList<>();
+        for (AppInfo appInfo : new AppListHelper().loadAppList(accessibilityService)) {
+            if (!configApps.contains(appInfo.packageName)) {
+                appInfos.add(appInfo);
+            }
         }
+        final boolean[] status = new boolean[appInfos.size()];
 
         BaseAdapter adapter = new BaseAdapter() {
             @Override
@@ -104,6 +109,11 @@ public class DialogFrequentlyAppEdit {
                 checkBox.setChecked(!checkBox.isChecked());
 
                 status[position] = checkBox.isChecked();
+                if (checkBox.isChecked()) {
+                    configApps.add(appInfos.get(position).packageName);
+                } else {
+                    configApps.remove(appInfos.get(position).packageName);
+                }
             }
         });
 
@@ -111,14 +121,7 @@ public class DialogFrequentlyAppEdit {
             @Override
             public void onClick(View v) {
                 try {
-                    HashSet<String> configApps = new HashSet<>();
-                    for (int i = 0; i < appInfos.size(); i++) {
-                        if (status[i]) {
-                            configApps.add(appInfos.get(i).packageName);
-                        }
-                    }
-                    SharedPreferences config = accessibilityService.getSharedPreferences(SpfConfigEx.configFile, Context.MODE_PRIVATE);
-                    config.edit().putStringSet(SpfConfigEx.frequently_apps, configApps).apply();
+                    saveConfig(configApps);
                     Toast.makeText(accessibilityService, accessibilityService.getString(R.string.save_succeed), Toast.LENGTH_SHORT).show();
                 } catch (Exception ex) {
                     Toast.makeText(accessibilityService, accessibilityService.getString(R.string.save_fail), Toast.LENGTH_SHORT).show();
@@ -139,5 +142,17 @@ public class DialogFrequentlyAppEdit {
         });
 
         mWindowManager.addView(view, getLayoutParams());
+    }
+
+    private void saveConfig(ArrayList<String> apps) {
+        SharedPreferences config = accessibilityService.getSharedPreferences(SpfConfigEx.configFile, Context.MODE_PRIVATE);
+        if (apps != null) {
+            StringBuilder configApps = new StringBuilder();
+            for (String app : apps) {
+                configApps.append(app);
+                configApps.append(",");
+            }
+            config.edit().putString(SpfConfigEx.frequently_apps, configApps.toString()).apply();
+        }
     }
 }

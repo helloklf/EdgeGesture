@@ -3,7 +3,6 @@ package com.omarea.gesture.util;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -39,7 +38,6 @@ public class Overscan {
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                 String line = bufferedReader.readLine();
                 while (line != null) {
-                    Log.e(">>>>", line);
                     bufferedReader.readLine();
                 }
                 return process.waitFor() == 0;

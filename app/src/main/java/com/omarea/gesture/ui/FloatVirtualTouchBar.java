@@ -18,10 +18,12 @@ import com.omarea.gesture.ActionModel;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.util.GlobalState;
+import com.omarea.gesture.util.Memory;
 
 public class FloatVirtualTouchBar {
     private static WindowManager mWindowManager = null;
     private boolean islandscape;
+    private View visualFeedbackView = null;
     private View iosBarView = null;
     private View bottomView = null;
     private View leftView = null;
@@ -34,36 +36,47 @@ public class FloatVirtualTouchBar {
         config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
         mWindowManager = (WindowManager) (context.getSystemService(Context.WINDOW_SERVICE));
         try {
+            boolean anySide = false;
             if (islandscape) {
                 if (config.getBoolean(SpfConfig.THREE_SECTION_LANDSCAPE, SpfConfig.THREE_SECTION_LANDSCAPE_DEFAULT)) {
                     this.bottomView = setThreeSectionView(context);
                 } else if (config.getBoolean(SpfConfig.CONFIG_BOTTOM_ALLOW_LANDSCAPE, SpfConfig.CONFIG_BOTTOM_ALLOW_LANDSCAPE_DEFAULT)) {
+                    anySide = true;
                     this.bottomView = setBottomView(context);
                 }
                 if (config.getBoolean(SpfConfig.CONFIG_LEFT_ALLOW_LANDSCAPE, SpfConfig.CONFIG_LEFT_ALLOW_LANDSCAPE_DEFAULT)) {
+                    anySide = true;
                     this.leftView = setLeftView(context);
                 }
                 if (config.getBoolean(SpfConfig.CONFIG_RIGHT_ALLOW_LANDSCAPE, SpfConfig.CONFIG_RIGHT_ALLOW_LANDSCAPE_DEFAULT)) {
+                    anySide = true;
                     this.rightView = setRightView(context);
                 }
                 if (config.getBoolean(SpfConfig.LANDSCAPE_IOS_BAR, SpfConfig.LANDSCAPE_IOS_BAR_DEFAULT)) {
                     this.iosBarView = new iOSWhiteBar(context, islandscape).getView();
                 }
-            } else {
+            }
+            else {
                 if (config.getBoolean(SpfConfig.THREE_SECTION_PORTRAIT, SpfConfig.THREE_SECTION_PORTRAIT_DEFAULT)) {
                     this.bottomView = setThreeSectionView(context);
                 } else if (config.getBoolean(SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT, SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT_DEFAULT)) {
+                    anySide = true;
                     this.bottomView = setBottomView(context);
                 }
                 if (config.getBoolean(SpfConfig.CONFIG_LEFT_ALLOW_PORTRAIT, SpfConfig.CONFIG_LEFT_ALLOW_PORTRAIT_DEFAULT)) {
+                    anySide = true;
                     this.leftView = setLeftView(context);
                 }
                 if (config.getBoolean(SpfConfig.CONFIG_RIGHT_ALLOW_PORTRAIT, SpfConfig.CONFIG_RIGHT_ALLOW_PORTRAIT_DEFAULT)) {
+                    anySide = true;
                     this.rightView = setRightView(context);
                 }
                 if (config.getBoolean(SpfConfig.PORTRAIT_IOS_BAR, SpfConfig.PORTRAIT_IOS_BAR_DEFAULT)) {
                     this.iosBarView = new iOSWhiteBar(context, islandscape).getView();
                 }
+            }
+            if (anySide) {
+                this.visualFeedbackView = setVisualFeedbackView(context);
             }
         } catch (Exception ex) {
             Toast.makeText(context, "启动虚拟导航手势失败！", Toast.LENGTH_LONG).show();
@@ -104,6 +117,10 @@ public class FloatVirtualTouchBar {
             mWindowManager.removeView(this.rightView);
             this.rightView = null;
         }
+        if (this.visualFeedbackView != null) {
+            mWindowManager.removeView(this.visualFeedbackView);
+            this.visualFeedbackView = null;
+        }
         // KeepShellPublic.doCmdSync("wm overscan reset");
     }
 
@@ -117,6 +134,42 @@ public class FloatVirtualTouchBar {
             return 1;
         }
         return value;
+    }
+
+    private View setVisualFeedbackView(final AccessibilityServiceGesture context) {
+        final View view = new VisualFeedbackView(context);
+
+        final LayoutParams params = new LayoutParams();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            params.type = LayoutParams.TYPE_ACCESSIBILITY_OVERLAY;
+        } else {
+            params.type = LayoutParams.TYPE_SYSTEM_ALERT;
+        }
+
+        params.format = PixelFormat.TRANSLUCENT;
+
+        params.width = LayoutParams.MATCH_PARENT;
+        params.height = LayoutParams.MATCH_PARENT;
+
+        params.gravity = Gravity.TOP | Gravity.START;
+        // 6G以上(基本上就是8G及更高了)内存开启硬件加速
+        if (new Memory().getMemorySizeMB(context) > 6000) {
+            params.flags = LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_NOT_TOUCHABLE | LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS | LayoutParams.FLAG_HARDWARE_ACCELERATED; // 开启硬件加速也许能提高性能，但是内存占有将会大幅提高
+        } else {
+            params.flags = LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_NOT_TOUCHABLE | LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS; // | LayoutParams.FLAG_HARDWARE_ACCELERATED; // 开启硬件加速也许能提高性能，但是内存占有将会大幅提高
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            params.layoutInDisplayCutoutMode = LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+        }
+        // 设为GONE 避免出现 “由于某个应用遮挡了权限请求界面，因此设置应用无法验证您的回应” 提示
+        // 在需要显示动画时在切换为可见
+        view.setVisibility(View.GONE);
+
+        mWindowManager.addView(view, params);
+
+        return view;
     }
 
     private View setBottomView(final AccessibilityServiceGesture context) {
@@ -165,6 +218,10 @@ public class FloatVirtualTouchBar {
 
         params.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
         params.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            params.layoutInDisplayCutoutMode = LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+        }
 
         mWindowManager.addView(view, params);
 
@@ -281,6 +338,10 @@ public class FloatVirtualTouchBar {
         params.gravity = Gravity.START | Gravity.BOTTOM;
         params.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS;
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            params.layoutInDisplayCutoutMode = LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+        }
+
         mWindowManager.addView(view, params);
         // view.setOnTouchListener(getTouchPierceListener(params, view));
 
@@ -324,6 +385,10 @@ public class FloatVirtualTouchBar {
 
         params.gravity = Gravity.END | Gravity.BOTTOM;
         params.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            params.layoutInDisplayCutoutMode = LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+        }
 
         mWindowManager.addView(view, params);
         // view.setOnTouchListener(getTouchPierceListener(params, view));

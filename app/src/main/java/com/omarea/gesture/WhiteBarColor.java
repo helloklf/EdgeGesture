@@ -1,19 +1,24 @@
 package com.omarea.gesture;
 
-import android.util.Log;
-
 import com.omarea.gesture.remote.RemoteAPI;
 import com.omarea.gesture.util.GlobalState;
 
 public class WhiteBarColor {
-    private static ScreenCapThread thread;
     private static final Object threadRun = "";
-    private static boolean hasNext = false;
+    private static ScreenCapThread thread;
+    private static int nextTimes = 0;
     private static boolean notifyed = false; // 是否已经notify过，并且还未进入wait清除notifyed状态，避免多次notify进入队列
 
-    public static void updateBarColor(boolean dual) {
-        hasNext = dual;
+    public static void updateBarColorSingle() {
+        updateBarColor();
+    }
 
+    public static void updateBarColorMultiple() {
+        nextTimes = 2;
+        updateBarColor();
+    }
+
+    private static void updateBarColor() {
         if (thread != null && thread.isAlive() && !thread.isInterrupted()) {
             synchronized (threadRun) {
                 if (!notifyed && (thread.getState() == Thread.State.WAITING || thread.getState() == Thread.State.TIMED_WAITING)) {
@@ -35,9 +40,9 @@ public class WhiteBarColor {
         @Override
         public void run() {
             do {
-                int color = RemoteAPI.getBarAutoColor();
+                int color = RemoteAPI.getBarAutoColor(nextTimes > 0);
                 if (color != Integer.MIN_VALUE) {
-                    Log.d("GestureRemote", "Color is " + color);
+                    // Log.d("GestureRemote", "Color is " + color);
                     GlobalState.iosBarColor = color;
 
                     if (GlobalState.updateBar != null) {
@@ -47,9 +52,9 @@ public class WhiteBarColor {
                 notifyed = false;
                 try {
                     synchronized (threadRun) {
-                        if (hasNext) {
+                        if (nextTimes > 0) {
                             threadRun.wait(600);
-                            hasNext = false;
+                            nextTimes -= 1;
                         } else {
                             threadRun.wait();
                         }

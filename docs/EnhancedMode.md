@@ -36,7 +36,7 @@
 
 > 注意：你直接复制Gesture中提示的命令行，在此处打开的命令行界面运行，可能并不会执行成功。<br />
 > 你可能需要把开头的`adb -d` 换成 `.\adb.exe -d`<br />
-> 举个完整的例子：`adb.exe -d shell sh /storage/emulated/0/Android/data/com.omarea.gesture/cache/up.sh && exit`
+> 举个完整的例子：`adb.exe -d shell sh /storage/emulated/0/Android/data/com.omarea.gesture/cache/up.sh`
 
 ![成功后的界面](./success.jpg)
 

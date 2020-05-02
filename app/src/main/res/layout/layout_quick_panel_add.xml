@@ -4,13 +4,14 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     android:gravity="center_vertical"
+    android:padding="8dp"
     android:orientation="vertical">
 
     <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
-        android:padding="8dp"
+        android:padding="13dp"
         android:src="@drawable/gesture_icon_add" />
 
     <TextView

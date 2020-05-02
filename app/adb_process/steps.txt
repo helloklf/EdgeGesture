@@ -1,5 +1,5 @@
 C:\Users\helloklf\AppData\Local\Android\Sdk\build-tools\29.0.2\dx  --dex --output=./jar/adb_process.dex ./jar/adb_process.jar
 
-adb push ./jar/app_process.dex /sdcard/adb_process.dex
+adb push ./jar/adb_process.dex /sdcard/adb_process.dex
 
 adb shell app_process -Djava.class.path=/sdcard/adb_process.dex /sdcard Main

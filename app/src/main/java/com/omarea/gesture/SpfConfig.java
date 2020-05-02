@@ -12,6 +12,9 @@ public class SpfConfig {
     // 悬停时间
     public static final String CONFIG_HOVER_TIME = "CONFIG_HOVER_TIME_MS";
     public static final int CONFIG_HOVER_TIME_DEFAULT = 180;
+    // 边缘手势视觉反馈颜色
+    public static final String CONFIG_EDGE_COLOR = "CONFIG_LEFT_COLOR";
+    public static final int CONFIG_EDGE_COLOR_DEFAULT = 0xee101010;
     // 左侧手势区域
     public static final String CONFIG_LEFT_ALLOW_PORTRAIT = "CONFIG_LEFT_ALLOW_PORTRAIT";
     public static final boolean CONFIG_LEFT_ALLOW_PORTRAIT_DEFAULT = true;
@@ -19,8 +22,6 @@ public class SpfConfig {
     public static final boolean CONFIG_LEFT_ALLOW_LANDSCAPE_DEFAULT = false;
     public static final String CONFIG_LEFT_HEIGHT = "CONFIG_LEFT_HEIGHT";
     public static final int CONFIG_LEFT_HEIGHT_DEFAULT = 65; // 高度百分比
-    public static final String CONFIG_LEFT_COLOR = "CONFIG_LEFT_COLOR";
-    public static final int CONFIG_LEFT_COLOR_DEFAULT = 0xee101010;
     public static final String CONFIG_LEFT_EVENT = "CONFIG_LEFT_EVENT";
     public static final int CONFIG_LEFT_EVENT_DEFAULT = Handlers.GLOBAL_ACTION_BACK;
     public static final String CONFIG_LEFT_EVENT_HOVER = "CONFIG_LEFT_EVENT_HOVER";
@@ -32,8 +33,6 @@ public class SpfConfig {
     public static final boolean CONFIG_RIGHT_ALLOW_LANDSCAPE_DEFAULT = false;
     public static final String CONFIG_RIGHT_HEIGHT = "CONFIG_RIGHT_HEIGHT";
     public static final int CONFIG_RIGHT_HEIGHT_DEFAULT = 65; // 高度百分比
-    public static final String CONFIG_RIGHT_COLOR = "CONFIG_RIGHT_COLOR";
-    public static final int CONFIG_RIGHT_COLOR_DEFAULT = 0xee101010;
     public static final String CONFIG_RIGHT_EVENT = "CONFIG_RIGHT_EVENT";
     public static final int CONFIG_RIGHT_EVENT_DEFAULT = Handlers.GLOBAL_ACTION_BACK;
     public static final String CONFIG_RIGHT_EVENT_HOVER = "CONFIG_RIGHT_EVENT_HOVER";
@@ -45,8 +44,6 @@ public class SpfConfig {
     public static final boolean CONFIG_BOTTOM_ALLOW_LANDSCAPE_DEFAULT = false;
     public static final String CONFIG_BOTTOM_WIDTH = "CONFIG_BOTTOM_WIDTH";
     public static final int CONFIG_BOTTOM_WIDTH_DEFAULT = 100;
-    public static final String CONFIG_BOTTOM_COLOR = "CONFIG_BOTTOM_COLOR";
-    public static final int CONFIG_BOTTOM_COLOR_DEFAULT = 0xee101010;
     public static final String CONFIG_BOTTOM_EVENT = "CONFIG_BOTTOM_EVENT";
     public static final int CONFIG_BOTTOM_EVENT_DEFAULT = Handlers.GLOBAL_ACTION_HOME;
     public static final String CONFIG_BOTTOM_EVENT_HOVER = "CONFIG_BOTTOM_EVENT_HOVER";
@@ -66,6 +63,8 @@ public class SpfConfig {
     public static final int VIBRATOR_TIME_LONG_DEFAULT = 16; // 震动时长 默认值
     public static final String VIBRATOR_AMPLITUDE_LONG = "VIBRATOR_AMPLITUDE_LONG"; // 震动强度
     public static final int VIBRATOR_AMPLITUDE_LONG_DEFAULT = 255; // 震动强度 默认值
+    public static final String VIBRATOR_QUICK_SLIDE = "VIBRATOR_QUICK_SLIDE"; // 是否开启快速滑动的震动反馈
+    public static final boolean VIBRATOR_QUICK_SLIDE_DEFAULT = false; // 是否开启快速滑动的震动反馈 默认值
     // iOS小横条开关
     public static final String LANDSCAPE_IOS_BAR = "landscape_ios_bar";
     public static final boolean LANDSCAPE_IOS_BAR_DEFAULT = true;

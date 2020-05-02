@@ -2,8 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.omarea.gesture">
-
-    <!--<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />-->
+    <!-- <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> -->
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -17,7 +16,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:usesCleartextTraffic="true"
         android:name=".Gesture"
         android:allowBackup="true"
         android:hardwareAccelerated="false"
@@ -25,18 +23,30 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/gestureAppTheme"
+        android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".SettingsActivity"
-            android:theme="@style/gestureAppTheme"
-            android:launchMode="singleTask"
-            android:screenOrientation="sensor">
+            android:name=".FixAppSwitchDelay"
+            android:screenOrientation="behind"
+            android:exported="true"
+            android:autoRemoveFromRecents="true"
+            android:excludeFromRecents="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="sensor"
+            android:theme="@style/gestureAppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".AppSwitchActivity"
             android:excludeFromRecents="false"
@@ -45,16 +55,17 @@
             android:theme="@style/appSwitch">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".StartActivity"
-            android:theme="@style/gestureAppTheme"
             android:enabled="true"
             android:excludeFromRecents="false"
             android:launchMode="singleTask"
-            android:screenOrientation="sensor">
+            android:screenOrientation="sensor"
+            android:theme="@style/gestureAppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

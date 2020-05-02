@@ -6,20 +6,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.Handler;
 import android.widget.Toast;
 
 import com.omarea.gesture.AccessibilityServiceGesture;
 import com.omarea.gesture.ActionModel;
 import com.omarea.gesture.AppSwitchActivity;
+import com.omarea.gesture.Gesture;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.SpfConfigEx;
 import com.omarea.gesture.remote.RemoteAPI;
 import com.omarea.gesture.shell.KeepShellPublic;
 import com.omarea.gesture.ui.QuickPanel;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
 public class Handlers {
     final public static int GLOBAL_ACTION_NONE = 0;
@@ -183,6 +188,40 @@ public class Handlers {
         new QuickPanel(accessibilityService).open((int) touchRawX, (int) touchRawY);
     }
 
+    public static String getSystemProperty(String propName) {
+        String line;
+        BufferedReader input = null;
+        try {
+            Process p = Runtime.getRuntime().exec("getprop " + propName);
+            input = new BufferedReader(new InputStreamReader(p.getInputStream()), 1024);
+            line = input.readLine();
+            input.close();
+        } catch (Exception ex) {
+            return null;
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (Exception e) {
+                }
+            }
+        }
+        return line;
+    }
+
+    public static boolean getIsMiui12() {
+        try {
+            // 反射调用私有接口，被Google封杀了
+            // Object result = Class.forName("android.os.Systemproperties").getMethod("get").invoke(null, "ro.miui.ui.version.name", "");
+            // return "V12".equals(result.toString());
+            return Objects.equals(getSystemProperty("ro.miui.ui.version.name"), "V12");
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
+    private static boolean isMiui12 = getIsMiui12();
+
     private static void appSwitch(final AccessibilityServiceGesture accessibilityService, final int action, final int animation) {
         try {
             Intent intent = AppSwitchActivity.getOpenAppIntent(accessibilityService);
@@ -239,6 +278,18 @@ public class Handlers {
                     break;
                 }
             }
+            if (GlobalState.enhancedMode && System.currentTimeMillis() - GlobalState.lastBackHomeTime < 4800) {
+                RemoteAPI.fixDelay();
+            }
+            // ro.miui.ui.version.name=V12
+            if (action == GLOBAL_ACTION_HOME && isMiui12 && GlobalState.enhancedMode) {
+                Gesture.handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        accessibilityService.performGlobalAction(GLOBAL_ACTION_HOME);
+                    }
+                }, 400);
+            }
             accessibilityService.startActivity(intent);
         } catch (Exception ex) {
             Toast.makeText(accessibilityService, "AppSwitch Exception >> " + ex.getMessage(), Toast.LENGTH_SHORT).show();
@@ -260,6 +311,9 @@ public class Handlers {
                     intent.putExtra("app-window", app);
                 } else {
                     intent.putExtra("app", app);
+                }
+                if (GlobalState.enhancedMode && System.currentTimeMillis() - GlobalState.lastBackHomeTime < 4800) {
+                    RemoteAPI.fixDelay();
                 }
                 accessibilityService.startActivity(intent);
                 // PendingIntent pendingIntent = PendingIntent.getActivity(accessibilityService.getApplicationContext(), 0, intent, 0);
@@ -312,7 +366,7 @@ public class Handlers {
             try {
                 rootProcess = Runtime.getRuntime().exec("su");
                 rootOutputStream = rootProcess.getOutputStream();
-            } catch (Exception ex) {
+            } catch (Exception ignored) {
             }
         }
         if (rootProcess != null && rootOutputStream != null) {

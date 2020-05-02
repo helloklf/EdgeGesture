@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
+
 import com.omarea.gesture.AccessibilityServiceGesture;
 import com.omarea.gesture.ActionModel;
 import com.omarea.gesture.Gesture;
@@ -30,12 +31,11 @@ import com.omarea.gesture.util.ReceiverLockHandler;
 import com.omarea.gesture.util.ScreenState;
 
 public class iOSWhiteBar {
+    float pressureMin;
     private AccessibilityServiceGesture accessibilityService;
     private SharedPreferences config;
     private Boolean isLandscapf;
     private float pressure = 0;
-
-    float pressureMin;
 
     public iOSWhiteBar(AccessibilityServiceGesture accessibilityService, Boolean isLandscapf) {
         this.accessibilityService = accessibilityService;
@@ -68,6 +68,23 @@ public class iOSWhiteBar {
             return 1;
         }
         return value;
+    }
+
+    // 判断是否没有定义任何动作（装饰模式）
+    private boolean decorativeMode() {
+        int actionSlideUp = config.getInt(SpfConfig.IOS_BAR_SLIDE_UP, Handlers.GLOBAL_ACTION_NONE);
+        int actionSlideUpHover = config.getInt(SpfConfig.IOS_BAR_SLIDE_UP_HOVER, Handlers.GLOBAL_ACTION_NONE);
+        int actionTouch = config.getInt(SpfConfig.IOS_BAR_TOUCH, Handlers.GLOBAL_ACTION_NONE);
+        int actionTouchHover = config.getInt(SpfConfig.IOS_BAR_PRESS, Handlers.GLOBAL_ACTION_NONE);
+        int actionSlideLeft = config.getInt(SpfConfig.IOS_BAR_SLIDE_LEFT, Handlers.GLOBAL_ACTION_NONE);
+        int actionSlideRight = config.getInt(SpfConfig.IOS_BAR_SLIDE_RIGHT, Handlers.GLOBAL_ACTION_NONE);
+
+        return actionSlideUp == Handlers.GLOBAL_ACTION_NONE &&
+                actionSlideUpHover == Handlers.GLOBAL_ACTION_NONE &&
+                actionTouch == Handlers.GLOBAL_ACTION_NONE &&
+                actionTouchHover == Handlers.GLOBAL_ACTION_NONE &&
+                actionSlideLeft == Handlers.GLOBAL_ACTION_NONE &&
+                actionSlideRight == Handlers.GLOBAL_ACTION_NONE;
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -103,7 +120,7 @@ public class iOSWhiteBar {
         final int lineWeight = config.getInt(SpfConfig.IOS_BAR_HEIGHT, SpfConfig.IOS_BAR_HEIGHT_DEFAULT); // 线宽度（百分比）
         final int strokeWidth = config.getInt(SpfConfig.IOS_BAR_STROKE_SIZE, SpfConfig.IOS_BAR_STROKE_SIZE_DEFAULT); // 描边大小
         final int strokeColor = config.getInt(SpfConfig.IOS_BAR_COLOR_STROKE, SpfConfig.IOS_BAR_COLOR_STROKE_DEFAULT); // 描边颜色
-        final int marginBottom = (isLandscapf ? config.getInt(SpfConfig.IOS_BAR_MARGIN_BOTTOM_LANDSCAPE, SpfConfig.IOS_BAR_MARGIN_BOTTOM_LANDSCAPE_DEFAULT):config.getInt(SpfConfig.IOS_BAR_MARGIN_BOTTOM_PORTRAIT, SpfConfig.IOS_BAR_MARGIN_BOTTOM_PORTRAIT_DEFAULT)); // 底部边距
+        final int marginBottom = (isLandscapf ? config.getInt(SpfConfig.IOS_BAR_MARGIN_BOTTOM_LANDSCAPE, SpfConfig.IOS_BAR_MARGIN_BOTTOM_LANDSCAPE_DEFAULT) : config.getInt(SpfConfig.IOS_BAR_MARGIN_BOTTOM_PORTRAIT, SpfConfig.IOS_BAR_MARGIN_BOTTOM_PORTRAIT_DEFAULT)); // 底部边距
         final int totalHeight = marginBottom + lineWeight + (shadowSize * 2) + (strokeWidth * 2);
 
         bar.setStyle(
@@ -133,7 +150,12 @@ public class iOSWhiteBar {
         params.height = WindowManager.LayoutParams.WRAP_CONTENT;
 
         params.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
-        params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE; // | WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS | WindowManager.LayoutParams.FLAG_LAYOUT_IN_OVERSCAN;
+
+        if (decorativeMode()) {
+            params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+        } else {
+            params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE; // | WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS | WindowManager.LayoutParams.FLAG_LAYOUT_IN_OVERSCAN;
+        }
 
         mWindowManager.addView(view, params);
 
@@ -161,6 +183,7 @@ public class iOSWhiteBar {
 
             private float touchCurrentRawX;
             private float touchCurrentRawY;
+            private long lastTouchDown = 0L;
 
             private void performGlobalAction(final ActionModel event) {
                 if (accessibilityService != null) {
@@ -259,8 +282,6 @@ public class iOSWhiteBar {
                 }
             }
 
-            private long lastTouchDown = 0L;
-
             private boolean onTouchDown(final MotionEvent event) {
                 isTouchDown = true;
                 isGestureCompleted = false;
@@ -349,6 +370,7 @@ public class iOSWhiteBar {
                                 }
                             }
                         }, config.getInt(SpfConfig.CONFIG_HOVER_TIME, SpfConfig.CONFIG_HOVER_TIME_DEFAULT));
+                        Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);
                     }
                 } else {
                     vibratorRun = true;
@@ -379,15 +401,16 @@ public class iOSWhiteBar {
                         if (isLongTimeGesture) { // 上滑悬停
                             Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE_HOVER, view);
                             performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_UP_HOVER, SpfConfig.IOS_BAR_SLIDE_UP_HOVER_DEFAULT));
-                        }
-                        else { // 上滑
+                        } else { // 上滑
                             // Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);
                             performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_UP, SpfConfig.IOS_BAR_SLIDE_UP_DEFAULT));
                         }
                     } else if (moveX < -FLIP_DISTANCE) { // 向左滑动
+                        Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);
                         // Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);
                         performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_LEFT, SpfConfig.IOS_BAR_SLIDE_LEFT_DEFAULT));
                     } else if (moveX > FLIP_DISTANCE) { // 向右滑动
+                        Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);
                         // Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);
                         performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_RIGHT, SpfConfig.IOS_BAR_SLIDE_RIGHT_DEFAULT));
                     }
@@ -474,14 +497,14 @@ public class iOSWhiteBar {
                                 bar.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                    bar.invalidate();
+                                        bar.invalidate();
                                     }
                                 });
                             } catch (Exception ex) {
                             }
                         }
                     };
-                    WhiteBarColor.updateBarColor(false);
+                    WhiteBarColor.updateBarColorSingle();
                 }
             }
 
