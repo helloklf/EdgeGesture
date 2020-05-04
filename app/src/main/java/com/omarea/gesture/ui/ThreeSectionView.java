@@ -289,17 +289,17 @@ public class ThreeSectionView extends View {
         isTouchDown = false;
         isGestureCompleted = true;
 
-        float moveX = event.getX() - touchStartX;
         float moveY = touchStartY - event.getRawY();
 
-        if (Math.abs(moveX) > flingValue || Math.abs(moveY) > flingValue) {
+        if (Math.abs(moveY) > flingValue) {
             if (moveY > FLIP_DISTANCE) { // 纵向滑动
-                if (isLongTimeGesture)
+                if (isLongTimeGesture) {
+                    Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, getRootView());
                     onTouchHover();
-                else
+                } else {
+                    Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, getRootView());
                     onShortTouch();
-            } else if (moveX > FLIP_DISTANCE) { // 横向滑动
-
+                }
             }
         }
         cleartEffect();
