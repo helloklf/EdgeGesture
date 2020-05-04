@@ -274,6 +274,24 @@
             </LinearLayout>
         </LinearLayout>
 
-        <include layout="@layout/gesture_faq_options" />
+
+    <LinearLayout
+        android:id="@+id/faq_click_me"
+        style="@style/card_view"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:src="@drawable/icon_question"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+
+        <TextView
+            android:text="@string/faq_click_me"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
     </LinearLayout>
 </ScrollView>

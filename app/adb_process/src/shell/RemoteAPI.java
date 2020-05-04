@@ -9,6 +9,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class RemoteAPI {
+    // 从=分割
     private String subPackageName(String recents) {
         StringBuilder stringBuilder = new StringBuilder();
         try {
@@ -24,6 +25,27 @@ public class RemoteAPI {
         } catch (Exception ignored) {
         }
         // System.out.println(stringBuilder.toString());
+        return stringBuilder.toString();
+    }
+
+    // 从 cmp= 分割
+    private String subPackageName2(String recents, String separator) {
+        StringBuilder stringBuilder = new StringBuilder();
+        int separatorLength = separator.length();
+        try {
+            if (recents != null) {
+                String[] rows = recents.split("\n");
+                for (String row : rows) {
+                    if (row.contains(separator) && row.contains("/")) {
+                        String r = row.substring(row.indexOf(separator) + separatorLength);
+                        stringBuilder.append(r, 0, r.indexOf("/"));
+                        stringBuilder.append("\n");
+                    }
+                }
+            }
+        } catch (Exception ignored) {
+        }
+        System.out.println(stringBuilder.toString());
         return stringBuilder.toString();
     }
 
@@ -50,11 +72,21 @@ public class RemoteAPI {
             // System.out.println(result + ">" + isLight);
             responseEnd(socket, (isLight ? "true" : "false"));
         } else if (request.startsWith("/recent-9")) {
-            responseEnd(socket, subPackageName(KeepShellPublic.doCmdSync("dumpsys activity r | grep realActivity")));
+            // responseEnd(socket, subPackageName(KeepShellPublic.doCmdSync("dumpsys activity r | grep realActivity")));
+            responseEnd(socket, subPackageName2(KeepShellPublic.doCmdSync("dumpsys activity r | grep 'cmp='"), "cmp="));
         } else if (request.startsWith("/recent-10")) {
-            responseEnd(socket, subPackageName(KeepShellPublic.doCmdSync("dumpsys activity r | grep mActivityComponent")));
+            // responseEnd(socket, subPackageName(KeepShellPublic.doCmdSync("dumpsys activity r | grep mActivityComponent")));
+            responseEnd(socket, subPackageName2(KeepShellPublic.doCmdSync("dumpsys activity r | grep baseIntent"), "cmp="));
         } else if (request.startsWith("/fix-delay")) {
-            KeepShellPublic.doCmdSync("am start -n com.omarea.gesture/com.omarea.gesture.FixAppSwitchDelay");
+            responseEnd(socket, KeepShellPublic.doCmdSync(
+                    // "am start -n com.omarea.gesture/com.omarea.gesture.FixAppSwitchDelay --activity-no-animation --activity-no-history --activity-exclude-from-recents --activity-clear-top --activity-clear-task"
+                    "am start -n com.omarea.gesture/com.omarea.gesture.FixAppSwitchDelay"
+            ));
+        } else if (request.startsWith("/shell")) {
+            if (request.contains("?")) {
+                // KeepShellPublic.doCmdSync(request.substring(request.indexOf("?") + 1));
+            }
+            responseEnd(socket, "unsupported");
         } else {
             responseEnd(socket, "error");
         }

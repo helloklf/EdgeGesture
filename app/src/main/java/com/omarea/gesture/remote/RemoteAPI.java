@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 
 public class RemoteAPI {
     private static String host = "http://localhost:8906/";
@@ -107,6 +108,23 @@ public class RemoteAPI {
             @Override
             public void run() {
                 loadContent("fix-delay");
+            }
+        }).start();
+    }
+
+    public static void startActivity(final String params) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    StringBuilder paramsBuilder = new StringBuilder("am start -n com.omarea.gesture/.AppSwitchActivity");
+                    if (params != null) {
+                        paramsBuilder.append(" ");
+                        paramsBuilder.append(params);
+                    }
+                    paramsBuilder.append(" --activity-no-animation --activity-no-history --activity-exclude-from-recents --activity-clear-top --activity-clear-task");
+                    loadContent("shell?" + URLEncoder.encode(paramsBuilder.toString(), "UTF-8"));
+                } catch (Exception ignored){}
             }
         }).start();
     }

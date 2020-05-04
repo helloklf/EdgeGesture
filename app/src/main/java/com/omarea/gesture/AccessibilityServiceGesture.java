@@ -148,7 +148,10 @@ public class AccessibilityServiceGesture extends AccessibilityService {
         List<ResolveInfo> resolveinfoList = getPackageManager().queryIntentActivities(resolveIntent, 0);
         ArrayList<String> launcherApps = new ArrayList<>();
         for (ResolveInfo resolveInfo : resolveinfoList) {
-            launcherApps.add(resolveInfo.activityInfo.packageName);
+            String packageName = resolveInfo.activityInfo.packageName;
+            if (!("com.android.settings".equals(packageName))) {
+                launcherApps.add(packageName);
+            }
         }
         return launcherApps;
     }

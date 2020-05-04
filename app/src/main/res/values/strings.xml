@@ -59,12 +59,6 @@
     <string name="custom_shell">自定义脚本</string>
     <string name="custom_app">自定义应用</string>
     <string name="exclude_app">排除应用</string>
-    <string name="faq_delay_5">疑：用Home键回到桌面后，通过手势切换应用会延迟 5 秒\n答：这是Google对第三方后台应用的限制无法规避，可尝试将动画模式换成“定制动画”</string>
-    <string name="faq_no_response">疑：应用切换手势没反应\n答：例如MIUI，需要授予“后台弹出界面”权限才能正常使用，其它系统类似</string>
-    <string name="faq_restart_task">疑：通过手势切换应用会重新打开关闭的应用\n答：系统不让第三方程序获取应用后台状态，如果你已经ROOT，可尝试打开“ROOT增强”选项</string>
-    <string name="faq_slow">疑：感觉手势响应有延迟\n答：因为分配给后台程序的CPU资源较少，如果你有ROOT权限，可尝试复制本程序到System目录</string>
-    <string name="faq_close">疑：手机重启后不会自动自动开启手势，或者经常自动关闭\n答：检查系统的 自启动管理、后台检查、内存管理、省电优化、游戏加速 等功能，将应用添加到白名单</string>
-    <string name="faq_animation">疑：使用定制动画时“返回桌面”不彻底\n答：因为的确不是模拟Home键点击，而是直接打开了桌面，当然也是为了规避常见问题第一条</string>
     <string name="coming_soon">该功能还未完成，敬请期待！</string>
     <string name="add">添加</string>
     <string name="save_succeed">保存成功</string>
@@ -81,5 +75,6 @@
     <string name="pressure_config">设置压感力度</string>
     <string name="pressure_config_desc">设置小横条按压手势触发力度，但并非所有设备都支持压感</string>
     <string name="btn_ok">确定</string>
+    <string name="faq_click_me">使用遇到问题？点我</string>
 
 </resources>

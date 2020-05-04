@@ -8,6 +8,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -107,6 +108,22 @@ public class FragmentBasic extends FragmentSettingsBase {
         });
         vibrator_use_system.setChecked(config.getBoolean(SpfConfig.VIBRATOR_USE_SYSTEM, SpfConfig.VIBRATOR_USE_SYSTEM_DEFAULT));
         vibrator_custom.setVisibility(vibrator_use_system.isChecked() ? View.GONE : View.VISIBLE);
+
+        getActivity().findViewById(R.id.faq_click_me).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Intent intent = new Intent();
+                    //Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+                    intent.setAction("android.intent.action.VIEW");
+                    Uri content_url = Uri.parse("https://github.com/helloklf/EdgeGesture/blob/master/docs/FAQ.md");
+                    intent.setData(content_url);
+                    startActivity(intent);
+                } catch (Exception ex) {
+                    //
+                }
+            }
+        });
 
         if (Build.MANUFACTURER.equals("samsung") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             if (canWriteGlobalSettings()) {
