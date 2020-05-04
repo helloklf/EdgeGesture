@@ -34,7 +34,6 @@ public class ThreeSectionView extends View {
     private boolean isLongTimeGesture = false;
     private Context context = getContext();
     private int FLIP_DISTANCE = dp2px(context, 50f); // 触摸灵敏度（滑动多长距离认为是手势）
-    private float effectSize = (float) (dp2px(context, 15f)); // 特效大小
     private boolean isTouchDown = false;
     private boolean isGestureCompleted = false;
     private float iconRadius = dp2px(context, 8f);
@@ -147,7 +146,14 @@ public class ThreeSectionView extends View {
         this.setLayoutParams(lp);
     }
 
-    void setEventHandler(ActionModel leftSlide, ActionModel leftHover, ActionModel centerSlide, ActionModel centerHover, ActionModel rightSlide, ActionModel rightHover, final AccessibilityServiceGesture context) {
+    void setEventHandler(
+            ActionModel leftSlide,
+            ActionModel leftHover,
+            ActionModel centerSlide,
+            ActionModel centerHover,
+            ActionModel rightSlide,
+            ActionModel rightHover,
+            final AccessibilityServiceGesture context) {
         this.eventLeftSlide = leftSlide;
         this.eventLeftHover = leftHover;
         this.eventCenterSlide = centerSlide;
