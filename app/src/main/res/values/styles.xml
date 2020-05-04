@@ -104,4 +104,9 @@
     <style name="appSwitch" parent="android:Theme.Translucent.NoTitleBar.Fullscreen">
         <item name="android:windowAnimationStyle">@style/activityAnim</item>
     </style>
+
+    <style name="quickPanelAnimation">
+        <item name="android:windowEnterAnimation">@anim/gesture_fade_in</item>
+        <item name="android:windowExitAnimation">@anim/gesture_fade_out</item>
+    </style>
 </resources>

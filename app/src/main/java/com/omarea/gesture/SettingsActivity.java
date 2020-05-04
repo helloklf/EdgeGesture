@@ -34,7 +34,6 @@ public class SettingsActivity extends Activity {
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 window.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             }
-            ;
         }
 
         if (inLightMode != isNightMode && restart) {

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="300"
+    android:detachWallpaper="true"
+    android:shareInterpolator="false"
+    android:zAdjustment="top">
+    <alpha
+        android:fillAfter="true"
+        android:fromAlpha="1"
+        android:interpolator="@android:anim/accelerate_interpolator"
+        android:toAlpha="0" />
+</set>
