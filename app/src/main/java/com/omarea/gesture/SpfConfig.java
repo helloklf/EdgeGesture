@@ -70,6 +70,7 @@ public class SpfConfig {
     public static final boolean LANDSCAPE_IOS_BAR_DEFAULT = true;
     public static final String PORTRAIT_IOS_BAR = "portrait_ios_bar";
     public static final boolean PORTRAIT_IOS_BAR_DEFAULT = false;
+
     // iOS小横条动作
     public static final String IOS_BAR_SLIDE_LEFT = "ios_bar_slide_left";
     public static final int IOS_BAR_SLIDE_LEFT_DEFAULT = Handlers.VITUAL_ACTION_NEXT_APP;
@@ -80,9 +81,9 @@ public class SpfConfig {
     public static final String IOS_BAR_SLIDE_UP_HOVER = "ios_bar_slide_up_hover";
     public static final int IOS_BAR_SLIDE_UP_HOVER_DEFAULT = Handlers.GLOBAL_ACTION_RECENTS;
     public static final String IOS_BAR_TOUCH = "ios_bar_touch"; // 轻触
-    public static final int IOS_BAR_TOUCH_DEFAULT = Handlers.GLOBAL_ACTION_NONE;
+    public static final int IOS_BAR_TOUCH_DEFAULT = Handlers.GLOBAL_ACTION_BACK;
     public static final String IOS_BAR_PRESS = "ios_bar_press"; // 按压
-    public static final int IOS_BAR_PRESS_DEFAULT = Handlers.GLOBAL_ACTION_NONE;
+    public static final int IOS_BAR_PRESS_DEFAULT = Handlers.GLOBAL_ACTION_HOME;
     public static final String IOS_BAR_PRESS_MIN = "ios_bar_press_min_2"; // 按压（最小力度）
     public static final int IOS_BAR_PRESS_MIN_DEFAULT = -1;
 
@@ -98,21 +99,21 @@ public class SpfConfig {
     public static final String IOS_BAR_COLOR_LANDSCAPE = "ios_bar_color_landscape";
     public static final int IOS_BAR_COLOR_LANDSCAPE_DEFAULT = 0xffffffff; // 颜色
     public static final String IOS_BAR_COLOR_PORTRAIT = "ios_bar_color_portrait";
-    public static final int IOS_BAR_COLOR_PORTRAIT_DEFAULT = 0xffffffff; // 颜色
+    public static final int IOS_BAR_COLOR_PORTRAIT_DEFAULT = 0xff222222; // 颜色
     public static final String IOS_BAR_COLOR_SHADOW = "ios_bar_color_shadow";
     public static final int IOS_BAR_COLOR_SHADOW_DEFAULT = 0x88000000; // 默认阴影颜色
     public static final String IOS_BAR_SHADOW_SIZE = "ios_bar_shadow_size2";
     public static final int IOS_BAR_SHADOW_SIZE_DEFAULT = 0; // ?dp
     public static final String IOS_BAR_COLOR_STROKE = "ios_bar_color_stroke";
-    public static final int IOS_BAR_COLOR_STROKE_DEFAULT = 0xff000000; // 默认描边颜色
+    public static final int IOS_BAR_COLOR_STROKE_DEFAULT = 0xffffffff; // 默认描边颜色
     public static final String IOS_BAR_STROKE_SIZE = "ios_bar_stroke_size";
-    public static final int IOS_BAR_STROKE_SIZE_DEFAULT = 1; // ?dp
+    public static final int IOS_BAR_STROKE_SIZE_DEFAULT = 0; // ?dp
     public static final String IOS_BAR_MARGIN_BOTTOM_PORTRAIT = "ios_bar_margin_bottom_portrait";
-    public static final int IOS_BAR_MARGIN_BOTTOM_PORTRAIT_DEFAULT = 9; // ?dp
+    public static final int IOS_BAR_MARGIN_BOTTOM_PORTRAIT_DEFAULT = 11; // ?dp
     public static final String IOS_BAR_MARGIN_BOTTOM_LANDSCAPE = "ios_bar_margin_bottom_landscape";
     public static final int IOS_BAR_MARGIN_BOTTOM_LANDSCAPE_DEFAULT = 6; // ?dp
     public static final String IOS_BAR_HEIGHT = "ios_bar_height";
-    public static final int IOS_BAR_HEIGHT_DEFAULT = 3; // ?dp
+    public static final int IOS_BAR_HEIGHT_DEFAULT = 5; // ?dp
     public static final String IOS_BAR_LOCK_HIDE = "ios_bar_lock_hide";
     public static final Boolean IOS_BAR_LOCK_HIDE_DEFAULT = false;
     public static final String IOS_BAR_AUTO_COLOR = "ios_bar_auto_color_root";
@@ -135,7 +136,7 @@ public class SpfConfig {
     public static boolean HARDWARE_ACCELERATED_DEFAULT = false;
     // 切换到桌面
     public static String SWITCH_TO_HOME = "SWITCH_TO_HOME";
-    public static boolean SWITCH_TO_HOME_DEFAULT = true;
+    public static boolean SWITCH_TO_HOME_DEFAULT = false;
     // 三星优化(自动禁用系统手势)
     public static String SAMSUNG_OPTIMIZE = "SAMSUNG_OPTIMIZE";
     public static boolean SAMSUNG_OPTIMIZE_DEFAULT = false;

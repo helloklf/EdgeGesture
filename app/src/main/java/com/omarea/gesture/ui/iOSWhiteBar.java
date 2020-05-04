@@ -72,12 +72,12 @@ public class iOSWhiteBar {
 
     // 判断是否没有定义任何动作（装饰模式）
     private boolean decorativeMode() {
-        int actionSlideUp = config.getInt(SpfConfig.IOS_BAR_SLIDE_UP, Handlers.GLOBAL_ACTION_NONE);
-        int actionSlideUpHover = config.getInt(SpfConfig.IOS_BAR_SLIDE_UP_HOVER, Handlers.GLOBAL_ACTION_NONE);
-        int actionTouch = config.getInt(SpfConfig.IOS_BAR_TOUCH, Handlers.GLOBAL_ACTION_NONE);
-        int actionTouchHover = config.getInt(SpfConfig.IOS_BAR_PRESS, Handlers.GLOBAL_ACTION_NONE);
-        int actionSlideLeft = config.getInt(SpfConfig.IOS_BAR_SLIDE_LEFT, Handlers.GLOBAL_ACTION_NONE);
-        int actionSlideRight = config.getInt(SpfConfig.IOS_BAR_SLIDE_RIGHT, Handlers.GLOBAL_ACTION_NONE);
+        int actionSlideUp = config.getInt(SpfConfig.IOS_BAR_SLIDE_UP, SpfConfig.IOS_BAR_SLIDE_UP_DEFAULT);
+        int actionSlideUpHover = config.getInt(SpfConfig.IOS_BAR_SLIDE_UP_HOVER, SpfConfig.IOS_BAR_SLIDE_UP_HOVER_DEFAULT);
+        int actionTouch = config.getInt(SpfConfig.IOS_BAR_TOUCH, SpfConfig.IOS_BAR_TOUCH_DEFAULT);
+        int actionTouchHover = config.getInt(SpfConfig.IOS_BAR_PRESS, SpfConfig.IOS_BAR_PRESS_DEFAULT);
+        int actionSlideLeft = config.getInt(SpfConfig.IOS_BAR_SLIDE_LEFT, SpfConfig.IOS_BAR_SLIDE_LEFT_DEFAULT);
+        int actionSlideRight = config.getInt(SpfConfig.IOS_BAR_SLIDE_RIGHT, SpfConfig.IOS_BAR_SLIDE_RIGHT_DEFAULT);
 
         return actionSlideUp == Handlers.GLOBAL_ACTION_NONE &&
                 actionSlideUpHover == Handlers.GLOBAL_ACTION_NONE &&
@@ -418,17 +418,17 @@ public class iOSWhiteBar {
                     int pressureAction = config.getInt(SpfConfig.IOS_BAR_PRESS, SpfConfig.IOS_BAR_PRESS_DEFAULT);
                     if (pressureAction != SpfConfig.IOS_BAR_TOUCH_DEFAULT && pressureMin != SpfConfig.IOS_BAR_PRESS_MIN_DEFAULT && pressure >= pressureMin) {
                         // 按压
-                        performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_PRESS, SpfConfig.IOS_BAR_PRESS_DEFAULT));
                         int action = config.getInt(SpfConfig.IOS_BAR_PRESS, SpfConfig.IOS_BAR_PRESS_DEFAULT);
-                        if (action != SpfConfig.IOS_BAR_PRESS_DEFAULT) {
+                        if (action != Handlers.GLOBAL_ACTION_NONE) {
                             Gesture.vibrate(Gesture.VibrateMode.VIBRATE_PRESS, view);
+                            performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_PRESS, SpfConfig.IOS_BAR_PRESS_DEFAULT));
                         }
                     } else {
                         // 轻触
-                        performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_TOUCH, SpfConfig.IOS_BAR_TOUCH_DEFAULT));
                         int action = config.getInt(SpfConfig.IOS_BAR_TOUCH, SpfConfig.IOS_BAR_TOUCH_DEFAULT);
-                        if (action != SpfConfig.IOS_BAR_TOUCH_DEFAULT) {
+                        if (action != Handlers.GLOBAL_ACTION_NONE) {
                             Gesture.vibrate(Gesture.VibrateMode.VIBRATE_CLICK, view);
+                            performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_TOUCH, SpfConfig.IOS_BAR_TOUCH_DEFAULT));
                         }
                     }
                 }

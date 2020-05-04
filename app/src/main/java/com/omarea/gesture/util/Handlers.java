@@ -39,8 +39,6 @@ public class Handlers {
     final public static int GLOBAL_ACTION_TAKE_SCREENSHOT = AccessibilityService.GLOBAL_ACTION_TAKE_SCREENSHOT;
     final public static int VITUAL_ACTION_NEXT_APP = 900000;
     final public static int VITUAL_ACTION_PREV_APP = 900001;
-    final public static int VITUAL_ACTION_XIAO_AI = 900002;
-    final public static int VITUAL_ACTION_SWITCH_APP = 900005;
     final public static int VITUAL_ACTION_FORM = 900009;
 
     final public static int CUSTOM_ACTION_APP = 1000001;
@@ -51,7 +49,7 @@ public class Handlers {
 
     private static SharedPreferences config;
     private static SharedPreferences configEx;
-    private static boolean isXiaomi = Build.MANUFACTURER.equals("Xiaomi") && Build.BRAND.equals("Xiaomi");
+    // private static boolean isXiaomi = Build.MANUFACTURER.equals("Xiaomi") && Build.BRAND.equals("Xiaomi");
 
     private final static ActionModel[] options = new ArrayList<ActionModel>() {{
         add(new ActionModel(GLOBAL_ACTION_NONE, "无"));
@@ -64,13 +62,8 @@ public class Handlers {
         add(new ActionModel(VITUAL_ACTION_PREV_APP, "上个应用"));
         add(new ActionModel(VITUAL_ACTION_NEXT_APP, "下个应用"));
 
-        if (isXiaomi) {
-            add(new ActionModel(VITUAL_ACTION_XIAO_AI, "小爱[ROOT]"));
-        }
-
         if (Build.VERSION.SDK_INT > 23) {
             add(new ActionModel(GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN, "分屏"));
-            add(new ActionModel(VITUAL_ACTION_SWITCH_APP, "上个应用[原生]"));
             add(new ActionModel(VITUAL_ACTION_FORM, "应用窗口化[试验]"));
         }
 
@@ -83,8 +76,8 @@ public class Handlers {
         if (Build.VERSION.SDK_INT > 23) {
             add(new ActionModel(CUSTOM_ACTION_APP_WINDOW, "EX-应用窗口[试验]"));
         }
-        add(new ActionModel(CUSTOM_ACTION_SHELL, "EX-运行脚本"));
-        add(new ActionModel(CUSTOM_ACTION_QUICK, "EX-常用应用"));
+        add(new ActionModel(CUSTOM_ACTION_SHELL, "拓展动作-运行脚本"));
+        add(new ActionModel(CUSTOM_ACTION_QUICK, "拓展动作-常用应用"));
         add(new ActionModel(OMAREA_FILTER_SCREENSHOT, "屏幕滤镜-正常截图"));
     }}.toArray(new ActionModel[0]);
 
@@ -103,20 +96,6 @@ public class Handlers {
             case GLOBAL_ACTION_NONE: {
                 break;
             }
-            case VITUAL_ACTION_SWITCH_APP: {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        accessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS);
-                        try {
-                            Thread.sleep(350);
-                        } catch (Exception ignored) {
-                        }
-                        accessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS);
-                    }
-                }).start();
-                break;
-            }
             case VITUAL_ACTION_NEXT_APP:
             case VITUAL_ACTION_PREV_APP:
             case VITUAL_ACTION_FORM:
@@ -129,10 +108,6 @@ public class Handlers {
                 } else {
                     appSwitch(accessibilityService, action.actionCode, animation);
                 }
-                break;
-            }
-            case VITUAL_ACTION_XIAO_AI: {
-                openXiaoAi();
                 break;
             }
             case GLOBAL_ACTION_TAKE_SCREENSHOT: {
@@ -346,37 +321,5 @@ public class Handlers {
 
     public static ActionModel[] getOptions() {
         return options;
-    }
-
-    private static void openXiaoAi() {
-        /*
-         try {
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_LAUNCHER);
-            // com.miui.voiceassist/com.xiaomi.voiceassistant.AiSettings.AiShortcutActivity
-            ComponentName xiaoAi = new ComponentName("com.miui.voiceassist", "com.xiaomi.voiceassistant.AiSettings.AiShortcutActivity");
-            intent.setComponent(xiaoAi);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            accessibilityService.startActivity(intent);
-        } catch (Exception ex) {
-            Toast.makeText(accessibilityService, "" + ex.getMessage(), Toast.LENGTH_LONG).show();
-        }
-        */
-        if (rootProcess == null) {
-            try {
-                rootProcess = Runtime.getRuntime().exec("su");
-                rootOutputStream = rootProcess.getOutputStream();
-            } catch (Exception ignored) {
-            }
-        }
-        if (rootProcess != null && rootOutputStream != null) {
-            try {
-                rootOutputStream.write("am start -n com.miui.voiceassist/com.xiaomi.voiceassistant.AiSettings.AiShortcutActivity\n".getBytes());
-                rootOutputStream.flush();
-            } catch (Exception ex) {
-                rootProcess = null;
-                rootOutputStream = null;
-            }
-        }
     }
 }
