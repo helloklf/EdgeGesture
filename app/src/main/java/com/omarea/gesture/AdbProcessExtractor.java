@@ -18,6 +18,41 @@ public class AdbProcessExtractor {
         try {
             File cacheDir = context.getExternalCacheDir();
             cacheDir.mkdirs();
+
+            cacheDir.setExecutable(true);
+            cacheDir.setWritable(true);
+
+            InputStream inputStream = context.getAssets().open(file);
+            File outFile = new File((cacheDir.getAbsolutePath() + "/" + file));
+            FileOutputStream fileOutputStream = new FileOutputStream(outFile);
+            byte[] datas = new byte[10240];
+            while (true) {
+                int len = inputStream.read(datas);
+                if (len > 0) {
+                    fileOutputStream.write(datas, 0, len);
+                } else {
+                    break;
+                }
+            }
+
+            fileOutputStream.flush();
+            fileOutputStream.close();
+            inputStream.close();
+
+            outFile.setExecutable(true, false);
+            outFile.setReadable(true, false);
+            outFile.setWritable(true, false);
+
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
+    private boolean extractShellScript(Context context, String file) {
+        try {
+            File cacheDir = context.getExternalCacheDir();
+            cacheDir.mkdirs();
             cacheDir.setExecutable(true);
             cacheDir.setWritable(true);
 
@@ -53,7 +88,7 @@ public class AdbProcessExtractor {
     }
 
     public String extract(Context context) {
-        if (extractFile(context, "adb_process.dex") && extractFile(context, "up.sh")) {
+        if (extractFile(context, "adb_process.dex") && extractShellScript(context, "up.sh")) {
             File cacheDir = context.getExternalCacheDir();
             return cacheDir.getAbsolutePath() + "/up.sh";
         }
