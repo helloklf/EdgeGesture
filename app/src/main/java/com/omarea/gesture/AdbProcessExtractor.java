@@ -7,31 +7,36 @@ import com.omarea.gesture.remote.RemoteAPI;
 import com.omarea.gesture.shell.KeepShellPublic;
 import com.omarea.gesture.util.GlobalState;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class AdbProcessExtractor {
     private boolean extractFile(Context context, String file) {
         try {
             File cacheDir = context.getExternalCacheDir();
             cacheDir.mkdirs();
-
             cacheDir.setExecutable(true);
             cacheDir.setWritable(true);
 
             InputStream inputStream = context.getAssets().open(file);
             File outFile = new File((cacheDir.getAbsolutePath() + "/" + file));
             FileOutputStream fileOutputStream = new FileOutputStream(outFile);
-            byte[] datas = new byte[10240];
-            while (true) {
-                int len = inputStream.read(datas);
-                if (len > 0) {
-                    fileOutputStream.write(datas, 0, len);
-                } else {
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            StringBuilder stringBuffer = new StringBuilder();
+            String line;
+            do {
+                line = bufferedReader.readLine();
+                if (line == null) {
                     break;
+                } else {
+                    stringBuffer.append(line);
+                    stringBuffer.append("\n");
                 }
-            }
+            } while (true);
+            fileOutputStream.write(stringBuffer.toString().replaceAll("\r\n", "\n").replaceAll("\r", "\n").getBytes());
 
             fileOutputStream.flush();
             fileOutputStream.close();
