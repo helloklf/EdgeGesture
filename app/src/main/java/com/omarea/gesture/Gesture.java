@@ -13,9 +13,9 @@ import android.view.HapticFeedbackConstants;
 import android.view.View;
 
 public class Gesture extends Application {
+    public static final Handler handler = new Handler();
     @SuppressLint("StaticFieldLeak")
     public static Context context;
-    public static final Handler handler = new Handler();
     private static Vibrator vibrator;
     private static SharedPreferences config;
 

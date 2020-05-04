@@ -55,8 +55,7 @@ public class FloatVirtualTouchBar {
                 if (config.getBoolean(SpfConfig.LANDSCAPE_IOS_BAR, SpfConfig.LANDSCAPE_IOS_BAR_DEFAULT)) {
                     this.iosBarView = new iOSWhiteBar(context, islandscape).getView();
                 }
-            }
-            else {
+            } else {
                 if (config.getBoolean(SpfConfig.THREE_SECTION_PORTRAIT, SpfConfig.THREE_SECTION_PORTRAIT_DEFAULT)) {
                     this.bottomView = setThreeSectionView(context);
                 } else if (config.getBoolean(SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT, SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT_DEFAULT)) {

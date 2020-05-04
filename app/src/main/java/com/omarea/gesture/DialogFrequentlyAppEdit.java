@@ -26,6 +26,7 @@ import java.util.Arrays;
 
 public class DialogFrequentlyAppEdit {
     private AccessibilityServiceGesture accessibilityService;
+    private ArrayList<String> configApps;
 
     public DialogFrequentlyAppEdit(AccessibilityServiceGesture accessibilityServiceGesture) {
         accessibilityService = accessibilityServiceGesture;
@@ -50,8 +51,6 @@ public class DialogFrequentlyAppEdit {
         params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
         return params;
     }
-
-    private ArrayList<String> configApps;
 
     public void openEdit(final String[] current) {
         configApps = new ArrayList<>(Arrays.asList(current));

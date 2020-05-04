@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.os.Handler;
 import android.widget.Toast;
 
 import com.omarea.gesture.AccessibilityServiceGesture;
@@ -46,11 +45,6 @@ public class Handlers {
     final public static int CUSTOM_ACTION_SHELL = 1000006;
     final public static int CUSTOM_ACTION_QUICK = 1000009;
     final public static int OMAREA_FILTER_SCREENSHOT = 1100000;
-
-    private static SharedPreferences config;
-    private static SharedPreferences configEx;
-    // private static boolean isXiaomi = Build.MANUFACTURER.equals("Xiaomi") && Build.BRAND.equals("Xiaomi");
-
     private final static ActionModel[] options = new ArrayList<ActionModel>() {{
         add(new ActionModel(GLOBAL_ACTION_NONE, "无"));
         add(new ActionModel(GLOBAL_ACTION_BACK, "返回键"));
@@ -80,9 +74,12 @@ public class Handlers {
         add(new ActionModel(CUSTOM_ACTION_QUICK, "拓展动作-常用应用"));
         add(new ActionModel(OMAREA_FILTER_SCREENSHOT, "屏幕滤镜-正常截图"));
     }}.toArray(new ActionModel[0]);
-
+    private static SharedPreferences config;
+    // private static boolean isXiaomi = Build.MANUFACTURER.equals("Xiaomi") && Build.BRAND.equals("Xiaomi");
+    private static SharedPreferences configEx;
     private static Process rootProcess = null;
     private static OutputStream rootOutputStream = null;
+    private static boolean isMiui12 = getIsMiui12();
 
     // FIXME:
     // <uses-permission android:name="android.permission.STOP_APP_SWITCHES" />
@@ -194,8 +191,6 @@ public class Handlers {
             return false;
         }
     }
-
-    private static boolean isMiui12 = getIsMiui12();
 
     private static void appSwitch(final AccessibilityServiceGesture accessibilityService, final int action, final int animation) {
         try {

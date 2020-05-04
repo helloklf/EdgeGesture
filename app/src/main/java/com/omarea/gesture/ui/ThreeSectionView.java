@@ -86,7 +86,7 @@ public class ThreeSectionView extends View {
 
     private void performGlobalAction(ActionModel event) {
         if (accessibilityService != null) {
-            if (gameOptimization && isLandscapf && ((System.currentTimeMillis() - lastEventTime) > 2000 || lastEvent != event.actionCode)) {
+            if (gameOptimization && isLandscapf && ((System.currentTimeMillis() - lastEventTime) > 3000 || lastEvent != event.actionCode)) {
                 lastEvent = event.actionCode;
                 lastEventTime = System.currentTimeMillis();
                 Toast.makeText(context, this.getContext().getString(R.string.please_repeat), Toast.LENGTH_SHORT).show();
