@@ -159,26 +159,6 @@
                     android:layout_marginTop="6dp"
                     android:text="@string/app_switch_home_desc" />
             </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/other_pressure_config"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/card_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:text="@string/pressure_config"
-                    android:textStyle="bold" />
-
-                <TextView
-                    style="@style/switch_desc"
-                    android:text="@string/pressure_config_desc" />
-            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout

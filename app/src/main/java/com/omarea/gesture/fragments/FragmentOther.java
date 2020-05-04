@@ -114,13 +114,6 @@ public class FragmentOther extends FragmentSettingsBase {
         });
         app_switch_home.setChecked(config.getBoolean(SpfConfig.SWITCH_TO_HOME, SpfConfig.SWITCH_TO_HOME_DEFAULT));
 
-        // 压感设置
-        getActivity().findViewById(R.id.other_pressure_config).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pressureConfig();
-            }
-        });
         updateView();
     }
 
@@ -169,54 +162,5 @@ public class FragmentOther extends FragmentSettingsBase {
                 break;
             }
         }
-    }
-
-    // 压感配置
-    private void pressureConfig() {
-        float pressureMin = config.getFloat(SpfConfig.IOS_BAR_PRESS_MIN, SpfConfig.IOS_BAR_PRESS_MIN_DEFAULT);
-
-        View layout = LayoutInflater.from(getActivity()).inflate(R.layout.layout_pressure_config, null);
-        View icon = layout.findViewById(R.id.fingerprint_icon);
-        final TextView pressureValue = layout.findViewById(R.id.pressure_value);
-        final float[] pressure = {SpfConfig.IOS_BAR_PRESS_MIN_DEFAULT};
-        pressureValue.setText("Pressure: " + pressureMin);
-        icon.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                pressure[0] = event.getPressure();
-                // event.getSize();
-                pressureValue.setText("Pressure: " + pressure[0]);
-                return false;
-            }
-        });
-        new AlertDialog.Builder(getActivity())
-                .setTitle(getString(R.string.pressure_config))
-                .setView(layout)
-                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (pressure[0] == SpfConfig.IOS_BAR_PRESS_MIN_DEFAULT) {
-                            Toast.makeText(getActivity(), getString(R.string.pressure_invalid_2), Toast.LENGTH_SHORT).show();
-                        } else {
-                            config.edit().putFloat(SpfConfig.IOS_BAR_PRESS_MIN, pressure[0]).apply();
-                        }
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                })
-                .setNeutralButton(R.string.use_long_press, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // 换成长按
-                        config.edit().putFloat(SpfConfig.IOS_BAR_PRESS_MIN, -1).apply();
-                        updateView();
-                    }
-                })
-                .setCancelable(false)
-                .create()
-                .show();
     }
 }

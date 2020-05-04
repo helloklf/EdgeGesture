@@ -112,16 +112,13 @@ public class FragmentBasic extends FragmentSettingsBase {
         getActivity().findViewById(R.id.faq_click_me).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    Intent intent = new Intent();
-                    //Intent intent = new Intent(Intent.ACTION_VIEW,uri);
-                    intent.setAction("android.intent.action.VIEW");
-                    Uri content_url = Uri.parse("https://github.com/helloklf/EdgeGesture/blob/master/docs/FAQ.md");
-                    intent.setData(content_url);
-                    startActivity(intent);
-                } catch (Exception ex) {
-                    //
-                }
+                openUrl("https://github.com/helloklf/EdgeGesture/blob/master/docs/FAQ.md");
+            }
+        });
+        getActivity().findViewById(R.id.steps_click_me).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openUrl("https://github.com/helloklf/EdgeGesture/blob/master/docs/EnhancedMode.md");
             }
         });
 
@@ -226,6 +223,19 @@ public class FragmentBasic extends FragmentSettingsBase {
 
         updateView();
         activity.registerReceiver(broadcastReceiver, new IntentFilter(getString(R.string.action_adb_process)));
+    }
+
+    private void openUrl(String url) {
+        try {
+            Intent intent = new Intent();
+            //Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+            intent.setAction("android.intent.action.VIEW");
+            Uri content_url = Uri.parse(url);
+            intent.setData(content_url);
+            startActivity(intent);
+        } catch (Exception ex) {
+            //
+        }
     }
 
     private void updateView() {
