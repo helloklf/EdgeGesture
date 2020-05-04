@@ -116,8 +116,6 @@ public class SpfConfig {
     public static final Boolean IOS_BAR_LOCK_HIDE_DEFAULT = false;
     public static final String IOS_BAR_AUTO_COLOR = "ios_bar_auto_color_root";
     public static final Boolean IOS_BAR_AUTO_COLOR_DEFAULT = false;
-    public static final String IOS_BAR_COLOR_FAST = "ios_bar_color_fast";
-    public static final Boolean IOS_BAR_COLOR_FAST_DEFAULT = false;
 
     public static final String GAME_OPTIMIZATION = "GAME_OPTIMIZATION"; // 游戏防误触
     public static final Boolean GAME_OPTIMIZATION_DEFAULT = true;
@@ -129,9 +127,6 @@ public class SpfConfig {
     public static final int THREE_SECTION_HEIGHT_DEFAULT = 9; // ?dp
     public static final String THREE_SECTION_COLOR = "THREE_SECTION_COLOR";
     public static final int THREE_SECTION_COLOR_DEFAULT = 0xffffffff; // 颜色
-    // 硬件加速
-    public static String HARDWARE_ACCELERATED = "HARDWARE_ACCELERATED";
-    public static boolean HARDWARE_ACCELERATED_DEFAULT = false;
     // 切换到桌面
     public static String SWITCH_TO_HOME = "SWITCH_TO_HOME";
     public static boolean SWITCH_TO_HOME_DEFAULT = false;
