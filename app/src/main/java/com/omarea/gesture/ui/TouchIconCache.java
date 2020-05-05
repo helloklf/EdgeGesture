@@ -113,6 +113,12 @@ public class TouchIconCache {
                 }
                 return touch_grid;
             }
+            case Handlers.VITUAL_ACTION_SWITCH_APP: {
+                if (touch_switch == null && mContext != null) {
+                    touch_switch = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.touch_switch);
+                }
+                return touch_switch;
+            }
         }
         if (touch_info == null && mContext != null) {
             touch_info = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.touch_info);

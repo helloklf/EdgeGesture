@@ -39,6 +39,7 @@ public class Handlers {
     final public static int VITUAL_ACTION_NEXT_APP = 900000;
     final public static int VITUAL_ACTION_PREV_APP = 900001;
     final public static int VITUAL_ACTION_FORM = 900009;
+    final public static int VITUAL_ACTION_SWITCH_APP = 900005;
 
     final public static int CUSTOM_ACTION_APP = 1000001;
     final public static int CUSTOM_ACTION_APP_WINDOW = 1000002;
@@ -58,6 +59,7 @@ public class Handlers {
 
         if (Build.VERSION.SDK_INT > 23) {
             add(new ActionModel(GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN, "分屏"));
+            add(new ActionModel(VITUAL_ACTION_SWITCH_APP, "上个应用[模拟任务键双击]"));
             add(new ActionModel(VITUAL_ACTION_FORM, "应用窗口化[试验]"));
         }
 
@@ -135,6 +137,20 @@ public class Handlers {
             }
             case OMAREA_FILTER_SCREENSHOT: {
                 omareaFilterScreenShot(accessibilityService);
+                break;
+            }
+            case VITUAL_ACTION_SWITCH_APP: {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        accessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS);
+                        try {
+                            Thread.sleep(400);
+                        } catch (Exception ignored) {
+                        }
+                        accessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS);
+                    }
+                }).start();
                 break;
             }
             default: {

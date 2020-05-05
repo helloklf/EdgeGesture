@@ -69,6 +69,7 @@ public class FragmentWhiteBar extends FragmentSettingsBase {
                         Toast.makeText(getActivity().getApplicationContext(), getString(R.string.need_root_mode), Toast.LENGTH_SHORT).show();
                     }
                 } else {
+                    config.edit().putBoolean(SpfConfig.IOS_BAR_AUTO_COLOR, false).apply();
                     restartService();
                 }
             }

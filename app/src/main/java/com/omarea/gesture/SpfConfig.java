@@ -71,7 +71,7 @@ public class SpfConfig {
     public static final String PORTRAIT_IOS_BAR = "portrait_ios_bar";
     public static final boolean PORTRAIT_IOS_BAR_DEFAULT = false;
 
-    // iOS小横条动作
+    // iOS小横条动作r
     public static final String IOS_BAR_SLIDE_LEFT = "ios_bar_slide_left";
     public static final int IOS_BAR_SLIDE_LEFT_DEFAULT = Handlers.VITUAL_ACTION_NEXT_APP;
     public static final String IOS_BAR_SLIDE_RIGHT = "ios_bar_slide_right";
