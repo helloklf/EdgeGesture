@@ -219,8 +219,7 @@ public class Handlers {
                         accessibilityService.recents.setRecents(recents, accessibilityService);
                     }
                     if (action == VITUAL_ACTION_PREV_APP) {
-                        boolean switchToHome = config.getBoolean(SpfConfig.SWITCH_TO_HOME, SpfConfig.SWITCH_TO_HOME_DEFAULT);
-                        String targetApp = accessibilityService.recents.movePrevious(switchToHome);
+                        String targetApp = accessibilityService.recents.movePrevious();
                         if (targetApp != null) {
                             if (!targetApp.equals(Intent.CATEGORY_HOME)) {
                                 intent.putExtra("prev", targetApp);
@@ -233,7 +232,7 @@ public class Handlers {
                         }
                     } else {
                         boolean switchToHome = config.getBoolean(SpfConfig.SWITCH_TO_HOME, SpfConfig.SWITCH_TO_HOME_DEFAULT);
-                        String targetApp = accessibilityService.recents.moveNext(switchToHome);
+                        String targetApp = accessibilityService.recents.moveNext();
                         if (targetApp != null) {
                             if (!targetApp.equals(Intent.CATEGORY_HOME)) {
                                 intent.putExtra("next", targetApp);

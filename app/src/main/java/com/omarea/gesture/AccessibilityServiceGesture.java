@@ -261,10 +261,10 @@ public class AccessibilityServiceGesture extends AccessibilityService {
                         if (action != null && action.equals(getString(R.string.action_adb_process))) {
                             if (GlobalState.enhancedMode) {
                                 setResultCode(0);
-                                setResultData("EnhancedMode √");
+                                setResultData("Nice, The enhancement mode has been activated ^_^");
                             } else {
                                 setResultCode(5);
-                                setResultData("EnhancedMode ×");
+                                setResultData("Unable to start enhanced mode >_<");
                             }
                         }
                         createPopupView();

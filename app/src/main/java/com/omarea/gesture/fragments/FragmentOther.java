@@ -97,21 +97,6 @@ public class FragmentOther extends FragmentSettingsBase {
             }
         });
 
-        // 切换到桌面
-        Switch app_switch_home = getActivity().findViewById(R.id.app_switch_home);
-        app_switch_home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                config.edit().putBoolean(SpfConfig.SWITCH_TO_HOME, ((Switch) v).isChecked()).apply();
-                try {
-                    Intent intent = new Intent(getString(R.string.app_switch_changed));
-                    getActivity().sendBroadcast(intent);
-                } catch (Exception ignored) {
-                }
-            }
-        });
-        app_switch_home.setChecked(config.getBoolean(SpfConfig.SWITCH_TO_HOME, SpfConfig.SWITCH_TO_HOME_DEFAULT));
-
         updateView();
     }
 
