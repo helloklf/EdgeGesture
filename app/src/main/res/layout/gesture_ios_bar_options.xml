@@ -462,6 +462,24 @@
                     android:text="根据屏幕右下角颜色，自动调整小横条外观" />
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <Switch
+                    android:id="@+id/ios_bar_consecutive"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="连续切换"
+                    android:textStyle="bold" />
+
+                <TextView
+                    style="@style/switch_desc"
+                    android:text="通过左右滑动切换应用时，悬停可连续切换" />
+            </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

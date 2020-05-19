@@ -2,7 +2,6 @@ package com.omarea.gesture.util;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -27,9 +26,9 @@ public class Recents {
         }
     }
 
-    public void addRecent(String packageName) {
+    public boolean addRecent(String packageName) {
         if (currentTop.equals(packageName)) {
-            return;
+            return false;
         }
 
         synchronized (recents) {
@@ -60,6 +59,7 @@ public class Recents {
                 packages.append(", ");
             }
         }
+        return true;
     }
 
     void setRecents(ArrayList<String> items, Context context) {

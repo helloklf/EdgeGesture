@@ -2,9 +2,19 @@ package com.omarea.gesture.util;
 
 import android.graphics.Bitmap;
 
+import com.omarea.gesture.ActionModel;
 import com.omarea.gesture.ui.VisualFeedbackView;
 
 public class GlobalState {
+    // 使用连续动作
+    public static boolean consecutive = false;
+    // 连续动作
+    public static ActionModel consecutiveAction = null;
+    // 连续动作重复间隔
+    public static long consecutiveActionPeriod = 200;
+    // 最后一次触发连续动作的时间
+    public static long consecutiveActionLastTime = 0;
+
     public static long lastBackHomeTime = 0;
 
     public static boolean isLandscapf = false;

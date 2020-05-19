@@ -50,6 +50,8 @@ public class FragmentWhiteBar extends FragmentSettingsBase {
         bindSeekBar(R.id.ios_bar_margin_bottom_portrait, SpfConfig.IOS_BAR_MARGIN_BOTTOM_PORTRAIT, SpfConfig.IOS_BAR_MARGIN_BOTTOM_PORTRAIT_DEFAULT, true);
         bindSeekBar(R.id.ios_bar_height, SpfConfig.IOS_BAR_HEIGHT, SpfConfig.IOS_BAR_HEIGHT_DEFAULT, true);
         bindCheckable(R.id.ios_bar_lock_hide, SpfConfig.IOS_BAR_LOCK_HIDE, SpfConfig.IOS_BAR_LOCK_HIDE_DEFAULT);
+        bindCheckable(R.id.ios_bar_consecutive, SpfConfig.IOS_BAR_CONSECUTIVE, SpfConfig.IOS_BAR_CONSECUTIVE_DEFAULT);
+
         setViewBackground(getActivity().findViewById(R.id.ios_bar_color_fadeout_portrait), 0xff888888);
         setViewBackground(getActivity().findViewById(R.id.ios_bar_color_fadeout_landscape), 0xff888888);
 

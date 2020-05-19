@@ -46,6 +46,8 @@ public class AppSwitchActivity extends Activity {
                     switchApp(appPackageName, R.anim.gesture_next_enter_2, R.anim.gesture_next_exit_2);
                 } else if (animation == SpfConfig.HOME_ANIMATION_BASIC) {
                     switchApp(appPackageName, R.anim.gesture_next_enter, R.anim.gesture_next_exit);
+                } else if (animation == SpfConfig.HOME_ANIMATION_FAST) {
+                    switchApp(appPackageName, R.anim.gesture_next_enter_fast, R.anim.gesture_next_exit_fast);
                 } else {
                     switchApp(appPackageName, R.anim.gesture_next_enter_basic, R.anim.gesture_next_exit_basic);
                 }
@@ -55,6 +57,8 @@ public class AppSwitchActivity extends Activity {
                     switchApp(appPackageName, R.anim.gesture_prev_enter_2, R.anim.gesture_prev_exit_2);
                 } else if (animation == SpfConfig.HOME_ANIMATION_BASIC) {
                     switchApp(appPackageName, R.anim.gesture_prev_enter, R.anim.gesture_prev_exit);
+                } else if (animation == SpfConfig.HOME_ANIMATION_FAST) {
+                    switchApp(appPackageName, R.anim.gesture_prev_enter_fast, R.anim.gesture_prev_exit_fast);
                 } else {
                     switchApp(appPackageName, R.anim.gesture_prev_enter_basic, R.anim.gesture_prev_exit_basic);
                 }

@@ -7,6 +7,7 @@ public class SpfConfig {
     public final static int HOME_ANIMATION_DEFAULT = 0;
     public final static int HOME_ANIMATION_BASIC = 1;
     public final static int HOME_ANIMATION_CUSTOM = 2;
+    public final static int HOME_ANIMATION_FAST = 3;
     public static final String ConfigFile = "main";
     public static final String AppSwitchBlackList = "app_switch_black_list";
     // 悬停时间
@@ -84,6 +85,9 @@ public class SpfConfig {
     public static final int IOS_BAR_TOUCH_DEFAULT = Handlers.GLOBAL_ACTION_BACK;
     public static final String IOS_BAR_PRESS = "ios_bar_press"; // 按压
     public static final int IOS_BAR_PRESS_DEFAULT = Handlers.GLOBAL_ACTION_HOME;
+
+    public static final String IOS_BAR_CONSECUTIVE = "ios_bar_consecutive"; // 连续切换
+    public static final boolean IOS_BAR_CONSECUTIVE_DEFAULT = false;
 
     // iOS小横条样式
     public static final String IOS_BAR_WIDTH_LANDSCAPE = "ios_bar_width_landscape";

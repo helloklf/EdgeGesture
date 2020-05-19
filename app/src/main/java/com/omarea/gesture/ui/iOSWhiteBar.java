@@ -30,6 +30,9 @@ import com.omarea.gesture.util.ReceiverLock;
 import com.omarea.gesture.util.ReceiverLockHandler;
 import com.omarea.gesture.util.ScreenState;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class iOSWhiteBar {
     private AccessibilityServiceGesture accessibilityService;
     private SharedPreferences config;
@@ -319,6 +322,7 @@ public class iOSWhiteBar {
                 return true;
             }
 
+            private int consecutiveDirection = 0;
             private boolean onTouchMove(MotionEvent event) {
                 if (isGestureCompleted || !isTouchDown) {
                     return true;
@@ -330,7 +334,7 @@ public class iOSWhiteBar {
                 touchCurrentX = event.getX();
                 touchCurrentY = event.getY();
 
-                if (touchStartY - touchCurrentY > FLIP_DISTANCE) {
+                if (!isGestureCompleted && touchStartY - touchCurrentY > FLIP_DISTANCE) {
                     if (gestureStartTime < 1) {
                         final long currentTime = System.currentTimeMillis();
                         gestureStartTime = currentTime;
@@ -352,6 +356,21 @@ public class iOSWhiteBar {
                         }, config.getInt(SpfConfig.CONFIG_HOVER_TIME, SpfConfig.CONFIG_HOVER_TIME_DEFAULT));
                         Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);
                     }
+                }
+                else if (GlobalState.consecutive && !isGestureCompleted && Math.abs(touchStartRawX - touchCurrentRawX) > slideThresholdX) {
+                    if (gestureStartTime < 1) {
+                        final long currentTime = System.currentTimeMillis();
+                        gestureStartTime = currentTime;
+                        bar.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (isTouchDown && !isGestureCompleted && currentTime == gestureStartTime) {
+                                    consecutiveActionStart();
+                                }
+                            }
+                        }, config.getInt(SpfConfig.CONFIG_HOVER_TIME, SpfConfig.CONFIG_HOVER_TIME_DEFAULT));
+                        Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);
+                    }
                 } else {
                     vibratorRun = true;
                     gestureStartTime = 0;
@@ -362,49 +381,49 @@ public class iOSWhiteBar {
                 return false;
             }
 
-            private boolean onTouchUp(MotionEvent event) {
+            private void onTouchUp(MotionEvent event) {
                 if (!isTouchDown || isGestureCompleted) {
-                    return true;
+                    return;
                 }
 
                 isTouchDown = false;
                 isGestureCompleted = true;
                 lastTouchDown = 0L;
 
-                float moveX = event.getX() - touchStartX;
-                float moveY = touchStartY - event.getY();
+                if (GlobalState.consecutiveAction == null || GlobalState.consecutiveAction.actionCode == Handlers.GLOBAL_ACTION_NONE) {
+                    float moveX = event.getX() - touchStartX;
+                    float moveY = touchStartY - event.getY();
 
-                if (Math.abs(moveX) > flingValue || Math.abs(moveY) > flingValue) {
-                    if (moveY > FLIP_DISTANCE) {
-                        if (isLongTimeGesture) { // 上滑悬停
-                            Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE_HOVER, view);
-                            performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_UP_HOVER, SpfConfig.IOS_BAR_SLIDE_UP_HOVER_DEFAULT));
-                        } else { // 上滑
+                    if (Math.abs(moveX) > flingValue || Math.abs(moveY) > flingValue) {
+                        if (moveY > FLIP_DISTANCE) {
+                            if (isLongTimeGesture) { // 上滑悬停
+                                Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE_HOVER, view);
+                                performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_UP_HOVER, SpfConfig.IOS_BAR_SLIDE_UP_HOVER_DEFAULT));
+                            } else { // 上滑
+                                // Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);
+                                performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_UP, SpfConfig.IOS_BAR_SLIDE_UP_DEFAULT));
+                            }
+                        } else if (moveX < -FLIP_DISTANCE) { // 向左滑动
+                            Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);
                             // Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);
-                            performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_UP, SpfConfig.IOS_BAR_SLIDE_UP_DEFAULT));
+                            performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_LEFT, SpfConfig.IOS_BAR_SLIDE_LEFT_DEFAULT));
+                        } else if (moveX > FLIP_DISTANCE) { // 向右滑动
+                            Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);
+                            // Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);
+                            performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_RIGHT, SpfConfig.IOS_BAR_SLIDE_RIGHT_DEFAULT));
                         }
-                    } else if (moveX < -FLIP_DISTANCE) { // 向左滑动
-                        Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);
-                        // Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);
-                        performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_LEFT, SpfConfig.IOS_BAR_SLIDE_LEFT_DEFAULT));
-                    } else if (moveX > FLIP_DISTANCE) { // 向右滑动
-                        Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);
-                        // Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);
-                        performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_RIGHT, SpfConfig.IOS_BAR_SLIDE_RIGHT_DEFAULT));
-                    }
-                } else {
-                    int pressureAction = config.getInt(SpfConfig.IOS_BAR_PRESS, SpfConfig.IOS_BAR_PRESS_DEFAULT);
-                    // 轻触
-                    int action = config.getInt(SpfConfig.IOS_BAR_TOUCH, SpfConfig.IOS_BAR_TOUCH_DEFAULT);
-                    if (action != Handlers.GLOBAL_ACTION_NONE) {
-                        Gesture.vibrate(Gesture.VibrateMode.VIBRATE_CLICK, view);
-                        performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_TOUCH, SpfConfig.IOS_BAR_TOUCH_DEFAULT));
+                    } else {
+                        // 轻触
+                        int action = config.getInt(SpfConfig.IOS_BAR_TOUCH, SpfConfig.IOS_BAR_TOUCH_DEFAULT);
+                        if (action != Handlers.GLOBAL_ACTION_NONE) {
+                            Gesture.vibrate(Gesture.VibrateMode.VIBRATE_CLICK, view);
+                            performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_TOUCH, SpfConfig.IOS_BAR_TOUCH_DEFAULT));
+                        }
                     }
                 }
 
                 clearEffect();
 
-                return true;
             }
 
             void clearEffect() {
@@ -427,16 +446,22 @@ public class iOSWhiteBar {
                             return onTouchMove(event);
                         }
                         case MotionEvent.ACTION_UP: {
-                            return onTouchUp(event);
+                            onTouchUp(event);
+                            consecutiveActionStop();
+                            return true;
                         }
-                        case MotionEvent.ACTION_CANCEL:
+                        case MotionEvent.ACTION_CANCEL: {
+                            consecutiveActionStop();
                             clearEffect();
                             return true;
+                        }
                         case MotionEvent.ACTION_OUTSIDE: {
+                            consecutiveActionStop();
                             clearEffect();
                             return false;
                         }
                         default: {
+                            consecutiveActionStop();
                         }
                     }
                 } else {
@@ -445,7 +470,42 @@ public class iOSWhiteBar {
                 return true;
             }
 
+            private Timer consecutiveActionTimer;
+            private void consecutiveActionStart() {
+                consecutiveActionStop();
+                consecutiveActionTimer = new Timer();
+                consecutiveActionTimer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        ActionModel actionModel = null;
+                        if (touchStartRawX - touchCurrentRawX > slideThresholdX) {
+                            actionModel = ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_LEFT, SpfConfig.IOS_BAR_SLIDE_LEFT_DEFAULT);
+                        } else if (touchStartRawX - touchCurrentRawX < -slideThresholdX) {
+                            actionModel = ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_RIGHT, SpfConfig.IOS_BAR_SLIDE_RIGHT_DEFAULT);
+                        }
+                        if (actionModel != null) {
+                            GlobalState.consecutiveAction = actionModel;
+                            if (actionModel.actionCode != Handlers.GLOBAL_ACTION_NONE) {
+                                if (vibratorRun) {
+                                    Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);
+                                    vibratorRun = false;
+                                }
+                                performGlobalAction(actionModel);
+                            }
+                        }
+                    }
+                }, 0, 300);
+            }
+
+            private void consecutiveActionStop() {
+                if (consecutiveActionTimer != null) {
+                    consecutiveActionTimer.cancel();
+                    consecutiveActionTimer = null;
+                }
+                GlobalState.consecutiveAction = null;
+            }
         };
+
         bar.setOnTouchListener(onTouchListener);
         if (!GlobalState.testMode) {
             bar.setAlpha(fateOutAlpha);

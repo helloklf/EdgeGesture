@@ -99,9 +99,9 @@ public class Handlers {
             case VITUAL_ACTION_PREV_APP:
             case VITUAL_ACTION_FORM:
             case GLOBAL_ACTION_HOME: {
-                int animation = accessibilityService
+                int animation = GlobalState.consecutiveAction != null ? SpfConfig.HOME_ANIMATION_FAST : (accessibilityService
                         .getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE)
-                        .getInt(SpfConfig.HOME_ANIMATION, SpfConfig.HOME_ANIMATION_DEFAULT);
+                        .getInt(SpfConfig.HOME_ANIMATION, SpfConfig.HOME_ANIMATION_DEFAULT));
                 if (action.actionCode == GLOBAL_ACTION_HOME && animation == SpfConfig.HOME_ANIMATION_DEFAULT) {
                     accessibilityService.performGlobalAction(action.actionCode);
                 } else {

@@ -16,6 +16,7 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Build;
+import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Display;
@@ -30,6 +31,7 @@ import com.omarea.gesture.ui.QuickPanel;
 import com.omarea.gesture.ui.TouchIconCache;
 import com.omarea.gesture.util.ForceHideNavBarThread;
 import com.omarea.gesture.util.GlobalState;
+import com.omarea.gesture.util.Handlers;
 import com.omarea.gesture.util.Overscan;
 import com.omarea.gesture.util.Recents;
 
@@ -176,32 +178,39 @@ public class AccessibilityServiceGesture extends AccessibilityService {
                 recents.launcherApps = getLauncherApps();
             }
 
-            boolean isWCC = event.getEventType() == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED;
             CharSequence packageName = event.getPackageName();
             if (!(packageName == null || packageName.equals(getPackageName()))) {
                 String packageNameStr = packageName.toString();
 
+                boolean hasChange = false;
+                if (recents.launcherApps.contains(packageNameStr)) {
+                    hasChange = recents.addRecent(Intent.CATEGORY_HOME);
+                    GlobalState.lastBackHomeTime = System.currentTimeMillis();
+                } else if (!ignored(packageNameStr) && canOpen(packageNameStr) && !appSwitchBlackList.contains(packageNameStr)) {
+                    hasChange = recents.addRecent(packageNameStr);
+                    GlobalState.lastBackHomeTime = 0;
+                }
+
+                // 连续切换
+                /*
+                if (hasChange && GlobalState.consecutiveAction != null && GlobalState.consecutiveAction.actionCode != Handlers.GLOBAL_ACTION_NONE) {
+                    final AccessibilityServiceGesture accessibilityServiceGesture = this;
+                    long delay = GlobalState.consecutiveActionPeriod - (System.currentTimeMillis() - GlobalState.consecutiveActionLastTime);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (GlobalState.consecutiveAction != null) {
+                                Handlers.executeVirtualAction(accessibilityServiceGesture, GlobalState.consecutiveAction, 0, 0);
+                            }
+                        }
+                    }, (delay > 0) ? delay : 0);
+                }
+                */
                 if (GlobalState.updateBar != null &&
                         !((packageNameStr.equals("com.android.systemui") || (recents.inputMethods.indexOf(packageNameStr) > -1 && recents.inputMethods.indexOf(lastApp) > -1)))) {
                     if (!(packageName.equals("android") || packageName.equals("com.omarea.filter"))) {
-                        if (isWCC) {
-                            WhiteBarColor.updateBarColorSingle();
-                        } else {
-                            WhiteBarColor.updateBarColorMultiple();
-                        }
+                        WhiteBarColor.updateBarColorMultiple();
                     }
-
-                    if (isWCC) {
-                        return;
-                    }
-                }
-
-                if (recents.launcherApps.contains(packageNameStr)) {
-                    recents.addRecent(Intent.CATEGORY_HOME);
-                    GlobalState.lastBackHomeTime = System.currentTimeMillis();
-                } else if (!ignored(packageNameStr) && canOpen(packageNameStr) && !appSwitchBlackList.contains(packageNameStr)) {
-                    recents.addRecent(packageNameStr);
-                    GlobalState.lastBackHomeTime = 0;
                 }
 
                 lastApp = packageNameStr;
@@ -244,6 +253,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
         wm.getDefaultDisplay().getRealSize(point);
         GlobalState.displayWidth = point.x;
         GlobalState.displayHeight = point.y;
+        GlobalState.consecutive = config.getBoolean(SpfConfig.IOS_BAR_CONSECUTIVE, SpfConfig.IOS_BAR_CONSECUTIVE_DEFAULT);
 
         TouchIconCache.setContext(this.getBaseContext());
 
@@ -251,6 +261,8 @@ public class AccessibilityServiceGesture extends AccessibilityService {
             configChanged = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
+                    GlobalState.consecutive = config.getBoolean(SpfConfig.IOS_BAR_CONSECUTIVE, SpfConfig.IOS_BAR_CONSECUTIVE_DEFAULT);
+
                     String action = intent != null ? intent.getAction() : null;
                     if (action != null && action.equals(getString(R.string.app_switch_changed))) {
                         if (recents != null) {
