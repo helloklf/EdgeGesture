@@ -334,38 +334,29 @@ public class iOSWhiteBar {
                 touchCurrentX = event.getX();
                 touchCurrentY = event.getY();
 
-                if (!isGestureCompleted && touchStartY - touchCurrentY > FLIP_DISTANCE) {
+                if (!isGestureCompleted && ((touchStartY - touchCurrentY > FLIP_DISTANCE) || (GlobalState.consecutive && Math.abs(touchStartRawX - touchCurrentRawX) > slideThresholdX))) {
                     if (gestureStartTime < 1) {
                         final long currentTime = System.currentTimeMillis();
                         gestureStartTime = currentTime;
                         bar.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                // 上滑悬停
                                 if (isTouchDown && !isGestureCompleted && currentTime == gestureStartTime) {
                                     isLongTimeGesture = true;
-                                    if (vibratorRun) {
-                                        Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE_HOVER, view);
-                                        vibratorRun = false;
+                                    // 上滑悬停
+                                    if (touchStartY - touchCurrentY > FLIP_DISTANCE) {
+                                        if (vibratorRun) {
+                                            Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE_HOVER, view);
+                                            vibratorRun = false;
+                                        }
+                                        performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_UP_HOVER, SpfConfig.IOS_BAR_SLIDE_UP_HOVER_DEFAULT));
+                                        isGestureCompleted = true;
+                                        clearEffect();
                                     }
-                                    performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_UP_HOVER, SpfConfig.IOS_BAR_SLIDE_UP_HOVER_DEFAULT));
-                                    isGestureCompleted = true;
-                                    clearEffect();
-                                }
-                            }
-                        }, config.getInt(SpfConfig.CONFIG_HOVER_TIME, SpfConfig.CONFIG_HOVER_TIME_DEFAULT));
-                        Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);
-                    }
-                }
-                else if (GlobalState.consecutive && !isGestureCompleted && Math.abs(touchStartRawX - touchCurrentRawX) > slideThresholdX) {
-                    if (gestureStartTime < 1) {
-                        final long currentTime = System.currentTimeMillis();
-                        gestureStartTime = currentTime;
-                        bar.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (isTouchDown && !isGestureCompleted && currentTime == gestureStartTime) {
-                                    consecutiveActionStart();
+                                    // 右滑悬停
+                                    else if (GlobalState.consecutive && Math.abs(touchStartRawX - touchCurrentRawX) > slideThresholdX) {
+                                        consecutiveActionStart();
+                                    }
                                 }
                             }
                         }, config.getInt(SpfConfig.CONFIG_HOVER_TIME, SpfConfig.CONFIG_HOVER_TIME_DEFAULT));
@@ -486,6 +477,10 @@ public class iOSWhiteBar {
                         if (actionModel != null) {
                             GlobalState.consecutiveAction = actionModel;
                             if (actionModel.actionCode != Handlers.GLOBAL_ACTION_NONE) {
+                                if (vibratorRun) {
+                                    Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);
+                                    vibratorRun = false;
+                                }
                                 performGlobalAction(actionModel);
                             }
                         }
