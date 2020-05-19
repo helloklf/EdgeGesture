@@ -474,7 +474,7 @@ public class iOSWhiteBar {
             private void consecutiveActionStart() {
                 consecutiveActionStop();
                 consecutiveActionTimer = new Timer();
-                consecutiveActionTimer.schedule(new TimerTask() {
+                consecutiveActionTimer.scheduleAtFixedRate(new TimerTask() {
                     @Override
                     public void run() {
                         ActionModel actionModel = null;
@@ -486,10 +486,6 @@ public class iOSWhiteBar {
                         if (actionModel != null) {
                             GlobalState.consecutiveAction = actionModel;
                             if (actionModel.actionCode != Handlers.GLOBAL_ACTION_NONE) {
-                                if (vibratorRun) {
-                                    Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);
-                                    vibratorRun = false;
-                                }
                                 performGlobalAction(actionModel);
                             }
                         }
