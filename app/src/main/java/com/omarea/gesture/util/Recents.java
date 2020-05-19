@@ -50,7 +50,6 @@ public class Recents {
                     recents.add(packageName);
                 }
             }
-            // Log.d(">>>>", "add " + index + "  " + packageName);
 
             index = recents.indexOf(packageName);
             currentTop = packageName;
@@ -60,8 +59,6 @@ public class Recents {
                 packages.append(item);
                 packages.append(", ");
             }
-            Log.d(">>>>", packages.toString());
-            Log.d(">>>> Current", currentTop);
         }
     }
 

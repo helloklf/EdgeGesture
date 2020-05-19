@@ -30,8 +30,8 @@ public class FloatVirtualTouchBar {
     private View rightView = null;
     private SharedPreferences config;
 
-    public FloatVirtualTouchBar(AccessibilityServiceGesture context, boolean islandscape) {
-        this.islandscape = islandscape;
+    public FloatVirtualTouchBar(AccessibilityServiceGesture context) {
+        this.islandscape = GlobalState.isLandscapf;
 
         config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
         mWindowManager = (WindowManager) (context.getSystemService(Context.WINDOW_SERVICE));

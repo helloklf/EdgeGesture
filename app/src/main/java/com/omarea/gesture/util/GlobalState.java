@@ -7,6 +7,7 @@ import com.omarea.gesture.ui.VisualFeedbackView;
 public class GlobalState {
     public static long lastBackHomeTime = 0;
 
+    public static boolean isLandscapf = false;
     public static boolean testMode = false;
     public static int iosBarColor = Integer.MIN_VALUE;
     public static Runnable updateBar;

@@ -17,6 +17,7 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Build;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
@@ -25,6 +26,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.omarea.gesture.ui.FloatVirtualTouchBar;
+import com.omarea.gesture.ui.QuickPanel;
 import com.omarea.gesture.ui.TouchIconCache;
 import com.omarea.gesture.util.ForceHideNavBarThread;
 import com.omarea.gesture.util.GlobalState;
@@ -37,7 +39,6 @@ import java.util.List;
 
 public class AccessibilityServiceGesture extends AccessibilityService {
     public Recents recents = new Recents();
-    boolean isLandscapf = false;
     private FloatVirtualTouchBar floatVitualTouchBar = null;
     private BroadcastReceiver configChanged = null;
     private BroadcastReceiver serviceDisable = null;
@@ -327,7 +328,6 @@ public class AccessibilityServiceGesture extends AccessibilityService {
 
     @Override
     public void onInterrupt() {
-
     }
 
     // 监测屏幕旋转
@@ -336,7 +336,10 @@ public class AccessibilityServiceGesture extends AccessibilityService {
         super.onConfigurationChanged(newConfig);
 
         if (floatVitualTouchBar != null && newConfig != null) {
-            isLandscapf = newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE;
+            // 关闭常用应用面板
+            QuickPanel.close();
+
+            GlobalState.isLandscapf = newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE;
 
             // 如果分辨率变了，那就重新创建手势区域
             WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
@@ -355,11 +358,10 @@ public class AccessibilityServiceGesture extends AccessibilityService {
         hidePopupWindow();
 
         AccessibilityServiceInfo accessibilityServiceInfo = getServiceInfo();
-        boolean barEnabled = isLandscapf ? config.getBoolean(SpfConfig.LANDSCAPE_IOS_BAR, SpfConfig.LANDSCAPE_IOS_BAR_DEFAULT) : config.getBoolean(SpfConfig.PORTRAIT_IOS_BAR, SpfConfig.PORTRAIT_IOS_BAR_DEFAULT);
         accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED | AccessibilityEvent.TYPE_WINDOWS_CHANGED;
         setServiceInfo(accessibilityServiceInfo);
 
-        floatVitualTouchBar = new FloatVirtualTouchBar(this, isLandscapf);
+        floatVitualTouchBar = new FloatVirtualTouchBar(this);
     }
 
     @Override

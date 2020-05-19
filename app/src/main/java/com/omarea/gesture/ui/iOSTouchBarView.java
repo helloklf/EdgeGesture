@@ -5,10 +5,13 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Shader;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.omarea.gesture.util.BatteryUtils;
 import com.omarea.gesture.util.GlobalState;
 
 public class iOSTouchBarView extends View {
@@ -90,35 +93,73 @@ public class iOSTouchBarView extends View {
         return (int) (dpValue * scale + 0.5f);
     }
 
+    private boolean useBatteryCapacity = true;
+    private BatteryUtils batteryUtils;
+
     @Override
     @SuppressLint("DrawAllocation")
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-        if (GlobalState.iosBarColor != Integer.MIN_VALUE) {
-            if (strokeWidth > 0) {
-                p.setStyle(Paint.Style.STROKE);
-                if (GlobalState.iosBarColor == Color.WHITE) {
-                    p.setColor(Color.BLACK);
-                } else {
-                    p.setColor(Color.WHITE);
-                }
-                canvas.drawRoundRect(margin - strokeR, margin - strokeR, getWidth() - margin + strokeR, margin + lineWeight + strokeR, 20, 20, p);
+        p.setAlpha(255);
+        if (useBatteryCapacity) {
+            if (batteryUtils == null) {
+                batteryUtils = new BatteryUtils(context);
             }
 
-            p.setStyle(Paint.Style.FILL);
-            p.setColor(GlobalState.iosBarColor);
-            canvas.drawRoundRect(margin, margin, getWidth() - margin, margin + lineWeight, 20, 20, p);
-        } else {
-            if (strokeWidth > 0) {
-                p.setStyle(Paint.Style.STROKE);
-                p.setColor(strokeColor);
-                canvas.drawRoundRect(margin - strokeR, margin - strokeR, getWidth() - margin + strokeR, margin + lineWeight + strokeR, 20, 20, p);
-            }
-
-            p.setStyle(Paint.Style.FILL);
+            int capacity = batteryUtils.getCapacity();
             p.setColor(lineColor);
-            canvas.drawRoundRect(margin, margin, getWidth() - margin, margin + lineWeight, 20, 20, p);
+            drawLine(canvas, p);
+            if (capacity > 0) {
+                if (capacity > 80) {
+                    p.setColor(Color.argb(255,0,213,217));
+                } else if (capacity > 60) {
+                    p.setColor(Color.argb(255, 2, 217, 141));
+                } else if (capacity > 40) {
+                    p.setColor(Color.argb(255, 135, 203, 0));
+                } else if (capacity > 20) {
+                    p.setColor(Color.argb(255, 252,138,27));
+                } else {
+                    p.setColor(Color.argb(255, 249,89,47));
+                }
+                float totalWidth = getWidth() - (margin * 2);
+                float outMargin = 0;
+                canvas.drawRoundRect(margin + outMargin, margin + outMargin, margin + (totalWidth * capacity / 100f) - outMargin, margin + lineWeight - outMargin, 20, 20, p);
+
+                p.setStyle(Paint.Style.FILL);
+                p.setAlpha(230);
+                // p.setColor(lineColor);
+                drawLine(canvas, p);
+            }
+        } else {
+            if (GlobalState.iosBarColor != Integer.MIN_VALUE) {
+                if (strokeWidth > 0) {
+                    p.setStyle(Paint.Style.STROKE);
+                    if (GlobalState.iosBarColor == Color.WHITE) {
+                        p.setColor(Color.BLACK);
+                    } else {
+                        p.setColor(Color.WHITE);
+                    }
+                    canvas.drawRoundRect(margin - strokeR, margin - strokeR, getWidth() - margin + strokeR, margin + lineWeight + strokeR, 20, 20, p);
+                }
+
+                p.setStyle(Paint.Style.FILL);
+                p.setColor(GlobalState.iosBarColor);
+                drawLine(canvas, p);
+            } else {
+                if (strokeWidth > 0) {
+                    p.setStyle(Paint.Style.STROKE);
+                    p.setColor(strokeColor);
+                    canvas.drawRoundRect(margin - strokeR, margin - strokeR, getWidth() - margin + strokeR, margin + lineWeight + strokeR, 20, 20, p);
+                }
+
+                p.setStyle(Paint.Style.FILL);
+                p.setColor(lineColor);
+                drawLine(canvas, p);
+            }
         }
+    }
+
+    private void drawLine(Canvas canvas, Paint p) {
+        canvas.drawRoundRect(margin, margin, getWidth() - margin, margin + lineWeight, 20, 20, p);
     }
 }

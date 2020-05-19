@@ -30,12 +30,14 @@ import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfigEx;
 import com.omarea.gesture.remote.RemoteAPI;
 import com.omarea.gesture.util.GlobalState;
+import com.omarea.gesture.util.UITools;
 
 import java.util.ArrayList;
 
 public class QuickPanel {
     @SuppressLint("StaticFieldLeak")
     private static View view;
+    private static WindowManager mWindowManager;
     private AccessibilityServiceGesture accessibilityService;
     private ArrayList<AppInfo> apps;
 
@@ -43,9 +45,8 @@ public class QuickPanel {
         accessibilityService = context;
     }
 
-    public void close() {
-        WindowManager mWindowManager = (WindowManager) (accessibilityService.getSystemService(Context.WINDOW_SERVICE));
-        if (view != null) {
+    public static void close() {
+        if (view != null && mWindowManager != null) {
             mWindowManager.removeView(view);
             view = null;
         }
@@ -65,7 +66,11 @@ public class QuickPanel {
         params.format = PixelFormat.TRANSLUCENT;
 
         params.width = WindowManager.LayoutParams.MATCH_PARENT;
-        params.height = WindowManager.LayoutParams.MATCH_PARENT;
+        if (GlobalState.isLandscapf) {
+            params.height = WindowManager.LayoutParams.MATCH_PARENT;
+        } else {
+            params.height = UITools.dp2px(accessibilityService, 480); // WindowManager.LayoutParams.MATCH_PARENT;
+        }
 
         /*
         if (x > 0 && y > 0) {
@@ -235,10 +240,14 @@ public class QuickPanel {
     }
 
     public void open(int x, int y) {
-        WindowManager mWindowManager = (WindowManager) (accessibilityService.getSystemService(Context.WINDOW_SERVICE));
+        mWindowManager = (WindowManager) (accessibilityService.getSystemService(Context.WINDOW_SERVICE));
         close();
 
-        view = LayoutInflater.from(accessibilityService).inflate(R.layout.layout_quick_panel, null);
+        if (GlobalState.isLandscapf) {
+            view = LayoutInflater.from(accessibilityService).inflate(R.layout.layout_quick_panel_landscape, null);
+        } else {
+            view = LayoutInflater.from(accessibilityService).inflate(R.layout.layout_quick_panel, null);
+        }
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

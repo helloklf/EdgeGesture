@@ -30,7 +30,6 @@ public class RemoteAPI {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             String isLightColor = loadContent("nav-light-color");
             if (isLightColor != null && isLightColor.equals("true")) {
-                Log.d("getBarAutoColor", "FastWhite");
                 return 0xFF000000;
             }
         }
