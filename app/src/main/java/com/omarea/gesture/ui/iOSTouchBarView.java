@@ -93,20 +93,13 @@ public class iOSTouchBarView extends View {
         return (int) (dpValue * scale + 0.5f);
     }
 
-    private boolean useBatteryCapacity = true;
-    private BatteryUtils batteryUtils;
-
     @Override
     @SuppressLint("DrawAllocation")
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         p.setAlpha(255);
-        if (useBatteryCapacity) {
-            if (batteryUtils == null) {
-                batteryUtils = new BatteryUtils(context);
-            }
-
-            int capacity = batteryUtils.getCapacity();
+        if (GlobalState.useBatteryCapacity) {
+            int capacity = GlobalState.batteryCapacity;
             p.setColor(lineColor);
             drawLine(canvas, p);
             if (capacity > 0) {
@@ -126,7 +119,7 @@ public class iOSTouchBarView extends View {
                 canvas.drawRoundRect(margin + outMargin, margin + outMargin, margin + (totalWidth * capacity / 100f) - outMargin, margin + lineWeight - outMargin, 20, 20, p);
 
                 p.setStyle(Paint.Style.FILL);
-                p.setAlpha(230);
+                p.setAlpha(210);
                 // p.setColor(lineColor);
                 drawLine(canvas, p);
             }

@@ -120,6 +120,8 @@ public class SpfConfig {
     public static final Boolean IOS_BAR_LOCK_HIDE_DEFAULT = false;
     public static final String IOS_BAR_AUTO_COLOR = "ios_bar_auto_color_root";
     public static final Boolean IOS_BAR_AUTO_COLOR_DEFAULT = false;
+    public static final String IOS_BAR_POP_BATTERY = "ios_bar_pop_battery";
+    public static final Boolean IOS_BAR_POP_BATTERY_DEFAULT = false;
 
     public static final String GAME_OPTIMIZATION = "GAME_OPTIMIZATION"; // 游戏防误触
     public static final Boolean GAME_OPTIMIZATION_DEFAULT = true;

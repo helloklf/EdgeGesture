@@ -152,8 +152,8 @@ public class FloatVirtualTouchBar {
         params.height = LayoutParams.MATCH_PARENT;
 
         params.gravity = Gravity.TOP | Gravity.START;
-        // 6G以上(基本上就是8G及更高了)内存开启硬件加速
-        if (new Memory().getMemorySizeMB(context) > 6000) {
+        // 4G以上(基本上就是6G及更高了)内存开启硬件加速
+        if (new Memory().getMemorySizeMB(context) > 4096) {
             params.flags = LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_NOT_TOUCHABLE | LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS | LayoutParams.FLAG_HARDWARE_ACCELERATED; // 开启硬件加速也许能提高性能，但是内存占有将会大幅提高
         } else {
             params.flags = LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_NOT_TOUCHABLE | LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS; // | LayoutParams.FLAG_HARDWARE_ACCELERATED; // 开启硬件加速也许能提高性能，但是内存占有将会大幅提高

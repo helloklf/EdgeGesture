@@ -16,9 +16,7 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Build;
-import android.os.Handler;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
@@ -31,7 +29,6 @@ import com.omarea.gesture.ui.QuickPanel;
 import com.omarea.gesture.ui.TouchIconCache;
 import com.omarea.gesture.util.ForceHideNavBarThread;
 import com.omarea.gesture.util.GlobalState;
-import com.omarea.gesture.util.Handlers;
 import com.omarea.gesture.util.Overscan;
 import com.omarea.gesture.util.Recents;
 
@@ -49,6 +46,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
     private SharedPreferences appSwitchBlackList;
     private ContentResolver cr = null;
     private String lastApp = "";
+    private BatteryReceiver batteryReceiver;
 
     private void startForeground() {
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -206,8 +204,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
                     }, (delay > 0) ? delay : 0);
                 }
                 */
-                if (GlobalState.updateBar != null &&
-                        !((packageNameStr.equals("com.android.systemui") || (recents.inputMethods.indexOf(packageNameStr) > -1 && recents.inputMethods.indexOf(lastApp) > -1)))) {
+                if (GlobalState.updateBar != null && !GlobalState.useBatteryCapacity && !((packageNameStr.equals("com.android.systemui") || (recents.inputMethods.indexOf(packageNameStr) > -1 && recents.inputMethods.indexOf(lastApp) > -1)))) {
                     if (!(packageName.equals("android") || packageName.equals("com.omarea.filter"))) {
                         WhiteBarColor.updateBarColorMultiple();
                     }
@@ -237,6 +234,15 @@ public class AccessibilityServiceGesture extends AccessibilityService {
         }
     }
 
+    private void setBatteryReceiver() {
+        if (batteryReceiver == null) {
+            batteryReceiver = new BatteryReceiver(this);
+            registerReceiver(batteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+            registerReceiver(batteryReceiver, new IntentFilter(Intent.ACTION_POWER_CONNECTED));
+            registerReceiver(batteryReceiver, new IntentFilter(Intent.ACTION_POWER_DISCONNECTED));
+        }
+    }
+
     @Override
     public void onServiceConnected() {
         super.onServiceConnected();
@@ -255,6 +261,11 @@ public class AccessibilityServiceGesture extends AccessibilityService {
         GlobalState.displayHeight = point.y;
         GlobalState.consecutive = config.getBoolean(SpfConfig.IOS_BAR_CONSECUTIVE, SpfConfig.IOS_BAR_CONSECUTIVE_DEFAULT);
 
+        GlobalState.useBatteryCapacity = config.getBoolean(SpfConfig.IOS_BAR_POP_BATTERY, SpfConfig.IOS_BAR_POP_BATTERY_DEFAULT);
+        if (GlobalState.useBatteryCapacity) {
+            setBatteryReceiver();
+        }
+
         TouchIconCache.setContext(this.getBaseContext());
 
         if (configChanged == null) {
@@ -262,6 +273,13 @@ public class AccessibilityServiceGesture extends AccessibilityService {
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     GlobalState.consecutive = config.getBoolean(SpfConfig.IOS_BAR_CONSECUTIVE, SpfConfig.IOS_BAR_CONSECUTIVE_DEFAULT);
+                    GlobalState.useBatteryCapacity = config.getBoolean(SpfConfig.IOS_BAR_POP_BATTERY, SpfConfig.IOS_BAR_POP_BATTERY_DEFAULT);
+                    if (GlobalState.useBatteryCapacity) {
+                        setBatteryReceiver();
+                    } else if (batteryReceiver != null) {
+                        unregisterReceiver(batteryReceiver);
+                        batteryReceiver = null;
+                    }
 
                     String action = intent != null ? intent.getAction() : null;
                     if (action != null && action.equals(getString(R.string.app_switch_changed))) {
@@ -393,6 +411,10 @@ public class AccessibilityServiceGesture extends AccessibilityService {
             screenStateReceiver = null;
         }
 
+        if (batteryReceiver != null) {
+            unregisterReceiver(batteryReceiver);
+            batteryReceiver = null;
+        }
         // stopForeground(true);
     }
 }

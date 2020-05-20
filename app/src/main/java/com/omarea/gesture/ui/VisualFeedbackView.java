@@ -11,6 +11,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
@@ -98,8 +99,8 @@ public class VisualFeedbackView extends View {
 
     // 设置手势开始位置，以便确定视觉反馈效果显示起点
     public void startEdgeFeedback(float startRawX, float startRawY, int sideMode) {
-        this.setVisibility(VISIBLE);
         stopAnimation();
+        this.setVisibility(VISIBLE);
 
         this.startRawX = startRawX;
         this.startRawY = startRawY;
@@ -107,8 +108,6 @@ public class VisualFeedbackView extends View {
         this.oversize = false;
 
         this.updateEdgeFeedbackIcon(null, false);
-
-        stopAnimation();
 
         if (isHardwareAccelerated()) {
             feedbackDrawAnimation = ValueAnimator.ofFloat(0.5f, 1f);
@@ -118,8 +117,8 @@ public class VisualFeedbackView extends View {
             feedbackDrawAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
-                    zoomRatio = (float) animation.getAnimatedValue();
-                    invalidate();
+                zoomRatio = (float) animation.getAnimatedValue();
+                invalidate();
                 }
             });
             feedbackDrawAnimation.start();
@@ -171,12 +170,16 @@ public class VisualFeedbackView extends View {
                 feedbackDrawAnimation.cancel();
                 feedbackDrawAnimation = null;
             }
+        } catch (Exception ignored) {
+        }
+        try {
             if (feedbackExitAnimation != null) {
                 feedbackExitAnimation.cancel();
                 feedbackExitAnimation = null;
             }
         } catch (Exception ignored) {
         }
+        Log.d(">>>>A", "Stop");
     }
     /*
     float[] shapeOrigin = new float[]{
@@ -218,6 +221,7 @@ public class VisualFeedbackView extends View {
                 targetRawY = INVALID_VALUE;
                 invalidate();
                 setVisibility(GONE);
+                Log.d(">>>>A", "End1");
             }
 
             @Override
@@ -230,6 +234,7 @@ public class VisualFeedbackView extends View {
                 targetRawY = INVALID_VALUE;
                 invalidate();
                 setVisibility(GONE);
+                Log.d(">>>>A", "End2");
             }
 
             @Override

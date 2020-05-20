@@ -11,6 +11,11 @@ public class GlobalState {
     // 连续动作
     public static ActionModel consecutiveAction = null;
 
+    // 电池电量
+    public static int batteryCapacity = -1;
+    // 小横条是否使用电量
+    public static boolean useBatteryCapacity = false;
+
     public static long lastBackHomeTime = 0;
 
     public static boolean isLandscapf = false;
