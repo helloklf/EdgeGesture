@@ -1,16 +1,15 @@
 package com.omarea.gesture.ui;
 
-import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
 import android.widget.Toast;
 
 import com.omarea.gesture.AccessibilityServiceGesture;
@@ -18,26 +17,21 @@ import com.omarea.gesture.ActionModel;
 import com.omarea.gesture.Gesture;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
+import com.omarea.gesture.util.GlobalState;
 import com.omarea.gesture.util.Handlers;
 
 public class ThreeSectionView extends View {
     private SharedPreferences config;
-    private ValueAnimator va = null; // 动画程序
     private int bakWidth = 0;
-    private int bakHeight = 0;
 
     private float touchStartX = 0F; // 触摸开始位置
     private float touchStartY = 0F; // 触摸开始位置
-    private float touchCurrentX = 0F; // 当前触摸位置
-    private float touchCurrentY = 0F; // 当前触摸位置
     private long gestureStartTime = 0L; // 手势开始时间（是指滑动到一定距离，认定触摸手势生效的时间）
     private boolean isLongTimeGesture = false;
     private Context context = getContext();
     private int FLIP_DISTANCE = dp2px(context, 50f); // 触摸灵敏度（滑动多长距离认为是手势）
     private boolean isTouchDown = false;
     private boolean isGestureCompleted = false;
-    private float iconRadius = dp2px(context, 8f);
-    private float currentGraphSize = 0f;
     private boolean vibratorRun = false;
     private float flingValue = dp2px(context, 3f); // 小于此值认为是点击而非滑动
 
@@ -77,7 +71,7 @@ public class ThreeSectionView extends View {
         p.setAntiAlias(true);
         p.setStyle(Paint.Style.FILL);
         p.setStrokeCap(Paint.Cap.ROUND);
-        p.setShadowLayer(dp2px(context, 1), 0, 0, 0x99000000);
+        // p.setShadowLayer(dp2px(context, 1), 0, 0, 0x99000000);
         p.setStrokeWidth(dp2px(context, 3));
 
         config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
@@ -112,10 +106,13 @@ public class ThreeSectionView extends View {
         if (accessibilityService != null) {
             float p = touchStartX / getWidth();
             if (p > 0.6f) {
+                GlobalState.updateThreeSectionFeedbackIcon(TouchIconCache.getIcon(eventRightHover.actionCode), false);
                 performGlobalAction(eventRightHover);
             } else if (p > 0.4f) {
+                GlobalState.updateThreeSectionFeedbackIcon(TouchIconCache.getIcon(eventCenterHover.actionCode), false);
                 performGlobalAction(eventCenterHover);
             } else {
+                GlobalState.updateThreeSectionFeedbackIcon(TouchIconCache.getIcon(eventLeftHover.actionCode), false);
                 performGlobalAction(eventLeftHover);
             }
         }
@@ -142,7 +139,6 @@ public class ThreeSectionView extends View {
         lp.width = w;
         lp.height = h;
         this.bakWidth = width;
-        this.bakHeight = height;
         this.setLayoutParams(lp);
     }
 
@@ -162,29 +158,6 @@ public class ThreeSectionView extends View {
         this.eventRightHover = rightHover;
 
         this.accessibilityService = context;
-    }
-
-    // 动画（触摸效果）显示期间，将悬浮窗显示调大，以便显示完整的动效
-    private void setSizeOnTouch() {
-        if (bakHeight > 0 || bakWidth > 0) {
-            ViewGroup.LayoutParams lp = this.getLayoutParams();
-            lp.height = FLIP_DISTANCE;
-            // if (isLandscapf) {
-            // setBackground(context.getDrawable(R.drawable.landscape_bar_background));
-            // }
-            this.setLayoutParams(lp);
-        }
-    }
-
-    // 动画结束后缩小悬浮窗，以免影响正常操作
-    private void resumeBackupSize() {
-        touchStartX = 0f;
-        touchStartY = 0f;
-
-        ViewGroup.LayoutParams lp = this.getLayoutParams();
-        lp.height = bakHeight;
-        this.setLayoutParams(lp);
-        invalidate();
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -220,28 +193,15 @@ public class ThreeSectionView extends View {
     private boolean onTouchDown(MotionEvent event) {
         isTouchDown = true;
         isGestureCompleted = false;
-        touchStartX = event.getX();
+        touchStartX = event.getRawX();
         touchStartY = event.getRawY();
         gestureStartTime = 0;
         isLongTimeGesture = false;
-        currentGraphSize = (float) (dp2px(context, 5f));
-        setSizeOnTouch();
-        currentGraphSize = 0f;
         vibratorRun = true;
 
+        GlobalState.startThreeSectionFeedback(touchStartX, touchStartY);
+
         return true;
-    }
-
-    private float getGraphSize() {
-        float height = getHeight();
-
-        float posY = (touchCurrentY - touchStartY) / FLIP_DISTANCE / 8;
-
-        if (posY < -0.7f) {
-            posY = -0.7f;
-        }
-
-        return (height * (1 + posY));
     }
 
     private boolean onTouchMove(MotionEvent event) {
@@ -252,13 +212,20 @@ public class ThreeSectionView extends View {
         touchRawX = event.getRawX();
         touchRawY = event.getRawY();
 
-        touchCurrentX = event.getX();
-        touchCurrentY = event.getRawY();
         float a = touchStartY;
-        float b = touchCurrentY;
+        float b = event.getRawY();
 
         if (a - b > FLIP_DISTANCE) {
             if (gestureStartTime < 1) {
+                float p = touchStartX / getWidth();
+                if (p > 0.6f) {
+                    GlobalState.updateThreeSectionFeedbackIcon(TouchIconCache.getIcon(eventRightSlide.actionCode), false);
+                } else if (p > 0.4f) {
+                    GlobalState.updateThreeSectionFeedbackIcon(TouchIconCache.getIcon(eventCenterSlide.actionCode), false);
+                } else {
+                    GlobalState.updateThreeSectionFeedbackIcon(TouchIconCache.getIcon(eventLeftSlide.actionCode), false);
+                }
+
                 final long currentTime = System.currentTimeMillis();
                 gestureStartTime = currentTime;
                 postDelayed(new Runnable() {
@@ -266,6 +233,7 @@ public class ThreeSectionView extends View {
                     public void run() {
                         if (isTouchDown && !isGestureCompleted && currentTime == gestureStartTime) {
                             isLongTimeGesture = true;
+
                             if (vibratorRun) {
                                 Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE_HOVER, getRootView());
                                 vibratorRun = false;
@@ -278,12 +246,12 @@ public class ThreeSectionView extends View {
                 }, config.getInt(SpfConfig.CONFIG_HOVER_TIME, SpfConfig.CONFIG_HOVER_TIME_DEFAULT));
             }
         } else {
+            GlobalState.updateThreeSectionFeedbackIcon(null, false);
             vibratorRun = true;
             gestureStartTime = 0;
         }
+        GlobalState.updateThreeSectionFeedback(touchRawX, touchRawY);
 
-        currentGraphSize = getGraphSize();
-        invalidate();
         return true;
     }
 
@@ -300,7 +268,7 @@ public class ThreeSectionView extends View {
         if (Math.abs(moveY) > flingValue) {
             if (moveY > FLIP_DISTANCE) { // 纵向滑动
                 if (isLongTimeGesture) {
-                    Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, getRootView());
+                    Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE_HOVER, getRootView());
                     onTouchHover();
                 } else {
                     Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, getRootView());
@@ -309,7 +277,6 @@ public class ThreeSectionView extends View {
             }
         }
         cleartEffect();
-
         return true;
     }
 
@@ -325,74 +292,26 @@ public class ThreeSectionView extends View {
      * 清除手势效果
      */
     private void cleartEffect() {
-        invalidate();
+        gestureStartTime = 0;
         isTouchDown = false;
+        GlobalState.clearThreeSectionFeedback();
+    }
 
-        if (va != null && va.isRunning()) {
-            va.cancel();
-        }
-        final float viewHeight = getHeight();
-        va = ValueAnimator.ofFloat(this.currentGraphSize, viewHeight);
 
-        va.setDuration(200);
-        va.setInterpolator(new AccelerateInterpolator());
-        va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                currentGraphSize = (float) (animation.getAnimatedValue());
-                if (touchCurrentX > 0 || touchCurrentY > 0) {
-                    if (currentGraphSize < iconRadius) {
-                        touchCurrentX = 0f;
-                        touchCurrentY = 0f;
-                        gestureStartTime = 0;
-                    }
-                }
-
-                if (currentGraphSize >= viewHeight && !isTouchDown) {
-                    resumeBackupSize();
-                }
-                invalidate();
-            }
-        });
-        va.start();
-        if (isLandscapf) {
-            setBackground(null);
-        }
+    private boolean testMode;
+    public void setTestMode(boolean b) {
+        this.testMode = b;
     }
 
     @Override
     @SuppressLint("DrawAllocation")
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        float pos = touchStartX / getWidth();
-
-        if (currentGraphSize > 0 && touchStartY > 0f) {
-            if (pos > 0.6f) {
-                canvas.drawLine(bakWidth * 0.65f, currentGraphSize, bakWidth * 0.95f, currentGraphSize, p);
-                if (isLandscapf) {
-                    float y = getHeight() - p.getStrokeWidth();
-                    canvas.drawLine(bakWidth * 0.37f, y, bakWidth * 0.63f, y, p);
-                    canvas.drawLine(bakWidth * 0.05f, y, bakWidth * 0.33f, y, p);
-                }
-            } else if (pos > 0.4f) {
-                canvas.drawLine(bakWidth * 0.35f, currentGraphSize, bakWidth * 0.65f, currentGraphSize, p);
-                if (isLandscapf) {
-                    float y = getHeight() - p.getStrokeWidth();
-                    canvas.drawLine(bakWidth * 0.67f, y, bakWidth * 0.95f, y, p);
-                    canvas.drawLine(bakWidth * 0.05f, y, bakWidth * 0.33f, y, p);
-                }
-            } else {
-                canvas.drawLine(bakWidth * 0.05f, currentGraphSize, bakWidth * 0.35f, currentGraphSize, p);
-                if (isLandscapf) {
-                    float y = getHeight() - p.getStrokeWidth();
-                    canvas.drawLine(bakWidth * 0.67f, y, bakWidth * 0.95f, y, p);
-                    canvas.drawLine(bakWidth * 0.37f, y, bakWidth * 0.63f, y, p);
-                }
-            }
-        } else {
-            // canvas.drawLine(bakWidth * 0.66f, getHeight() - 10, bakWidth * 0.95f, getHeight() - 10, p);
-            // canvas.drawLine(bakWidth * 0.36f, getHeight() - 10, bakWidth * 0.64f, getHeight() - 10, p);
-            // canvas.drawLine(bakWidth * 0.06f, getHeight() - 10, bakWidth * 0.34f, getHeight() - 10, p);
+        if (testMode) {
+            p.setColor(Color.argb(85,225,203,255));
+            canvas.drawRoundRect(bakWidth * 0.66f, 0, bakWidth * 0.95f, getHeight(), 10f, 10f, p);
+            canvas.drawRoundRect(bakWidth * 0.36f, 0, bakWidth * 0.64f, getHeight(), 10f, 10f, p);
+            canvas.drawRoundRect(bakWidth * 0.06f, 0, bakWidth * 0.34f, getHeight(), 10f, 10f, p);
         }
     }
 }

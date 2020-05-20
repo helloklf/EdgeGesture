@@ -180,30 +180,11 @@ public class AccessibilityServiceGesture extends AccessibilityService {
             if (!(packageName == null || packageName.equals(getPackageName()))) {
                 String packageNameStr = packageName.toString();
 
-                boolean hasChange = false;
                 if (recents.launcherApps.contains(packageNameStr)) {
-                    hasChange = recents.addRecent(Intent.CATEGORY_HOME);
                     GlobalState.lastBackHomeTime = System.currentTimeMillis();
                 } else if (!ignored(packageNameStr) && canOpen(packageNameStr) && !appSwitchBlackList.contains(packageNameStr)) {
-                    hasChange = recents.addRecent(packageNameStr);
                     GlobalState.lastBackHomeTime = 0;
                 }
-
-                // 连续切换
-                /*
-                if (hasChange && GlobalState.consecutiveAction != null && GlobalState.consecutiveAction.actionCode != Handlers.GLOBAL_ACTION_NONE) {
-                    final AccessibilityServiceGesture accessibilityServiceGesture = this;
-                    long delay = GlobalState.consecutiveActionPeriod - (System.currentTimeMillis() - GlobalState.consecutiveActionLastTime);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (GlobalState.consecutiveAction != null) {
-                                Handlers.executeVirtualAction(accessibilityServiceGesture, GlobalState.consecutiveAction, 0, 0);
-                            }
-                        }
-                    }, (delay > 0) ? delay : 0);
-                }
-                */
                 if (GlobalState.updateBar != null && !GlobalState.useBatteryCapacity && !((packageNameStr.equals("com.android.systemui") || (recents.inputMethods.indexOf(packageNameStr) > -1 && recents.inputMethods.indexOf(lastApp) > -1)))) {
                     if (!(packageName.equals("android") || packageName.equals("com.omarea.filter"))) {
                         WhiteBarColor.updateBarColorMultiple();

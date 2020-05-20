@@ -399,4 +399,24 @@ public class VisualFeedbackView extends View {
             */
         }
     }
+
+
+    // 以下是三段式手势的视觉反馈处理
+
+    public void startThreeSectionFeedback(float startRawX, float startRawY) {
+        // startGestureFeedback(startRawX, startRawY);
+        startEdgeFeedback(startRawX, startRawY, TouchBarView.BOTTOM);
+    }
+
+    public void updateThreeSectionFeedback(float currentRawX, float currentRawY) {
+        updateEdgeFeedback(currentRawX, currentRawY);
+    }
+
+    public void updateThreeSectionFeedbackIcon(Bitmap bitmap, boolean oversize) {
+        updateEdgeFeedbackIcon(bitmap, oversize);
+    }
+
+    public void clearThreeSectionFeedback() {
+        clearEdgeFeedback();
+    }
 }

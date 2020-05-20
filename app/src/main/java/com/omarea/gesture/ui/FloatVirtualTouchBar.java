@@ -39,6 +39,7 @@ public class FloatVirtualTouchBar {
             boolean anySide = false;
             if (islandscape) {
                 if (config.getBoolean(SpfConfig.THREE_SECTION_LANDSCAPE, SpfConfig.THREE_SECTION_LANDSCAPE_DEFAULT)) {
+                    anySide = true;
                     this.bottomView = setThreeSectionView(context);
                 } else if (config.getBoolean(SpfConfig.CONFIG_BOTTOM_ALLOW_LANDSCAPE, SpfConfig.CONFIG_BOTTOM_ALLOW_LANDSCAPE_DEFAULT)) {
                     anySide = true;
@@ -57,6 +58,7 @@ public class FloatVirtualTouchBar {
                 }
             } else {
                 if (config.getBoolean(SpfConfig.THREE_SECTION_PORTRAIT, SpfConfig.THREE_SECTION_PORTRAIT_DEFAULT)) {
+                    anySide = true;
                     this.bottomView = setThreeSectionView(context);
                 } else if (config.getBoolean(SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT, SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT_DEFAULT)) {
                     anySide = true;
@@ -232,7 +234,7 @@ public class FloatVirtualTouchBar {
 
         ThreeSectionView bar = view.findViewById(R.id.core_area);
         if (GlobalState.testMode) {
-            bar.setBackground(context.getDrawable(R.drawable.bar_background));
+            bar.setTestMode(true);
         }
 
         bar.setEventHandler(

@@ -52,4 +52,28 @@ public class GlobalState {
             visualFeedbackView.clearEdgeFeedback();
         }
     }
+
+    public static void startThreeSectionFeedback(float startRawX, float startRawY) {
+        if (visualFeedbackView != null) {
+            visualFeedbackView.startThreeSectionFeedback(startRawX, startRawY);
+        }
+    }
+
+    public static void updateThreeSectionFeedback(float currentRawX, float currentRawY) {
+        if (visualFeedbackView != null) {
+            visualFeedbackView.updateThreeSectionFeedback(currentRawX, currentRawY);
+        }
+    }
+
+    public static void updateThreeSectionFeedbackIcon(Bitmap bitmap, boolean oversize) {
+        if (visualFeedbackView != null) {
+            visualFeedbackView.updateThreeSectionFeedbackIcon(bitmap, oversize);
+        }
+    }
+
+    public static void clearThreeSectionFeedback() {
+        if (visualFeedbackView != null) {
+            visualFeedbackView.clearThreeSectionFeedback();
+        }
+    }
 }
