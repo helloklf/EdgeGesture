@@ -249,8 +249,8 @@ public class FloatVirtualTouchBar {
         double widthRatio = config.getInt(SpfConfig.THREE_SECTION_WIDTH, SpfConfig.THREE_SECTION_WIDTH_DEFAULT) / 100.0;
 
         // 横屏缩小宽度，避免游戏误触
-        if (islandscape && widthRatio > 0.4) {
-            widthRatio = 0.4;
+        if (islandscape && widthRatio > 0.5) {
+            widthRatio = 0.5;
         }
 
         int barWidth = (int) (getScreenWidth(context) * widthRatio);

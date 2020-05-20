@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +25,11 @@ public class ThreeSectionView extends View {
     private SharedPreferences config;
     private int bakWidth = 0;
 
+    // 处于操作提醒状态
+    private boolean remindState = false;
+
     private float touchStartX = 0F; // 触摸开始位置
-    private float touchStartY = 0F; // 触摸开始位置
+    private float touchStartRawY = 0F; // 触摸开始位置
     private long gestureStartTime = 0L; // 手势开始时间（是指滑动到一定距离，认定触摸手势生效的时间）
     private boolean isLongTimeGesture = false;
     private Context context = getContext();
@@ -83,7 +87,22 @@ public class ThreeSectionView extends View {
                 lastEvent = event.actionCode;
                 lastEventTime = System.currentTimeMillis();
                 Toast.makeText(context, this.getContext().getString(R.string.please_repeat), Toast.LENGTH_SHORT).show();
+                remindState = true;
+                invalidate();
+                postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (remindState && (System.currentTimeMillis() - lastEventTime) >= 3000) {
+                            remindState = false;
+                            invalidate();
+                        }
+                    }
+                }, 3000);
             } else {
+                if (remindState) {
+                    remindState = false;
+                    invalidate();
+                }
                 Handlers.executeVirtualAction(accessibilityService, event, touchRawX, touchRawY);
             }
         }
@@ -91,6 +110,7 @@ public class ThreeSectionView extends View {
 
     private void onShortTouch() {
         if (accessibilityService != null) {
+            Log.d(">>>>", "" +  touchStartX +"," + getWidth());
             float p = touchStartX / getWidth();
             if (p > 0.6f) {
                 performGlobalAction(eventRightSlide);
@@ -193,13 +213,13 @@ public class ThreeSectionView extends View {
     private boolean onTouchDown(MotionEvent event) {
         isTouchDown = true;
         isGestureCompleted = false;
-        touchStartX = event.getRawX();
-        touchStartY = event.getRawY();
+        touchStartX = event.getX();
+        touchStartRawY = event.getRawY();
         gestureStartTime = 0;
         isLongTimeGesture = false;
         vibratorRun = true;
 
-        GlobalState.startThreeSectionFeedback(touchStartX, touchStartY);
+        GlobalState.startThreeSectionFeedback(event.getRawX(), event.getRawY());
 
         return true;
     }
@@ -212,10 +232,7 @@ public class ThreeSectionView extends View {
         touchRawX = event.getRawX();
         touchRawY = event.getRawY();
 
-        float a = touchStartY;
-        float b = event.getRawY();
-
-        if (a - b > FLIP_DISTANCE) {
+        if (touchStartRawY - event.getRawY() > FLIP_DISTANCE) {
             if (gestureStartTime < 1) {
                 float p = touchStartX / getWidth();
                 if (p > 0.6f) {
@@ -263,7 +280,7 @@ public class ThreeSectionView extends View {
         isTouchDown = false;
         isGestureCompleted = true;
 
-        float moveY = touchStartY - event.getRawY();
+        float moveY = touchStartRawY - event.getRawY();
 
         if (Math.abs(moveY) > flingValue) {
             if (moveY > FLIP_DISTANCE) { // 纵向滑动
@@ -294,6 +311,7 @@ public class ThreeSectionView extends View {
     private void cleartEffect() {
         gestureStartTime = 0;
         isTouchDown = false;
+
         GlobalState.clearThreeSectionFeedback();
     }
 
@@ -307,8 +325,8 @@ public class ThreeSectionView extends View {
     @SuppressLint("DrawAllocation")
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (testMode) {
-            p.setColor(Color.argb(85,225,203,255));
+        if (testMode || remindState) {
+            p.setColor(Color.argb(128,225,203,255));
             canvas.drawRoundRect(bakWidth * 0.66f, 0, bakWidth * 0.95f, getHeight(), 10f, 10f, p);
             canvas.drawRoundRect(bakWidth * 0.36f, 0, bakWidth * 0.64f, getHeight(), 10f, 10f, p);
             canvas.drawRoundRect(bakWidth * 0.06f, 0, bakWidth * 0.34f, getHeight(), 10f, 10f, p);
