@@ -181,8 +181,10 @@ public class AccessibilityServiceGesture extends AccessibilityService {
                 String packageNameStr = packageName.toString();
 
                 if (recents.launcherApps.contains(packageNameStr)) {
+                    recents.addRecent(Intent.CATEGORY_HOME);
                     GlobalState.lastBackHomeTime = System.currentTimeMillis();
                 } else if (!ignored(packageNameStr) && canOpen(packageNameStr) && !appSwitchBlackList.contains(packageNameStr)) {
+                    recents.addRecent(packageNameStr);
                     GlobalState.lastBackHomeTime = 0;
                 }
                 if (GlobalState.updateBar != null && !GlobalState.useBatteryCapacity && !((packageNameStr.equals("com.android.systemui") || (recents.inputMethods.indexOf(packageNameStr) > -1 && recents.inputMethods.indexOf(lastApp) > -1)))) {
