@@ -313,7 +313,7 @@ public class ThreeSectionView extends View {
         isTouchDown = false;
 
         // TODO:
-        // GlobalState.clearThreeSectionFeedback();
+        GlobalState.clearThreeSectionFeedback();
     }
 
 
