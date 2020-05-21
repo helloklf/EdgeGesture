@@ -126,21 +126,21 @@ public class ThreeSectionView extends View {
         if (accessibilityService != null) {
             float p = touchStartX / getWidth();
             if (p > 0.6f) {
-                if (eventRightHover.actionCode == Handlers.GLOBAL_ACTION_NONE) {
+                if (eventRightHover.actionCode != Handlers.GLOBAL_ACTION_NONE) {
                     GlobalState.updateThreeSectionFeedbackIcon(TouchIconCache.getIcon(eventRightHover.actionCode), false);
                     performGlobalAction(eventRightHover);
                 } else {
                     performGlobalAction(eventRightSlide);
                 }
             } else if (p > 0.4f) {
-                if (eventCenterHover.actionCode == Handlers.GLOBAL_ACTION_NONE) {
+                if (eventCenterHover.actionCode != Handlers.GLOBAL_ACTION_NONE) {
                     GlobalState.updateThreeSectionFeedbackIcon(TouchIconCache.getIcon(eventCenterHover.actionCode), false);
                     performGlobalAction(eventCenterHover);
                 } else {
                     performGlobalAction(eventCenterSlide);
                 }
             } else {
-                if (eventLeftHover.actionCode == Handlers.GLOBAL_ACTION_NONE) {
+                if (eventLeftHover.actionCode != Handlers.GLOBAL_ACTION_NONE) {
                     GlobalState.updateThreeSectionFeedbackIcon(TouchIconCache.getIcon(eventLeftHover.actionCode), false);
                     performGlobalAction(eventLeftHover);
                 } else {
