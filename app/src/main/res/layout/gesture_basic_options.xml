@@ -250,7 +250,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="根据自己的系统调节震动反馈效果，线性马达的时长可以调小，而转子马达由于响应速度较慢，时长必需要更大一些。"
+                    android:text="根据自己的系统调节震动反馈效果，线性马达的时长可以调小，而转子马达由于响应速度较慢，时长必须要调更大一些。"
                     android:textColor="#888"
                     android:textSize="11dp" />
 

@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Point;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -32,6 +33,7 @@ public class VisualFeedbackView extends View {
             0.115f, 0.833f,
             0.000f, 1.000f
     };
+
     // 视觉反馈图形显示尺寸
     float GRAPH_MAX_SIZE = UITools.dp2px(getContext(), 200);
     float GRAPH_MAX_WEIGH = UITools.dp2px(getContext(), 38);
@@ -283,6 +285,14 @@ public class VisualFeedbackView extends View {
         }
     }
 
+    private Point getCirclePoint(float cx, float cy, float radius, int angle) {
+        Point point = new Point();
+        point.x = (int) (cx + radius * Math.cos(angle   *   3.14   / 180));
+        point.y = (int) (cy + radius * Math.sin(angle   *   3.14   / 180));
+
+        return point;
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         float graphW = zoomRatio > 0.7f ? (GRAPH_MAX_SIZE * zoomRatio) : (GRAPH_MAX_SIZE * 0.7f);
@@ -372,9 +382,50 @@ public class VisualFeedbackView extends View {
                     drawIcon(canvas, drawStartX - iconRadius * 3 * zoomRatio, drawStartY + (graphW / 2) - iconRadius * zoomRatio);
                 }
             }
-            // Unknown
-            else {
-                return;
+            // 底边三段式
+            else if (sideMode == TouchBarView.THREE_SECTION) {
+                Path path = new Path();
+
+                int radius = (int) (50 * zoomRatio);
+                drawStartY = this.getHeight();
+                drawStartX = this.startRawX - (radius * 2);
+                float drawEndX = this.startRawX + (radius * 2);
+                path.moveTo(drawStartX, drawStartY);
+
+                graphH = graphSize(drawStartY, currentRawY);
+
+                float pY = drawStartY - (radius * 4);
+
+                // canvas.drawCircle(this.startRawX, pY, radius, paint);
+                Path path2 = new Path();
+                path2.moveTo(drawStartX, drawStartY);
+
+                Point circleLeft = getCirclePoint(this.startRawX, pY, radius, 170);
+                Point circleLeft2 = getCirclePoint(this.startRawX, pY, radius, 135);
+                Point circleRight = getCirclePoint(this.startRawX, pY, radius, 0);
+                Point circleBottom = getCirclePoint(this.startRawX, pY, radius, 90);
+                path2.quadTo(this.startRawX - radius * 0.5f, pY + radius * 3.8f, this.startRawX, pY + radius * 3);
+
+                // path2.lineTo(circleLeft.x + 40f, circleLeft.y + 50f);
+                // path2.lineTo(circleLeft.x, circleLeft.y);
+                path2.cubicTo(this.startRawX, pY + radius * 1.5f, circleLeft2.x, circleLeft2.y, this.startRawX - radius, pY);
+
+                path2.arcTo(this.startRawX - radius, pY  - radius, this.startRawX + radius, pY + radius, 180, 180, false);
+
+                path2.lineTo( this.startRawX, pY + radius * 3);
+                path2.quadTo(this.startRawX + radius * 0.5f, pY + radius * 3.8f, drawEndX, drawStartY);
+                // path2.moveTo(this.startRawX - radius, pY  - radius);
+                // path2.arcTo(this.startRawX - radius, pY  - radius, this.startRawX + radius, pY + radius, 180, -180, false);
+                // path2.moveTo(this.startRawX + radius, pY);
+                // path2.quadTo(drawStartX + radius * 3, drawStartY + 5f, drawStartX + radius * 4, drawStartY);
+
+                path2.close();
+
+                canvas.drawPath(path2, paint);
+
+                if (graphH >= iconRadius * 3 && actionIcon != null) {
+                    drawIcon(canvas, this.startRawX - iconRadius * zoomRatio, pY - iconRadius * zoomRatio);
+                }
             }
             // Log.d("GestureFeedback", "" + graphH);
         } else {
@@ -405,7 +456,7 @@ public class VisualFeedbackView extends View {
 
     public void startThreeSectionFeedback(float startRawX, float startRawY) {
         // startGestureFeedback(startRawX, startRawY);
-        startEdgeFeedback(startRawX, startRawY, TouchBarView.BOTTOM);
+        startEdgeFeedback(startRawX, startRawY, TouchBarView.THREE_SECTION);
     }
 
     public void updateThreeSectionFeedback(float currentRawX, float currentRawY) {

@@ -195,17 +195,17 @@ public class ThreeSectionView extends View {
                     return onTouchUp(event);
                 }
                 case MotionEvent.ACTION_CANCEL:
-                    cleartEffect();
+                    clearEffect();
                     return true;
                 case MotionEvent.ACTION_OUTSIDE: {
-                    cleartEffect();
+                    clearEffect();
                     return false;
                 }
                 default: {
                 }
             }
         } else {
-            cleartEffect();
+            clearEffect();
         }
         return true;
     }
@@ -257,7 +257,7 @@ public class ThreeSectionView extends View {
                             }
                             onTouchHover();
                             isGestureCompleted = true;
-                            cleartEffect();
+                            clearEffect();
                         }
                     }
                 }, config.getInt(SpfConfig.CONFIG_HOVER_TIME, SpfConfig.CONFIG_HOVER_TIME_DEFAULT));
@@ -293,7 +293,7 @@ public class ThreeSectionView extends View {
                 }
             }
         }
-        cleartEffect();
+        clearEffect();
         return true;
     }
 
@@ -308,15 +308,16 @@ public class ThreeSectionView extends View {
     /**
      * 清除手势效果
      */
-    private void cleartEffect() {
+    private void clearEffect() {
         gestureStartTime = 0;
         isTouchDown = false;
 
-        GlobalState.clearThreeSectionFeedback();
+        // TODO:
+        // GlobalState.clearThreeSectionFeedback();
     }
 
 
-    private boolean testMode;
+    private boolean testMode = false;
     public void setTestMode(boolean b) {
         this.testMode = b;
     }

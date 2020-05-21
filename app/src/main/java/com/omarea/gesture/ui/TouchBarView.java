@@ -22,6 +22,7 @@ public class TouchBarView extends View {
     static final int RIGHT = 2;
     static final int BOTTOM = 0;
     static final int LEFT = 1;
+    static final int THREE_SECTION = 3;
     private SharedPreferences config;
     private int barPosition = 0;
 
