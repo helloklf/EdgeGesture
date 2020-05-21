@@ -394,7 +394,7 @@ public class VisualFeedbackView extends View {
 
                 graphH = graphSize(drawStartY, currentRawY);
 
-                float pY = drawStartY - (radius * 4);
+                float pY = drawStartY - (radius * 3);
 
                 // canvas.drawCircle(this.startRawX, pY, radius, paint);
                 Path path2 = new Path();
@@ -405,22 +405,22 @@ public class VisualFeedbackView extends View {
                 Point circleLeft2 = getCirclePoint(this.startRawX, pY, radius, 120);
                 Point circleRight = getCirclePoint(this.startRawX, pY, radius, 60);
                 Point circleRight2 = getCirclePoint(this.startRawX, pY, radius, 30);
-                path2.quadTo(this.startRawX - radius * 0.5f, pY + radius * 3.8f, this.startRawX, pY + radius * 3);
-                path2.quadTo(this.startRawX + radius * 0.5f, pY + radius * 3.8f, drawEndX, drawStartY);
+                path2.quadTo(this.startRawX - radius * 0.5f, pY + radius * 2.8f, this.startRawX, pY + radius * 2);
+                path2.quadTo(this.startRawX + radius * 0.5f, pY + radius * 2.8f, drawEndX, drawStartY);
                 path2.close();
                 canvas.drawPath(path2, paint);
 
                 path2.reset();
 
                 // 开始绘制水滴
-                path2.moveTo(this.startRawX, pY + radius * 3);
+                path2.moveTo(this.startRawX, pY + radius * 2);
 
                 //
                 path2.quadTo(this.startRawX, pY + radius * 2,  circleLeft2.x, circleLeft2.y + (radius  * 0.4f));
                 path2.quadTo(circleLeft.x - (radius * 0.2f), circleLeft.y,  this.startRawX - radius, pY);
                 path2.arcTo(this.startRawX - radius, pY  - radius, this.startRawX + radius, pY + radius, 180, 180, false);
                 path2.quadTo(circleRight2.x + (radius * 0.2f), circleRight2.y, circleRight.x, circleRight.y + (radius  * 0.4f));
-                path2.quadTo(this.startRawX, pY + radius * 2, this.startRawX, pY + radius * 3);
+                path2.quadTo(this.startRawX, pY + radius * 2, this.startRawX, pY + radius * 2);
 
                 path2.close();
                 canvas.drawPath(path2, paint);
