@@ -475,15 +475,13 @@ public class iOSWhiteBar {
                         } else if (touchStartRawX - touchCurrentRawX < -slideThresholdX) {
                             actionModel = ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_RIGHT, SpfConfig.IOS_BAR_SLIDE_RIGHT_DEFAULT);
                         }
-                        if (actionModel != null) {
+                        if (actionModel != null && (actionModel.actionCode == Handlers.VITUAL_ACTION_NEXT_APP || actionModel.actionCode == Handlers.VITUAL_ACTION_PREV_APP)) {
                             GlobalState.consecutiveAction = actionModel;
-                            if (actionModel.actionCode != Handlers.GLOBAL_ACTION_NONE) {
-                                if (vibratorRun) {
-                                    Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);
-                                    vibratorRun = false;
-                                }
-                                performGlobalAction(actionModel);
+                            if (vibratorRun) {
+                                Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);
+                                vibratorRun = false;
                             }
+                            performGlobalAction(actionModel);
                         }
                     }
                 }, 0, 500);
