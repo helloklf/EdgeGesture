@@ -386,44 +386,42 @@ public class VisualFeedbackView extends View {
             else if (sideMode == TouchBarView.THREE_SECTION) {
                 Path path = new Path();
 
-                int radius = (int) (50 * zoomRatio);
+                int radius = (int) (40 * zoomRatio);
                 drawStartY = this.getHeight();
-                drawStartX = this.startRawX - (radius * 2);
-                float drawEndX = this.startRawX + (radius * 2);
+                drawStartX = this.startRawX - (radius * 2.2f);
+                float drawEndX = this.startRawX + (radius * 2.2f);
                 path.moveTo(drawStartX, drawStartY);
 
                 graphH = graphSize(drawStartY, currentRawY);
 
-                float pY = drawStartY - (radius * 3);
+                float pY = drawStartY - (radius * 2.5f);
 
                 // canvas.drawCircle(this.startRawX, pY, radius, paint);
-                Path path2 = new Path();
-                path2.moveTo(drawStartX, drawStartY);
+                path.moveTo(drawStartX, drawStartY);
 
                 // 绘制底座
                 Point circleLeft = getCirclePoint(this.startRawX, pY, radius, 150);
                 Point circleLeft2 = getCirclePoint(this.startRawX, pY, radius, 120);
                 Point circleRight = getCirclePoint(this.startRawX, pY, radius, 60);
                 Point circleRight2 = getCirclePoint(this.startRawX, pY, radius, 30);
-                path2.quadTo(this.startRawX - radius * 0.5f, pY + radius * 2.8f, this.startRawX, pY + radius * 2);
-                path2.quadTo(this.startRawX + radius * 0.5f, pY + radius * 2.8f, drawEndX, drawStartY);
-                path2.close();
-                canvas.drawPath(path2, paint);
+                path.quadTo(this.startRawX - radius * 0.5f, pY + radius * 2.3f, this.startRawX, pY + radius * 1.5f);
+                path.quadTo(this.startRawX + radius * 0.5f, pY + radius * 2.3f, drawEndX, drawStartY);
+                path.close();
+                canvas.drawPath(path, paint);
 
-                path2.reset();
+                path.reset();
 
                 // 开始绘制水滴
-                path2.moveTo(this.startRawX, pY + radius * 2);
+                path.moveTo(this.startRawX, pY + radius * 1.5f);
 
-                //
-                path2.quadTo(this.startRawX, pY + radius * 2,  circleLeft2.x, circleLeft2.y + (radius  * 0.4f));
-                path2.quadTo(circleLeft.x - (radius * 0.2f), circleLeft.y,  this.startRawX - radius, pY);
-                path2.arcTo(this.startRawX - radius, pY  - radius, this.startRawX + radius, pY + radius, 180, 180, false);
-                path2.quadTo(circleRight2.x + (radius * 0.2f), circleRight2.y, circleRight.x, circleRight.y + (radius  * 0.4f));
-                path2.quadTo(this.startRawX, pY + radius * 2, this.startRawX, pY + radius * 2);
+                path.quadTo(this.startRawX, pY + radius * 1.5f,  circleLeft2.x, circleLeft2.y + (radius  * 0.2f));
+                path.quadTo(circleLeft.x - (radius * 0.1f), circleLeft.y,  this.startRawX - radius, pY);
+                path.arcTo(this.startRawX - radius, pY  - radius, this.startRawX + radius, pY + radius, 180, 180, false);
+                path.quadTo(circleRight2.x + (radius * 0.1f), circleRight2.y, circleRight.x, circleRight.y + (radius  * 0.2f));
+                path.quadTo(this.startRawX, pY + radius * 1.5f, this.startRawX, pY + radius * 1.5f);
 
-                path2.close();
-                canvas.drawPath(path2, paint);
+                path.close();
+                canvas.drawPath(path, paint);
 
                 if (graphH >= iconRadius * 3 && actionIcon != null) {
                     drawIcon(canvas, this.startRawX - iconRadius * zoomRatio, pY - iconRadius * zoomRatio);
