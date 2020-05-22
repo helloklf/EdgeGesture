@@ -420,17 +420,21 @@ public class VisualFeedbackView extends View {
                 path.reset();
 
                 // 开始绘制水滴
-                path.moveTo(this.startRawX, pY + radius * 1.5f);
+                if (perfectThreeSectionFeedback) {
+                    canvas.drawCircle(this.startRawX, pY, radius, paint);
+                } else {
+                    path.moveTo(this.startRawX, pY + radius * 1.5f);
 
-                path.quadTo(this.startRawX, pY + radius * 1.5f,  circleLeft2.x, circleLeft2.y + (radius  * 0.2f));
-                path.quadTo(circleLeft.x - (radius * 0.1f), circleLeft.y,  this.startRawX - radius, pY);
-                path.arcTo(this.startRawX - radius, pY  - radius, this.startRawX + radius, pY + radius, 180, 180, false);
-                path.moveTo(this.startRawX, pY + radius * 1.5f);
-                path.quadTo(this.startRawX, pY + radius * 1.5f, circleRight.x, circleRight.y + (radius  * 0.2f));
-                path.quadTo(circleRight2.x + (radius * 0.1f), circleRight2.y, this.startRawX + radius, pY);
+                    path.quadTo(this.startRawX, pY + radius * 1.5f,  circleLeft2.x, circleLeft2.y + (radius  * 0.2f));
+                    path.quadTo(circleLeft.x - (radius * 0.1f), circleLeft.y,  this.startRawX - radius, pY);
+                    path.arcTo(this.startRawX - radius, pY  - radius, this.startRawX + radius, pY + radius, 180, 180, false);
+                    path.moveTo(this.startRawX, pY + radius * 1.5f);
+                    path.quadTo(this.startRawX, pY + radius * 1.5f, circleRight.x, circleRight.y + (radius  * 0.2f));
+                    path.quadTo(circleRight2.x + (radius * 0.1f), circleRight2.y, this.startRawX + radius, pY);
 
-                path.close();
-                canvas.drawPath(path, paint);
+                    path.close();
+                    canvas.drawPath(path, paint);
+                }
 
                 if (radius * 2 >= iconRadius * 3 && actionIcon != null) {
                     drawIcon(canvas, this.startRawX - iconRadius * zoomRatio, pY - iconRadius * zoomRatio);
@@ -462,9 +466,10 @@ public class VisualFeedbackView extends View {
 
 
     // 以下是三段式手势的视觉反馈处理
-
+    private boolean perfectThreeSectionFeedback = false;
     public void startThreeSectionFeedback(float startRawX, float startRawY) {
         // startGestureFeedback(startRawX, startRawY);
+        perfectThreeSectionFeedback = false;
         startEdgeFeedback(startRawX, startRawY, TouchBarView.THREE_SECTION);
     }
 
@@ -474,6 +479,11 @@ public class VisualFeedbackView extends View {
 
     public void updateThreeSectionFeedbackIcon(Bitmap bitmap, boolean oversize) {
         updateEdgeFeedbackIcon(bitmap, oversize);
+    }
+
+    public void finishThreeSectionFeedbackIcon() {
+        perfectThreeSectionFeedback = true;
+        invalidate();
     }
 
     public void clearThreeSectionFeedback() {

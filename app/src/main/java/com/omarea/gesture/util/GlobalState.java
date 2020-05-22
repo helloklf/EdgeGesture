@@ -71,6 +71,12 @@ public class GlobalState {
         }
     }
 
+    public static void finishThreeSectionFeedbackIcon() {
+        if (visualFeedbackView != null) {
+            visualFeedbackView.finishThreeSectionFeedbackIcon();
+        }
+    }
+
     public static void clearThreeSectionFeedback() {
         if (visualFeedbackView != null) {
             visualFeedbackView.clearThreeSectionFeedback();

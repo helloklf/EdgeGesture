@@ -124,6 +124,7 @@ public class ThreeSectionView extends View {
 
     private void onTouchHover() {
         if (accessibilityService != null) {
+            GlobalState.finishThreeSectionFeedbackIcon();
             float p = touchStartX / getWidth();
             if (p > 0.6f) {
                 if (eventRightHover.actionCode != Handlers.GLOBAL_ACTION_NONE) {
