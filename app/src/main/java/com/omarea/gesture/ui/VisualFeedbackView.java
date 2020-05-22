@@ -404,6 +404,7 @@ public class VisualFeedbackView extends View {
 
                 drawStartY = this.getHeight();
 
+                int circleSize = 40;
                 float sizeRatio = graphSizeRatio(drawStartY, currentRawY);
                 int radius = (int) (40 * sizeRatio);
                 drawStartX = this.startRawX - (radius * 2.2f);
@@ -429,7 +430,11 @@ public class VisualFeedbackView extends View {
 
                 // 开始绘制水滴
                 if (perfectThreeSectionFeedback) {
-                    canvas.drawCircle(this.startRawX, pY, radius, paint);
+                    canvas.drawCircle(this.startRawX, drawStartY - (circleSize * 2.5f), radius, paint);
+
+                    if (radius * 2 >= iconRadius * 3 && actionIcon != null) {
+                        drawIcon(canvas, this.startRawX - iconRadius * zoomRatio, drawStartY - (circleSize * 2.5f) - iconRadius * zoomRatio);
+                    }
                 } else {
                     path.moveTo(this.startRawX, pY + radius * 1.5f);
 
@@ -442,10 +447,10 @@ public class VisualFeedbackView extends View {
 
                     path.close();
                     canvas.drawPath(path, paint);
-                }
 
-                if (radius * 2 >= iconRadius * 3 && actionIcon != null) {
-                    drawIcon(canvas, this.startRawX - iconRadius * zoomRatio, pY - iconRadius * zoomRatio);
+                    if (radius * 2 >= iconRadius * 3 && actionIcon != null) {
+                        drawIcon(canvas, this.startRawX - iconRadius * zoomRatio, pY - iconRadius * zoomRatio);
+                    }
                 }
             }
             // Log.d("GestureFeedback", "" + graphH);
