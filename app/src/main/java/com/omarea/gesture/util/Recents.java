@@ -26,9 +26,9 @@ public class Recents {
         }
     }
 
-    public boolean addRecent(String packageName) {
+    public void addRecent(String packageName) {
         if (currentTop.equals(packageName)) {
-            return false;
+            return;
         }
 
         synchronized (recents) {
@@ -59,7 +59,6 @@ public class Recents {
                 packages.append(", ");
             }
         }
-        return true;
     }
 
     void setRecents(ArrayList<String> items, Context context) {
@@ -99,14 +98,8 @@ public class Recents {
         }
     }
 
-    public int getIndex(String packageName) {
-        return recents.indexOf(packageName);
-    }
-
-    public void setIndex(int to) {
-        if (index < recents.size()) {
-            index = to;
-        }
+    public boolean notEmpty() {
+        return this.recents.size() > 1;
     }
 
     String getCurrent() {

@@ -481,7 +481,9 @@ public class iOSWhiteBar {
                                 Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);
                                 vibratorRun = false;
                             }
-                            performGlobalAction(actionModel);
+                            if (accessibilityService.recents != null && accessibilityService.recents.notEmpty()) {
+                                performGlobalAction(actionModel);
+                            }
                         }
                     }
                 }, 0, 500);
