@@ -28,6 +28,7 @@ import com.omarea.gesture.util.GlobalState;
 import com.omarea.gesture.util.Handlers;
 import com.omarea.gesture.util.ReceiverLock;
 import com.omarea.gesture.util.ReceiverLockHandler;
+import com.omarea.gesture.util.Recents;
 import com.omarea.gesture.util.ScreenState;
 
 import java.util.Timer;
@@ -485,7 +486,7 @@ public class iOSWhiteBar {
                             }
                         }
                     }
-                }, 0, 300);
+                }, 0, 500);
             }
 
             private void consecutiveActionStop() {

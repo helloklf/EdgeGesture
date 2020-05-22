@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.omarea.gesture.AccessibilityServiceGesture;
 import com.omarea.gesture.ActionModel;
+import com.omarea.gesture.Gesture;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.util.GlobalState;
@@ -80,7 +81,7 @@ public class FloatVirtualTouchBar {
                 this.visualFeedbackView = setVisualFeedbackView(context);
             }
         } catch (Exception ex) {
-            Toast.makeText(context, "启动虚拟导航手势失败！", Toast.LENGTH_LONG).show();
+            Gesture.toast("启动虚拟导航手势失败！", Toast.LENGTH_LONG);
             // throw  ex;
         }
     }

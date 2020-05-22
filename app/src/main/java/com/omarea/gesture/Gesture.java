@@ -11,6 +11,7 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
+import android.widget.Toast;
 
 public class Gesture extends Application {
     public static final Handler handler = new Handler();
@@ -70,6 +71,15 @@ public class Gesture extends Application {
                 }
             }
         }
+    }
+
+    public static void toast(final String text, final int time) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(context, text, time).show();
+            }
+        });
     }
 
     @Override

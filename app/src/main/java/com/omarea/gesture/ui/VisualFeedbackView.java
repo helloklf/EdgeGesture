@@ -79,6 +79,7 @@ public class VisualFeedbackView extends View {
         init();
     }
 
+    private SharedPreferences config;
     private void init() {
         GlobalState.visualFeedbackView = this;
 
@@ -87,8 +88,10 @@ public class VisualFeedbackView extends View {
         paint.setStyle(Paint.Style.FILL);
         paint.setAntiAlias(true);
 
-        SharedPreferences config = getContext().getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
-        paint.setColor(config.getInt(SpfConfig.CONFIG_EDGE_COLOR, SpfConfig.CONFIG_EDGE_COLOR_DEFAULT));
+        if (config == null) {
+            config = getContext().getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
+            paint.setColor(config.getInt(SpfConfig.CONFIG_EDGE_COLOR, SpfConfig.CONFIG_EDGE_COLOR_DEFAULT));
+        }
     }
 
     @Override
@@ -102,6 +105,11 @@ public class VisualFeedbackView extends View {
     // 设置手势开始位置，以便确定视觉反馈效果显示起点
     public void startEdgeFeedback(float startRawX, float startRawY, int sideMode) {
         stopAnimation();
+        if (sideMode == TouchBarView.THREE_SECTION) {
+            paint.setColor(config.getInt(SpfConfig.THREE_SECTION_COLOR, SpfConfig.THREE_SECTION_COLOR_DEFAULT));
+        } else {
+            paint.setColor(config.getInt(SpfConfig.CONFIG_EDGE_COLOR, SpfConfig.CONFIG_EDGE_COLOR_DEFAULT));
+        }
         this.setVisibility(VISIBLE);
 
         this.startRawX = startRawX;

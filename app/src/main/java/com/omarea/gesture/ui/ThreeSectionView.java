@@ -86,7 +86,7 @@ public class ThreeSectionView extends View {
             if (gameOptimization && isLandscapf && ((System.currentTimeMillis() - lastEventTime) > 3000 || lastEvent != event.actionCode)) {
                 lastEvent = event.actionCode;
                 lastEventTime = System.currentTimeMillis();
-                Toast.makeText(context, this.getContext().getString(R.string.please_repeat), Toast.LENGTH_SHORT).show();
+                Gesture.toast( this.getContext().getString(R.string.please_repeat), Toast.LENGTH_SHORT);
                 remindState = true;
                 invalidate();
                 postDelayed(new Runnable() {

@@ -20,7 +20,6 @@ import com.omarea.gesture.ui.QuickPanel;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
@@ -60,7 +59,7 @@ public class Handlers {
         if (Build.VERSION.SDK_INT > 23) {
             add(new ActionModel(GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN, "分屏"));
             add(new ActionModel(VITUAL_ACTION_SWITCH_APP, "上个应用[模拟任务键双击]"));
-            add(new ActionModel(VITUAL_ACTION_FORM, "应用窗口化[试验]"));
+            add(new ActionModel(VITUAL_ACTION_FORM, "窗口化当前应用[试验]"));
         }
 
         if (Build.VERSION.SDK_INT > 27) {
@@ -68,9 +67,9 @@ public class Handlers {
             add(new ActionModel(GLOBAL_ACTION_TAKE_SCREENSHOT, "屏幕截图"));
         }
 
-        add(new ActionModel(CUSTOM_ACTION_APP, "EX-打开应用"));
+        add(new ActionModel(CUSTOM_ACTION_APP, "拓展动作-打开应用"));
         if (Build.VERSION.SDK_INT > 23) {
-            add(new ActionModel(CUSTOM_ACTION_APP_WINDOW, "EX-应用窗口[试验]"));
+            add(new ActionModel(CUSTOM_ACTION_APP_WINDOW, "拓展动作-以小窗口打开应用[试验]"));
         }
         add(new ActionModel(CUSTOM_ACTION_SHELL, "拓展动作-运行脚本"));
         add(new ActionModel(CUSTOM_ACTION_QUICK, "拓展动作-常用应用"));
@@ -79,8 +78,6 @@ public class Handlers {
     private static SharedPreferences config;
     // private static boolean isXiaomi = Build.MANUFACTURER.equals("Xiaomi") && Build.BRAND.equals("Xiaomi");
     private static SharedPreferences configEx;
-    private static Process rootProcess = null;
-    private static OutputStream rootOutputStream = null;
     private static boolean isMiui12 = getIsMiui12();
 
     // FIXME:
@@ -168,7 +165,7 @@ public class Handlers {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             accessibilityServiceGesture.startActivity(intent);
         } catch (Exception ex) {
-            Toast.makeText(accessibilityServiceGesture, "[正常截图]是我另一款软件(屏幕滤镜)的功能，你似乎并没有在使用那款软件！", Toast.LENGTH_LONG).show();
+            Gesture.toast("[正常截图]是我另一款软件(屏幕滤镜)的功能，你似乎并没有在使用那款软件！", Toast.LENGTH_LONG);
         }
     }
 
@@ -176,7 +173,7 @@ public class Handlers {
         new QuickPanel(accessibilityService).open((int) touchRawX, (int) touchRawY);
     }
 
-    public static String getSystemProperty(String propName) {
+    private static String getSystemProperty(String propName) {
         String line;
         BufferedReader input = null;
         try {
@@ -197,7 +194,7 @@ public class Handlers {
         return line;
     }
 
-    public static boolean getIsMiui12() {
+    private static boolean getIsMiui12() {
         try {
             // 反射调用私有接口，被Google封杀了
             // Object result = Class.forName("android.os.Systemproperties").getMethod("get").invoke(null, "ro.miui.ui.version.name", "");
@@ -243,11 +240,10 @@ public class Handlers {
                                 intent.putExtra("home", "prev");
                             }
                         } else {
-                            Toast.makeText(accessibilityService, "<<", Toast.LENGTH_SHORT).show();
+                            Gesture.toast("<<", Toast.LENGTH_SHORT);
                             return;
                         }
                     } else {
-                        boolean switchToHome = config.getBoolean(SpfConfig.SWITCH_TO_HOME, SpfConfig.SWITCH_TO_HOME_DEFAULT);
                         String targetApp = accessibilityService.recents.moveNext();
                         if (targetApp != null) {
                             if (!targetApp.equals(Intent.CATEGORY_HOME)) {
@@ -256,7 +252,7 @@ public class Handlers {
                                 intent.putExtra("home", "next");
                             }
                         } else {
-                            Toast.makeText(accessibilityService, ">>", Toast.LENGTH_SHORT).show();
+                            Gesture.toast(">>", Toast.LENGTH_SHORT);
                             return;
                         }
                     }
@@ -277,7 +273,7 @@ public class Handlers {
             }
             accessibilityService.startActivity(intent);
         } catch (Exception ex) {
-            Toast.makeText(accessibilityService, "AppSwitch Exception >> " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+            Gesture.toast("AppSwitch Exception >> " + ex.getMessage(), Toast.LENGTH_SHORT);
         }
     }
 
@@ -289,7 +285,7 @@ public class Handlers {
         boolean windowMode = action.actionCode == Handlers.CUSTOM_ACTION_APP_WINDOW;
 
         String app = configEx.getString((windowMode ? SpfConfigEx.prefix_app_window : SpfConfigEx.prefix_app) + action.exKey, "");
-        if (app != null && !app.isEmpty()) {
+        if (!app.isEmpty()) {
             try {
                 Intent intent = AppSwitchActivity.getOpenAppIntent(accessibilityService);
                 if (windowMode) {
@@ -304,7 +300,7 @@ public class Handlers {
                 // PendingIntent pendingIntent = PendingIntent.getActivity(accessibilityService.getApplicationContext(), 0, intent, 0);
                 // pendingIntent.send();
             } catch (Exception ex) {
-                Toast.makeText(accessibilityService, "AppSwitch Exception >> " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+                Gesture.toast("AppSwitch Exception >> " + ex.getMessage(), Toast.LENGTH_SHORT);
             }
         }
     }
@@ -315,7 +311,7 @@ public class Handlers {
         }
 
         String shell = configEx.getString(SpfConfigEx.prefix_shell + action.exKey, "");
-        if (shell != null && !shell.isEmpty()) {
+        if (!shell.isEmpty()) {
             KeepShellPublic.doCmdSync(shell);
         }
     }

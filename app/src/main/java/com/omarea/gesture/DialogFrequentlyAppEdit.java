@@ -121,9 +121,9 @@ public class DialogFrequentlyAppEdit {
             public void onClick(View v) {
                 try {
                     saveConfig(configApps);
-                    Toast.makeText(accessibilityService, accessibilityService.getString(R.string.save_succeed), Toast.LENGTH_SHORT).show();
+                    Gesture.toast(accessibilityService.getString(R.string.save_succeed), Toast.LENGTH_SHORT);
                 } catch (Exception ex) {
-                    Toast.makeText(accessibilityService, accessibilityService.getString(R.string.save_fail), Toast.LENGTH_SHORT).show();
+                    Gesture.toast(accessibilityService.getString(R.string.save_fail), Toast.LENGTH_SHORT);
                 }
 
                 mWindowManager.removeView(view);

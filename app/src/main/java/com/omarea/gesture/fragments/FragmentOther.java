@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,6 +17,7 @@ import android.widget.Toast;
 
 import com.omarea.gesture.AdbProcessExtractor;
 import com.omarea.gesture.DialogAppSwitchExclusive;
+import com.omarea.gesture.Gesture;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.StartActivity;
@@ -80,7 +80,7 @@ public class FragmentOther extends FragmentSettingsBase {
                         restartService();
                     } else {
                         ele.setChecked(false);
-                        Toast.makeText(activity.getApplicationContext(), getString(R.string.no_root), Toast.LENGTH_SHORT).show();
+                        Gesture.toast(getString(R.string.no_root), Toast.LENGTH_SHORT);
                     }
                 } else {
                     config.edit().putBoolean(SpfConfig.ROOT, false).apply();

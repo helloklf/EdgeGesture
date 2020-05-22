@@ -121,7 +121,7 @@ public class AppSwitchActivity extends Activity {
                 }
             }
         } catch (Exception ex) {
-            Toast.makeText(getApplicationContext(), "" + ex.getMessage(), Toast.LENGTH_SHORT).show();
+            Gesture.toast("" + ex.getMessage(), Toast.LENGTH_SHORT);
         }
         new Handler().postDelayed(new Runnable() {
             @Override

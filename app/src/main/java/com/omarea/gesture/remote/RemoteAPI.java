@@ -1,7 +1,6 @@
 package com.omarea.gesture.remote;
 
 import android.os.Build;
-import android.util.Log;
 
 import com.omarea.gesture.util.GlobalState;
 

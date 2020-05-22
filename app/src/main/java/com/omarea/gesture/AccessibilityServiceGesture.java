@@ -268,7 +268,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
                     if (action != null && action.equals(getString(R.string.app_switch_changed))) {
                         if (recents != null) {
                             recents.clear();
-                            Toast.makeText(getApplicationContext(), "OK！", Toast.LENGTH_SHORT).show();
+                            Gesture.toast("OK！", Toast.LENGTH_SHORT);
                         }
                     } else {
                         new AdbProcessExtractor().updateAdbProcessState(context, false);

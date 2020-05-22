@@ -131,8 +131,6 @@ public class SpfConfig {
     public static final int THREE_SECTION_WIDTH_DEFAULT = 100;
     public static final String THREE_SECTION_HEIGHT = "THREE_SECTION_HEIGHT";
     public static final int THREE_SECTION_HEIGHT_DEFAULT = 9; // ?dp
-    public static final String THREE_SECTION_COLOR = "THREE_SECTION_COLOR";
-    public static final int THREE_SECTION_COLOR_DEFAULT = 0xffffffff; // 颜色
     // 切换到桌面
     public static String SWITCH_TO_HOME = "SWITCH_TO_HOME";
     public static boolean SWITCH_TO_HOME_DEFAULT = false;
@@ -159,4 +157,6 @@ public class SpfConfig {
     public static int THREE_SECTION_CENTER_HOVER_DEFAULT = Handlers.GLOBAL_ACTION_NONE;
     public static String THREE_SECTION_RIGHT_HOVER = "THREE_SECTION_RIGHT_HOVER";
     public static int THREE_SECTION_RIGHT_HOVER_DEFAULT = Handlers.GLOBAL_ACTION_NONE;
+    public static final String THREE_SECTION_COLOR = "THREE_SECTION_COLOR";
+    public static final int THREE_SECTION_COLOR_DEFAULT = 0xee101010; // 颜色
 }
