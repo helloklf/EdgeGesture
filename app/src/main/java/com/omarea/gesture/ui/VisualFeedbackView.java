@@ -273,6 +273,14 @@ public class VisualFeedbackView extends View {
             return (Math.abs(currentRaw - startRaw) / FLIP_DISTANCE) * GRAPH_MAX_WEIGH * zoomRatio;
         }
     }
+    // 根据滑动距离计算视觉反馈显示大小
+    private float graphSizeRatio(float startRaw, float currentRaw) {
+        if (Math.abs(currentRaw - startRaw) > FLIP_DISTANCE) {
+            return 1 * zoomRatio;
+        } else {
+            return (Math.abs(currentRaw - startRaw) / FLIP_DISTANCE) * zoomRatio;
+        }
+    }
 
     // 绘制手势提示图标
     private void drawIcon(Canvas canvas, float startX, float startY) {
@@ -386,13 +394,13 @@ public class VisualFeedbackView extends View {
             else if (sideMode == TouchBarView.THREE_SECTION) {
                 Path path = new Path();
 
-                int radius = (int) (40 * zoomRatio);
                 drawStartY = this.getHeight();
+
+                float sizeRatio = graphSizeRatio(drawStartY, currentRawY);
+                int radius = (int) (40 * sizeRatio);
                 drawStartX = this.startRawX - (radius * 2.2f);
                 float drawEndX = this.startRawX + (radius * 2.2f);
                 path.moveTo(drawStartX, drawStartY);
-
-                graphH = graphSize(drawStartY, currentRawY);
 
                 float pY = drawStartY - (radius * 2.5f);
 
@@ -417,13 +425,14 @@ public class VisualFeedbackView extends View {
                 path.quadTo(this.startRawX, pY + radius * 1.5f,  circleLeft2.x, circleLeft2.y + (radius  * 0.2f));
                 path.quadTo(circleLeft.x - (radius * 0.1f), circleLeft.y,  this.startRawX - radius, pY);
                 path.arcTo(this.startRawX - radius, pY  - radius, this.startRawX + radius, pY + radius, 180, 180, false);
-                path.quadTo(circleRight2.x + (radius * 0.1f), circleRight2.y, circleRight.x, circleRight.y + (radius  * 0.2f));
-                path.quadTo(this.startRawX, pY + radius * 1.5f, this.startRawX, pY + radius * 1.5f);
+                path.moveTo(this.startRawX, pY + radius * 1.5f);
+                path.quadTo(this.startRawX, pY + radius * 1.5f, circleRight.x, circleRight.y + (radius  * 0.2f));
+                path.quadTo(circleRight2.x + (radius * 0.1f), circleRight2.y, this.startRawX + radius, pY);
 
                 path.close();
                 canvas.drawPath(path, paint);
 
-                if (graphH >= iconRadius * 3 && actionIcon != null) {
+                if (radius * 2 >= iconRadius * 3 && actionIcon != null) {
                     drawIcon(canvas, this.startRawX - iconRadius * zoomRatio, pY - iconRadius * zoomRatio);
                 }
             }
