@@ -200,6 +200,7 @@ public class AppSwitchActivity extends Activity {
         // i.setFlags(0x10200000);
         // Log.d("getAppSwitchIntent", "" + i.getFlags());
         i.setFlags((i.getFlags() & ~Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED) | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        i.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
         // i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         // @参考 https://blog.csdn.net/weixin_34335458/article/details/88020972

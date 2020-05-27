@@ -83,7 +83,7 @@ public class SpfConfig {
     public static final int IOS_BAR_SLIDE_UP_HOVER_DEFAULT = Handlers.GLOBAL_ACTION_RECENTS;
     public static final String IOS_BAR_TOUCH = "ios_bar_touch"; // 轻触
     public static final int IOS_BAR_TOUCH_DEFAULT = Handlers.GLOBAL_ACTION_BACK;
-    public static final String IOS_BAR_PRESS = "ios_bar_press"; // 按压
+    public static final String IOS_BAR_PRESS = "ios_bar_press"; // 长按
     public static final int IOS_BAR_PRESS_DEFAULT = Handlers.GLOBAL_ACTION_HOME;
 
     public static final String IOS_BAR_CONSECUTIVE = "ios_bar_consecutive"; // 连续切换

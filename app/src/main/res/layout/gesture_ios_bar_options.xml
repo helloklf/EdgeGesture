@@ -130,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:minWidth="80dp"
-                    android:text="按压/长按" />
+                    android:text="长按" />
 
                 <Button
                     android:id="@+id/ios_bar_press"
