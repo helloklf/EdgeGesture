@@ -87,7 +87,7 @@ public class Handlers {
     // 目前还没找到解决办法
     public static void executeVirtualAction(
             final AccessibilityServiceGesture accessibilityService,
-            final ActionModel action, float touchRawX, float touchRawY) {
+            final ActionModel action, float touchStartRawX, float touchStartRawY) {
         switch (action.actionCode) {
             case GLOBAL_ACTION_NONE: {
                 break;
@@ -129,7 +129,7 @@ public class Handlers {
                 break;
             }
             case CUSTOM_ACTION_QUICK: {
-                openQuickPanel(accessibilityService, touchRawX, touchRawY);
+                openQuickPanel(accessibilityService, touchStartRawX, touchStartRawY);
                 break;
             }
             case OMAREA_FILTER_SCREENSHOT: {
@@ -170,7 +170,7 @@ public class Handlers {
     }
 
     private static void openQuickPanel(final AccessibilityServiceGesture accessibilityService, float touchRawX, float touchRawY) {
-        new QuickPanel(accessibilityService).open((int) touchRawX, (int) touchRawY);
+        new QuickPanel(accessibilityService).open(touchRawX, touchRawY);
     }
 
     private static String getSystemProperty(String propName) {

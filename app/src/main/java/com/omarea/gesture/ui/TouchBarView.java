@@ -27,7 +27,9 @@ public class TouchBarView extends View {
     private int barPosition = 0;
 
     private float touchStartX = 0F; // 触摸开始位置
+    private float touchStartRawX = 0F; // 触摸开始位置
     private float touchStartY = 0F; // 触摸开始位置
+    private float touchStartRawY = 0F; // 触摸开始位置
     private long gestureStartTime = 0L; // 手势开始时间（是指滑动到一定距离，认定触摸手势生效的时间）
     private boolean isLongTimeGesture = false;
     private Context context = getContext();
@@ -75,7 +77,7 @@ public class TouchBarView extends View {
                 lastEventTime = System.currentTimeMillis();
                 Gesture.toast(this.getContext().getString(R.string.please_repeat), Toast.LENGTH_SHORT);
             } else {
-                Handlers.executeVirtualAction(accessibilityService, event, touchRawX, touchRawY);
+                Handlers.executeVirtualAction(accessibilityService, event, touchStartRawX, touchStartRawY);
             }
         }
     }
@@ -155,7 +157,9 @@ public class TouchBarView extends View {
         isTouchDown = true;
         isGestureCompleted = false;
         touchStartX = event.getX();
+        touchStartRawX = event.getRawX();
         touchStartY = event.getY();
+        touchStartRawY = event.getRawY();
         GlobalState.startEdgeFeedback(event.getRawX(), event.getRawY(), barPosition);
         gestureStartTime = 0;
         isLongTimeGesture = false;

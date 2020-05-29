@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/quick_apps_wrap"
+        android:layout_width="154dp"
         android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:layout_alignParentEnd="true"
         android:background="@drawable/quick_panel_bg_right"
-        android:gravity="center_vertical"
         android:orientation="vertical"
         android:padding="12dp">
 
         <LinearLayout
-            android:layout_width="130dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
@@ -59,7 +57,7 @@
 
         <GridView
             android:id="@+id/quick_apps"
-            android:layout_width="130dp"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_marginTop="16dp"
@@ -67,4 +65,4 @@
             android:paddingBottom="16dp"
             android:scrollbars="none" />
     </LinearLayout>
-</RelativeLayout>
+</FrameLayout>

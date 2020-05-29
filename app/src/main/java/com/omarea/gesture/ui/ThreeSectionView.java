@@ -103,7 +103,7 @@ public class ThreeSectionView extends View {
                     remindState = false;
                     invalidate();
                 }
-                Handlers.executeVirtualAction(accessibilityService, event, touchRawX, touchRawY);
+                Handlers.executeVirtualAction(accessibilityService, event, touchStartX, touchStartRawY);
             }
         }
     }

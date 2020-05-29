@@ -105,8 +105,13 @@
         <item name="android:windowAnimationStyle">@style/activityAnim</item>
     </style>
 
-    <style name="quickPanelAnimation">
-        <item name="android:windowEnterAnimation">@anim/gesture_fade_in</item>
-        <item name="android:windowExitAnimation">@anim/gesture_fade_out</item>
+    <style name="LeftQuickPanelAnimation">
+        <item name="android:windowEnterAnimation">@anim/gesture_quick_panel_left_in</item>
+        <item name="android:windowExitAnimation">@anim/gesture_quick_panel_left_out</item>
+    </style>
+
+    <style name="BottomQuickPanelAnimation">
+        <item name="android:windowEnterAnimation">@anim/gesture_quick_panel_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/gesture_quick_panel_bottom_out</item>
     </style>
 </resources>

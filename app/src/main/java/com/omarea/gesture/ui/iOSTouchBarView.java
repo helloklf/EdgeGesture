@@ -100,11 +100,15 @@ public class iOSTouchBarView extends View {
             p.setColor(lineColor);
             drawLine(canvas, p);
             if (capacity > 0) {
-                if (capacity > 80) {
-                    p.setColor(Color.argb(255,0,213,217));
+                if (capacity > 85) {
+                    p.setColor(Color.argb(255,19,142,214));
+                } else if (capacity > 75) {
+                    p.setColor(Color.argb(255,0,185,194));
                 } else if (capacity > 60) {
+                    p.setColor(Color.argb(255,0,213,217));
+                } else if (capacity > 45) {
                     p.setColor(Color.argb(255, 2, 217, 141));
-                } else if (capacity > 40) {
+                } else if (capacity > 35) {
                     p.setColor(Color.argb(255, 135, 203, 0));
                 } else if (capacity > 20) {
                     p.setColor(Color.argb(255, 252,138,27));

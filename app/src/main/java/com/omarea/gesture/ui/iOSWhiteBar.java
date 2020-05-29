@@ -192,7 +192,7 @@ public class iOSWhiteBar {
 
             private void performGlobalAction(final ActionModel event) {
                 if (accessibilityService != null) {
-                    Handlers.executeVirtualAction(accessibilityService, event, touchCurrentRawX, touchCurrentRawY);
+                    Handlers.executeVirtualAction(accessibilityService, event, touchStartRawX, touchStartRawY);
                 }
             }
 
