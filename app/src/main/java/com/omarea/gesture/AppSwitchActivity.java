@@ -3,10 +3,13 @@ package com.omarea.gesture;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Toast;
+
+import com.omarea.gesture.util.GlobalState;
 
 import java.lang.reflect.Method;
 
@@ -155,9 +158,10 @@ public class AppSwitchActivity extends Activity {
 
         // int left = 50;
         // int top = 100;
-        // int right = 800;
-        // int bottom = 1100;
+        // int right = 50 + GlobalState.displayWidth / 2;
+        // int bottom = 100 + (GlobalState.displayWidth / 2 * 16 / 9);
         // activityOptions.setLaunchBounds(new Rect(left, top, right, bottom));
+
         Bundle bundle = activityOptions.toBundle();
         startActivity(intent, bundle);
     }

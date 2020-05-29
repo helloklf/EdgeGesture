@@ -67,12 +67,12 @@ public class Handlers {
             add(new ActionModel(GLOBAL_ACTION_TAKE_SCREENSHOT, "屏幕截图"));
         }
 
-        add(new ActionModel(CUSTOM_ACTION_APP, "拓展动作-打开应用"));
+        add(new ActionModel(CUSTOM_ACTION_APP, "打开应用 > "));
         if (Build.VERSION.SDK_INT > 23) {
-            add(new ActionModel(CUSTOM_ACTION_APP_WINDOW, "拓展动作-以小窗口打开应用[试验]"));
+            add(new ActionModel(CUSTOM_ACTION_APP_WINDOW, "以小窗口打开应用[试验]  > "));
         }
-        add(new ActionModel(CUSTOM_ACTION_SHELL, "拓展动作-运行脚本"));
-        add(new ActionModel(CUSTOM_ACTION_QUICK, "拓展动作-常用应用"));
+        add(new ActionModel(CUSTOM_ACTION_SHELL, "运行脚本 > "));
+        add(new ActionModel(CUSTOM_ACTION_QUICK, "常用应用 > "));
         add(new ActionModel(OMAREA_FILTER_SCREENSHOT, "屏幕滤镜-正常截图"));
     }}.toArray(new ActionModel[0]);
     private static SharedPreferences config;

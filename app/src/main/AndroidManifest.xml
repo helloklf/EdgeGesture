@@ -29,7 +29,7 @@
         <receiver
             android:name=".BatteryReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true" />
 
         <activity
             android:name=".FixAppSwitchDelay"
