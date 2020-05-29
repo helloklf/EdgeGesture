@@ -15,11 +15,15 @@ import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.os.Build;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityNodeInfo;
+import android.view.accessibility.AccessibilityWindowInfo;
 import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -176,25 +180,86 @@ public class AccessibilityServiceGesture extends AccessibilityService {
                 recents.launcherApps = getLauncherApps();
             }
 
-            CharSequence packageName = event.getPackageName();
-            if (!(packageName == null || packageName.equals(getPackageName()))) {
-                String packageNameStr = packageName.toString();
-
-                if (recents.launcherApps.contains(packageNameStr)) {
-                    recents.addRecent(Intent.CATEGORY_HOME);
-                    GlobalState.lastBackHomeTime = System.currentTimeMillis();
-                } else if (!ignored(packageNameStr) && canOpen(packageNameStr) && !appSwitchBlackList.contains(packageNameStr)) {
-                    recents.addRecent(packageNameStr);
-                    GlobalState.lastBackHomeTime = 0;
-                }
-                if (GlobalState.updateBar != null && !GlobalState.useBatteryCapacity && !((packageNameStr.equals("com.android.systemui") || (recents.inputMethods.indexOf(packageNameStr) > -1 && recents.inputMethods.indexOf(lastApp) > -1)))) {
-                    if (!(packageName.equals("android") || packageName.equals("com.omarea.filter"))) {
-                        WhiteBarColor.updateBarColorMultiple();
+            if (event.getEventType() == AccessibilityEvent.TYPE_WINDOWS_CHANGED) {
+                List<AccessibilityWindowInfo> windowInfos = getWindows();
+                AccessibilityWindowInfo lastWindow = null;
+                for (AccessibilityWindowInfo windowInfo : windowInfos) {
+                    if ((!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && windowInfo.isInPictureInPictureMode())) && (windowInfo.getType() == AccessibilityWindowInfo.TYPE_APPLICATION)) {
+                        if (lastWindow == null || windowInfo.getLayer() > lastWindow.getLayer()) {
+                            Rect outBounds = new Rect();
+                            windowInfo.getBoundsInScreen(outBounds);
+                            // Log.d(">>>>", "" + windowInfo.getRoot().getPackageName() + " left:" + outBounds.left + ", top:" + outBounds.top + ", right:" + outBounds.right + ", bottom:" + outBounds.bottom + "");
+                            if (outBounds.left == 0 && outBounds.top == 0 &&
+                                    (outBounds.right == GlobalState.displayWidth || outBounds.right == GlobalState.displayHeight)
+                                    &&
+                                    (outBounds.bottom == GlobalState.displayWidth || outBounds.bottom == GlobalState.displayHeight)
+                            ) {
+                                lastWindow = windowInfo;
+                            }
+                        }
                     }
                 }
 
-                lastApp = packageNameStr;
+                if (lastWindow != null) {
+                    AccessibilityNodeInfo root = lastWindow.getRoot();
+                    if (root == null) {
+                        return;
+                    }
+
+                    CharSequence packageName = root.getPackageName();
+                    if (packageName == null) {
+                        return;
+                    }
+
+                    String packageNameStr = packageName.toString();
+                    Log.d(">>>[[", "" + packageNameStr);
+
+                    if (!packageNameStr.equals(getPackageName())) {
+                        if (recents.launcherApps.contains(packageNameStr)) {
+                            recents.addRecent(Intent.CATEGORY_HOME);
+                            GlobalState.lastBackHomeTime = System.currentTimeMillis();
+                        } else if (!ignored(packageNameStr) && canOpen(packageNameStr) && !appSwitchBlackList.contains(packageNameStr)) {
+                            recents.addRecent(packageNameStr);
+                            GlobalState.lastBackHomeTime = 0;
+                        }
+                    }
+
+                    if (
+                            GlobalState.updateBar != null &&
+                                    !GlobalState.useBatteryCapacity &&
+                                    !((packageNameStr.equals("com.android.systemui") || (recents.inputMethods.indexOf(packageNameStr) > -1 && recents.inputMethods.indexOf(lastApp) > -1)))) {
+                        if (!(packageName.equals("android") || packageName.equals("com.omarea.filter"))) {
+                            WhiteBarColor.updateBarColorMultiple();
+                        }
+                    }
+
+                    lastApp = packageNameStr;
+                }
             }
+            /*
+            else if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+                CharSequence packageName = event.getPackageName();
+                if (!(packageName == null || packageName.equals(getPackageName()))) {
+                    String packageNameStr = packageName.toString();
+                    Log.d(">>>>", "" + packageName);
+
+                    if (recents.launcherApps.contains(packageNameStr)) {
+                        recents.addRecent(Intent.CATEGORY_HOME);
+                        GlobalState.lastBackHomeTime = System.currentTimeMillis();
+                    } else if (!ignored(packageNameStr) && canOpen(packageNameStr) && !appSwitchBlackList.contains(packageNameStr)) {
+                        recents.addRecent(packageNameStr);
+                        GlobalState.lastBackHomeTime = 0;
+                    }
+                    if (GlobalState.updateBar != null && !GlobalState.useBatteryCapacity && !((packageNameStr.equals("com.android.systemui") || (recents.inputMethods.indexOf(packageNameStr) > -1 && recents.inputMethods.indexOf(lastApp) > -1)))) {
+                        if (!(packageName.equals("android") || packageName.equals("com.omarea.filter"))) {
+                            WhiteBarColor.updateBarColorMultiple();
+                        }
+                    }
+
+                    lastApp = packageNameStr;
+                }
+            }
+            */
         }
     }
 
@@ -371,7 +436,8 @@ public class AccessibilityServiceGesture extends AccessibilityService {
         hidePopupWindow();
 
         AccessibilityServiceInfo accessibilityServiceInfo = getServiceInfo();
-        accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED | AccessibilityEvent.TYPE_WINDOWS_CHANGED;
+        accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOWS_CHANGED;
+        // accessibilityServiceInfo.eventTypes = TYPE_WINDOW_STATE_CHANGED | AccessibilityEvent.TYPE_WINDOWS_CHANGED;
         setServiceInfo(accessibilityServiceInfo);
 
         floatVitualTouchBar = new FloatVirtualTouchBar(this);
