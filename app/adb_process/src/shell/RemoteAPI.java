@@ -26,12 +26,12 @@ public class RemoteAPI {
             }
         } catch (Exception ignored) {
         }
-        System.out.println(stringBuilder.toString());
+        // System.out.println(stringBuilder.toString());
         return stringBuilder.toString();
     }
 
-    private ArrayList<String> recentBlackList = new ArrayList<String>(){{
-            add("com.android.systemui");
+    private ArrayList<String> recentBlackList = new ArrayList<String>() {{
+        add("com.android.systemui");
     }};
 
     // Android 5.1 ~ 9.0
@@ -72,7 +72,7 @@ public class RemoteAPI {
     }
 
     private void routerMatch(String request, Socket socket) {
-        System.out.println("Gesture Router Match：" + request);
+        // System.out.println("Gesture Router Match：" + request);
         if (request.startsWith("/version")) {
             responseEnd(socket, "0.1.0(1)");
         } else if (request.startsWith("/bar-color")) {
@@ -148,7 +148,7 @@ public class RemoteAPI {
                         int begin = requestHeader.indexOf("Content-Lengh:") + "Content-Length:".length();
                         String postParamterLength = requestHeader.substring(begin).trim();
                         contentLength = Integer.parseInt(postParamterLength);
-                        System.out.println("POST参数长度是：" + Integer.parseInt(postParamterLength));
+                        // System.out.println("POST参数长度是：" + Integer.parseInt(postParamterLength));
                     }
                 }
 
@@ -157,7 +157,7 @@ public class RemoteAPI {
                     for (int i = 0; i < contentLength; i++) {
                         sb.append((char) bd.read());
                     }
-                    System.out.println("POST参数是：" + sb.toString());
+                    // System.out.println("POST参数是：" + sb.toString());
                 }
 
                 /*
@@ -174,7 +174,7 @@ public class RemoteAPI {
                 */
             }
         } catch (IOException e) {
-            System.out.println("Gesture ADB Process RemoteAPI Fail!");
+            // System.out.println("Gesture ADB Process RemoteAPI Fail!");
         }
     }
 

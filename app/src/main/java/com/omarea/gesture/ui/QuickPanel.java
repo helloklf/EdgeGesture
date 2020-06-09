@@ -298,7 +298,6 @@ public class QuickPanel {
 
         // 下
         if (touchRawY > GlobalState.displayHeight - 100) {
-            Log.d(">>>", "Bottom " + (touchRawY > GlobalState.displayHeight - 100));
             View wrapView = view.findViewById(R.id.quick_apps_wrap);
             FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) wrapView.getLayoutParams();
             layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;

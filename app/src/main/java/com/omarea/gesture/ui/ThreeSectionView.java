@@ -53,9 +53,6 @@ public class ThreeSectionView extends View {
     private long lastEventTime = 0L;
     private int lastEvent = -1;
 
-    private float touchRawX;
-    private float touchRawY;
-
     public ThreeSectionView(Context context) {
         super(context);
         init();
@@ -83,7 +80,7 @@ public class ThreeSectionView extends View {
 
     private void performGlobalAction(ActionModel event) {
         if (accessibilityService != null) {
-            if (gameOptimization && isLandscapf && ((System.currentTimeMillis() - lastEventTime) > 3000 || lastEvent != event.actionCode)) {
+            if (gameOptimization && isLandscapf && ((gestureStartTime - lastEventTime) > 2000 || lastEvent != event.actionCode)) {
                 lastEvent = event.actionCode;
                 lastEventTime = System.currentTimeMillis();
                 Gesture.toast( this.getContext().getString(R.string.please_repeat), Toast.LENGTH_SHORT);
@@ -92,12 +89,12 @@ public class ThreeSectionView extends View {
                 postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (remindState && (System.currentTimeMillis() - lastEventTime) >= 3000) {
+                        if (remindState && gestureStartTime < 1) {
                             remindState = false;
                             invalidate();
                         }
                     }
-                }, 3000);
+                }, 2000);
             } else {
                 if (remindState) {
                     remindState = false;
@@ -110,7 +107,6 @@ public class ThreeSectionView extends View {
 
     private void onShortTouch() {
         if (accessibilityService != null) {
-            Log.d(">>>>", "" +  touchStartX +"," + getWidth());
             float p = touchStartX / getWidth();
             if (p > 0.6f) {
                 performGlobalAction(eventRightSlide);
@@ -242,8 +238,8 @@ public class ThreeSectionView extends View {
             return true;
         }
 
-        touchRawX = event.getRawX();
-        touchRawY = event.getRawY();
+        float touchRawX = event.getRawX();
+        float touchRawY = event.getRawY();
 
         if (touchStartRawY - event.getRawY() > FLIP_DISTANCE) {
             if (gestureStartTime < 1) {

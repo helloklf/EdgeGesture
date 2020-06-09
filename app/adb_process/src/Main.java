@@ -27,7 +27,7 @@ public class Main {
         }
         */
 
-        System.out.println("Gesture ADB Process!");
+        // System.out.println("Gesture ADB Process!");
 
         RemoteAPI remoteAPI = new RemoteAPI();
         remoteAPI.start();

@@ -174,68 +174,70 @@ public class AccessibilityServiceGesture extends AccessibilityService {
     // TODO:判断是否进入全屏状态，以便在游戏和视频过程中降低功耗
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-        if (event != null) {
-            if (recents.inputMethods == null) {
-                recents.inputMethods = getInputMethods();
-                recents.launcherApps = getLauncherApps();
-            }
+        long start = System.currentTimeMillis();
+        try {
+            if (event != null) {
+                if (recents.inputMethods == null) {
+                    recents.inputMethods = getInputMethods();
+                    recents.launcherApps = getLauncherApps();
+                }
 
-            if (event.getEventType() == AccessibilityEvent.TYPE_WINDOWS_CHANGED) {
-                List<AccessibilityWindowInfo> windowInfos = getWindows();
-                AccessibilityWindowInfo lastWindow = null;
-                for (AccessibilityWindowInfo windowInfo : windowInfos) {
-                    if ((!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && windowInfo.isInPictureInPictureMode())) && (windowInfo.getType() == AccessibilityWindowInfo.TYPE_APPLICATION)) {
-                        if (lastWindow == null || windowInfo.getLayer() > lastWindow.getLayer()) {
-                            Rect outBounds = new Rect();
-                            windowInfo.getBoundsInScreen(outBounds);
-                            // Log.d(">>>>", "" + windowInfo.getRoot().getPackageName() + " left:" + outBounds.left + ", top:" + outBounds.top + ", right:" + outBounds.right + ", bottom:" + outBounds.bottom + "");
-                            if (outBounds.left == 0 && outBounds.top == 0 &&
-                                    (outBounds.right == GlobalState.displayWidth || outBounds.right == GlobalState.displayHeight)
-                                    &&
-                                    (outBounds.bottom == GlobalState.displayWidth || outBounds.bottom == GlobalState.displayHeight)
-                            ) {
-                                lastWindow = windowInfo;
+                if (event.getEventType() == AccessibilityEvent.TYPE_WINDOWS_CHANGED) {
+                    List<AccessibilityWindowInfo> windowInfos = getWindows();
+                    AccessibilityWindowInfo lastWindow = null;
+                    for (AccessibilityWindowInfo windowInfo : windowInfos) {
+                        if ((!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && windowInfo.isInPictureInPictureMode())) && (windowInfo.getType() == AccessibilityWindowInfo.TYPE_APPLICATION)) {
+                            if (lastWindow == null || windowInfo.getLayer() > lastWindow.getLayer()) {
+                                Rect outBounds = new Rect();
+                                windowInfo.getBoundsInScreen(outBounds);
+                                // Log.d(">>>>", "" + windowInfo.getRoot().getPackageName() + " left:" + outBounds.left + ", top:" + outBounds.top + ", right:" + outBounds.right + ", bottom:" + outBounds.bottom + "");
+                                if (outBounds.left == 0 && outBounds.top == 0 &&
+                                        (outBounds.right == GlobalState.displayWidth || outBounds.right == GlobalState.displayHeight)
+                                        &&
+                                        (outBounds.bottom == GlobalState.displayWidth || outBounds.bottom == GlobalState.displayHeight)
+                                ) {
+                                    lastWindow = windowInfo;
+                                }
                             }
                         }
                     }
-                }
 
-                if (lastWindow != null) {
-                    AccessibilityNodeInfo root = lastWindow.getRoot();
-                    if (root == null) {
-                        return;
-                    }
-
-                    CharSequence packageName = root.getPackageName();
-                    if (packageName == null) {
-                        return;
-                    }
-
-                    String packageNameStr = packageName.toString();
-                    Log.d(">>>[[", "" + packageNameStr);
-
-                    if (!packageNameStr.equals(getPackageName())) {
-                        if (recents.launcherApps.contains(packageNameStr)) {
-                            recents.addRecent(Intent.CATEGORY_HOME);
-                            GlobalState.lastBackHomeTime = System.currentTimeMillis();
-                        } else if (!ignored(packageNameStr) && canOpen(packageNameStr) && !appSwitchBlackList.contains(packageNameStr)) {
-                            recents.addRecent(packageNameStr);
-                            GlobalState.lastBackHomeTime = 0;
+                    if (lastWindow != null) {
+                        AccessibilityNodeInfo root = lastWindow.getRoot();
+                        if (root == null) {
+                            return;
                         }
-                    }
 
-                    if (
-                            GlobalState.updateBar != null &&
-                                    !GlobalState.useBatteryCapacity &&
-                                    !((packageNameStr.equals("com.android.systemui") || (recents.inputMethods.indexOf(packageNameStr) > -1 && recents.inputMethods.indexOf(lastApp) > -1)))) {
-                        if (!(packageName.equals("android") || packageName.equals("com.omarea.filter"))) {
-                            WhiteBarColor.updateBarColorMultiple();
+                        CharSequence packageName = root.getPackageName();
+                        if (packageName == null) {
+                            return;
                         }
-                    }
 
-                    lastApp = packageNameStr;
+                        String packageNameStr = packageName.toString();
+                        // Log.d(">>>[[", "" + packageNameStr);
+
+                        if (!packageNameStr.equals(getPackageName())) {
+                            if (recents.launcherApps.contains(packageNameStr)) {
+                                recents.addRecent(Intent.CATEGORY_HOME);
+                                GlobalState.lastBackHomeTime = System.currentTimeMillis();
+                            } else if (!ignored(packageNameStr) && canOpen(packageNameStr) && !appSwitchBlackList.contains(packageNameStr)) {
+                                recents.addRecent(packageNameStr);
+                                GlobalState.lastBackHomeTime = 0;
+                            }
+                        }
+
+                        if (
+                                GlobalState.updateBar != null &&
+                                        !GlobalState.useBatteryCapacity &&
+                                        !((packageNameStr.equals("com.android.systemui") || (recents.inputMethods.indexOf(packageNameStr) > -1 && recents.inputMethods.indexOf(lastApp) > -1)))) {
+                            if (!(packageName.equals("android") || packageName.equals("com.omarea.filter"))) {
+                                WhiteBarColor.updateBarColorMultiple();
+                            }
+                        }
+
+                        lastApp = packageNameStr;
+                    }
                 }
-            }
             /*
             else if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
                 CharSequence packageName = event.getPackageName();
@@ -260,6 +262,9 @@ public class AccessibilityServiceGesture extends AccessibilityService {
                 }
             }
             */
+            }
+        } finally {
+            Log.d(">>>>", "TIME " + (System.currentTimeMillis() - start));
         }
     }
 

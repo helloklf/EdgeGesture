@@ -42,7 +42,6 @@ public class WhiteBarColor {
             do {
                 int color = RemoteAPI.getBarAutoColor(nextTimes > 0);
                 if (color != Integer.MIN_VALUE) {
-                    // Log.d("GestureRemote", "Color is " + color);
                     GlobalState.iosBarColor = color;
 
                     if (GlobalState.updateBar != null) {

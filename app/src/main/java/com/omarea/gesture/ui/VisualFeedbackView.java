@@ -189,7 +189,6 @@ public class VisualFeedbackView extends View {
             }
         } catch (Exception ignored) {
         }
-        Log.d(">>>>A", "Stop");
     }
     /*
     float[] shapeOrigin = new float[]{
@@ -231,7 +230,6 @@ public class VisualFeedbackView extends View {
                 targetRawY = INVALID_VALUE;
                 invalidate();
                 setVisibility(GONE);
-                Log.d(">>>>A", "End1");
             }
 
             @Override
@@ -244,7 +242,6 @@ public class VisualFeedbackView extends View {
                 targetRawY = INVALID_VALUE;
                 invalidate();
                 setVisibility(GONE);
-                Log.d(">>>>A", "End2");
             }
 
             @Override

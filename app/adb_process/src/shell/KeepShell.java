@@ -62,7 +62,7 @@ public class KeepShell {
                                     errorReader.readLine();
                                 }
                             } catch (Exception ex) {
-                                System.out.println("Gesture ADB Error " + ex.getMessage());
+                                // System.out.println("Gesture ADB Error " + ex.getMessage());
                             }
                         }
                     }).start();
