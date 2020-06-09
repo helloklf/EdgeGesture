@@ -238,30 +238,6 @@ public class AccessibilityServiceGesture extends AccessibilityService {
                         lastApp = packageNameStr;
                     }
                 }
-            /*
-            else if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
-                CharSequence packageName = event.getPackageName();
-                if (!(packageName == null || packageName.equals(getPackageName()))) {
-                    String packageNameStr = packageName.toString();
-                    Log.d(">>>>", "" + packageName);
-
-                    if (recents.launcherApps.contains(packageNameStr)) {
-                        recents.addRecent(Intent.CATEGORY_HOME);
-                        GlobalState.lastBackHomeTime = System.currentTimeMillis();
-                    } else if (!ignored(packageNameStr) && canOpen(packageNameStr) && !appSwitchBlackList.contains(packageNameStr)) {
-                        recents.addRecent(packageNameStr);
-                        GlobalState.lastBackHomeTime = 0;
-                    }
-                    if (GlobalState.updateBar != null && !GlobalState.useBatteryCapacity && !((packageNameStr.equals("com.android.systemui") || (recents.inputMethods.indexOf(packageNameStr) > -1 && recents.inputMethods.indexOf(lastApp) > -1)))) {
-                        if (!(packageName.equals("android") || packageName.equals("com.omarea.filter"))) {
-                            WhiteBarColor.updateBarColorMultiple();
-                        }
-                    }
-
-                    lastApp = packageNameStr;
-                }
-            }
-            */
             }
         } finally {
             Log.d(">>>>", "TIME " + (System.currentTimeMillis() - start));
