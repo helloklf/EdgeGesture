@@ -52,20 +52,6 @@ public class AccessibilityServiceGesture extends AccessibilityService {
     private String lastApp = "";
     private BatteryReceiver batteryReceiver;
 
-    private void startForeground() {
-        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel("fg", "辅助服务进程", NotificationManager.IMPORTANCE_LOW);
-            manager.createNotificationChannel(notificationChannel);
-            Notification notification = new Notification.Builder(this, "fg").setTicker("").setSmallIcon(R.drawable.gesture_logo).build();
-            startForeground(1, notification);
-        } else {
-            Notification notification = new Notification.Builder(this).setTicker("").setSmallIcon(R.drawable.gesture_logo).build();
-            //id 不能为0
-            startForeground(1, notification);
-        }
-    }
-
     private void hidePopupWindow() {
         if (floatVitualTouchBar != null) {
             floatVitualTouchBar.hidePopupWindow();
@@ -109,24 +95,6 @@ public class AccessibilityServiceGesture extends AccessibilityService {
     private boolean ignored(String packageName) {
         return recents.inputMethods.indexOf(packageName) > -1;
     }
-
-    /*
-    通过
-    dumpsys activity top | grep ACTIVITY
-    可以获取当前打开的应用，但是，作为普通应用并且有这个权限
-    */
-
-    /*
-    List<AccessibilityWindowInfo> windowInfos = accessibilityService.getWindows();
-    Log.d("AccessibilityWindowInfo", "windowInfos " + windowInfos.size());
-    for (AccessibilityWindowInfo windowInfo : windowInfos) {
-        try {
-            Log.d("AccessibilityWindowInfo", "" + windowInfo.getRoot().getPackageName());
-        } catch (Exception ex) {
-            Log.e("AccessibilityWindowInfo", "" + ex.getMessage());
-        }
-    }
-    */
 
     // 检测应用是否是可以打开的
     private boolean canOpen(String packageName) {
@@ -174,92 +142,74 @@ public class AccessibilityServiceGesture extends AccessibilityService {
     // TODO:判断是否进入全屏状态，以便在游戏和视频过程中降低功耗
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-        long start = System.currentTimeMillis();
-        try {
-            if (event != null) {
-                if (recents.inputMethods == null) {
-                    recents.inputMethods = getInputMethods();
-                    recents.launcherApps = getLauncherApps();
-                }
+        if (recents.inputMethods == null) {
+            recents.inputMethods = getInputMethods();
+            recents.launcherApps = getLauncherApps();
+        }
 
-                if (event.getEventType() == AccessibilityEvent.TYPE_WINDOWS_CHANGED) {
-                    List<AccessibilityWindowInfo> windowInfos = getWindows();
-                    AccessibilityWindowInfo lastWindow = null;
-                    for (AccessibilityWindowInfo windowInfo : windowInfos) {
-                        if ((!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && windowInfo.isInPictureInPictureMode())) && (windowInfo.getType() == AccessibilityWindowInfo.TYPE_APPLICATION)) {
-                            if (lastWindow == null || windowInfo.getLayer() > lastWindow.getLayer()) {
-                                Rect outBounds = new Rect();
-                                windowInfo.getBoundsInScreen(outBounds);
-                                // Log.d(">>>>", "" + windowInfo.getRoot().getPackageName() + " left:" + outBounds.left + ", top:" + outBounds.top + ", right:" + outBounds.right + ", bottom:" + outBounds.bottom + "");
-                                if (outBounds.left == 0 && outBounds.top == 0 &&
-                                        (outBounds.right == GlobalState.displayWidth || outBounds.right == GlobalState.displayHeight)
-                                        &&
-                                        (outBounds.bottom == GlobalState.displayWidth || outBounds.bottom == GlobalState.displayHeight)
-                                ) {
-                                    lastWindow = windowInfo;
+        if (event != null && event.getEventType() == AccessibilityEvent.TYPE_WINDOWS_CHANGED) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    long start = System.currentTimeMillis();
+                    try {
+                        List<AccessibilityWindowInfo> windowInfos = getWindows();
+                        AccessibilityWindowInfo lastWindow = null;
+                        for (AccessibilityWindowInfo windowInfo : windowInfos) {
+                            if ((!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && windowInfo.isInPictureInPictureMode())) && (windowInfo.getType() == AccessibilityWindowInfo.TYPE_APPLICATION)) {
+                                if (lastWindow == null || windowInfo.getLayer() > lastWindow.getLayer()) {
+                                    Rect outBounds = new Rect();
+                                    windowInfo.getBoundsInScreen(outBounds);
+                                    if (outBounds.left == 0 && outBounds.top == 0 &&
+                                            (outBounds.right == GlobalState.displayWidth || outBounds.right == GlobalState.displayHeight)
+                                            &&
+                                            (outBounds.bottom == GlobalState.displayWidth || outBounds.bottom == GlobalState.displayHeight)
+                                    ) {
+                                        lastWindow = windowInfo;
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    if (lastWindow != null) {
-                        AccessibilityNodeInfo root = lastWindow.getRoot();
-                        if (root == null) {
-                            return;
-                        }
-
-                        CharSequence packageName = root.getPackageName();
-                        if (packageName == null) {
-                            return;
-                        }
-
-                        String packageNameStr = packageName.toString();
-                        // Log.d(">>>[[", "" + packageNameStr);
-
-                        if (!packageNameStr.equals(getPackageName())) {
-                            if (recents.launcherApps.contains(packageNameStr)) {
-                                recents.addRecent(Intent.CATEGORY_HOME);
-                                GlobalState.lastBackHomeTime = System.currentTimeMillis();
-                            } else if (!ignored(packageNameStr) && canOpen(packageNameStr) && !appSwitchBlackList.contains(packageNameStr)) {
-                                recents.addRecent(packageNameStr);
-                                GlobalState.lastBackHomeTime = 0;
+                        if (lastWindow != null) {
+                            AccessibilityNodeInfo root = lastWindow.getRoot();
+                            if (root == null) {
+                                return;
                             }
-                        }
 
-                        if (
-                                GlobalState.updateBar != null &&
-                                        !GlobalState.useBatteryCapacity &&
-                                        !((packageNameStr.equals("com.android.systemui") || (recents.inputMethods.indexOf(packageNameStr) > -1 && recents.inputMethods.indexOf(lastApp) > -1)))) {
-                            if (!(packageName.equals("android") || packageName.equals("com.omarea.filter"))) {
-                                WhiteBarColor.updateBarColorMultiple();
+                            CharSequence packageName = root.getPackageName();
+                            if (packageName == null) {
+                                return;
                             }
-                        }
 
-                        lastApp = packageNameStr;
+                            String packageNameStr = packageName.toString();
+
+                            if (!packageNameStr.equals(getPackageName())) {
+                                if (recents.launcherApps.contains(packageNameStr)) {
+                                    recents.addRecent(Intent.CATEGORY_HOME);
+                                    GlobalState.lastBackHomeTime = System.currentTimeMillis();
+                                } else if (!ignored(packageNameStr) && canOpen(packageNameStr) && !appSwitchBlackList.contains(packageNameStr)) {
+                                    recents.addRecent(packageNameStr);
+                                    GlobalState.lastBackHomeTime = 0;
+                                }
+                            }
+
+                            if (
+                                    GlobalState.updateBar != null &&
+                                            !GlobalState.useBatteryCapacity &&
+                                            !((packageNameStr.equals("com.android.systemui") || (recents.inputMethods.indexOf(packageNameStr) > -1 && recents.inputMethods.indexOf(lastApp) > -1)))) {
+                                if (!(packageName.equals("android") || packageName.equals("com.omarea.filter"))) {
+                                    WhiteBarColor.updateBarColorMultiple();
+                                }
+                            }
+
+                            lastApp = packageNameStr;
+                        }
+                    } finally {
+                        Log.d(">>>>", "OnAccessibilityEvent Processing time(ms): " + (System.currentTimeMillis() - start));
                     }
                 }
-            }
-        } finally {
-            Log.d(">>>>", "TIME " + (System.currentTimeMillis() - start));
-        }
-    }
-
-    private boolean isScreenLocked() {
-        try {
-            WindowManager windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-            Display display = windowManager.getDefaultDisplay();
-            if (display.getState() != Display.STATE_ON) {
-                return true;
-            }
-
-            KeyguardManager mKeyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                return mKeyguardManager.inKeyguardRestrictedInputMode() || mKeyguardManager.isDeviceLocked() || mKeyguardManager.isKeyguardLocked();
-            } else {
-                return mKeyguardManager.inKeyguardRestrictedInputMode() || mKeyguardManager.isKeyguardLocked();
-            }
-        } catch (Exception ex) {
-            return true;
+            }).start();
         }
     }
 
@@ -375,7 +325,6 @@ public class AccessibilityServiceGesture extends AccessibilityService {
         Collections.addAll(recents.blackList, getResources().getStringArray(R.array.app_switch_black_list));
 
         new AdbProcessExtractor().updateAdbProcessState(this, true);
-        // startForeground();
     }
 
     @Override
