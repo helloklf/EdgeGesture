@@ -5,6 +5,7 @@ import android.os.BatteryManager;
 
 public class BatteryUtils {
     private BatteryManager batteryManager;
+
     public BatteryUtils(Context context) {
         this.batteryManager = (BatteryManager) context.getSystemService(Context.BATTERY_SERVICE);
     }

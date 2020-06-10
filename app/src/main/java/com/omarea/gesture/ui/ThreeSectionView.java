@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +51,7 @@ public class ThreeSectionView extends View {
     private Paint p = new Paint();
     private long lastEventTime = 0L;
     private int lastEvent = -1;
+    private boolean testMode = false;
 
     public ThreeSectionView(Context context) {
         super(context);
@@ -83,7 +83,7 @@ public class ThreeSectionView extends View {
             if (gameOptimization && isLandscapf && ((gestureStartTime - lastEventTime) > 2000 || lastEvent != event.actionCode)) {
                 lastEvent = event.actionCode;
                 lastEventTime = System.currentTimeMillis();
-                Gesture.toast( this.getContext().getString(R.string.please_repeat), Toast.LENGTH_SHORT);
+                Gesture.toast(this.getContext().getString(R.string.please_repeat), Toast.LENGTH_SHORT);
                 remindState = true;
                 invalidate();
                 postDelayed(new Runnable() {
@@ -325,8 +325,6 @@ public class ThreeSectionView extends View {
         GlobalState.clearThreeSectionFeedback();
     }
 
-
-    private boolean testMode = false;
     public void setTestMode(boolean b) {
         this.testMode = b;
     }
@@ -336,7 +334,7 @@ public class ThreeSectionView extends View {
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (testMode || remindState) {
-            p.setColor(Color.argb(128,225,203,255));
+            p.setColor(Color.argb(128, 225, 203, 255));
             canvas.drawRoundRect(bakWidth * 0.66f, 0, bakWidth * 0.95f, getHeight(), 10f, 10f, p);
             canvas.drawRoundRect(bakWidth * 0.36f, 0, bakWidth * 0.64f, getHeight(), 10f, 10f, p);
             canvas.drawRoundRect(bakWidth * 0.06f, 0, bakWidth * 0.34f, getHeight(), 10f, 10f, p);

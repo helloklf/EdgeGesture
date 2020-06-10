@@ -54,7 +54,7 @@ public class Recents {
             currentTop = packageName;
 
             StringBuilder packages = new StringBuilder();
-            for (String item:recents) {
+            for (String item : recents) {
                 packages.append(item);
                 packages.append(", ");
             }

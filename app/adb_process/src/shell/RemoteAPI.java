@@ -9,6 +9,10 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class RemoteAPI {
+    private ArrayList<String> recentBlackList = new ArrayList<String>() {{
+        add("com.android.systemui");
+    }};
+
     // 从 cmp= 分割
     private String subPackageName2(String recents, String separator) {
         StringBuilder stringBuilder = new StringBuilder();
@@ -29,10 +33,6 @@ public class RemoteAPI {
         // System.out.println(stringBuilder.toString());
         return stringBuilder.toString();
     }
-
-    private ArrayList<String> recentBlackList = new ArrayList<String>() {{
-        add("com.android.systemui");
-    }};
 
     // Android 5.1 ~ 9.0
     private String filterPackages(String dumpResult) {

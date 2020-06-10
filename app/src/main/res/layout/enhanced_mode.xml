@@ -6,39 +6,41 @@
 
     <LinearLayout
         style="@style/card_view"
-        android:padding="10dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
             <LinearLayout
-                android:paddingRight="10dp"
-                android:orientation="vertical"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingRight="10dp">
 
                 <TextView
                     style="@style/card_title"
                     android:text="增强模式" />
 
                 <TextView
-                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:text="激活增强模式，可解决以下问题：①切换应用时会打开已清除的后台；②小横条不会自动反转颜色；③回桌面后切换应用5秒延迟；\n\n点击右侧图标查看激活代码"
                     android:textSize="12dp" />
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/enhanced_mode"
-                android:src="@drawable/adb_off"
                 android:layout_width="35dp"
-                android:layout_height="35dp" />
+                android:layout_height="35dp"
+                android:src="@drawable/adb_off" />
         </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/steps_click_me"
         style="@style/card_view"

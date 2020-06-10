@@ -12,7 +12,6 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
@@ -63,6 +62,9 @@ public class VisualFeedbackView extends View {
     private ValueAnimator feedbackExitAnimation;
     // 手势提示图标半径
     private float iconRadius = UITools.dp2px(getContext(), 8f);
+    private SharedPreferences config;
+    // 以下是三段式手势的视觉反馈处理
+    private boolean perfectThreeSectionFeedback = false;
 
     public VisualFeedbackView(Context context) {
         super(context);
@@ -79,7 +81,6 @@ public class VisualFeedbackView extends View {
         init();
     }
 
-    private SharedPreferences config;
     private void init() {
         GlobalState.visualFeedbackView = this;
 
@@ -127,8 +128,8 @@ public class VisualFeedbackView extends View {
             feedbackDrawAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
-                zoomRatio = (float) animation.getAnimatedValue();
-                invalidate();
+                    zoomRatio = (float) animation.getAnimatedValue();
+                    invalidate();
                 }
             });
             feedbackDrawAnimation.start();
@@ -172,6 +173,16 @@ public class VisualFeedbackView extends View {
             feedbackDrawAnimation.start();
         }
     }
+    /*
+    float[] shapeOrigin = new float[]{
+            0.115f, 0.167f,
+            0.620f, 0.350f,
+            1.000f, 0.500f,
+            0.620f, 0.650f,
+            0.115f, 0.833f,
+            0.000f, 1.000f
+    };
+    */
 
     // 停止动画
     private void stopAnimation() {
@@ -190,16 +201,6 @@ public class VisualFeedbackView extends View {
         } catch (Exception ignored) {
         }
     }
-    /*
-    float[] shapeOrigin = new float[]{
-            0.115f, 0.167f,
-            0.620f, 0.350f,
-            1.000f, 0.500f,
-            0.620f, 0.650f,
-            0.115f, 0.833f,
-            0.000f, 1.000f
-    };
-    */
 
     // 淡出视觉反馈图形
     public void clearEdgeFeedback() {
@@ -278,6 +279,7 @@ public class VisualFeedbackView extends View {
             return (Math.abs(currentRaw - startRaw) / FLIP_DISTANCE) * GRAPH_MAX_WEIGH * zoomRatio;
         }
     }
+
     // 根据滑动距离计算视觉反馈显示大小
     private float graphSizeRatio(float startRaw, float currentRaw) {
         if (Math.abs(currentRaw - startRaw) > FLIP_DISTANCE) {
@@ -300,8 +302,8 @@ public class VisualFeedbackView extends View {
 
     private Point getCirclePoint(float cx, float cy, float radius, int angle) {
         Point point = new Point();
-        point.x = (int) (cx + radius * Math.cos(angle   *   3.14   / 180));
-        point.y = (int) (cy + radius * Math.sin(angle   *   3.14   / 180));
+        point.x = (int) (cx + radius * Math.cos(angle * 3.14 / 180));
+        point.y = (int) (cy + radius * Math.sin(angle * 3.14 / 180));
 
         return point;
     }
@@ -435,11 +437,11 @@ public class VisualFeedbackView extends View {
                 } else {
                     path.moveTo(this.startRawX, pY + radius * 1.5f);
 
-                    path.quadTo(this.startRawX, pY + radius * 1.5f,  circleLeft2.x, circleLeft2.y + (radius  * 0.2f));
-                    path.quadTo(circleLeft.x - (radius * 0.1f), circleLeft.y,  this.startRawX - radius, pY);
-                    path.arcTo(this.startRawX - radius, pY  - radius, this.startRawX + radius, pY + radius, 180, 180, false);
+                    path.quadTo(this.startRawX, pY + radius * 1.5f, circleLeft2.x, circleLeft2.y + (radius * 0.2f));
+                    path.quadTo(circleLeft.x - (radius * 0.1f), circleLeft.y, this.startRawX - radius, pY);
+                    path.arcTo(this.startRawX - radius, pY - radius, this.startRawX + radius, pY + radius, 180, 180, false);
                     path.moveTo(this.startRawX, pY + radius * 1.5f);
-                    path.quadTo(this.startRawX, pY + radius * 1.5f, circleRight.x, circleRight.y + (radius  * 0.2f));
+                    path.quadTo(this.startRawX, pY + radius * 1.5f, circleRight.x, circleRight.y + (radius * 0.2f));
                     path.quadTo(circleRight2.x + (radius * 0.1f), circleRight2.y, this.startRawX + radius, pY);
 
                     path.close();
@@ -474,9 +476,6 @@ public class VisualFeedbackView extends View {
         }
     }
 
-
-    // 以下是三段式手势的视觉反馈处理
-    private boolean perfectThreeSectionFeedback = false;
     public void startThreeSectionFeedback(float startRawX, float startRawY) {
         // startGestureFeedback(startRawX, startRawY);
         perfectThreeSectionFeedback = false;

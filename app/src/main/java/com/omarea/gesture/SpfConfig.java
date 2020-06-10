@@ -131,15 +131,8 @@ public class SpfConfig {
     public static final int THREE_SECTION_WIDTH_DEFAULT = 100;
     public static final String THREE_SECTION_HEIGHT = "THREE_SECTION_HEIGHT";
     public static final int THREE_SECTION_HEIGHT_DEFAULT = 9; // ?dp
-    // 切换到桌面
-    public static String SWITCH_TO_HOME = "SWITCH_TO_HOME";
-    public static boolean SWITCH_TO_HOME_DEFAULT = false;
-    // 三星优化(自动禁用系统手势)
-    public static String SAMSUNG_OPTIMIZE = "SAMSUNG_OPTIMIZE";
-    public static boolean SAMSUNG_OPTIMIZE_DEFAULT = false;
-    // Overscan隐藏导航栏
-    public static String OVERSCAN_SWITCH = "OVERSCAN_SWITCH";
-    public static boolean OVERSCAN_SWITCH_DEFAULT = false;
+    public static final String THREE_SECTION_COLOR = "THREE_SECTION_COLOR";
+    public static final int THREE_SECTION_COLOR_DEFAULT = 0xee101010; // 颜色
     // 三段式手势
     public static String THREE_SECTION_LANDSCAPE = "THREE_SECTION_LANDSCAPE";
     public static boolean THREE_SECTION_LANDSCAPE_DEFAULT = false;
@@ -157,6 +150,4 @@ public class SpfConfig {
     public static int THREE_SECTION_CENTER_HOVER_DEFAULT = Handlers.GLOBAL_ACTION_NONE;
     public static String THREE_SECTION_RIGHT_HOVER = "THREE_SECTION_RIGHT_HOVER";
     public static int THREE_SECTION_RIGHT_HOVER_DEFAULT = Handlers.GLOBAL_ACTION_NONE;
-    public static final String THREE_SECTION_COLOR = "THREE_SECTION_COLOR";
-    public static final int THREE_SECTION_COLOR_DEFAULT = 0xee101010; // 颜色
 }

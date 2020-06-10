@@ -7,6 +7,7 @@
         <item name="android:statusBarColor">#ff222222</item>
         <item name="android:windowBackground">@color/windowBackground</item>
     </style>
+
     <style name="gestureAppThemeLight" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:colorPrimary">@color/colorPrimary</item>
         <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>

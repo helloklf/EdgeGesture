@@ -18,68 +18,7 @@
 
         <include layout="@layout/gesture_switch_options" />
 
-        <include layout="@layout/samsung_options" />
-
         <include layout="@layout/enhanced_mode" />
-
-        <LinearLayout
-            android:id="@+id/overscan_guide"
-            style="@style/card_view"
-            android:layout_margin="10dp"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/overscan_guide_desc"
-                android:textSize="12dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/overscan_shell_content"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:text="adb shell pm grant com.omarea.gesture android.permission.WRITE_SECURE_SETTINGS"
-                    android:textSize="12dp" />
-
-                <ImageButton
-                    android:id="@+id/overscan_copy_shell"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:background="@color/colorPrimary"
-                    android:padding="4dp"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/gesture_copy" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/overscan_options"
-            style="@style/card_view"
-            android:layout_margin="10dp"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <Switch
-                android:id="@+id/overscan_switch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="通过Overscan隐藏导航栏"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="通过Overscan隐藏导航栏，当然这可能会导致部分界面下沉"
-                android:textSize="12dp" />
-        </LinearLayout>
 
         <LinearLayout
             style="@style/card_view"

@@ -10,7 +10,6 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -22,7 +21,6 @@ import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -287,8 +285,8 @@ public class QuickPanel {
         questionBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            close();
-            Toast.makeText(accessibilityService, accessibilityService.getString(R.string.quick_question), Toast.LENGTH_LONG).show();
+                close();
+                Toast.makeText(accessibilityService, accessibilityService.getString(R.string.quick_question), Toast.LENGTH_LONG).show();
             }
         });
         GridView appList = (GridView) view.findViewById(R.id.quick_apps);
@@ -317,7 +315,7 @@ public class QuickPanel {
             windowParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
         }
         // 左
-        else  {
+        else {
             View wrapView = view.findViewById(R.id.quick_apps_wrap);
             wrapView.setBackground(accessibilityService.getDrawable(R.drawable.quick_panel_bg_left));
             windowParams.gravity = Gravity.START | Gravity.CENTER_VERTICAL;

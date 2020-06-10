@@ -3,13 +3,10 @@ package com.omarea.gesture.fragments;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.LayoutInflater;
@@ -20,7 +17,6 @@ import android.widget.Checkable;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.omarea.gesture.AdbProcessExtractor;
@@ -29,10 +25,7 @@ import com.omarea.gesture.Gesture;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.remote.RemoteAPI;
-import com.omarea.gesture.util.ForceHideNavBarThread;
 import com.omarea.gesture.util.GlobalState;
-import com.omarea.gesture.util.Overscan;
-import com.omarea.gesture.util.ResumeNavBar;
 
 import java.util.List;
 
@@ -82,7 +75,7 @@ public class FragmentBasic extends FragmentSettingsBase {
                     try {
                         Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
                         startActivity(intent);
-                    } catch (Exception ex) {
+                    } catch (Exception ignored) {
                     }
                     String msg = getString(R.string.service_active_desc) + getString(R.string.app_name);
                     Gesture.toast(msg, Toast.LENGTH_LONG);
@@ -122,84 +115,6 @@ public class FragmentBasic extends FragmentSettingsBase {
                 openUrl("https://github.com/helloklf/EdgeGesture/blob/master/docs/EnhancedMode.md");
             }
         });
-
-        if (Build.MANUFACTURER.equals("samsung") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            if (canWriteGlobalSettings()) {
-                activity.findViewById(R.id.samsung_guide).setVisibility(View.GONE);
-                activity.findViewById(R.id.samsung_options).setVisibility(View.VISIBLE);
-                Switch samsung_optimize = activity.findViewById(R.id.samsung_optimize);
-                samsung_optimize.setChecked(config.getBoolean(SpfConfig.SAMSUNG_OPTIMIZE, SpfConfig.SAMSUNG_OPTIMIZE_DEFAULT));
-                samsung_optimize.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Switch switchItem = activity.findViewById(R.id.samsung_optimize);
-                        if (switchItem.isChecked()) {
-                            new ForceHideNavBarThread(activity.getContentResolver()).start();
-                        } else {
-                            new ResumeNavBar(activity.getContentResolver()).run();
-                        }
-                        config.edit().putBoolean(SpfConfig.SAMSUNG_OPTIMIZE, switchItem.isChecked()).apply();
-                    }
-                });
-            } else {
-                activity.findViewById(R.id.samsung_guide).setVisibility(View.VISIBLE);
-                activity.findViewById(R.id.samsung_options).setVisibility(View.GONE);
-                activity.findViewById(R.id.copy_shell).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        try {
-                            ClipboardManager myClipboard = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
-                            ClipData myClip = ClipData.newPlainText("text",
-                                    ((TextView) activity.findViewById(R.id.shell_content)).getText().toString());
-                            myClipboard.setPrimaryClip(myClip);
-                            Gesture.toast(getString(R.string.copy_success), Toast.LENGTH_SHORT);
-                        } catch (Exception ex) {
-                            Gesture.toast(getString(R.string.copy_fail), Toast.LENGTH_SHORT);
-                        }
-                    }
-                });
-            }
-        } else {
-            /*
-            if (canWriteGlobalSettings()) {
-                activity.findViewById(R.id.overscan_guide).setVisibility(View.GONE);
-                activity.findViewById(R.id.overscan_options).setVisibility(View.VISIBLE);
-                Switch overscan_switch = activity.findViewById(R.id.overscan_switch);
-                overscan_switch.setChecked(config.getBoolean(SpfConfig.OVERSCAN_SWITCH, SpfConfig.OVERSCAN_SWITCH_DEFAULT));
-                overscan_switch.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Switch switchItem = activity.findViewById(R.id.overscan_switch);
-                        if (switchItem.isChecked()) {
-                            if(!new Overscan().setOverscan(activity)) {
-                                Toast.makeText(getActivity(), "隐藏失败", Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            new Overscan().resetOverscan(activity);
-                        }
-                        config.edit().putBoolean(SpfConfig.OVERSCAN_SWITCH, switchItem.isChecked()).apply();
-                    }
-                });
-            } else {
-                activity.findViewById(R.id.overscan_guide).setVisibility(View.VISIBLE);
-                activity.findViewById(R.id.overscan_options).setVisibility(View.GONE);
-                activity.findViewById(R.id.overscan_copy_shell).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        try {
-                            ClipboardManager myClipboard = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
-                            ClipData myClip = ClipData.newPlainText("text",
-                                    ((TextView) activity.findViewById(R.id.overscan_shell_content)).getText().toString());
-                            myClipboard.setPrimaryClip(myClip);
-                            Toast.makeText(activity.getBaseContext(), getString(R.string.copy_success), Toast.LENGTH_SHORT).show();
-                        } catch (Exception ex) {
-                            Toast.makeText(activity.getBaseContext(), getString(R.string.copy_fail), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-            }
-            */
-        }
 
         ImageView enhanced_mode = activity.findViewById(R.id.enhanced_mode);
         enhanced_mode.setOnClickListener(new View.OnClickListener() {
@@ -273,10 +188,6 @@ public class FragmentBasic extends FragmentSettingsBase {
 
     private boolean serviceRunning() {
         return serviceRunning(getActivity(), "AccessibilityServiceGesture");
-    }
-
-    private boolean canWriteGlobalSettings() {
-        return new Overscan().canWriteSecureSettings(getActivity());
     }
 
     @Override

@@ -2,10 +2,6 @@ package com.omarea.gesture;
 
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
-import android.app.KeyguardManager;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -17,9 +13,7 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build;
-import android.provider.Settings;
 import android.util.Log;
-import android.view.Display;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -31,9 +25,7 @@ import android.widget.Toast;
 import com.omarea.gesture.ui.FloatVirtualTouchBar;
 import com.omarea.gesture.ui.QuickPanel;
 import com.omarea.gesture.ui.TouchIconCache;
-import com.omarea.gesture.util.ForceHideNavBarThread;
 import com.omarea.gesture.util.GlobalState;
-import com.omarea.gesture.util.Overscan;
 import com.omarea.gesture.util.Recents;
 
 import java.util.ArrayList;
@@ -56,39 +48,6 @@ public class AccessibilityServiceGesture extends AccessibilityService {
         if (floatVitualTouchBar != null) {
             floatVitualTouchBar.hidePopupWindow();
             floatVitualTouchBar = null;
-        }
-    }
-
-    private void forceHideNavBar() {
-        if (Build.MANUFACTURER.equals("samsung") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            if (cr == null) {
-                cr = getContentResolver();
-            }
-            if (config.getBoolean(SpfConfig.SAMSUNG_OPTIMIZE, SpfConfig.SAMSUNG_OPTIMIZE_DEFAULT)) {
-                new ForceHideNavBarThread(cr).run();
-            }
-        } else {
-            if (config.getBoolean(SpfConfig.OVERSCAN_SWITCH, SpfConfig.OVERSCAN_SWITCH_DEFAULT)) {
-                new Overscan().setOverscan(this);
-            }
-        }
-    }
-
-    private void resumeNavBar() {
-        if (Build.MANUFACTURER.equals("samsung") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            try {
-                if (cr == null) {
-                    cr = getContentResolver();
-                }
-                // oneui 策略取消强制禁用手势（因为锁屏唤醒后底部会触摸失灵，需要重新开关）
-                Settings.Global.putInt(cr, "navigation_bar_gesture_disabled_by_policy", 0);
-            } catch (Exception ex) {
-            }
-            cr = null;
-        } else {
-            if (config.getBoolean(SpfConfig.OVERSCAN_SWITCH, SpfConfig.OVERSCAN_SWITCH_DEFAULT)) {
-                new Overscan().setOverscan(this);
-            }
         }
     }
 
@@ -300,27 +259,12 @@ public class AccessibilityServiceGesture extends AccessibilityService {
         }
         createPopupView();
 
-        screenStateReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent != null) {
-                    String action = intent.getAction();
-                    if (action != null &&
-                            ((action.equals(Intent.ACTION_USER_PRESENT) || action.equals(Intent.ACTION_USER_UNLOCKED))
-                                    // || action.equals(Intent.ACTION_SCREEN_ON)
-                            )) {
-                        forceHideNavBar();
-                    }
-                }
-            }
-        };
         registerReceiver(screenStateReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             registerReceiver(screenStateReceiver, new IntentFilter(Intent.ACTION_USER_UNLOCKED));
         }
         registerReceiver(screenStateReceiver, new IntentFilter(Intent.ACTION_SCREEN_ON));
         registerReceiver(screenStateReceiver, new IntentFilter(Intent.ACTION_USER_PRESENT));
-        forceHideNavBar();
 
         Collections.addAll(recents.blackList, getResources().getStringArray(R.array.app_switch_black_list));
 
@@ -330,7 +274,6 @@ public class AccessibilityServiceGesture extends AccessibilityService {
     @Override
     public boolean onUnbind(Intent intent) {
         hidePopupWindow();
-        resumeNavBar();
         return super.onUnbind(intent);
     }
 
@@ -357,7 +300,6 @@ public class AccessibilityServiceGesture extends AccessibilityService {
                 GlobalState.displayWidth = point.x;
                 GlobalState.displayHeight = point.y;
                 createPopupView();
-                forceHideNavBar();
             }
         }
     }

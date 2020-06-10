@@ -13,7 +13,7 @@ public class WhiteBarColor {
         updateBarColor();
     }
 
-    public static void updateBarColorMultiple() {
+    static void updateBarColorMultiple() {
         nextTimes = 2;
         updateBarColor();
     }

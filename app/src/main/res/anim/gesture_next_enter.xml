@@ -2,20 +2,20 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android"
     android:zAdjustment="top">
     <translate
-        android:startOffset="160"
         android:duration="400"
         android:fillAfter="true"
         android:fromXDelta="107.5%p"
         android:interpolator="@android:anim/linear_interpolator"
+        android:startOffset="160"
         android:toXDelta="0%p" />
     <scale
-        android:startOffset="560"
         android:duration="240"
         android:fromXScale="0.93"
         android:fromYScale="0.93"
         android:interpolator="@android:anim/decelerate_interpolator"
         android:pivotX="50%"
         android:pivotY="50%"
+        android:startOffset="560"
         android:toXScale="1"
         android:toYScale="1" />
 </set>

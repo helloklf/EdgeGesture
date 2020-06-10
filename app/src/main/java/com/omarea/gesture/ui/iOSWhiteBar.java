@@ -28,7 +28,6 @@ import com.omarea.gesture.util.GlobalState;
 import com.omarea.gesture.util.Handlers;
 import com.omarea.gesture.util.ReceiverLock;
 import com.omarea.gesture.util.ReceiverLockHandler;
-import com.omarea.gesture.util.Recents;
 import com.omarea.gesture.util.ScreenState;
 
 import java.util.Timer;
@@ -324,6 +323,7 @@ public class iOSWhiteBar {
             }
 
             private int consecutiveDirection = 0;
+
             private boolean onTouchMove(MotionEvent event) {
                 if (isGestureCompleted || !isTouchDown) {
                     return true;
@@ -463,6 +463,7 @@ public class iOSWhiteBar {
             }
 
             private Timer consecutiveActionTimer;
+
             private void consecutiveActionStart() {
                 consecutiveActionStop();
                 consecutiveActionTimer = new Timer();

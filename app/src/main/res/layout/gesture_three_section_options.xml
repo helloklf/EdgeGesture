@@ -108,12 +108,12 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:textColor="?android:textColorPrimary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:minWidth="80dp"
-                    android:text="左侧" />
+                    android:text="左侧"
+                    android:textColor="?android:textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -143,12 +143,12 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:textColor="?android:textColorPrimary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:minWidth="80dp"
-                    android:text="中间" />
+                    android:text="中间"
+                    android:textColor="?android:textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -178,12 +178,12 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:textColor="?android:textColorPrimary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:minWidth="80dp"
-                    android:text="右侧" />
+                    android:text="右侧"
+                    android:textColor="?android:textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
