@@ -81,7 +81,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
         ArrayList<String> launcherApps = new ArrayList<>();
         for (ResolveInfo resolveInfo : resolveinfoList) {
             String packageName = resolveInfo.activityInfo.packageName;
-            if (!("com.android.settings".equals(packageName))) {
+            if (!("com.android.settings".equals(packageName))) { // MIUI的设置有算个桌面，什么鬼
                 launcherApps.add(packageName);
             }
         }
@@ -107,68 +107,63 @@ public class AccessibilityServiceGesture extends AccessibilityService {
         }
 
         if (event != null && event.getEventType() == AccessibilityEvent.TYPE_WINDOWS_CHANGED) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    long start = System.currentTimeMillis();
-                    try {
-                        List<AccessibilityWindowInfo> windowInfos = getWindows();
-                        AccessibilityWindowInfo lastWindow = null;
-                        for (AccessibilityWindowInfo windowInfo : windowInfos) {
-                            if ((!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && windowInfo.isInPictureInPictureMode())) && (windowInfo.getType() == AccessibilityWindowInfo.TYPE_APPLICATION)) {
-                                if (lastWindow == null || windowInfo.getLayer() > lastWindow.getLayer()) {
-                                    Rect outBounds = new Rect();
-                                    windowInfo.getBoundsInScreen(outBounds);
-                                    if (outBounds.left == 0 && outBounds.top == 0 &&
-                                            (outBounds.right == GlobalState.displayWidth || outBounds.right == GlobalState.displayHeight)
-                                            &&
-                                            (outBounds.bottom == GlobalState.displayWidth || outBounds.bottom == GlobalState.displayHeight)
-                                    ) {
-                                        lastWindow = windowInfo;
-                                    }
-                                }
+            long start = System.currentTimeMillis();
+            try {
+                List<AccessibilityWindowInfo> windowInfos = getWindows();
+                AccessibilityWindowInfo lastWindow = null;
+                for (AccessibilityWindowInfo windowInfo : windowInfos) {
+                    if ((!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && windowInfo.isInPictureInPictureMode())) && (windowInfo.getType() == AccessibilityWindowInfo.TYPE_APPLICATION)) {
+                        if (lastWindow == null || windowInfo.getLayer() > lastWindow.getLayer()) {
+                            Rect outBounds = new Rect();
+                            windowInfo.getBoundsInScreen(outBounds);
+                            if (outBounds.left == 0 && outBounds.top == 0 &&
+                                    (outBounds.right == GlobalState.displayWidth || outBounds.right == GlobalState.displayHeight)
+                                    &&
+                                    (outBounds.bottom == GlobalState.displayWidth || outBounds.bottom == GlobalState.displayHeight)
+                            ) {
+                                lastWindow = windowInfo;
                             }
                         }
-
-                        if (lastWindow != null) {
-                            AccessibilityNodeInfo root = lastWindow.getRoot();
-                            if (root == null) {
-                                return;
-                            }
-
-                            CharSequence packageName = root.getPackageName();
-                            if (packageName == null) {
-                                return;
-                            }
-
-                            String packageNameStr = packageName.toString();
-
-                            if (!packageNameStr.equals(getPackageName())) {
-                                if (recents.launcherApps.contains(packageNameStr)) {
-                                    recents.addRecent(Intent.CATEGORY_HOME);
-                                    GlobalState.lastBackHomeTime = System.currentTimeMillis();
-                                } else if (!ignored(packageNameStr) && canOpen(packageNameStr) && !appSwitchBlackList.contains(packageNameStr)) {
-                                    recents.addRecent(packageNameStr);
-                                    GlobalState.lastBackHomeTime = 0;
-                                }
-                            }
-
-                            if (
-                                    GlobalState.updateBar != null &&
-                                            !GlobalState.useBatteryCapacity &&
-                                            !((packageNameStr.equals("com.android.systemui") || (recents.inputMethods.indexOf(packageNameStr) > -1 && recents.inputMethods.indexOf(lastApp) > -1)))) {
-                                if (!(packageName.equals("android") || packageName.equals("com.omarea.filter"))) {
-                                    WhiteBarColor.updateBarColorMultiple();
-                                }
-                            }
-
-                            lastApp = packageNameStr;
-                        }
-                    } finally {
-                        Log.d(">>>>", "OnAccessibilityEvent Processing time(ms): " + (System.currentTimeMillis() - start));
                     }
                 }
-            }).start();
+
+                if (lastWindow != null) {
+                    AccessibilityNodeInfo root = lastWindow.getRoot();
+                    if (root == null) {
+                        return;
+                    }
+
+                    CharSequence packageName = root.getPackageName();
+                    if (packageName == null) {
+                        return;
+                    }
+
+                    String packageNameStr = packageName.toString();
+
+                    if (!packageNameStr.equals(getPackageName())) {
+                        if (recents.launcherApps.contains(packageNameStr)) {
+                            recents.addRecent(Intent.CATEGORY_HOME);
+                            GlobalState.lastBackHomeTime = System.currentTimeMillis();
+                        } else if (!ignored(packageNameStr) && canOpen(packageNameStr) && !appSwitchBlackList.contains(packageNameStr)) {
+                            recents.addRecent(packageNameStr);
+                            GlobalState.lastBackHomeTime = 0;
+                        }
+                    }
+
+                    if (
+                            GlobalState.updateBar != null &&
+                                    !GlobalState.useBatteryCapacity &&
+                                    !((packageNameStr.equals("com.android.systemui") || (recents.inputMethods.indexOf(packageNameStr) > -1 && recents.inputMethods.indexOf(lastApp) > -1)))) {
+                        if (!(packageName.equals("android") || packageName.equals("com.omarea.filter"))) {
+                            WhiteBarColor.updateBarColorMultiple();
+                        }
+                    }
+
+                    lastApp = packageNameStr;
+                }
+            } finally {
+                Log.d(">>>>", "OnAccessibilityEvent Processing time(ms): " + (System.currentTimeMillis() - start));
+            }
         }
     }
 
