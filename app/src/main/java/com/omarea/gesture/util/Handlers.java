@@ -108,7 +108,7 @@ public class Handlers {
             case VITUAL_ACTION_PREV_APP:
             case VITUAL_ACTION_FORM:
             case GLOBAL_ACTION_HOME: {
-                if (Gesture.config.getBoolean(SpfConfig.LOW_POWER_MODE, SpfConfig.LOW_POWER_MODE_DEFAULT) || (action.actionCode == GLOBAL_ACTION_HOME  && (isMiui12 && GlobalState.isLandscapf))) {
+                if ((action.actionCode == GLOBAL_ACTION_HOME  && (Gesture.config.getBoolean(SpfConfig.LOW_POWER_MODE, SpfConfig.LOW_POWER_MODE_DEFAULT) || (isMiui12 && GlobalState.isLandscapf)))) {
                     accessibilityService.performGlobalAction(action.actionCode);
                 } else {
                     int animation = getAnimationRes();
