@@ -22,6 +22,7 @@ import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.omarea.gesture.remote.RemoteAPI;
 import com.omarea.gesture.ui.FloatVirtualTouchBar;
 import com.omarea.gesture.ui.QuickPanel;
 import com.omarea.gesture.ui.TouchIconCache;
@@ -29,8 +30,11 @@ import com.omarea.gesture.util.GlobalState;
 import com.omarea.gesture.util.Recents;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class AccessibilityServiceGesture extends AccessibilityService {
     public Recents recents = new Recents();
@@ -98,48 +102,92 @@ public class AccessibilityServiceGesture extends AccessibilityService {
         return inputMethods;
     }
 
+    private List<String> colorPolingApps = null; // 允许轮询颜色的APP
+
     // TODO:判断是否进入全屏状态，以便在游戏和视频过程中降低功耗
     @Override
-    public void onAccessibilityEvent(AccessibilityEvent event) {
+    public void onAccessibilityEvent(final AccessibilityEvent event) {
         if (recents.inputMethods == null) {
             recents.inputMethods = getInputMethods();
             recents.launcherApps = getLauncherApps();
         }
+        if (event == null) {
+            return;
+        }
+        int eventType = event.getEventType();
 
-        if (event != null && event.getEventType() == AccessibilityEvent.TYPE_WINDOWS_CHANGED) {
-            long start = System.currentTimeMillis();
-            try {
-                List<AccessibilityWindowInfo> windowInfos = getWindows();
-                AccessibilityWindowInfo lastWindow = null;
-                for (AccessibilityWindowInfo windowInfo : windowInfos) {
-                    if ((!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && windowInfo.isInPictureInPictureMode())) && (windowInfo.getType() == AccessibilityWindowInfo.TYPE_APPLICATION)) {
-                        if (lastWindow == null || windowInfo.getLayer() > lastWindow.getLayer()) {
-                            Rect outBounds = new Rect();
-                            windowInfo.getBoundsInScreen(outBounds);
-                            if (outBounds.left == 0 && outBounds.top == 0 &&
-                                    (outBounds.right == GlobalState.displayWidth || outBounds.right == GlobalState.displayHeight)
-                                    &&
-                                    (outBounds.bottom == GlobalState.displayWidth || outBounds.bottom == GlobalState.displayHeight)
-                            ) {
-                                lastWindow = windowInfo;
-                            }
+        if (eventType == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED) {
+            if (colorPolingApps != null && GlobalState.updateBar != null && !GlobalState.useBatteryCapacity) {
+                CharSequence packageName = event.getPackageName();
+                if (packageName != null) {
+                    if (colorPolingApps.indexOf(packageName.toString()) > -1) { // 抖音APP
+                        startColorPolling();
+                    }
+                }
+            }
+        }
+        else if (eventType == AccessibilityEvent.TYPE_WINDOWS_CHANGED || eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+            List<AccessibilityWindowInfo> windowInfos = getWindows();
+            AccessibilityWindowInfo lastWindow = null;
+
+            // TODO:
+            //      此前在MIUI系统上测试，只判定全屏显示（即窗口大小和屏幕分辨率完全一致）的应用，逻辑非常准确
+            //      但在类原生系统上表现并不好，例如：有缺口的屏幕或有导航键的系统，报告的窗口大小则可能不包括缺口高度区域和导航键区域高度
+            //      因此，现在将逻辑调整为：从所有应用窗口中选出最接近全屏的一个，判定为前台应用
+            //      当然，这并不意味着完美，只是暂时没有更好的解决方案……
+
+            int lastWindowSize = 0;
+            for (AccessibilityWindowInfo windowInfo : windowInfos) {
+                if ((!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && windowInfo.isInPictureInPictureMode())) && (windowInfo.getType() == AccessibilityWindowInfo.TYPE_APPLICATION)) {
+                    if (lastWindow == null || windowInfo.getLayer() > lastWindow.getLayer()) {
+                        Rect outBounds = new Rect();
+                        windowInfo.getBoundsInScreen(outBounds);
+                        int size = (outBounds.right - outBounds.left) * (outBounds.bottom - outBounds.top);
+
+                        if (size >= lastWindowSize) {
+                            lastWindow = windowInfo;
+                            lastWindowSize = size;
                         }
                     }
                 }
+            }
 
-                if (lastWindow != null) {
-                    AccessibilityNodeInfo root = lastWindow.getRoot();
-                    if (root == null) {
-                        return;
-                    }
+            if (lastWindow != null) {
+                lastParsingThread = System.currentTimeMillis();
+                // try {
+                Thread thread = new WindowParsingThread(lastWindow, lastParsingThread);
+                thread.start();
+                // thread.wait(300);
+                // } catch (Exception ignored){}
+            }
+        }
+    }
 
-                    CharSequence packageName = root.getPackageName();
-                    if (packageName == null) {
-                        return;
-                    }
+    private long lastParsingThread = 0;
 
-                    String packageNameStr = packageName.toString();
+    private class WindowParsingThread extends Thread {
+        private AccessibilityWindowInfo windowInfo;
+        private long tid;
+        private WindowParsingThread(AccessibilityWindowInfo windowInfo, long tid) {
+            this.windowInfo = windowInfo;
+            this.tid = tid;
+        }
+        @Override
+        public void run() {
+            if (windowInfo != null) {
+                // 如果当前window锁属的APP处于未响应状态，此过程可能会等待5秒后超时返回null，因此需要在线程中异步进行此操作
+                AccessibilityNodeInfo root = windowInfo.getRoot();
+                if (root == null) {
+                    return;
+                }
 
+                CharSequence packageName = root.getPackageName();
+                if (packageName == null) {
+                    return;
+                }
+
+                String packageNameStr = packageName.toString();
+                if (lastParsingThread == tid) {
                     if (!packageNameStr.equals(getPackageName())) {
                         if (recents.launcherApps.contains(packageNameStr)) {
                             recents.addRecent(Intent.CATEGORY_HOME);
@@ -148,22 +196,48 @@ public class AccessibilityServiceGesture extends AccessibilityService {
                             recents.addRecent(packageNameStr);
                             GlobalState.lastBackHomeTime = 0;
                         }
+                        stopColorPolling();
                     }
 
-                    if (
-                            GlobalState.updateBar != null &&
-                                    !GlobalState.useBatteryCapacity &&
-                                    !((packageNameStr.equals("com.android.systemui") || (recents.inputMethods.indexOf(packageNameStr) > -1 && recents.inputMethods.indexOf(lastApp) > -1)))) {
-                        if (!(packageName.equals("android") || packageName.equals("com.omarea.filter"))) {
+                    // TODO:思考逻辑合理性
+                    if (!(GlobalState.updateBar == null || GlobalState.useBatteryCapacity || packageNameStr.equals("com.android.systemui"))) {
+                        if (!(packageNameStr.equals("android") || packageNameStr.equals("com.omarea.filter"))) {
                             WhiteBarColor.updateBarColorMultiple();
                         }
                     }
 
                     lastApp = packageNameStr;
                 }
-            } finally {
-                Log.d(">>>>", "OnAccessibilityEvent Processing time(ms): " + (System.currentTimeMillis() - start));
             }
+        }
+    }
+
+    private Timer pollingTimer = null;   // 轮询定时器
+    private long lastEventTime = 0;      // 最后一次触发事件的时间
+    private final long pollingTimeout = 10000; // 轮询超时时间
+    private final long pollingInterval = 1000; // 轮询间隔
+    private void startColorPolling() {
+        lastEventTime = System.currentTimeMillis();
+        if (pollingTimer == null) {
+            pollingTimer = new Timer();
+            pollingTimer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    if (System.currentTimeMillis() - lastEventTime < pollingTimeout) {
+                        WhiteBarColor.updateBarColorMultiple();
+                    } else {
+                        stopColorPolling();
+                    }
+                }
+            }, 0, pollingInterval);
+        }
+    }
+
+    private void stopColorPolling() {
+        if (pollingTimer != null) {
+            pollingTimer.cancel();
+            // pollingTimer.purge();
+            pollingTimer = null;
         }
     }
 
@@ -179,6 +253,9 @@ public class AccessibilityServiceGesture extends AccessibilityService {
     @Override
     public void onServiceConnected() {
         super.onServiceConnected();
+
+        setServiceInfo();
+
         if (config == null) {
             config = getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
         }
@@ -198,8 +275,6 @@ public class AccessibilityServiceGesture extends AccessibilityService {
         if (GlobalState.useBatteryCapacity) {
             setBatteryReceiver();
         }
-
-        TouchIconCache.setContext(this.getBaseContext());
 
         if (configChanged == null) {
             configChanged = new BroadcastReceiver() {
@@ -264,6 +339,19 @@ public class AccessibilityServiceGesture extends AccessibilityService {
         Collections.addAll(recents.blackList, getResources().getStringArray(R.array.app_switch_black_list));
 
         new AdbProcessExtractor().updateAdbProcessState(this, true);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String results = RemoteAPI.getColorPollingApps();
+                if (results != null) {
+                    colorPolingApps = Arrays.asList(results.split("\n"));
+                    config.edit().putString("color_polling_apps", results).apply();
+                    setServiceInfo();
+                } else {
+                    colorPolingApps = Arrays.asList(config.getString("color_polling_apps", "").split("\n"));
+                }
+            }
+        }).start();
     }
 
     @Override
@@ -302,12 +390,19 @@ public class AccessibilityServiceGesture extends AccessibilityService {
     private void createPopupView() {
         hidePopupWindow();
 
-        AccessibilityServiceInfo accessibilityServiceInfo = getServiceInfo();
-        accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOWS_CHANGED;
-        // accessibilityServiceInfo.eventTypes = TYPE_WINDOW_STATE_CHANGED | AccessibilityEvent.TYPE_WINDOWS_CHANGED;
-        setServiceInfo(accessibilityServiceInfo);
-
         floatVitualTouchBar = new FloatVirtualTouchBar(this);
+    }
+
+    private void setServiceInfo() {
+        AccessibilityServiceInfo accessibilityServiceInfo = getServiceInfo();
+        // accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOWS_CHANGED;
+        // accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED | AccessibilityEvent.TYPE_WINDOWS_CHANGED;
+        if (colorPolingApps != null && colorPolingApps.size() > 0) {
+            accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOWS_CHANGED | AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED;
+        } else {
+            accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOWS_CHANGED;
+        }
+        setServiceInfo(accessibilityServiceInfo);
     }
 
     @Override

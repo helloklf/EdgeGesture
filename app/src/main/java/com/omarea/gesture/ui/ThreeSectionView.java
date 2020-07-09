@@ -80,7 +80,7 @@ public class ThreeSectionView extends View {
 
     private void performGlobalAction(ActionModel event) {
         if (accessibilityService != null) {
-            if (gameOptimization && isLandscapf && ((gestureStartTime - lastEventTime) > 2000 || lastEvent != event.actionCode)) {
+            if (gameOptimization && isLandscapf && ((gestureStartTime - lastEventTime) > 3000 || lastEvent != event.actionCode)) {
                 lastEvent = event.actionCode;
                 lastEventTime = System.currentTimeMillis();
                 Gesture.toast(this.getContext().getString(R.string.please_repeat), Toast.LENGTH_SHORT);
@@ -94,7 +94,7 @@ public class ThreeSectionView extends View {
                             invalidate();
                         }
                     }
-                }, 2000);
+                }, 3000);
             } else {
                 if (remindState) {
                     remindState = false;

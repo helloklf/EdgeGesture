@@ -461,6 +461,24 @@
                 <TextView
                     style="@style/switch_desc"
                     android:text="通过左右滑动切换应用时，悬停可连续切换" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <Switch
+                        android:id="@+id/ios_input_avoid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="输入避让"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        style="@style/switch_desc"
+                        android:text="弹出输入软键盘时小横条显示在键盘上方" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,11 +78,12 @@ public class FloatVirtualTouchBar {
                     this.iosBarView = new iOSWhiteBar(context, islandscape).getView();
                 }
             }
-            if (anySide) {
+            if (anySide && !config.getBoolean(SpfConfig.LOW_POWER_MODE, SpfConfig.LOW_POWER_MODE_DEFAULT)) {
                 this.visualFeedbackView = setVisualFeedbackView(context);
             }
         } catch (Exception ex) {
-            Gesture.toast("启动虚拟导航手势失败！", Toast.LENGTH_LONG);
+            Log.e(">>>>", "启动虚拟导航手势失败 " + ex.getMessage());
+            Gesture.toast("启动虚拟导航手势失败！\n" + ex.getMessage(), Toast.LENGTH_LONG);
             // throw  ex;
         }
     }
@@ -156,7 +158,7 @@ public class FloatVirtualTouchBar {
 
         params.gravity = Gravity.TOP | Gravity.START;
         // 4G以上(基本上就是6G及更高了)内存开启硬件加速
-        if (new Memory().getMemorySizeMB(context) > 4096) {
+        if ((!config.getBoolean(SpfConfig.LOW_POWER_MODE, SpfConfig.LOW_POWER_MODE_DEFAULT)) && new Memory().getMemorySizeMB(context) > 4096) {
             params.flags = LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_NOT_TOUCHABLE | LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS | LayoutParams.FLAG_HARDWARE_ACCELERATED; // 开启硬件加速也许能提高性能，但是内存占有将会大幅提高
         } else {
             params.flags = LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_NOT_TOUCHABLE | LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS; // | LayoutParams.FLAG_HARDWARE_ACCELERATED; // 开启硬件加速也许能提高性能，但是内存占有将会大幅提高

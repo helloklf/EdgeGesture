@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.omarea.gesture.AccessibilityServiceGesture;
@@ -75,10 +76,20 @@ public class Handlers {
         add(new ActionModel(CUSTOM_ACTION_QUICK, "常用应用 > "));
         add(new ActionModel(OMAREA_FILTER_SCREENSHOT, "屏幕滤镜-正常截图"));
     }}.toArray(new ActionModel[0]);
-    private static SharedPreferences config;
     // private static boolean isXiaomi = Build.MANUFACTURER.equals("Xiaomi") && Build.BRAND.equals("Xiaomi");
     private static SharedPreferences configEx;
     private static boolean isMiui12 = getIsMiui12();
+
+    // 获取动画模式
+    private static int getAnimationRes() {
+        if (GlobalState.consecutiveAction != null) {
+            return SpfConfig.HOME_ANIMATION_FAST;
+        } else if (Gesture.config.getBoolean(SpfConfig.LOW_POWER_MODE, SpfConfig.LOW_POWER_MODE_DEFAULT)) {
+            return SpfConfig.HOME_ANIMATION_DEFAULT;
+        } else {
+            return Gesture.config.getInt(SpfConfig.HOME_ANIMATION, SpfConfig.HOME_ANIMATION_DEFAULT);
+        }
+    }
 
     // FIXME:
     // <uses-permission android:name="android.permission.STOP_APP_SWITCHES" />
@@ -88,6 +99,7 @@ public class Handlers {
     public static void executeVirtualAction(
             final AccessibilityServiceGesture accessibilityService,
             final ActionModel action, float touchStartRawX, float touchStartRawY) {
+
         switch (action.actionCode) {
             case GLOBAL_ACTION_NONE: {
                 break;
@@ -96,13 +108,16 @@ public class Handlers {
             case VITUAL_ACTION_PREV_APP:
             case VITUAL_ACTION_FORM:
             case GLOBAL_ACTION_HOME: {
-                int animation = GlobalState.consecutiveAction != null ? SpfConfig.HOME_ANIMATION_FAST : (accessibilityService
-                        .getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE)
-                        .getInt(SpfConfig.HOME_ANIMATION, SpfConfig.HOME_ANIMATION_DEFAULT));
-                if (action.actionCode == GLOBAL_ACTION_HOME && animation == SpfConfig.HOME_ANIMATION_DEFAULT) {
+                if (Gesture.config.getBoolean(SpfConfig.LOW_POWER_MODE, SpfConfig.LOW_POWER_MODE_DEFAULT) || (action.actionCode == GLOBAL_ACTION_HOME  && (isMiui12 && GlobalState.isLandscapf))) {
                     accessibilityService.performGlobalAction(action.actionCode);
                 } else {
-                    appSwitch(accessibilityService, action.actionCode, animation);
+                    int animation = getAnimationRes();
+
+                    if (action.actionCode == GLOBAL_ACTION_HOME && animation == SpfConfig.HOME_ANIMATION_DEFAULT) {
+                        accessibilityService.performGlobalAction(action.actionCode);
+                    } else {
+                        appSwitch(accessibilityService, action.actionCode, animation);
+                    }
                 }
                 break;
             }
@@ -222,9 +237,6 @@ public class Handlers {
                 }
                 case VITUAL_ACTION_PREV_APP:
                 case VITUAL_ACTION_NEXT_APP: {
-                    if (config == null) {
-                        config = accessibilityService.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
-                    }
                     if (GlobalState.enhancedMode) {
                         ArrayList<String> recents = new ArrayList<>();
                         // ADB

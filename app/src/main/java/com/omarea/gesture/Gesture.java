@@ -18,11 +18,10 @@ public class Gesture extends Application {
     @SuppressLint("StaticFieldLeak")
     public static Context context;
     private static Vibrator vibrator;
-    private static SharedPreferences config;
+    public static SharedPreferences config;
 
     public static void vibrate(VibrateMode mode, View view) {
         if (vibrator == null) {
-            config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
             vibrator = (Vibrator) (context.getSystemService(Context.VIBRATOR_SERVICE));
         }
 

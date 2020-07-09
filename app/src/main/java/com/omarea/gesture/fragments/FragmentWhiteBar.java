@@ -53,6 +53,9 @@ public class FragmentWhiteBar extends FragmentSettingsBase {
         bindCheckable(R.id.ios_bar_pop_battery, SpfConfig.IOS_BAR_POP_BATTERY, SpfConfig.IOS_BAR_POP_BATTERY_DEFAULT);
         bindCheckable(R.id.ios_bar_consecutive, SpfConfig.IOS_BAR_CONSECUTIVE, SpfConfig.IOS_BAR_CONSECUTIVE_DEFAULT);
 
+
+        bindCheckable(R.id.ios_input_avoid, SpfConfig.INPUT_METHOD_AVOID, SpfConfig.INPUT_METHOD_AVOID_DEFAULT);
+
         setViewBackground(getActivity().findViewById(R.id.ios_bar_color_fadeout_portrait), 0xff888888);
         setViewBackground(getActivity().findViewById(R.id.ios_bar_color_fadeout_landscape), 0xff888888);
 

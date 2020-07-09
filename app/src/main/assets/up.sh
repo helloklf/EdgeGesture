@@ -22,6 +22,13 @@ fi
 cache_dir="/data/local/tmp"
 target_path="$cache_dir/gesture_process.dex"
 
+current_process=`pgrep -f gesture_process.dex`
+if [[ ! "$current_process" == "" ]]
+then
+    echo 'Kill Current GestureProcess >>'
+    kill -9 $current_process
+fi
+
 echo "Origin File: " $origin_path
 echo "Target File: " $target_path
 echo ''

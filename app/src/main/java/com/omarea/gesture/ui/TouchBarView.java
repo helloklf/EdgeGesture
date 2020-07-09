@@ -23,7 +23,6 @@ public class TouchBarView extends View {
     static final int BOTTOM = 0;
     static final int LEFT = 1;
     static final int THREE_SECTION = 3;
-    private SharedPreferences config;
     private int barPosition = 0;
 
     private float touchStartX = 0F; // 触摸开始位置
@@ -67,12 +66,11 @@ public class TouchBarView extends View {
     }
 
     private void init() {
-        config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
     }
 
     private void performGlobalAction(ActionModel event) {
         if (accessibilityService != null) {
-            if (gameOptimization && isLandscapf && ((gestureStartTime - lastEventTime) > 2000 || lastEvent != event.actionCode)) {
+            if (gameOptimization && isLandscapf && ((gestureStartTime - lastEventTime) > 3000 || lastEvent != event.actionCode)) {
                 lastEvent = event.actionCode;
                 lastEventTime = System.currentTimeMillis();
                 Gesture.toast(this.getContext().getString(R.string.please_repeat), Toast.LENGTH_SHORT);
@@ -219,7 +217,7 @@ public class TouchBarView extends View {
                             }
                         }
                     }
-                }, config.getInt(SpfConfig.CONFIG_HOVER_TIME, SpfConfig.CONFIG_HOVER_TIME_DEFAULT));
+                }, Gesture.config.getInt(SpfConfig.CONFIG_HOVER_TIME, SpfConfig.CONFIG_HOVER_TIME_DEFAULT));
                 Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, getRootView());
             }
         } else {

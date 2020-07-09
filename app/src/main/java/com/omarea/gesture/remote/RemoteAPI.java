@@ -76,6 +76,32 @@ public class RemoteAPI {
         return result[0];
     }
 
+    public static String getColorPollingApps() {
+        final String[] results = {""};
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                synchronized (networkWaitLock) {
+                    try {
+                        URL url = new URL("https://vtools.oss-cn-beijing.aliyuncs.com/EdgeGesture/color-polling-apps.txt");
+                        results[0] = readResponse(url.openConnection());
+                    } catch (Exception ignored) {
+                    } finally {
+                        networkWaitLock.notify();
+                    }
+                }
+            }
+        }).start();
+        try {
+            synchronized (networkWaitLock) {
+                networkWaitLock.wait(5000);
+            }
+        } catch (Exception ignored) {
+        }
+
+        return results[0];
+    }
+
     private static String readResponse(URLConnection connection) {
         try {
             connection.setConnectTimeout(500);

@@ -1,7 +1,6 @@
 package com.omarea.gesture;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import com.omarea.gesture.remote.RemoteAPI;
 import com.omarea.gesture.shell.KeepShellPublic;
@@ -97,9 +96,8 @@ public class AdbProcessExtractor {
 
     // 尝试连接AdbProcess，或使用root权限激活AdbProcess并连接
     public boolean updateAdbProcessState(Context context, boolean useRootStartService) {
-        SharedPreferences config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
         // 检测外部程序运行状态或使用root权限主动激活外部进程
-        boolean rootMode = config.getBoolean(SpfConfig.ROOT, SpfConfig.ROOT_DEFAULT);
+        boolean rootMode = Gesture.config.getBoolean(SpfConfig.ROOT, SpfConfig.ROOT_DEFAULT);
         GlobalState.enhancedMode = RemoteAPI.isOnline();
         if (useRootStartService && rootMode && !GlobalState.enhancedMode) {
             String file = extract(context);

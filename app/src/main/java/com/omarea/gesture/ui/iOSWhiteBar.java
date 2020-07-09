@@ -122,6 +122,7 @@ public class iOSWhiteBar {
         final int strokeColor = config.getInt(SpfConfig.IOS_BAR_COLOR_STROKE, SpfConfig.IOS_BAR_COLOR_STROKE_DEFAULT); // 描边颜色
         final int marginBottom = (isLandscapf ? config.getInt(SpfConfig.IOS_BAR_MARGIN_BOTTOM_LANDSCAPE, SpfConfig.IOS_BAR_MARGIN_BOTTOM_LANDSCAPE_DEFAULT) : config.getInt(SpfConfig.IOS_BAR_MARGIN_BOTTOM_PORTRAIT, SpfConfig.IOS_BAR_MARGIN_BOTTOM_PORTRAIT_DEFAULT)); // 底部边距
         final int totalHeight = marginBottom + lineWeight + (shadowSize * 2) + (strokeWidth * 2);
+        final boolean inputAvoid = config.getBoolean(SpfConfig.INPUT_METHOD_AVOID, SpfConfig.INPUT_METHOD_AVOID_DEFAULT); // 输入法避让
 
         bar.setStyle(
                 ((int) (getScreenWidth(accessibilityService) * widthRatio)),
@@ -151,10 +152,17 @@ public class iOSWhiteBar {
 
         params.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
 
-        if (decorativeMode()) {
+        if (decorativeMode()) { // 装饰模式
             params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
         } else {
-            params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE; // | WindowManager.LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS | LayoutParams.FLAG_LAYOUT_IN_OVERSCAN;
+            // | WindowManager.LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS | LayoutParams.FLAG_LAYOUT_IN_OVERSCAN;
+
+            // 输入法避让
+            if (inputAvoid) {
+                params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM;
+            } else {
+                params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+            }
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -184,6 +192,7 @@ public class iOSWhiteBar {
             private ObjectAnimator objectAnimator = null; // 位置调整动画
             private int slideThresholdY = dp2px(accessibilityService, 5); // 滑动多少像素才认为算是滑动，而非点击
             private int slideThresholdX = dp2px(accessibilityService, 10); // 滑动多少像素才认为算是滑动，而非点击
+            private boolean lowPowerMode = config.getBoolean(SpfConfig.LOW_POWER_MODE, SpfConfig.LOW_POWER_MODE_DEFAULT);
 
             private float touchCurrentRawX;
             private float touchCurrentRawY;
@@ -196,41 +205,54 @@ public class iOSWhiteBar {
             }
 
             private void setPosition(float x, float y) {
-                int limitX = (int) x;
-                if (limitX < -offsetLimitX) {
-                    limitX = -offsetLimitX;
-                } else if (limitX > offsetLimitX) {
-                    limitX = offsetLimitX;
+                if (!lowPowerMode) {
+                    int limitX = (int) x;
+                    if (limitX < -offsetLimitX) {
+                        limitX = -offsetLimitX;
+                    } else if (limitX > offsetLimitX) {
+                        limitX = offsetLimitX;
+                    }
+                    int limitY = (int) y;
+                    if (limitY < -offsetLimitY) {
+                        limitY = -offsetLimitY;
+                    } else if (limitY > offsetLimitY) {
+                        limitY = offsetLimitY;
+                    }
+                    params.x = limitX;
+                    params.y = limitY;
+                    mWindowManager.updateViewLayout(view, params);
                 }
-                int limitY = (int) y;
-                if (limitY < -offsetLimitY) {
-                    limitY = -offsetLimitY;
-                } else if (limitY > offsetLimitY) {
-                    limitY = offsetLimitY;
-                }
-                params.x = limitX;
-                params.y = limitY;
-                mWindowManager.updateViewLayout(view, params);
             }
 
             private void fadeOut() {
                 if (fareOutAnimation != null) {
                     fareOutAnimation.cancel();
                 }
-                fareOutAnimation = ValueAnimator.ofFloat(1f, fateOutAlpha);
-                fareOutAnimation.setDuration(1000);
-                fareOutAnimation.setInterpolator(new LinearInterpolator());
-                fareOutAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animation) {
-                        try {
-                            bar.setAlpha((float) animation.getAnimatedValue());
-                        } catch (Exception ignored) {
+                if (lowPowerMode) {
+                    bar.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (!isTouchDown) {
+                                bar.setAlpha(fateOutAlpha);
+                            }
                         }
-                    }
-                });
-                fareOutAnimation.setStartDelay(5000);
-                fareOutAnimation.start();
+                    }, 5000);
+                } else {
+                    fareOutAnimation = ValueAnimator.ofFloat(1f, fateOutAlpha);
+                    fareOutAnimation.setDuration(1000);
+                    fareOutAnimation.setInterpolator(new LinearInterpolator());
+                    fareOutAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            try {
+                                bar.setAlpha((float) animation.getAnimatedValue());
+                            } catch (Exception ignored) {
+                            }
+                        }
+                    });
+                    fareOutAnimation.setStartDelay(5000);
+                    fareOutAnimation.start();
+                }
             }
 
             private void animationTo(int x, int y, int duration, Interpolator interpolator) {
@@ -284,6 +306,7 @@ public class iOSWhiteBar {
                 vibratorRun = true;
                 final long downTime = event.getDownTime();
                 lastTouchDown = downTime;
+                lowPowerMode = config.getBoolean(SpfConfig.LOW_POWER_MODE, SpfConfig.LOW_POWER_MODE_DEFAULT);
 
                 if (fareOutAnimation != null) {
                     fareOutAnimation.cancel();
@@ -295,8 +318,10 @@ public class iOSWhiteBar {
                     objectAnimator = null;
                 }
 
-                bar.setAlpha(1f);
-                bar.invalidate();
+                if (bar.getAlpha() != 1f) {
+                    bar.setAlpha(1f);
+                    bar.invalidate();
+                }
 
                 bar.postDelayed(new Runnable() {
                     @Override
@@ -421,7 +446,9 @@ public class iOSWhiteBar {
             void clearEffect() {
                 pressure = 0;
 
-                animationTo(originX, originY, 800, new OvershootInterpolator());
+                if (!lowPowerMode) {
+                    animationTo(originX, originY, 800, new OvershootInterpolator());
+                }
                 // if (isLandscapf) {
                 fadeOut();
                 // }

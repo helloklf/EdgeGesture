@@ -56,6 +56,7 @@ public class FragmentOther extends FragmentSettingsBase {
         hide_start_icon.setChecked(activityState != PackageManager.COMPONENT_ENABLED_STATE_ENABLED && activityState != PackageManager.COMPONENT_ENABLED_STATE_DEFAULT);
 
         bindCheckable(R.id.game_optimization, SpfConfig.GAME_OPTIMIZATION, SpfConfig.GAME_OPTIMIZATION_DEFAULT);
+        bindCheckable(R.id.low_power, SpfConfig.LOW_POWER_MODE, SpfConfig.LOW_POWER_MODE_DEFAULT);
 
         activity.findViewById(R.id.home_animation).setOnClickListener(new View.OnClickListener() {
             @Override

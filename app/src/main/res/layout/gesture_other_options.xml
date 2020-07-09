@@ -157,6 +157,18 @@
             <TextView
                 style="@style/switch_desc"
                 android:text="@string/hide_start_icon_desc" />
+
+            <Switch
+                android:id="@+id/low_power"
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/low_power"
+                android:textStyle="bold" />
+
+            <TextView
+                style="@style/switch_desc"
+                android:text="@string/low_power_desc" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
