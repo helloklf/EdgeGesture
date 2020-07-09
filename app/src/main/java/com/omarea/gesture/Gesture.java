@@ -85,6 +85,7 @@ public class Gesture extends Application {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
 
+        config = getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 

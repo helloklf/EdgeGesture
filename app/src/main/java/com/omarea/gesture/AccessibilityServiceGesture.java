@@ -13,7 +13,6 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build;
-import android.util.Log;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -25,7 +24,6 @@ import android.widget.Toast;
 import com.omarea.gesture.remote.RemoteAPI;
 import com.omarea.gesture.ui.FloatVirtualTouchBar;
 import com.omarea.gesture.ui.QuickPanel;
-import com.omarea.gesture.ui.TouchIconCache;
 import com.omarea.gesture.util.GlobalState;
 import com.omarea.gesture.util.Recents;
 
@@ -42,7 +40,6 @@ public class AccessibilityServiceGesture extends AccessibilityService {
     private BroadcastReceiver configChanged = null;
     private BroadcastReceiver serviceDisable = null;
     private BroadcastReceiver screenStateReceiver;
-    private SharedPreferences config;
     private SharedPreferences appSwitchBlackList;
     private ContentResolver cr = null;
     private String lastApp = "";
@@ -256,10 +253,6 @@ public class AccessibilityServiceGesture extends AccessibilityService {
 
         setServiceInfo();
 
-        if (config == null) {
-            config = getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
-        }
-
         if (appSwitchBlackList == null) {
             appSwitchBlackList = getSharedPreferences(SpfConfig.AppSwitchBlackList, Context.MODE_PRIVATE);
         }
@@ -269,9 +262,9 @@ public class AccessibilityServiceGesture extends AccessibilityService {
         wm.getDefaultDisplay().getRealSize(point);
         GlobalState.displayWidth = point.x;
         GlobalState.displayHeight = point.y;
-        GlobalState.consecutive = config.getBoolean(SpfConfig.IOS_BAR_CONSECUTIVE, SpfConfig.IOS_BAR_CONSECUTIVE_DEFAULT);
+        GlobalState.consecutive = Gesture.config.getBoolean(SpfConfig.IOS_BAR_CONSECUTIVE, SpfConfig.IOS_BAR_CONSECUTIVE_DEFAULT);
 
-        GlobalState.useBatteryCapacity = config.getBoolean(SpfConfig.IOS_BAR_POP_BATTERY, SpfConfig.IOS_BAR_POP_BATTERY_DEFAULT);
+        GlobalState.useBatteryCapacity = Gesture.config.getBoolean(SpfConfig.IOS_BAR_POP_BATTERY, SpfConfig.IOS_BAR_POP_BATTERY_DEFAULT);
         if (GlobalState.useBatteryCapacity) {
             setBatteryReceiver();
         }
@@ -280,8 +273,8 @@ public class AccessibilityServiceGesture extends AccessibilityService {
             configChanged = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    GlobalState.consecutive = config.getBoolean(SpfConfig.IOS_BAR_CONSECUTIVE, SpfConfig.IOS_BAR_CONSECUTIVE_DEFAULT);
-                    GlobalState.useBatteryCapacity = config.getBoolean(SpfConfig.IOS_BAR_POP_BATTERY, SpfConfig.IOS_BAR_POP_BATTERY_DEFAULT);
+                    GlobalState.consecutive = Gesture.config.getBoolean(SpfConfig.IOS_BAR_CONSECUTIVE, SpfConfig.IOS_BAR_CONSECUTIVE_DEFAULT);
+                    GlobalState.useBatteryCapacity = Gesture.config.getBoolean(SpfConfig.IOS_BAR_POP_BATTERY, SpfConfig.IOS_BAR_POP_BATTERY_DEFAULT);
                     if (GlobalState.useBatteryCapacity) {
                         setBatteryReceiver();
                     } else if (batteryReceiver != null) {
@@ -345,10 +338,10 @@ public class AccessibilityServiceGesture extends AccessibilityService {
                 String results = RemoteAPI.getColorPollingApps();
                 if (results != null) {
                     colorPolingApps = Arrays.asList(results.split("\n"));
-                    config.edit().putString("color_polling_apps", results).apply();
+                    Gesture.config.edit().putString("color_polling_apps", results).apply();
                     setServiceInfo();
                 } else {
-                    colorPolingApps = Arrays.asList(config.getString("color_polling_apps", "").split("\n"));
+                    colorPolingApps = Arrays.asList(Gesture.config.getString("color_polling_apps", "").split("\n"));
                 }
             }
         }).start();
