@@ -61,7 +61,7 @@ public class Recents {
         }
     }
 
-    void setRecents(ArrayList<String> items, Context context) {
+    void setRecents(ArrayList<String> items) {
         synchronized (recents) {
             /*
             if (recents.size() < 4) {

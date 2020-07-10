@@ -18,11 +18,8 @@ import com.omarea.gesture.remote.RemoteAPI;
 import com.omarea.gesture.shell.KeepShellPublic;
 import com.omarea.gesture.ui.QuickPanel;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Objects;
 
 public class Handlers {
     final public static int GLOBAL_ACTION_NONE = 0;
@@ -77,7 +74,7 @@ public class Handlers {
     }}.toArray(new ActionModel[0]);
     // private static boolean isXiaomi = Build.MANUFACTURER.equals("Xiaomi") && Build.BRAND.equals("Xiaomi");
     private static SharedPreferences configEx;
-    private static boolean isMiui12 = getIsMiui12();
+    private static boolean isMiui12 = new SystemProperty().isMiui12();
 
     // 获取动画模式
     private static int getAnimationRes() {
@@ -107,8 +104,10 @@ public class Handlers {
             case VITUAL_ACTION_PREV_APP:
             case VITUAL_ACTION_FORM:
             case GLOBAL_ACTION_HOME: {
-                if ((action.actionCode == GLOBAL_ACTION_HOME  && (Gesture.config.getBoolean(SpfConfig.LOW_POWER_MODE, SpfConfig.LOW_POWER_MODE_DEFAULT) || (isMiui12 && GlobalState.isLandscapf)))) {
+                if ((action.actionCode == GLOBAL_ACTION_HOME  && (isMiui12 && GlobalState.isLandscapf))) {
                     accessibilityService.performGlobalAction(action.actionCode);
+                } else if (Gesture.config.getBoolean(SpfConfig.LOW_POWER_MODE, SpfConfig.LOW_POWER_MODE_DEFAULT)) {
+                    lowPowerModeAppSwitch(accessibilityService, action.actionCode);
                 } else {
                     int animation = getAnimationRes();
 
@@ -187,81 +186,85 @@ public class Handlers {
         new QuickPanel(accessibilityService).open(touchRawX, touchRawY);
     }
 
-    private static String getSystemProperty(String propName) {
-        String line;
-        BufferedReader input = null;
-        try {
-            Process p = Runtime.getRuntime().exec("getprop " + propName);
-            input = new BufferedReader(new InputStreamReader(p.getInputStream()), 1024);
-            line = input.readLine();
-            input.close();
-        } catch (Exception ex) {
-            return null;
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (Exception e) {
+    private static Intent getAppSwitchIntent(String appPackageName) {
+        Intent i = Gesture.context.getPackageManager().getLaunchIntentForPackage(appPackageName);
+        i.setFlags((i.getFlags() & ~Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED) | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        i.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
+        i.setPackage(null);
+        return i;
+    }
+
+    private static void lowPowerModeAppSwitch(final AccessibilityServiceGesture service, final int action) {
+        switch (action) {
+            case GLOBAL_ACTION_HOME: {
+                service.performGlobalAction(GLOBAL_ACTION_HOME);
+                break;
+            }
+            case VITUAL_ACTION_NEXT_APP: {
+                updateRecent(service);
+                String targetApp = service.recents.moveNext();
+                if (targetApp != null) {
+                    new AppLauncher().startActivity(service, targetApp);
+                } else {
+                    Gesture.toast(">>", Toast.LENGTH_SHORT);
                 }
+                break;
+            }
+            case VITUAL_ACTION_PREV_APP: {
+                String targetApp = service.recents.movePrevious();
+                if (targetApp != null) {
+                    new AppLauncher().startActivity(service, targetApp);
+                } else {
+                    Gesture.toast("<<", Toast.LENGTH_SHORT);
+                }
+                break;
+            }
+            case VITUAL_ACTION_FORM: {
+                new AppWindowed().switchToFreeForm(service, service.recents.getCurrent());
+                break;
             }
         }
-        return line;
     }
 
-    private static boolean getIsMiui12() {
-        try {
-            // 反射调用私有接口，被Google封杀了
-            // Object result = Class.forName("android.os.Systemproperties").getMethod("get").invoke(null, "ro.miui.ui.version.name", "");
-            // return "V12".equals(result.toString());
-            return Objects.equals(getSystemProperty("ro.miui.ui.version.name"), "V12");
-        } catch (Exception ex) {
-            return false;
+    private static void updateRecent(final AccessibilityServiceGesture service) {
+        if (GlobalState.enhancedMode) {
+            ArrayList<String> recents = new ArrayList<>();
+            // ADB
+            Collections.addAll(recents, RemoteAPI.getRecents());
+            service.recents.setRecents(recents);
         }
     }
 
-    private static void appSwitch(final AccessibilityServiceGesture accessibilityService, final int action, final int animation) {
+    private static void appSwitch(final AccessibilityServiceGesture service, final int action, final int animation) {
         try {
-            Intent intent = AppSwitchActivity.getOpenAppIntent(accessibilityService);
+            Intent intent = AppSwitchActivity.getOpenAppIntent(service);
             intent.putExtra("animation", animation);
 
             switch (action) {
                 case GLOBAL_ACTION_HOME: {
                     intent.putExtra("home", "");
-                    // AppSwitchActivity.backHome(accessibilityService);
+                    // AppSwitchActivity.backHome(service);
                     break;
                 }
                 case VITUAL_ACTION_FORM: {
-                    intent.putExtra("form", accessibilityService.recents.getCurrent());
+                    intent.putExtra("form", service.recents.getCurrent());
                     break;
                 }
                 case VITUAL_ACTION_PREV_APP:
                 case VITUAL_ACTION_NEXT_APP: {
-                    if (GlobalState.enhancedMode) {
-                        ArrayList<String> recents = new ArrayList<>();
-                        // ADB
-                        Collections.addAll(recents, RemoteAPI.getRecents());
-                        accessibilityService.recents.setRecents(recents, accessibilityService);
-                    }
+                    updateRecent(service);
                     if (action == VITUAL_ACTION_PREV_APP) {
-                        String targetApp = accessibilityService.recents.movePrevious();
+                        String targetApp = service.recents.movePrevious();
                         if (targetApp != null) {
-                            if (!targetApp.equals(Intent.CATEGORY_HOME)) {
-                                intent.putExtra("prev", targetApp);
-                            } else {
-                                intent.putExtra("home", "prev");
-                            }
+                            intent.putExtra("prev", targetApp);
                         } else {
                             Gesture.toast("<<", Toast.LENGTH_SHORT);
                             return;
                         }
                     } else {
-                        String targetApp = accessibilityService.recents.moveNext();
+                        String targetApp = service.recents.moveNext();
                         if (targetApp != null) {
-                            if (!targetApp.equals(Intent.CATEGORY_HOME)) {
-                                intent.putExtra("next", targetApp);
-                            } else {
-                                intent.putExtra("home", "next");
-                            }
+                            intent.putExtra("next", targetApp);
                         } else {
                             Gesture.toast(">>", Toast.LENGTH_SHORT);
                             return;
@@ -278,19 +281,19 @@ public class Handlers {
                 Gesture.handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        accessibilityService.performGlobalAction(GLOBAL_ACTION_HOME);
+                    service.performGlobalAction(GLOBAL_ACTION_HOME);
                     }
                 }, 400);
             }
-            accessibilityService.startActivity(intent);
+            service.startActivity(intent);
         } catch (Exception ex) {
             Gesture.toast("AppSwitch Exception >> " + ex.getMessage(), Toast.LENGTH_SHORT);
         }
     }
 
-    private static void openApp(AccessibilityServiceGesture accessibilityService, ActionModel action) {
+    private static void openApp(AccessibilityServiceGesture service, ActionModel action) {
         if (configEx == null) {
-            configEx = accessibilityService.getSharedPreferences(SpfConfigEx.configFile, Context.MODE_PRIVATE);
+            configEx = service.getSharedPreferences(SpfConfigEx.configFile, Context.MODE_PRIVATE);
         }
 
         boolean windowMode = action.actionCode == Handlers.CUSTOM_ACTION_APP_WINDOW;
@@ -298,7 +301,7 @@ public class Handlers {
         String app = configEx.getString((windowMode ? SpfConfigEx.prefix_app_window : SpfConfigEx.prefix_app) + action.exKey, "");
         if (!app.isEmpty()) {
             try {
-                Intent intent = AppSwitchActivity.getOpenAppIntent(accessibilityService);
+                Intent intent = AppSwitchActivity.getOpenAppIntent(service);
                 if (windowMode) {
                     intent.putExtra("app-window", app);
                 } else {
@@ -307,8 +310,8 @@ public class Handlers {
                 if (GlobalState.enhancedMode && System.currentTimeMillis() - GlobalState.lastBackHomeTime < 4800) {
                     RemoteAPI.fixDelay();
                 }
-                accessibilityService.startActivity(intent);
-                // PendingIntent pendingIntent = PendingIntent.getActivity(accessibilityService.getApplicationContext(), 0, intent, 0);
+                service.startActivity(intent);
+                // PendingIntent pendingIntent = PendingIntent.getActivity(service.getApplicationContext(), 0, intent, 0);
                 // pendingIntent.send();
             } catch (Exception ex) {
                 Gesture.toast("AppSwitch Exception >> " + ex.getMessage(), Toast.LENGTH_SHORT);
@@ -316,9 +319,9 @@ public class Handlers {
         }
     }
 
-    private static void executeShell(AccessibilityServiceGesture accessibilityService, ActionModel action) {
+    private static void executeShell(AccessibilityServiceGesture service, ActionModel action) {
         if (configEx == null) {
-            configEx = accessibilityService.getSharedPreferences(SpfConfigEx.configFile, Context.MODE_PRIVATE);
+            configEx = service.getSharedPreferences(SpfConfigEx.configFile, Context.MODE_PRIVATE);
         }
 
         String shell = configEx.getString(SpfConfigEx.prefix_shell + action.exKey, "");

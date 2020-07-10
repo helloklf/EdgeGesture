@@ -3,7 +3,6 @@ package com.omarea.gesture;
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.BroadcastReceiver;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -41,8 +40,6 @@ public class AccessibilityServiceGesture extends AccessibilityService {
     private BroadcastReceiver serviceDisable = null;
     private BroadcastReceiver screenStateReceiver;
     private SharedPreferences appSwitchBlackList;
-    private ContentResolver cr = null;
-    private String lastApp = "";
     private BatteryReceiver batteryReceiver;
 
     private void hidePopupWindow() {
@@ -151,11 +148,8 @@ public class AccessibilityServiceGesture extends AccessibilityService {
 
             if (lastWindow != null) {
                 lastParsingThread = System.currentTimeMillis();
-                // try {
                 Thread thread = new WindowParsingThread(lastWindow, lastParsingThread);
                 thread.start();
-                // thread.wait(300);
-                // } catch (Exception ignored){}
             }
         }
     }
@@ -202,8 +196,6 @@ public class AccessibilityServiceGesture extends AccessibilityService {
                             WhiteBarColor.updateBarColorMultiple();
                         }
                     }
-
-                    lastApp = packageNameStr;
                 }
             }
         }
@@ -383,6 +375,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
     private void createPopupView() {
         hidePopupWindow();
 
+        setServiceInfo();
         floatVitualTouchBar = new FloatVirtualTouchBar(this);
     }
 
@@ -390,7 +383,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
         AccessibilityServiceInfo accessibilityServiceInfo = getServiceInfo();
         // accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOWS_CHANGED;
         // accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED | AccessibilityEvent.TYPE_WINDOWS_CHANGED;
-        if (colorPolingApps != null && colorPolingApps.size() > 0) {
+        if ((!Gesture.config.getBoolean(SpfConfig.LOW_POWER_MODE, SpfConfig.LOW_POWER_MODE_DEFAULT)) && colorPolingApps != null && colorPolingApps.size() > 0) {
             accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOWS_CHANGED | AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED;
         } else {
             accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOWS_CHANGED;
@@ -400,7 +393,6 @@ public class AccessibilityServiceGesture extends AccessibilityService {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         if (floatVitualTouchBar != null) {
             floatVitualTouchBar.hidePopupWindow();
         }
@@ -420,5 +412,6 @@ public class AccessibilityServiceGesture extends AccessibilityService {
             batteryReceiver = null;
         }
         // stopForeground(true);
+        super.onDestroy();
     }
 }
