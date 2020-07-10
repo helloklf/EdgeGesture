@@ -33,6 +33,8 @@ echo "Origin File: " $origin_path
 echo "Target File: " $target_path
 echo ''
 
+cmd package compile -m speed com.omarea.gesture 1 > /dev/null
+
 if [[ -e $origin_path ]]; then
     cp $origin_path $target_path
     nohup dalvikvm -cp $target_path Main >/dev/null 2>&1 &
