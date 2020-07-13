@@ -148,7 +148,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
 
             if (lastWindow != null) {
                 lastParsingThread = System.currentTimeMillis();
-                Thread thread = new WindowParsingThread(lastWindow, lastParsingThread);
+                Thread thread = new WindowParsingThread(lastWindow, lastParsingThread, event);
                 thread.start();
             }
         }
@@ -159,22 +159,36 @@ public class AccessibilityServiceGesture extends AccessibilityService {
     private class WindowParsingThread extends Thread {
         private AccessibilityWindowInfo windowInfo;
         private long tid;
-        private WindowParsingThread(AccessibilityWindowInfo windowInfo, long tid) {
+        private AccessibilityEvent event;
+        private WindowParsingThread(AccessibilityWindowInfo windowInfo, long tid, AccessibilityEvent event) {
             this.windowInfo = windowInfo;
             this.tid = tid;
+            this.event = event;
         }
         @Override
         public void run() {
             if (windowInfo != null) {
-                // 如果当前window锁属的APP处于未响应状态，此过程可能会等待5秒后超时返回null，因此需要在线程中异步进行此操作
-                AccessibilityNodeInfo root = windowInfo.getRoot();
-                if (root == null) {
-                    return;
-                }
+                CharSequence packageName;
+                if (event != null && event.getWindowId() == windowInfo.getId()) {
+                    packageName = event.getPackageName();
+                } else {
+                    // 如果当前window锁属的APP处于未响应状态，此过程可能会等待5秒后超时返回null，因此需要在线程中异步进行此操作
+                    AccessibilityNodeInfo root;
 
-                CharSequence packageName = root.getPackageName();
-                if (packageName == null) {
-                    return;
+                    try {
+                        root = windowInfo.getRoot();
+                    } catch (Exception ex) {
+                        root = null;
+                    }
+
+                    if (root == null) {
+                        return;
+                    }
+
+                    packageName = root.getPackageName();
+                    if (packageName == null) {
+                        return;
+                    }
                 }
 
                 String packageNameStr = packageName.toString();
