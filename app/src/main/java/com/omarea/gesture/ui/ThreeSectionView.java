@@ -28,6 +28,7 @@ public class ThreeSectionView extends View {
     private boolean remindState = false;
 
     private float touchStartX = 0F; // 触摸开始位置
+    private float touchStartRawX = 0F; // 触摸开始位置
     private float touchStartRawY = 0F; // 触摸开始位置
     private long gestureStartTime = 0L; // 手势开始时间（是指滑动到一定距离，认定触摸手势生效的时间）
     private boolean isLongTimeGesture = false;
@@ -100,7 +101,7 @@ public class ThreeSectionView extends View {
                     remindState = false;
                     invalidate();
                 }
-                Handlers.executeVirtualAction(accessibilityService, event, touchStartX, touchStartRawY);
+                Handlers.executeVirtualAction(accessibilityService, event, touchStartRawX, touchStartRawY);
             }
         }
     }
@@ -224,6 +225,7 @@ public class ThreeSectionView extends View {
         isGestureCompleted = false;
         touchStartX = event.getX();
         touchStartRawY = event.getRawY();
+        touchStartRawX = event.getRawX();
         gestureStartTime = 0;
         isLongTimeGesture = false;
         vibratorRun = true;

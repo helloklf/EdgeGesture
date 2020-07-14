@@ -10,6 +10,7 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -18,7 +19,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -240,7 +240,7 @@ public class QuickPanel {
         mWindowManager = (WindowManager) (accessibilityService.getSystemService(Context.WINDOW_SERVICE));
         close();
 
-        if (GlobalState.isLandscapf) {
+        if (GlobalState.isLandscapf && !(touchRawY > GlobalState.displayHeight - (GlobalState.displayHeight * 0.15))) {
             view = LayoutInflater.from(accessibilityService).inflate(R.layout.layout_quick_panel_landscape, null);
         } else {
             view = LayoutInflater.from(accessibilityService).inflate(R.layout.layout_quick_panel, null);
@@ -295,13 +295,17 @@ public class QuickPanel {
         WindowManager.LayoutParams windowParams = getLayoutParams();
 
         // 下
-        if (touchRawY > GlobalState.displayHeight - 100) {
+        if (touchRawY > GlobalState.displayHeight - (GlobalState.displayHeight * 0.15)) {
             View wrapView = view.findViewById(R.id.quick_apps_wrap);
-            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) wrapView.getLayoutParams();
+            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) wrapView.getLayoutParams();
             layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
             wrapView.setBackground(accessibilityService.getDrawable(R.drawable.quick_panel_bg_bottom));
             wrapView.setLayoutParams(layoutParams);
-            appList.setNumColumns(5);
+            if (GlobalState.isLandscapf) {
+                appList.setNumColumns(10);
+            } else {
+                appList.setNumColumns(5);
+            }
             windowParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
             windowParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
             windowParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -316,9 +320,10 @@ public class QuickPanel {
         }
         // 左
         else {
+            Log.d(">>>>", "Left touchRawX" + touchRawX);
             View wrapView = view.findViewById(R.id.quick_apps_wrap);
             wrapView.setBackground(accessibilityService.getDrawable(R.drawable.quick_panel_bg_left));
-            windowParams.gravity = Gravity.START | Gravity.CENTER_VERTICAL;
+            windowParams.gravity = Gravity.LEFT | Gravity.CENTER_VERTICAL;
             windowParams.windowAnimations = R.style.LeftQuickPanelAnimation;
             windowParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
             // windowParams.windowAnimations = android.R.style.Animation_Dialog;

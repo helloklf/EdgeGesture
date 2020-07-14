@@ -12,6 +12,7 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build;
+import android.util.Log;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -148,7 +149,12 @@ public class AccessibilityServiceGesture extends AccessibilityService {
 
             if (lastWindow != null) {
                 lastParsingThread = System.currentTimeMillis();
-                Thread thread = new WindowParsingThread(lastWindow, lastParsingThread, event);
+                /*
+                if (event.getPackageName() == null) {
+                    Log.e(">>>>G", " " +event);
+                }
+                */
+                Thread thread = new WindowParsingThread(lastWindow, lastParsingThread, event.getWindowId(), event.getPackageName());
                 thread.start();
             }
         }
@@ -159,18 +165,21 @@ public class AccessibilityServiceGesture extends AccessibilityService {
     private class WindowParsingThread extends Thread {
         private AccessibilityWindowInfo windowInfo;
         private long tid;
-        private AccessibilityEvent event;
-        private WindowParsingThread(AccessibilityWindowInfo windowInfo, long tid, AccessibilityEvent event) {
+        private int eventWindowId;
+        private CharSequence eventPackageName;
+        private WindowParsingThread(AccessibilityWindowInfo windowInfo, long tid, int eventWindowId, CharSequence eventPackageName) {
             this.windowInfo = windowInfo;
             this.tid = tid;
-            this.event = event;
+            this.eventWindowId = eventWindowId;
+            this.eventPackageName = eventPackageName;
         }
+
         @Override
         public void run() {
             if (windowInfo != null) {
                 CharSequence packageName;
-                if (event != null && event.getWindowId() == windowInfo.getId()) {
-                    packageName = event.getPackageName();
+                if (eventWindowId == windowInfo.getId() && eventPackageName != null) {
+                    packageName = eventPackageName;
                 } else {
                     // 如果当前window锁属的APP处于未响应状态，此过程可能会等待5秒后超时返回null，因此需要在线程中异步进行此操作
                     AccessibilityNodeInfo root;
@@ -186,9 +195,9 @@ public class AccessibilityServiceGesture extends AccessibilityService {
                     }
 
                     packageName = root.getPackageName();
-                    if (packageName == null) {
-                        return;
-                    }
+                }
+                if (packageName == null) {
+                    return;
                 }
 
                 String packageNameStr = packageName.toString();
