@@ -256,6 +256,7 @@ public class Handlers {
                     if (action == VITUAL_ACTION_PREV_APP) {
                         String targetApp = service.recents.movePrevious();
                         if (targetApp != null) {
+                            // Log.d(">>>>", targetApp);
                             intent.putExtra("prev", targetApp);
                         } else {
                             Gesture.toast("<<", Toast.LENGTH_SHORT);
@@ -264,6 +265,7 @@ public class Handlers {
                     } else {
                         String targetApp = service.recents.moveNext();
                         if (targetApp != null) {
+                            // Log.d(">>>>", targetApp);
                             intent.putExtra("next", targetApp);
                         } else {
                             Gesture.toast(">>", Toast.LENGTH_SHORT);

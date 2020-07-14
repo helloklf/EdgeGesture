@@ -12,7 +12,6 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build;
-import android.util.Log;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -134,15 +133,13 @@ public class AccessibilityServiceGesture extends AccessibilityService {
             int lastWindowSize = 0;
             for (AccessibilityWindowInfo windowInfo : windowInfos) {
                 if ((!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && windowInfo.isInPictureInPictureMode())) && (windowInfo.getType() == AccessibilityWindowInfo.TYPE_APPLICATION)) {
-                    if (lastWindow == null || windowInfo.getLayer() > lastWindow.getLayer()) {
-                        Rect outBounds = new Rect();
-                        windowInfo.getBoundsInScreen(outBounds);
-                        int size = (outBounds.right - outBounds.left) * (outBounds.bottom - outBounds.top);
+                    Rect outBounds = new Rect();
+                    windowInfo.getBoundsInScreen(outBounds);
+                    int size = (outBounds.right - outBounds.left) * (outBounds.bottom - outBounds.top);
 
-                        if (size >= lastWindowSize) {
-                            lastWindow = windowInfo;
-                            lastWindowSize = size;
-                        }
+                    if (size >= lastWindowSize) {
+                        lastWindow = windowInfo;
+                        lastWindowSize = size;
                     }
                 }
             }
@@ -201,6 +198,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
                 }
 
                 String packageNameStr = packageName.toString();
+                // Log.d(">>>>", "To " + packageNameStr);
                 if (lastParsingThread == tid) {
                     if (!packageNameStr.equals(getPackageName())) {
                         if (recents.launcherApps.contains(packageNameStr)) {
