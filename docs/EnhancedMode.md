@@ -15,29 +15,25 @@
 ### 2. 获得电脑上的ADB工具
 > 此处以Windows为例，但不仅限于Windows
 
-- 首先，你得有一个 `platform-tools` 工具包，它是`Android SDK`的一部分
-- 如果你还没有，可点击下方链接下载工具包，并解压到电脑上
-  [platform-tools 工具包](https://www.lanzous.com/ib6mxda)
-- 在`[platform-tools 工具包`解压目录下，按住键盘的`Shit键`，并点击鼠标右键
-  ![打开命令行](./adb_shell.jpg)
+- 首先，你得下载`platform-tools`（如果你有其他手机助手软件附带ADB工具，也可以直接使用）
+- 下载[platform-tools](https://omarea.lanzous.com/iDi6Teongtg)，`并解压到电脑上`
+- 双点击解压目录下的 `打开CMD命令行.bat` 打开ADB命令窗口
 
-- 如果是 Windows 10，则点击 `在此处打开 Powershell 窗口`
-- 如果是 Windows 7，则点击 `在此处打开 命令行窗口`
-- 点击后打开的界面基本就是长这样（Powershell是蓝色，命令行窗口是黑色）
-- 窗口顶部的路径就是我们`[platform-tools 工具包`所在的位置、
-  ![命令行界面](./shell_window.jpg)
+![示例1](./adb_shell.jpg)
 
 ### 3. 执行命令
-- 点击Gesture 增强模式右侧的机器人小图标
-- 复制Gesture提示的脚本代码，发送到电脑，粘贴到刚刚打开的命令行窗口，并按下回车
-  - 如果你的手机是首次和电脑连接，会出现授权提示，此时需要你在手机上点击确认
-  - 确认完之后，你可能需要在命令行窗口再次执行刚刚的代码
-  - 如果你小心误操作错过了手机上弹出的授权窗口，emmm，如果你是萌新，我建议你重启手机和电脑从头再来一次。如果你是经验丰富的老鸟，当我没说。
-- 总之，如果操作成功，Gesture界面上的机器人小图标会变成绿色
+- 点击**Gesture**增强模式右侧的机器人小图标，出现激活提示弹窗后，插上数据线连接电脑
+- 复制激活命令
+  ```sh
+  adb -d shell sh /storage/emulated/0/Android/data/com.omarea.gesture/cache/up.sh
+  ```
+- 并在命令行窗口中点击鼠标右键粘贴代码，并按下回车键
 
-> 注意：你直接复制Gesture中提示的命令行，在此处打开的命令行界面运行，可能并不会执行成功。<br />
-> 你可能需要把开头的`adb -d` 换成 `.\adb.exe -d`<br />
-> 举个完整的例子：`adb.exe -d shell sh /storage/emulated/0/Android/data/com.omarea.gesture/cache/up.sh`
+  - 如果你的手机是首次和电脑连接，会出现授权提示，此时需要你在手机上点击确认
+  - 确认完之后，你可能需要重复刚刚的动作
+  - 如果你小心误操作错过了手机上弹出的授权窗口。你是新手的话，建议重启手机和电脑从头再来一次。经验丰富的老鸟随意。
+- 总之，如果激命令执行成功后，Gesture主页的机器人图标会变成绿色
+
 
 ![成功后的界面](./success.jpg)
 
