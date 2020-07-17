@@ -22,11 +22,13 @@ public class TouchBarView extends View {
     static final int RIGHT = 2;
     static final int BOTTOM = 0;
     static final int LEFT = 1;
-    private SharedPreferences config;
+    static final int THREE_SECTION = 3;
     private int barPosition = 0;
 
     private float touchStartX = 0F; // 触摸开始位置
+    private float touchStartRawX = 0F; // 触摸开始位置
     private float touchStartY = 0F; // 触摸开始位置
+    private float touchStartRawY = 0F; // 触摸开始位置
     private long gestureStartTime = 0L; // 手势开始时间（是指滑动到一定距离，认定触摸手势生效的时间）
     private boolean isLongTimeGesture = false;
     private Context context = getContext();
@@ -64,17 +66,16 @@ public class TouchBarView extends View {
     }
 
     private void init() {
-        config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
     }
 
     private void performGlobalAction(ActionModel event) {
         if (accessibilityService != null) {
-            if (gameOptimization && isLandscapf && ((System.currentTimeMillis() - lastEventTime) > 2000 || lastEvent != event.actionCode)) {
+            if (gameOptimization && isLandscapf && ((gestureStartTime - lastEventTime) > 3000 || lastEvent != event.actionCode)) {
                 lastEvent = event.actionCode;
                 lastEventTime = System.currentTimeMillis();
-                Toast.makeText(context, this.getContext().getString(R.string.please_repeat), Toast.LENGTH_SHORT).show();
+                Gesture.toast(this.getContext().getString(R.string.please_repeat), Toast.LENGTH_SHORT);
             } else {
-                Handlers.executeVirtualAction(accessibilityService, event, touchRawX, touchRawY);
+                Handlers.executeVirtualAction(accessibilityService, event, touchStartRawX, touchStartRawY);
             }
         }
     }
@@ -154,7 +155,9 @@ public class TouchBarView extends View {
         isTouchDown = true;
         isGestureCompleted = false;
         touchStartX = event.getX();
+        touchStartRawX = event.getRawX();
         touchStartY = event.getY();
+        touchStartRawY = event.getRawY();
         GlobalState.startEdgeFeedback(event.getRawX(), event.getRawY(), barPosition);
         gestureStartTime = 0;
         isLongTimeGesture = false;
@@ -214,7 +217,7 @@ public class TouchBarView extends View {
                             }
                         }
                     }
-                }, config.getInt(SpfConfig.CONFIG_HOVER_TIME, SpfConfig.CONFIG_HOVER_TIME_DEFAULT));
+                }, Gesture.config.getInt(SpfConfig.CONFIG_HOVER_TIME, SpfConfig.CONFIG_HOVER_TIME_DEFAULT));
                 Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, getRootView());
             }
         } else {

@@ -11,17 +11,17 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
+import android.widget.Toast;
 
 public class Gesture extends Application {
+    public static final Handler handler = new Handler();
     @SuppressLint("StaticFieldLeak")
     public static Context context;
-    public static final Handler handler = new Handler();
     private static Vibrator vibrator;
-    private static SharedPreferences config;
+    public static SharedPreferences config;
 
     public static void vibrate(VibrateMode mode, View view) {
         if (vibrator == null) {
-            config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
             vibrator = (Vibrator) (context.getSystemService(Context.VIBRATOR_SERVICE));
         }
 
@@ -72,10 +72,20 @@ public class Gesture extends Application {
         }
     }
 
+    public static void toast(final String text, final int time) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(context, text, time).show();
+            }
+        });
+    }
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
 
+        config = getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 

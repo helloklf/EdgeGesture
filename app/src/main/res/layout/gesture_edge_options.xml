@@ -89,7 +89,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="30dp"
                     android:max="40" />
             </LinearLayout>
 
@@ -312,12 +311,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:minWidth="80dp"
                     android:text="大小/颜色" />
+
                 <SeekBar
                     android:id="@+id/edge_side_width"
                     android:layout_width="0dp"
@@ -334,9 +335,9 @@
             </LinearLayout>
 
             <TextView
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:text="@string/hot_area_desc"
                 android:textColor="#888"
                 android:textSize="11dp" />

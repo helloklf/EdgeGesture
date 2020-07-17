@@ -17,67 +17,8 @@
             android:textAppearance="@android:style/TextAppearance.Material.Title" />
 
         <include layout="@layout/gesture_switch_options" />
-        <include layout="@layout/samsung_options" />
+
         <include layout="@layout/enhanced_mode" />
-
-        <LinearLayout
-            android:id="@+id/overscan_guide"
-            style="@style/card_view"
-            android:layout_margin="10dp"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/overscan_guide_desc"
-                android:textSize="12dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/overscan_shell_content"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:text="adb shell pm grant com.omarea.gesture android.permission.WRITE_SECURE_SETTINGS"
-                    android:textSize="12dp" />
-
-                <ImageButton
-                    android:id="@+id/overscan_copy_shell"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:background="@color/colorPrimary"
-                    android:padding="4dp"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/gesture_copy" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/overscan_options"
-            style="@style/card_view"
-            android:layout_margin="10dp"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <Switch
-                android:id="@+id/overscan_switch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="通过Overscan隐藏导航栏"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="通过Overscan隐藏导航栏，当然这可能会导致部分界面下沉"
-                android:textSize="12dp" />
-        </LinearLayout>
 
         <LinearLayout
             style="@style/card_view"
@@ -113,7 +54,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="说明：该设置决定悬停多久才算触发手势，悬停时长调太短可能会导致手势不灵敏，或短滑操作难以触发"
+                android:text="该设置决定悬停多久才算触发手势，悬停时长调太短可能会导致手势不灵敏，或短滑操作难以触发"
                 android:textColor="#888"
                 android:textSize="11dp" />
         </LinearLayout>
@@ -143,12 +84,12 @@
             </LinearLayout>
 
             <LinearLayout
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
                 android:id="@+id/vibrator_custom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
                 <TextView
                     style="@style/card_title"
@@ -200,7 +141,7 @@
                 <TextView
                     style="@style/card_title"
                     android:layout_marginTop="20dp"
-                    android:text="悬停/按压" />
+                    android:text="悬停/长按" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -248,15 +189,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="说明：根据自己的系统调节震动反馈效果，线性马达的时长可以调小，而转子马达由于响应速度较慢，时长必需要更大一些。"
+                    android:text="根据自己的系统调节震动反馈效果，线性马达的时长可以调小，而转子马达由于响应速度较慢，时长必须要调更大一些。"
                     android:textColor="#888"
                     android:textSize="11dp" />
 
             </LinearLayout>
+
             <LinearLayout
-                android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:orientation="vertical">
 
                 <Switch
@@ -275,23 +217,23 @@
         </LinearLayout>
 
 
-    <LinearLayout
-        android:id="@+id/faq_click_me"
-        style="@style/card_view"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="10dp">
+        <LinearLayout
+            android:id="@+id/faq_click_me"
+            style="@style/card_view"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
-        <ImageView
-            android:src="@drawable/icon_question"
-            android:layout_width="30dp"
-            android:layout_height="30dp" />
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/icon_question" />
 
-        <TextView
-            android:text="@string/faq_click_me"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/faq_click_me" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

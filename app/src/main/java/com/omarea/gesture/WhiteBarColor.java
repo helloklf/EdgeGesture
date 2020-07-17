@@ -13,7 +13,7 @@ public class WhiteBarColor {
         updateBarColor();
     }
 
-    public static void updateBarColorMultiple() {
+    static void updateBarColorMultiple() {
         nextTimes = 2;
         updateBarColor();
     }
@@ -42,7 +42,6 @@ public class WhiteBarColor {
             do {
                 int color = RemoteAPI.getBarAutoColor(nextTimes > 0);
                 if (color != Integer.MIN_VALUE) {
-                    // Log.d("GestureRemote", "Color is " + color);
                     GlobalState.iosBarColor = color;
 
                     if (GlobalState.updateBar != null) {

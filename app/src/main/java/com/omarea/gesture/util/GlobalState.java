@@ -2,11 +2,23 @@ package com.omarea.gesture.util;
 
 import android.graphics.Bitmap;
 
+import com.omarea.gesture.ActionModel;
 import com.omarea.gesture.ui.VisualFeedbackView;
 
 public class GlobalState {
+    // 使用连续动作
+    public static boolean consecutive = false;
+    // 连续动作
+    public static ActionModel consecutiveAction = null;
+
+    // 电池电量
+    public static int batteryCapacity = -1;
+    // 小横条是否使用电量
+    public static boolean useBatteryCapacity = false;
+
     public static long lastBackHomeTime = 0;
 
+    public static boolean isLandscapf = false;
     public static boolean testMode = false;
     public static int iosBarColor = Integer.MIN_VALUE;
     public static Runnable updateBar;
@@ -38,6 +50,36 @@ public class GlobalState {
     public static void clearEdgeFeedback() {
         if (visualFeedbackView != null) {
             visualFeedbackView.clearEdgeFeedback();
+        }
+    }
+
+    public static void startThreeSectionFeedback(float startRawX, float startRawY) {
+        if (visualFeedbackView != null) {
+            visualFeedbackView.startThreeSectionFeedback(startRawX, startRawY);
+        }
+    }
+
+    public static void updateThreeSectionFeedback(float currentRawX, float currentRawY) {
+        if (visualFeedbackView != null) {
+            visualFeedbackView.updateThreeSectionFeedback(currentRawX, currentRawY);
+        }
+    }
+
+    public static void updateThreeSectionFeedbackIcon(Bitmap bitmap, boolean oversize) {
+        if (visualFeedbackView != null) {
+            visualFeedbackView.updateThreeSectionFeedbackIcon(bitmap, oversize);
+        }
+    }
+
+    public static void finishThreeSectionFeedbackIcon() {
+        if (visualFeedbackView != null) {
+            visualFeedbackView.finishThreeSectionFeedbackIcon();
+        }
+    }
+
+    public static void clearThreeSectionFeedback() {
+        if (visualFeedbackView != null) {
+            visualFeedbackView.clearThreeSectionFeedback();
         }
     }
 }

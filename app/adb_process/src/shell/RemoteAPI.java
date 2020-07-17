@@ -1,32 +1,17 @@
 package shell;
 
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class RemoteAPI {
-    // 从=分割
-    private String subPackageName(String recents) {
-        StringBuilder stringBuilder = new StringBuilder();
-        try {
-            if (recents != null) {
-                String[] rows = recents.split("\n");
-                for (String row : rows) {
-                    if (row.contains("=") && row.contains("/")) {
-                        stringBuilder.append(row.substring(row.indexOf("=") + 1, row.indexOf("/")));
-                        stringBuilder.append("\n");
-                    }
-                }
-            }
-        } catch (Exception ignored) {
-        }
-        // System.out.println(stringBuilder.toString());
-        return stringBuilder.toString();
-    }
+    private ArrayList<String> recentBlackList = new ArrayList<String>() {{
+        add("com.android.systemui");
+    }};
 
     // 从 cmp= 分割
     private String subPackageName2(String recents, String separator) {
@@ -45,12 +30,49 @@ public class RemoteAPI {
             }
         } catch (Exception ignored) {
         }
-        System.out.println(stringBuilder.toString());
+        // System.out.println(stringBuilder.toString());
+        return stringBuilder.toString();
+    }
+
+    // Android 5.1 ~ 9.0
+    private String filterPackages(String dumpResult) {
+        StringBuilder stringBuilder = new StringBuilder();
+        ArrayList<String> packages = new ArrayList<>();
+        if (dumpResult != null) {
+            String[] recents = dumpResult.split("Recent #");
+            for (String recent : recents) {
+                // Activities=[] 通常意味着这个应用已经被销毁，如果正在后台运行，则一般显示类似于 Activities=[ActivityRecord{651f32f u0 com.android.chrome/com.google.android.apps.chrome.Main t46}]
+                // realActivity=com.android.settings/.FallbackHome 非常讨厌的一个东西
+                if (recent.contains("Activities=[ActivityRecord") && recent.contains("autoRemoveRecents=false")) {
+                    String[] rows = recent.split("\n");
+                    for (String row : rows) {
+                        if (row.contains("realActivity=com.android.settings/.FallbackHome")) {
+                            break;
+                        }
+
+                        if (row.contains("Activities=[ActivityRecord")) {
+                            for (String column : row.split(" ")) {
+                                if (column.indexOf("/") > 0) {
+                                    String packageName = column.substring(0, column.indexOf("/"));
+                                    if (!packages.contains(packageName) && !recentBlackList.contains(packageName)) {
+                                        packages.add(packageName);
+
+                                        stringBuilder.append(packageName);
+                                        stringBuilder.append("\n");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        // System.out.println(">>>" + stringBuilder.toString());
         return stringBuilder.toString();
     }
 
     private void routerMatch(String request, Socket socket) {
-        System.out.println("Gesture Router Match：" + request);
+        // System.out.println("Gesture Router Match：" + request);
         if (request.startsWith("/version")) {
             responseEnd(socket, "0.1.0(1)");
         } else if (request.startsWith("/bar-color")) {
@@ -73,7 +95,7 @@ public class RemoteAPI {
             responseEnd(socket, (isLight ? "true" : "false"));
         } else if (request.startsWith("/recent-9")) {
             // responseEnd(socket, subPackageName(KeepShellPublic.doCmdSync("dumpsys activity r | grep realActivity")));
-            responseEnd(socket, subPackageName2(KeepShellPublic.doCmdSync("dumpsys activity r | grep 'cmp='"), "cmp="));
+            responseEnd(socket, filterPackages(KeepShellPublic.doCmdSync("dumpsys activity r")));
         } else if (request.startsWith("/recent-10")) {
             // responseEnd(socket, subPackageName(KeepShellPublic.doCmdSync("dumpsys activity r | grep mActivityComponent")));
             responseEnd(socket, subPackageName2(KeepShellPublic.doCmdSync("dumpsys activity r | grep baseIntent"), "cmp="));
@@ -126,7 +148,7 @@ public class RemoteAPI {
                         int begin = requestHeader.indexOf("Content-Lengh:") + "Content-Length:".length();
                         String postParamterLength = requestHeader.substring(begin).trim();
                         contentLength = Integer.parseInt(postParamterLength);
-                        System.out.println("POST参数长度是：" + Integer.parseInt(postParamterLength));
+                        // System.out.println("POST参数长度是：" + Integer.parseInt(postParamterLength));
                     }
                 }
 
@@ -135,7 +157,7 @@ public class RemoteAPI {
                     for (int i = 0; i < contentLength; i++) {
                         sb.append((char) bd.read());
                     }
-                    System.out.println("POST参数是：" + sb.toString());
+                    // System.out.println("POST参数是：" + sb.toString());
                 }
 
                 /*
@@ -152,7 +174,7 @@ public class RemoteAPI {
                 */
             }
         } catch (IOException e) {
-            System.out.println("Gesture ADB Process RemoteAPI Fail!");
+            // System.out.println("Gesture ADB Process RemoteAPI Fail!");
         }
     }
 

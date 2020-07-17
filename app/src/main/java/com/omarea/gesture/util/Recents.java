@@ -36,28 +36,32 @@ public class Recents {
             if (searchResult > -1) {
                 recents.remove(searchResult);
             }
-            // Log.d(">>>>", "add " + index + "  " + packageName);
 
-            if (index > -1) {
+            // Intent.CATEGORY_HOME 代步桌面应用，回到桌面时，桌面应该永远应用的后面放
+            // 因此，在桌面上向后退永远是打开桌面前的上一个应用，而不是上上个应用
+            if (searchResult > -1 && !Intent.CATEGORY_HOME.equals(packageName)) {
                 recents.add(index, packageName);
             } else {
-                recents.add(packageName);
+                int indexCurrent = recents.indexOf(currentTop);
+                if (indexCurrent > -1 && indexCurrent + 1 < recents.size()) {
+                    recents.add(indexCurrent + 1, packageName);
+                } else {
+                    recents.add(packageName);
+                }
             }
+
             index = recents.indexOf(packageName);
             currentTop = packageName;
 
-            /*
-            StringBuilder packages = new StringBuilder("  ");
-            for (String item:recents) {
+            StringBuilder packages = new StringBuilder();
+            for (String item : recents) {
                 packages.append(item);
                 packages.append(", ");
             }
-            Log.d(">>>>", packages.toString());
-            */
         }
     }
 
-    void setRecents(ArrayList<String> items, Context context) {
+    void setRecents(ArrayList<String> items) {
         synchronized (recents) {
             /*
             if (recents.size() < 4) {
@@ -94,57 +98,51 @@ public class Recents {
         }
     }
 
-    public int getIndex(String packageName) {
-        return recents.indexOf(packageName);
-    }
-
-    public void setIndex(int to) {
-        if (index < recents.size()) {
-            index = to;
-        }
+    public boolean notEmpty() {
+        return this.recents.size() > 1;
     }
 
     String getCurrent() {
         return currentTop;
     }
 
-    String movePrevious(boolean switchToHome) {
-        String previous;
+    String moveNext() {
+        String packageName;
         synchronized (recents) {
             if (index < recents.size() - 1) {
                 index += 1;
-                previous = recents.get(index);
+                packageName = recents.get(index);
             } else if (recents.size() > 0) {
                 index = 0;
-                previous = recents.get(0);
+                packageName = recents.get(0);
             } else {
-                previous = null;
+                packageName = null;
             }
         }
-        if (Intent.CATEGORY_HOME.equals(previous) && !switchToHome && recents.size() > 1) {
-            return movePrevious(switchToHome);
+        if (Intent.CATEGORY_HOME.equals(packageName) && recents.size() > 1) {
+            return moveNext();
         }
-        return previous;
+        return packageName;
     }
 
-    String moveNext(boolean switchToHome) {
-        String next;
+    String movePrevious() {
+        String packageName;
         synchronized (recents) {
             if (index > 0) {
                 index -= 1;
-                next = recents.get(index);
+                packageName = recents.get(index);
             } else if (recents.size() > 0) {
                 int size = recents.size();
                 index = size - 1;
-                next = recents.get(index);
+                packageName = recents.get(index);
             } else {
-                next = null;
+                packageName = null;
             }
         }
-        if (Intent.CATEGORY_HOME.equals(next) && !switchToHome && recents.size() > 1) {
-            return moveNext(switchToHome);
+        if (Intent.CATEGORY_HOME.equals(packageName) && recents.size() > 1) {
+            return movePrevious();
         }
 
-        return next;
+        return packageName;
     }
 }

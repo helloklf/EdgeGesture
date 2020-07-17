@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.omarea.gesture.AccessibilityServiceGesture;
 import com.omarea.gesture.ActionModel;
+import com.omarea.gesture.Gesture;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.util.GlobalState;
@@ -30,8 +32,8 @@ public class FloatVirtualTouchBar {
     private View rightView = null;
     private SharedPreferences config;
 
-    public FloatVirtualTouchBar(AccessibilityServiceGesture context, boolean islandscape) {
-        this.islandscape = islandscape;
+    public FloatVirtualTouchBar(AccessibilityServiceGesture context) {
+        this.islandscape = GlobalState.isLandscapf;
 
         config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
         mWindowManager = (WindowManager) (context.getSystemService(Context.WINDOW_SERVICE));
@@ -39,6 +41,7 @@ public class FloatVirtualTouchBar {
             boolean anySide = false;
             if (islandscape) {
                 if (config.getBoolean(SpfConfig.THREE_SECTION_LANDSCAPE, SpfConfig.THREE_SECTION_LANDSCAPE_DEFAULT)) {
+                    anySide = true;
                     this.bottomView = setThreeSectionView(context);
                 } else if (config.getBoolean(SpfConfig.CONFIG_BOTTOM_ALLOW_LANDSCAPE, SpfConfig.CONFIG_BOTTOM_ALLOW_LANDSCAPE_DEFAULT)) {
                     anySide = true;
@@ -55,9 +58,9 @@ public class FloatVirtualTouchBar {
                 if (config.getBoolean(SpfConfig.LANDSCAPE_IOS_BAR, SpfConfig.LANDSCAPE_IOS_BAR_DEFAULT)) {
                     this.iosBarView = new iOSWhiteBar(context, islandscape).getView();
                 }
-            }
-            else {
+            } else {
                 if (config.getBoolean(SpfConfig.THREE_SECTION_PORTRAIT, SpfConfig.THREE_SECTION_PORTRAIT_DEFAULT)) {
+                    anySide = true;
                     this.bottomView = setThreeSectionView(context);
                 } else if (config.getBoolean(SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT, SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT_DEFAULT)) {
                     anySide = true;
@@ -75,11 +78,12 @@ public class FloatVirtualTouchBar {
                     this.iosBarView = new iOSWhiteBar(context, islandscape).getView();
                 }
             }
-            if (anySide) {
+            if (anySide && !config.getBoolean(SpfConfig.LOW_POWER_MODE, SpfConfig.LOW_POWER_MODE_DEFAULT)) {
                 this.visualFeedbackView = setVisualFeedbackView(context);
             }
         } catch (Exception ex) {
-            Toast.makeText(context, "启动虚拟导航手势失败！", Toast.LENGTH_LONG).show();
+            Log.e(">>>>", "启动虚拟导航手势失败 " + ex.getMessage());
+            Gesture.toast("启动虚拟导航手势失败！\n" + ex.getMessage(), Toast.LENGTH_LONG);
             // throw  ex;
         }
     }
@@ -153,8 +157,8 @@ public class FloatVirtualTouchBar {
         params.height = LayoutParams.MATCH_PARENT;
 
         params.gravity = Gravity.TOP | Gravity.START;
-        // 6G以上(基本上就是8G及更高了)内存开启硬件加速
-        if (new Memory().getMemorySizeMB(context) > 6000) {
+        // 4G以上(基本上就是6G及更高了)内存开启硬件加速
+        if ((!config.getBoolean(SpfConfig.LOW_POWER_MODE, SpfConfig.LOW_POWER_MODE_DEFAULT)) && new Memory().getMemorySizeMB(context) > 4096) {
             params.flags = LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_NOT_TOUCHABLE | LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS | LayoutParams.FLAG_HARDWARE_ACCELERATED; // 开启硬件加速也许能提高性能，但是内存占有将会大幅提高
         } else {
             params.flags = LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_NOT_TOUCHABLE | LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS; // | LayoutParams.FLAG_HARDWARE_ACCELERATED; // 开启硬件加速也许能提高性能，但是内存占有将会大幅提高
@@ -233,7 +237,7 @@ public class FloatVirtualTouchBar {
 
         ThreeSectionView bar = view.findViewById(R.id.core_area);
         if (GlobalState.testMode) {
-            bar.setBackground(context.getDrawable(R.drawable.bar_background));
+            bar.setTestMode(true);
         }
 
         bar.setEventHandler(
@@ -248,8 +252,8 @@ public class FloatVirtualTouchBar {
         double widthRatio = config.getInt(SpfConfig.THREE_SECTION_WIDTH, SpfConfig.THREE_SECTION_WIDTH_DEFAULT) / 100.0;
 
         // 横屏缩小宽度，避免游戏误触
-        if (islandscape && widthRatio > 0.4) {
-            widthRatio = 0.4;
+        if (islandscape && widthRatio > 0.5) {
+            widthRatio = 0.5;
         }
 
         int barWidth = (int) (getScreenWidth(context) * widthRatio);
@@ -272,6 +276,10 @@ public class FloatVirtualTouchBar {
 
         params.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
         params.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            params.layoutInDisplayCutoutMode = LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+        }
 
         mWindowManager.addView(view, params);
 

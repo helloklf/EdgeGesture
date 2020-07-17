@@ -94,31 +94,66 @@ public class iOSTouchBarView extends View {
     @SuppressLint("DrawAllocation")
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-        if (GlobalState.iosBarColor != Integer.MIN_VALUE) {
-            if (strokeWidth > 0) {
-                p.setStyle(Paint.Style.STROKE);
-                if (GlobalState.iosBarColor == Color.WHITE) {
-                    p.setColor(Color.BLACK);
-                } else {
-                    p.setColor(Color.WHITE);
-                }
-                canvas.drawRoundRect(margin - strokeR, margin - strokeR, getWidth() - margin + strokeR, margin + lineWeight + strokeR, 20, 20, p);
-            }
-
-            p.setStyle(Paint.Style.FILL);
-            p.setColor(GlobalState.iosBarColor);
-            canvas.drawRoundRect(margin, margin, getWidth() - margin, margin + lineWeight, 20, 20, p);
-        } else {
-            if (strokeWidth > 0) {
-                p.setStyle(Paint.Style.STROKE);
-                p.setColor(strokeColor);
-                canvas.drawRoundRect(margin - strokeR, margin - strokeR, getWidth() - margin + strokeR, margin + lineWeight + strokeR, 20, 20, p);
-            }
-
-            p.setStyle(Paint.Style.FILL);
+        p.setAlpha(255);
+        if (GlobalState.useBatteryCapacity) {
+            int capacity = GlobalState.batteryCapacity;
             p.setColor(lineColor);
-            canvas.drawRoundRect(margin, margin, getWidth() - margin, margin + lineWeight, 20, 20, p);
+            drawLine(canvas, p);
+            if (capacity > 0) {
+                if (capacity > 85) {
+                    p.setColor(Color.argb(255, 19, 142, 214));
+                } else if (capacity > 75) {
+                    p.setColor(Color.argb(255, 0, 185, 194));
+                } else if (capacity > 60) {
+                    p.setColor(Color.argb(255, 0, 213, 217));
+                } else if (capacity > 45) {
+                    p.setColor(Color.argb(255, 2, 217, 141));
+                } else if (capacity > 35) {
+                    p.setColor(Color.argb(255, 135, 203, 0));
+                } else if (capacity > 20) {
+                    p.setColor(Color.argb(255, 252, 138, 27));
+                } else {
+                    p.setColor(Color.argb(255, 249, 89, 47));
+                }
+                float totalWidth = getWidth() - (margin * 2);
+                float outMargin = 0;
+                canvas.drawRoundRect(margin + outMargin, margin + outMargin, margin + (totalWidth * capacity / 100f) - outMargin, margin + lineWeight - outMargin, 20, 20, p);
+
+                p.setStyle(Paint.Style.FILL);
+                p.setAlpha(210);
+                // p.setColor(lineColor);
+                drawLine(canvas, p);
+            }
+        } else {
+            if (GlobalState.iosBarColor != Integer.MIN_VALUE) {
+                if (strokeWidth > 0) {
+                    p.setStyle(Paint.Style.STROKE);
+                    if (GlobalState.iosBarColor == Color.WHITE) {
+                        p.setColor(Color.BLACK);
+                    } else {
+                        p.setColor(Color.WHITE);
+                    }
+                    canvas.drawRoundRect(margin - strokeR, margin - strokeR, getWidth() - margin + strokeR, margin + lineWeight + strokeR, 20, 20, p);
+                }
+
+                p.setStyle(Paint.Style.FILL);
+                p.setColor(GlobalState.iosBarColor);
+                drawLine(canvas, p);
+            } else {
+                if (strokeWidth > 0) {
+                    p.setStyle(Paint.Style.STROKE);
+                    p.setColor(strokeColor);
+                    canvas.drawRoundRect(margin - strokeR, margin - strokeR, getWidth() - margin + strokeR, margin + lineWeight + strokeR, 20, 20, p);
+                }
+
+                p.setStyle(Paint.Style.FILL);
+                p.setColor(lineColor);
+                drawLine(canvas, p);
+            }
         }
+    }
+
+    private void drawLine(Canvas canvas, Paint p) {
+        canvas.drawRoundRect(margin, margin, getWidth() - margin, margin + lineWeight, 20, 20, p);
     }
 }

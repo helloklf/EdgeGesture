@@ -1,7 +1,6 @@
 package com.omarea.gesture.remote;
 
 import android.os.Build;
-import android.util.Log;
 
 import com.omarea.gesture.util.GlobalState;
 
@@ -13,6 +12,7 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 
 public class RemoteAPI {
+    private final static Object networkWaitLock = new Object();
     private static String host = "http://localhost:8906/";
 
     public static boolean isOnline() {
@@ -29,7 +29,6 @@ public class RemoteAPI {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             String isLightColor = loadContent("nav-light-color");
             if (isLightColor != null && isLightColor.equals("true")) {
-                Log.d("getBarAutoColor", "FastWhite");
                 return 0xFF000000;
             }
         }
@@ -51,9 +50,6 @@ public class RemoteAPI {
         }
         return Integer.MIN_VALUE;
     }
-
-
-    private final static Object networkWaitLock = new Object();
 
     private static String loadContent(final String api) {
         final String[] result = {""};
@@ -78,6 +74,32 @@ public class RemoteAPI {
         } catch (Exception ignored) {
         }
         return result[0];
+    }
+
+    public static String getColorPollingApps() {
+        final String[] results = {""};
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                synchronized (networkWaitLock) {
+                    try {
+                        URL url = new URL("https://vtools.oss-cn-beijing.aliyuncs.com/EdgeGesture/color-polling-apps.txt");
+                        results[0] = readResponse(url.openConnection());
+                    } catch (Exception ignored) {
+                    } finally {
+                        networkWaitLock.notify();
+                    }
+                }
+            }
+        }).start();
+        try {
+            synchronized (networkWaitLock) {
+                networkWaitLock.wait(5000);
+            }
+        } catch (Exception ignored) {
+        }
+
+        return results[0];
     }
 
     private static String readResponse(URLConnection connection) {
@@ -124,7 +146,8 @@ public class RemoteAPI {
                     }
                     paramsBuilder.append(" --activity-no-animation --activity-no-history --activity-exclude-from-recents --activity-clear-top --activity-clear-task");
                     loadContent("shell?" + URLEncoder.encode(paramsBuilder.toString(), "UTF-8"));
-                } catch (Exception ignored){}
+                } catch (Exception ignored) {
+                }
             }
         }).start();
     }

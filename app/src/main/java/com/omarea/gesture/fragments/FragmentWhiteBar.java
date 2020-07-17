@@ -50,16 +50,17 @@ public class FragmentWhiteBar extends FragmentSettingsBase {
         bindSeekBar(R.id.ios_bar_margin_bottom_portrait, SpfConfig.IOS_BAR_MARGIN_BOTTOM_PORTRAIT, SpfConfig.IOS_BAR_MARGIN_BOTTOM_PORTRAIT_DEFAULT, true);
         bindSeekBar(R.id.ios_bar_height, SpfConfig.IOS_BAR_HEIGHT, SpfConfig.IOS_BAR_HEIGHT_DEFAULT, true);
         bindCheckable(R.id.ios_bar_lock_hide, SpfConfig.IOS_BAR_LOCK_HIDE, SpfConfig.IOS_BAR_LOCK_HIDE_DEFAULT);
-        bindCheckable(R.id.ios_bar_auto_color_fast, SpfConfig.IOS_BAR_COLOR_FAST, SpfConfig.IOS_BAR_COLOR_FAST_DEFAULT);
+        bindCheckable(R.id.ios_bar_pop_battery, SpfConfig.IOS_BAR_POP_BATTERY, SpfConfig.IOS_BAR_POP_BATTERY_DEFAULT);
+        bindCheckable(R.id.ios_bar_consecutive, SpfConfig.IOS_BAR_CONSECUTIVE, SpfConfig.IOS_BAR_CONSECUTIVE_DEFAULT);
+
+
+        bindCheckable(R.id.ios_input_avoid, SpfConfig.INPUT_METHOD_AVOID, SpfConfig.INPUT_METHOD_AVOID_DEFAULT);
+
         setViewBackground(getActivity().findViewById(R.id.ios_bar_color_fadeout_portrait), 0xff888888);
         setViewBackground(getActivity().findViewById(R.id.ios_bar_color_fadeout_landscape), 0xff888888);
 
         Switch ios_bar_auto_color_root = getActivity().findViewById(R.id.ios_bar_auto_color_root);
         ios_bar_auto_color_root.setChecked(config.getBoolean(SpfConfig.IOS_BAR_AUTO_COLOR, SpfConfig.IOS_BAR_AUTO_COLOR_DEFAULT));
-        if (!ios_bar_auto_color_root.isChecked()) {
-            Switch checkable = getActivity().findViewById(R.id.ios_bar_auto_color_fast);
-            checkable.setEnabled(false);
-        }
         ios_bar_auto_color_root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,7 +68,6 @@ public class FragmentWhiteBar extends FragmentSettingsBase {
                 if (ele.isChecked()) {
                     if (GlobalState.enhancedMode || config.getBoolean(SpfConfig.ROOT, SpfConfig.ROOT_DEFAULT)) {
                         config.edit().putBoolean(SpfConfig.IOS_BAR_AUTO_COLOR, true).apply();
-                        getActivity().findViewById(R.id.ios_bar_auto_color_fast).setEnabled(true);
                         new AdbProcessExtractor().updateAdbProcessState(getActivity(), true);
                         restartService();
                     } else {
@@ -75,10 +75,7 @@ public class FragmentWhiteBar extends FragmentSettingsBase {
                         Toast.makeText(getActivity().getApplicationContext(), getString(R.string.need_root_mode), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    config.edit().putBoolean(SpfConfig.IOS_BAR_AUTO_COLOR, false).putBoolean(SpfConfig.IOS_BAR_COLOR_FAST, false).apply();
-                    Switch checkable = getActivity().findViewById(R.id.ios_bar_auto_color_fast);
-                    checkable.setEnabled(false);
-                    checkable.setChecked(false);
+                    config.edit().putBoolean(SpfConfig.IOS_BAR_AUTO_COLOR, false).apply();
                     restartService();
                 }
             }

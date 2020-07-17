@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/quick_apps_wrap"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/quick_panel_bg_right"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <LinearLayout
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/quick_question"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:background="@null"
+                android:padding="6dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/gesture_quick_question" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:alpha="0.5"
+                android:text="@string/app_name"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+
+            <ImageButton
+                android:id="@+id/quick_edit"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:background="@null"
+                android:padding="8dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/gesture_icon_edit" />
+
+            <ImageButton
+                android:id="@+id/quick_save"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:background="@null"
+                android:padding="6dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/gesture_icon_ok" />
+        </LinearLayout>
+
+        <GridView
+            android:id="@+id/quick_apps"
+            android:layout_width="130dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:numColumns="2"
+            android:scrollbars="none" />
+    </LinearLayout>
+</FrameLayout>

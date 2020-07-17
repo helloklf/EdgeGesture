@@ -1,62 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/quick_panel_bg_right"
-    android:padding="12dp"
-    android:gravity="center_vertical"
-    android:orientation="vertical">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:id="@+id/quick_apps_wrap"
+        android:layout_width="154dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/quick_panel_bg_right"
+        android:orientation="vertical"
+        android:padding="12dp">
 
-        <ImageButton
-            android:id="@+id/quick_question"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:background="@null"
-            android:padding="6dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/gesture_quick_question" />
-
-        <TextView
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/quick_question"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:background="@null"
+                android:padding="6dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/gesture_quick_question" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:alpha="0.5"
+                android:text="@string/app_name"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+
+            <ImageButton
+                android:id="@+id/quick_edit"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:background="@null"
+                android:padding="8dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/gesture_icon_edit" />
+
+            <ImageButton
+                android:id="@+id/quick_save"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:background="@null"
+                android:padding="6dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/gesture_icon_ok" />
+        </LinearLayout>
+
+        <GridView
+            android:id="@+id/quick_apps"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
             android:layout_weight="1"
-            android:alpha="0.5"
-            android:text="@string/app_name"
-            android:textAlignment="center"
-            android:textColor="@android:color/white"
-            android:textSize="14sp" />
-
-        <ImageButton
-            android:id="@+id/quick_edit"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:background="@null"
-            android:padding="8dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/gesture_icon_edit" />
-
-        <ImageButton
-            android:id="@+id/quick_save"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:background="@null"
-            android:padding="6dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/gesture_icon_ok" />
+            android:numColumns="2"
+            android:paddingBottom="16dp"
+            android:scrollbars="none" />
     </LinearLayout>
-
-    <GridView
-        android:id="@+id/quick_apps"
-        android:layout_width="130dp"
-        android:layout_height="440dp"
-        android:numColumns="2"
-        android:layout_marginTop="16dp"
-        android:paddingBottom="16dp"
-        android:scrollbars="none" />
-</LinearLayout>
+</FrameLayout>

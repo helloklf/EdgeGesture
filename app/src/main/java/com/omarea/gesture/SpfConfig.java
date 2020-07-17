@@ -7,6 +7,7 @@ public class SpfConfig {
     public final static int HOME_ANIMATION_DEFAULT = 0;
     public final static int HOME_ANIMATION_BASIC = 1;
     public final static int HOME_ANIMATION_CUSTOM = 2;
+    public final static int HOME_ANIMATION_FAST = 3;
     public static final String ConfigFile = "main";
     public static final String AppSwitchBlackList = "app_switch_black_list";
     // 悬停时间
@@ -71,7 +72,7 @@ public class SpfConfig {
     public static final String PORTRAIT_IOS_BAR = "portrait_ios_bar";
     public static final boolean PORTRAIT_IOS_BAR_DEFAULT = false;
 
-    // iOS小横条动作
+    // iOS小横条动作r
     public static final String IOS_BAR_SLIDE_LEFT = "ios_bar_slide_left";
     public static final int IOS_BAR_SLIDE_LEFT_DEFAULT = Handlers.VITUAL_ACTION_NEXT_APP;
     public static final String IOS_BAR_SLIDE_RIGHT = "ios_bar_slide_right";
@@ -82,10 +83,11 @@ public class SpfConfig {
     public static final int IOS_BAR_SLIDE_UP_HOVER_DEFAULT = Handlers.GLOBAL_ACTION_RECENTS;
     public static final String IOS_BAR_TOUCH = "ios_bar_touch"; // 轻触
     public static final int IOS_BAR_TOUCH_DEFAULT = Handlers.GLOBAL_ACTION_BACK;
-    public static final String IOS_BAR_PRESS = "ios_bar_press"; // 按压
+    public static final String IOS_BAR_PRESS = "ios_bar_press"; // 长按
     public static final int IOS_BAR_PRESS_DEFAULT = Handlers.GLOBAL_ACTION_HOME;
-    public static final String IOS_BAR_PRESS_MIN = "ios_bar_press_min_2"; // 按压（最小力度）
-    public static final int IOS_BAR_PRESS_MIN_DEFAULT = -1;
+
+    public static final String IOS_BAR_CONSECUTIVE = "ios_bar_consecutive"; // 连续切换
+    public static final boolean IOS_BAR_CONSECUTIVE_DEFAULT = false;
 
     // iOS小横条样式
     public static final String IOS_BAR_WIDTH_LANDSCAPE = "ios_bar_width_landscape";
@@ -118,8 +120,8 @@ public class SpfConfig {
     public static final Boolean IOS_BAR_LOCK_HIDE_DEFAULT = false;
     public static final String IOS_BAR_AUTO_COLOR = "ios_bar_auto_color_root";
     public static final Boolean IOS_BAR_AUTO_COLOR_DEFAULT = false;
-    public static final String IOS_BAR_COLOR_FAST = "ios_bar_color_fast";
-    public static final Boolean IOS_BAR_COLOR_FAST_DEFAULT = false;
+    public static final String IOS_BAR_POP_BATTERY = "ios_bar_pop_battery";
+    public static final Boolean IOS_BAR_POP_BATTERY_DEFAULT = false;
 
     public static final String GAME_OPTIMIZATION = "GAME_OPTIMIZATION"; // 游戏防误触
     public static final Boolean GAME_OPTIMIZATION_DEFAULT = true;
@@ -130,19 +132,7 @@ public class SpfConfig {
     public static final String THREE_SECTION_HEIGHT = "THREE_SECTION_HEIGHT";
     public static final int THREE_SECTION_HEIGHT_DEFAULT = 9; // ?dp
     public static final String THREE_SECTION_COLOR = "THREE_SECTION_COLOR";
-    public static final int THREE_SECTION_COLOR_DEFAULT = 0xffffffff; // 颜色
-    // 硬件加速
-    public static String HARDWARE_ACCELERATED = "HARDWARE_ACCELERATED";
-    public static boolean HARDWARE_ACCELERATED_DEFAULT = false;
-    // 切换到桌面
-    public static String SWITCH_TO_HOME = "SWITCH_TO_HOME";
-    public static boolean SWITCH_TO_HOME_DEFAULT = false;
-    // 三星优化(自动禁用系统手势)
-    public static String SAMSUNG_OPTIMIZE = "SAMSUNG_OPTIMIZE";
-    public static boolean SAMSUNG_OPTIMIZE_DEFAULT = false;
-    // Overscan隐藏导航栏
-    public static String OVERSCAN_SWITCH = "OVERSCAN_SWITCH";
-    public static boolean OVERSCAN_SWITCH_DEFAULT = false;
+    public static final int THREE_SECTION_COLOR_DEFAULT = 0xee101010; // 颜色
     // 三段式手势
     public static String THREE_SECTION_LANDSCAPE = "THREE_SECTION_LANDSCAPE";
     public static boolean THREE_SECTION_LANDSCAPE_DEFAULT = false;
@@ -160,4 +150,10 @@ public class SpfConfig {
     public static int THREE_SECTION_CENTER_HOVER_DEFAULT = Handlers.GLOBAL_ACTION_NONE;
     public static String THREE_SECTION_RIGHT_HOVER = "THREE_SECTION_RIGHT_HOVER";
     public static int THREE_SECTION_RIGHT_HOVER_DEFAULT = Handlers.GLOBAL_ACTION_NONE;
+
+    public static String LOW_POWER_MODE = "LOW_POWER_MODE"; // 低功耗模式
+    public static boolean LOW_POWER_MODE_DEFAULT = false;
+
+    public static String INPUT_METHOD_AVOID = "INPUT_METHOD_AVOID"; // 输入法避让
+    public static boolean INPUT_METHOD_AVOID_DEFAULT = false;
 }

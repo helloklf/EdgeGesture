@@ -2,17 +2,17 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android"
     android:zAdjustment="bottom">
     <translate
-        android:startOffset="160"
-        android:duration="400"
+        android:duration="300"
         android:fillAfter="true"
         android:fromXDelta="0%p"
         android:interpolator="@android:anim/linear_interpolator"
+        android:startOffset="100"
         android:toXDelta="-107.5%p" />
     <scale
-        android:duration="160"
+        android:duration="100"
         android:fromXScale="1"
         android:fromYScale="1"
-        android:interpolator="@android:anim/overshoot_interpolator"
+        android:interpolator="@android:anim/linear_interpolator"
         android:pivotX="50%"
         android:pivotY="50%"
         android:toXScale="0.93"

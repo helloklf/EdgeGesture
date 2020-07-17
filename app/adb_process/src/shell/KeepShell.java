@@ -1,6 +1,6 @@
 package shell;
+
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
@@ -62,7 +62,7 @@ public class KeepShell {
                                     errorReader.readLine();
                                 }
                             } catch (Exception ex) {
-                                System.out.println("Gesture ADB Error " + ex.getMessage());
+                                // System.out.println("Gesture ADB Error " + ex.getMessage());
                             }
                         }
                     }).start();

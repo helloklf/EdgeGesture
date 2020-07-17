@@ -7,6 +7,7 @@
         <item name="android:statusBarColor">#ff222222</item>
         <item name="android:windowBackground">@color/windowBackground</item>
     </style>
+
     <style name="gestureAppThemeLight" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:colorPrimary">@color/colorPrimary</item>
         <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -103,5 +104,15 @@
 
     <style name="appSwitch" parent="android:Theme.Translucent.NoTitleBar.Fullscreen">
         <item name="android:windowAnimationStyle">@style/activityAnim</item>
+    </style>
+
+    <style name="LeftQuickPanelAnimation">
+        <item name="android:windowEnterAnimation">@anim/gesture_quick_panel_left_in</item>
+        <item name="android:windowExitAnimation">@anim/gesture_quick_panel_left_out</item>
+    </style>
+
+    <style name="BottomQuickPanelAnimation">
+        <item name="android:windowEnterAnimation">@anim/gesture_quick_panel_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/gesture_quick_panel_bottom_out</item>
     </style>
 </resources>

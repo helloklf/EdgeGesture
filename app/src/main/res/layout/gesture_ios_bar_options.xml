@@ -130,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:minWidth="80dp"
-                    android:text="按压/长按" />
+                    android:text="长按" />
 
                 <Button
                     android:id="@+id/ios_bar_press"
@@ -441,25 +441,67 @@
 
                 <TextView
                     style="@style/switch_desc"
-                    android:text="手机屏幕锁定时，隐藏小横条" />
+                    android:text="手机锁屏后隐藏小横条" />
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <Switch
+                    android:id="@+id/ios_bar_consecutive"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="连续切换"
+                    android:textStyle="bold" />
+
+                <TextView
+                    style="@style/switch_desc"
+                    android:text="通过左右滑动切换应用时，悬停可连续切换" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <Switch
+                        android:id="@+id/ios_input_avoid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="输入避让"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        style="@style/switch_desc"
+                        android:text="弹出输入软键盘时小横条显示在键盘上方" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/card_view"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <Switch
                     android:id="@+id/ios_bar_auto_color_root"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="自动取色(增强模式)"
+                    android:text="自动反色(增强模式)"
                     android:textStyle="bold" />
 
                 <TextView
                     style="@style/switch_desc"
-                    android:text="根据屏幕右下角颜色，自动调整小横条外观" />
+                    android:text="根据界面内容切换小横条颜色" />
             </LinearLayout>
 
             <LinearLayout
@@ -469,16 +511,17 @@
                 android:orientation="vertical">
 
                 <Switch
-                    android:id="@+id/ios_bar_auto_color_fast"
+                    android:id="@+id/ios_bar_pop_battery"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="积极取色"
+                    android:text="彩虹电量"
                     android:textStyle="bold" />
 
                 <TextView
                     style="@style/switch_desc"
-                    android:text="只要界面内容变化，立即刷新小横条颜色（非常耗电）" />
+                    android:text="根据电池电量改变小横条颜色" />
             </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
