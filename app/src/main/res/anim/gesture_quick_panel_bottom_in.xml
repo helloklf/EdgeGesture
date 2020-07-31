@@ -9,4 +9,7 @@
         android:fromAlpha="0"
         android:interpolator="@android:anim/decelerate_interpolator"
         android:toAlpha="1" />
+    <translate
+        android:fromYDelta="100%"
+        android:toYDelta="0%" />
 </set>

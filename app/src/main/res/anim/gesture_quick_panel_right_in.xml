@@ -6,10 +6,10 @@
     android:zAdjustment="top">
     <alpha
         android:fillAfter="true"
-        android:fromAlpha="1"
-        android:interpolator="@android:anim/accelerate_interpolator"
-        android:toAlpha="0" />
+        android:fromAlpha="0"
+        android:interpolator="@android:anim/decelerate_interpolator"
+        android:toAlpha="1" />
     <translate
-        android:fromXDelta="0%"
-        android:toXDelta="-100%" />
+        android:fromXDelta="100%"
+        android:toXDelta="0%" />
 </set>
