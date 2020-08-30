@@ -84,7 +84,7 @@ public class QuickPanel {
             params.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
         }
         */
-        // params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | WindowManager.LayoutParams.FLAG_BLUR_BEHIND | WindowManager.LayoutParams.FLAG_BLUR_BEHIND;
+        // params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | WindowManager.LayoutParams.FLAG_BLUR_BEHIND | WindowManager.LayoutParams.FLAG_BLUR_BEHIND; // 模糊背景 不支持淡入淡出
         params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         params.dimAmount = 0.7f;
 
@@ -251,7 +251,7 @@ public class QuickPanel {
                 if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
                     close();
                 }
-                return false;
+                return true;
             }
         });
         view.setOnClickListener(new View.OnClickListener() {
@@ -317,6 +317,7 @@ public class QuickPanel {
             wrapView.setBackground(accessibilityService.getDrawable(R.drawable.quick_panel_bg_right));
             windowParams.gravity = Gravity.END | Gravity.CENTER_VERTICAL;
             windowParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+            windowParams.windowAnimations = R.style.RightQuickPanelAnimation;
         }
         // 左
         else {

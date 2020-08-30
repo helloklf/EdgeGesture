@@ -11,5 +11,5 @@
         android:toAlpha="0" />
     <translate
         android:fromXDelta="0%"
-        android:toXDelta="-100%" />
+        android:toXDelta="100%" />
 </set>
