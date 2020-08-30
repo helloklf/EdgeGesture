@@ -109,6 +109,12 @@ public class RemoteAPI {
                 // KeepShellPublic.doCmdSync(request.substring(request.indexOf("?") + 1));
             }
             responseEnd(socket, "unsupported");
+        } else if (request.startsWith("/xiaomi-handymode")) {
+            if (request.contains("?")) {
+                responseEnd(socket, KeepShellPublic.doCmdSync("am broadcast -a miui.action.handymode.changemode --ei mode " + request.substring(request.indexOf("?") + 1)));
+            } else {
+                responseEnd(socket, "unsupported");
+            }
         } else {
             responseEnd(socket, "error");
         }

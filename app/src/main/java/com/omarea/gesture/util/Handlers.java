@@ -36,6 +36,8 @@ public class Handlers {
     final public static int VITUAL_ACTION_PREV_APP = 900001;
     final public static int VITUAL_ACTION_FORM = 900009;
     final public static int VITUAL_ACTION_SWITCH_APP = 900005;
+    final public static int VITUAL_ACTION_MI_HANDY_MODE_1 = 900100;
+    final public static int VITUAL_ACTION_MI_HANDY_MODE_2 = 900101;
 
     final public static int CUSTOM_ACTION_APP = 1000001;
     final public static int CUSTOM_ACTION_APP_WINDOW = 1000002;
@@ -64,6 +66,11 @@ public class Handlers {
             add(new ActionModel(GLOBAL_ACTION_TAKE_SCREENSHOT, "屏幕截图"));
         }
 
+        if (isXiaomi && GlobalState.enhancedMode) {
+            add(new ActionModel(VITUAL_ACTION_MI_HANDY_MODE_1, "单手模式-左"));
+            add(new ActionModel(VITUAL_ACTION_MI_HANDY_MODE_2, "单手模式-右"));
+        }
+
         add(new ActionModel(CUSTOM_ACTION_APP, "打开应用 > "));
         if (Build.VERSION.SDK_INT > 23) {
             add(new ActionModel(CUSTOM_ACTION_APP_WINDOW, "以小窗口打开应用[试验]  > "));
@@ -72,7 +79,7 @@ public class Handlers {
         add(new ActionModel(CUSTOM_ACTION_QUICK, "常用应用 > "));
         add(new ActionModel(OMAREA_FILTER_SCREENSHOT, "屏幕滤镜-正常截图"));
     }}.toArray(new ActionModel[0]);
-    // private static boolean isXiaomi = Build.MANUFACTURER.equals("Xiaomi") && Build.BRAND.equals("Xiaomi");
+    private static boolean isXiaomi = Build.MANUFACTURER.toLowerCase().equals("Xiaomi") && Build.BRAND.toLowerCase().equals("Xiaomi");
     private static SharedPreferences configEx;
     private static boolean isMiui12 = new SystemProperty().isMiui12();
 
@@ -161,6 +168,14 @@ public class Handlers {
                         accessibilityService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS);
                     }
                 }).start();
+                break;
+            }
+            case VITUAL_ACTION_MI_HANDY_MODE_1: {
+                RemoteAPI.xiaomiHandymode(1);
+                break;
+            }
+            case VITUAL_ACTION_MI_HANDY_MODE_2: {
+                RemoteAPI.xiaomiHandymode(2);
                 break;
             }
             default: {

@@ -134,6 +134,15 @@ public class RemoteAPI {
         }).start();
     }
 
+    public static void xiaomiHandymode(final int mode) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                loadContent("xiaomi-handymode?" + mode);
+            }
+        }).start();
+    }
+
     public static void startActivity(final String params) {
         new Thread(new Runnable() {
             @Override
