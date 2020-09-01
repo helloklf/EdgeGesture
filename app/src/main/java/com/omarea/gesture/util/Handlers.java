@@ -44,6 +44,7 @@ public class Handlers {
     final public static int CUSTOM_ACTION_SHELL = 1000006;
     final public static int CUSTOM_ACTION_QUICK = 1000009;
     final public static int OMAREA_FILTER_SCREENSHOT = 1100000;
+    private static boolean isXiaomi = Build.MANUFACTURER.toLowerCase().equals("xiaomi") && Build.BRAND.toLowerCase().equals("xiaomi");
     private final static ActionModel[] options = new ArrayList<ActionModel>() {{
         add(new ActionModel(GLOBAL_ACTION_NONE, "无"));
         add(new ActionModel(GLOBAL_ACTION_BACK, "返回键"));
@@ -79,7 +80,6 @@ public class Handlers {
         add(new ActionModel(CUSTOM_ACTION_QUICK, "常用应用 > "));
         add(new ActionModel(OMAREA_FILTER_SCREENSHOT, "屏幕滤镜-正常截图"));
     }}.toArray(new ActionModel[0]);
-    private static boolean isXiaomi = Build.MANUFACTURER.toLowerCase().equals("Xiaomi") && Build.BRAND.toLowerCase().equals("Xiaomi");
     private static SharedPreferences configEx;
     private static boolean isMiui12 = new SystemProperty().isMiui12();
 
