@@ -2,13 +2,21 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 29
+    signingConfigs {
+        omarea_Signing {
+            keyAlias 'omarea.com'
+            keyPassword 'asdf1234'
+            storeFile file('D:/omoarea.jks')
+            storePassword 'asdf1234'
+        }
+    }
     defaultConfig {
         resConfigs "zh"
         applicationId "com.omarea.gesture"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 97
-        versionName "1.5.5"
+        versionCode 98
+        versionName "1.5.6"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -21,6 +29,12 @@ android {
         release {
             debuggable true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.omarea_Signing
+            minifyEnabled false
+            debuggable true
+            jniDebuggable = false
         }
     }
     lintOptions {
