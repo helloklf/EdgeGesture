@@ -9,6 +9,7 @@ import com.omarea.gesture.util.GlobalState;
 
 public class BatteryReceiver extends BroadcastReceiver {
     private boolean powerConnected = false;
+    public BatteryReceiver(){}
 
     public BatteryReceiver(Context context) {
         try {

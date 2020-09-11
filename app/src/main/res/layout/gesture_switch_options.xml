@@ -27,12 +27,4 @@
         android:text="@string/back_hide_task"
         android:textAlignment="center"
         android:textSize="11dp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:text="@string/rotate_tips"
-        android:textAlignment="center"
-        android:textSize="11dp" />
 </LinearLayout>

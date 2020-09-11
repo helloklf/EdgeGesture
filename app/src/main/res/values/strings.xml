@@ -17,8 +17,7 @@
     <string name="handler_picker">选择动作响应</string>
     <string name="please_repeat">请重复手势~</string>
     <string name="service_active_desc">请手动去系统的“设置”-“无障碍”中激活</string>
-    <string name="back_hide_task">如需从最近任务列表隐藏本应用，请“按返回键”关闭此界面~</string>
-    <string name="rotate_tips">旋转屏幕，可查看横屏状态下的手势热区</string>
+    <string name="back_hide_task">按“返回键”从多任务界面隐藏本应用</string>
     <string name="copy_success">复制成功</string>
     <string name="copy_fail">复制失败</string>
     <string name="ios_bar">小横条手势</string>
