@@ -12,13 +12,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3c4db40-6ccf-4f9b-a0ce-fe5b9784ddcb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/ReTouchHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/xml-v24/keyevent_accessibility.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/FloatVirtualTouchBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/FloatVirtualTouchBar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/TouchBarView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/TouchBarView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/iOSWhiteBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/iOSWhiteBar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/ThreeSectionView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/ThreeSectionView.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -258,13 +253,6 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/TouchBarView.java</url>
-          <line>262</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
       <breakpoints-defaults>
         <breakpoint type="java-line" />
       </breakpoints-defaults>

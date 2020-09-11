@@ -283,6 +283,7 @@ public class FloatVirtualTouchBar {
         }
 
         mWindowManager.addView(view, params);
+        bar.setReTouchHelper(new ReTouchHelper(context, mWindowManager, view));
 
         return view;
     }

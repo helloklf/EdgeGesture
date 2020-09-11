@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -53,6 +54,9 @@ public class ThreeSectionView extends View {
     private long lastEventTime = 0L;
     private int lastEvent = -1;
     private boolean testMode = false;
+
+    private Path touchPath = new Path();
+    private ReTouchHelper reTouchHelper;
 
     public ThreeSectionView(Context context) {
         super(context);
@@ -190,15 +194,28 @@ public class ThreeSectionView extends View {
         this.accessibilityService = context;
     }
 
+    void setReTouchHelper(ReTouchHelper reTouchHelper) {
+        this.reTouchHelper = reTouchHelper;
+    }
+
+    private void buildGesture() {
+        if (reTouchHelper != null) {
+            reTouchHelper.dispatchGesture(touchPath);
+        }
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event != null) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN: {
+                    touchPath.reset();
+                    touchPath.moveTo(event.getRawX(), event.getRawY());
                     return onTouchDown(event);
                 }
                 case MotionEvent.ACTION_MOVE: {
+                    touchPath.rLineTo(event.getRawX(), event.getRawY());
                     return onTouchMove(event);
                 }
                 case MotionEvent.ACTION_UP: {
@@ -303,6 +320,8 @@ public class ThreeSectionView extends View {
                     onShortTouch();
                 }
             }
+        } else {
+            buildGesture();
         }
         clearEffect();
         return true;
