@@ -14,11 +14,42 @@
     <list default="true" id="e3c4db40-6ccf-4f9b-a0ce-fe5b9784ddcb" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_other.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_other.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_simple.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_simple.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_white_bar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_white_bar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/BatteryReceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/BatteryReceiver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/adb_off.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/adb_off.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/adb_on.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/adb_on.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_copy.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_copy.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_disable.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_icon_add.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_icon_add.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_icon_edit.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_icon_edit.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_icon_ok.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_icon_ok.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_quick_question.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_quick_question.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_tab_apple.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_tab_apple.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_tab_edge.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_tab_edge.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_tab_lab.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_tab_lab.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_tab_settings.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_tab_settings.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_tab_switch.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_tab_switch.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/icon_question.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/icon_question.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_app.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_app.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_app_window.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_app_window.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_arrow_left.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_arrow_left.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_arrow_right.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_arrow_right.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_grid.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_grid.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_home.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_home.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_info.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_info.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_jump_next.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_jump_next.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_jump_previous.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_jump_previous.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_lock.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_lock.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_notice.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_notice.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_power.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_power.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_screenshot.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_screenshot.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_settings.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_settings.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_shell.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_shell.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_split.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_split.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_switch.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_switch.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_tasks.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_tasks.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_window.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_window.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/gesture_switch_options.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/gesture_switch_options.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
