@@ -12,9 +12,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3c4db40-6ccf-4f9b-a0ce-fe5b9784ddcb" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/ReTouchHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/ReTouchHelper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/ThreeSectionView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/ThreeSectionView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/TouchBarView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/TouchBarView.java" afterDir="false" />
@@ -25,7 +24,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="aac46aeb" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="6db66husdm6pt8mz" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -267,26 +266,26 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="805" y="114" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1599804667818" />
-    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1599810941219">
+    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1599835846957">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1599810941219" />
-    <state width="1877" height="222" key="GridCell.Tab.0.bottom" timestamp="1599829288428">
+    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1599835846957" />
+    <state width="1877" height="229" key="GridCell.Tab.0.bottom" timestamp="1599835637872">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="222" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1599829288428" />
-    <state width="1877" height="222" key="GridCell.Tab.0.center" timestamp="1599829288428">
+    <state width="1877" height="229" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1599835637872" />
+    <state width="1877" height="229" key="GridCell.Tab.0.center" timestamp="1599835637872">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="222" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1599829288428" />
-    <state width="1877" height="222" key="GridCell.Tab.0.left" timestamp="1599829288427">
+    <state width="1877" height="229" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1599835637872" />
+    <state width="1877" height="229" key="GridCell.Tab.0.left" timestamp="1599835637872">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="222" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1599829288427" />
-    <state width="1877" height="222" key="GridCell.Tab.0.right" timestamp="1599829288428">
+    <state width="1877" height="229" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1599835637872" />
+    <state width="1877" height="229" key="GridCell.Tab.0.right" timestamp="1599835637872">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="222" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1599829288428" />
+    <state width="1877" height="229" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1599835637872" />
     <state width="1877" height="292" key="GridCell.Tab.1.bottom" timestamp="1599815086734">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -311,18 +310,18 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="950" y="260" width="829" height="602" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1599812737396" />
-    <state width="339" height="59" key="javadoc.popup.new" timestamp="1599828918256">
+    <state width="339" height="59" key="javadoc.popup.new" timestamp="1599835771024">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="339" height="59" key="javadoc.popup.new/0.0.1920.1040@0.0.1920.1040" timestamp="1599828918256" />
+    <state width="339" height="59" key="javadoc.popup.new/0.0.1920.1040@0.0.1920.1040" timestamp="1599835771024" />
     <state x="702" y="148" key="refactoring.ChangeSignatureDialog" timestamp="1599806255233">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="702" y="148" key="refactoring.ChangeSignatureDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1599806255233" />
-    <state x="616" y="172" width="672" height="676" key="search.everywhere.popup" timestamp="1599810045404">
+    <state x="616" y="172" width="672" height="676" key="search.everywhere.popup" timestamp="1599834043150">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="616" y="172" width="672" height="676" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1599810045404" />
+    <state x="616" y="172" width="672" height="676" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1599834043150" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

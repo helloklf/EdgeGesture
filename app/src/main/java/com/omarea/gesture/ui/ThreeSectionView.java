@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.view.InputDevice;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -215,7 +216,7 @@ public class ThreeSectionView extends View {
                     return onTouchDown(event);
                 }
                 case MotionEvent.ACTION_MOVE: {
-                    // touchPath.lineTo(event.getRawX(), event.getRawY());
+                    touchPath.lineTo(event.getRawX(), event.getRawY());
                     return onTouchMove(event);
                 }
                 case MotionEvent.ACTION_UP: {
@@ -321,7 +322,10 @@ public class ThreeSectionView extends View {
                 }
             }
         } else {
-            buildGesture();
+            InputDevice inputDevice = event.getDevice();
+            if (inputDevice != null && !inputDevice.isVirtual()) {
+                buildGesture();
+            }
         }
         clearEffect();
         return true;

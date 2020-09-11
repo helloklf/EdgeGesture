@@ -24,48 +24,50 @@ public class ReTouchHelper {
 
     public void dispatchGesture(Path touchPath) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            if (running) {
-                return;
-            }
-            Log.e("@Gesture", "dispatchGesture >>");
-            pause();
-            final GestureDescription.Builder builder = new GestureDescription.Builder();
-            builder.addStroke(new GestureDescription.StrokeDescription(touchPath, 0, 10L));
-            mView.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mAccessibilityService.dispatchGesture(builder.build(), new AccessibilityService.GestureResultCallback() {
-                        @Override
-                        public void onCompleted(GestureDescription gestureDescription) {
-                            resume();
-                            super.onCompleted(gestureDescription);
-                        }
-
-                        public void onCancelled(GestureDescription gestureDescription) {
-                            resume();
-                            super.onCancelled(gestureDescription);
-                        }
-                    }, null);
+            synchronized (this) {
+                if (running) {
+                    return;
                 }
-            }, 64);
+                Log.e("@Gesture", "dispatchGesture >>");
+                pause();
+                final GestureDescription.Builder builder = new GestureDescription.Builder();
+                builder.addStroke(new GestureDescription.StrokeDescription(touchPath, 1, 1));
+                mView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mAccessibilityService.dispatchGesture(builder.build(), new AccessibilityService.GestureResultCallback() {
+                            @Override
+                            public void onCompleted(GestureDescription gestureDescription) {
+                                resume();
+                                super.onCompleted(gestureDescription);
+                            }
+
+                            public void onCancelled(GestureDescription gestureDescription) {
+                                resume();
+                                super.onCancelled(gestureDescription);
+                            }
+                        }, null);
+                    }
+                }, 60);
+            }
         }
     }
 
     private void pause() {
         running = true;
-        mParams.flags = mFlags | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+        mParams.flags = mFlags | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
         mWindowManager.updateViewLayout(mView, mParams);
     }
 
     private void resume() {
+        mParams.flags = mFlags ;
+        mWindowManager.updateViewLayout(mView, mParams);
+        Log.e("@Gesture", "dispatchGesture √");
         mView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mParams.flags = mFlags;
-                mWindowManager.updateViewLayout(mView, mParams);
-                Log.e("@Gesture", "dispatchGesture √");
                 running = false;
             }
-        }, 21);
+        }, 60);
     }
 }

@@ -13,6 +13,7 @@ import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.InputDevice;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -200,6 +201,8 @@ public class iOSWhiteBar {
             private float touchCurrentRawY;
             private long lastTouchDown = 0L;
 
+            private InputDevice inputDevice;
+
             private void performGlobalAction(final ActionModel event) {
                 if (accessibilityService != null) {
                     Handlers.executeVirtualAction(accessibilityService, event, touchStartRawX, touchStartRawY);
@@ -301,7 +304,6 @@ public class iOSWhiteBar {
             */
 
             private boolean onTouchDown(final MotionEvent event) {
-                Log.e("@Gesture", "TouchDown");
                 isTouchDown = true;
                 isGestureCompleted = false;
                 touchStartX = event.getX();
@@ -340,7 +342,7 @@ public class iOSWhiteBar {
                         if (isTouchDown && !isGestureCompleted && lastTouchDown == downTime) {
                             if (Math.abs(touchStartRawX - touchCurrentRawX) < slideThresholdX && Math.abs(touchStartRawY - touchCurrentRawY) < slideThresholdY) {
                                 int pressureAction = config.getInt(SpfConfig.IOS_BAR_PRESS, SpfConfig.IOS_BAR_PRESS_DEFAULT);
-                                if (pressureAction != SpfConfig.IOS_BAR_TOUCH_DEFAULT) {
+                                if (pressureAction != Handlers.GLOBAL_ACTION_NONE) {
                                     isLongTimeGesture = true;
                                     if (vibratorRun) {
                                         Gesture.vibrate(Gesture.VibrateMode.VIBRATE_PRESS, view);
@@ -353,7 +355,7 @@ public class iOSWhiteBar {
                             }
                         }
                     }
-                }, 280);
+                }, config.getInt(SpfConfig.CONFIG_HOVER_TIME, SpfConfig.CONFIG_HOVER_TIME_DEFAULT) + 100);
 
                 return true;
             }
@@ -444,11 +446,15 @@ public class iOSWhiteBar {
                             Gesture.vibrate(Gesture.VibrateMode.VIBRATE_CLICK, view);
                             performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_TOUCH, SpfConfig.IOS_BAR_TOUCH_DEFAULT));
                         } else {
-                            buildGesture();
+                            if (inputDevice != null && !inputDevice.isVirtual()) {
+                                buildGesture();
+                            }
                         }
                     }
                 } else if (!(Math.abs(moveX) > flingValue || Math.abs(moveY) > flingValue)) {
-                    buildGesture();
+                    if (inputDevice != null && !inputDevice.isVirtual()) {
+                        buildGesture();
+                    }
                 }
 
                 clearEffect();
@@ -474,10 +480,11 @@ public class iOSWhiteBar {
                         case MotionEvent.ACTION_DOWN: {
                             touchPath.reset();
                             touchPath.moveTo(event.getRawX(), event.getRawY());
+                            inputDevice = event.getDevice();
                             return onTouchDown(event);
                         }
                         case MotionEvent.ACTION_MOVE: {
-                            // touchPath.lineTo(event.getRawX(), event.getRawY());
+                            touchPath.lineTo(event.getRawX(), event.getRawY());
                             return onTouchMove(event);
                         }
                         case MotionEvent.ACTION_UP: {
