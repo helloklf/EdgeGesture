@@ -260,7 +260,7 @@ public class TouchBarView extends View {
         float moveX = event.getX() - touchStartX;
         float moveY = touchStartY - event.getY();
 
-        if (barPosition == BOTTOM && Math.abs(moveY) > flingValue) {
+        if (barPosition == BOTTOM && Math.abs(moveY) > flingValue) { //  > flingValue
             if (moveY > FLIP_DISTANCE) {
                 if (isLongTimeGesture)
                     onTouchHover();

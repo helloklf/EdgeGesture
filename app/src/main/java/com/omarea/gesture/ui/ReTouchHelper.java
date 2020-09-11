@@ -3,7 +3,6 @@ package com.omarea.gesture.ui;
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.GestureDescription;
 import android.graphics.Path;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -29,14 +28,14 @@ public class ReTouchHelper {
                 public void onCompleted(GestureDescription gestureDescription) {
                     params.flags&= ~WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
                     mWindowManager.updateViewLayout(mView, params);
-                    Log.d("@Gesture", "dispatchGesture √");
+                    // Log.d("@Gesture", "dispatchGesture √");
                     super.onCompleted(gestureDescription);
                 }
 
                 public void onCancelled(GestureDescription gestureDescription) {
                     params.flags&= ~WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
                     mWindowManager.updateViewLayout(mView, params);
-                    Log.e("@Gesture", "dispatchGesture ×");
+                    // Log.e("@Gesture", "dispatchGesture ×");
                     super.onCancelled(gestureDescription);
                 }
             }, null);
