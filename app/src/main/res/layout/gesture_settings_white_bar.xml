@@ -55,9 +55,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    style="@style/setting_label"
                     android:minWidth="80dp"
                     android:text="向左滑动" />
 
@@ -67,10 +65,7 @@
                     android:text="@string/edge_action" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:minWidth="80dp"
+                    style="@style/setting_label"
                     android:text="向右滑动" />
 
                 <Button
@@ -80,15 +75,13 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_marginTop="@dimen/row_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:minWidth="80dp"
+                    style="@style/setting_label"
                     android:text="向上滑动" />
 
                 <Button
@@ -97,10 +90,7 @@
                     android:text="@string/edge_action" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:minWidth="80dp"
+                    style="@style/setting_label"
                     android:text="上滑悬停" />
 
                 <Button
@@ -110,15 +100,13 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_marginTop="@dimen/row_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:minWidth="80dp"
+                    style="@style/setting_label"
                     android:text="轻触" />
 
                 <Button
@@ -127,10 +115,7 @@
                     android:text="@string/edge_action" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:minWidth="80dp"
+                    style="@style/setting_label"
                     android:text="长按" />
 
                 <Button
@@ -155,12 +140,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/row_margin"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="100dp"
+                    style="@style/setting_label"
                     android:layout_height="wrap_content"
                     android:text="宽度/颜色" />
 
@@ -182,12 +167,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/row_margin"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="100dp"
+                    style="@style/setting_label"
                     android:layout_height="wrap_content"
                     android:text="淡出不透明度" />
 
@@ -210,13 +195,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/row_margin"
                 android:gravity="center_vertical"
                 android:minHeight="30dp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="100dp"
+                    style="@style/setting_label"
                     android:layout_height="wrap_content"
                     android:text="底部间距" />
 
@@ -248,12 +233,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/row_margin"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="100dp"
+                    style="@style/setting_label"
                     android:layout_height="wrap_content"
                     android:text="宽度/颜色" />
 
@@ -276,12 +261,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/row_margin"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="100dp"
+                    style="@style/setting_label"
                     android:layout_height="wrap_content"
                     android:text="淡出不透明度" />
 
@@ -304,13 +289,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/row_margin"
                 android:gravity="center_vertical"
                 android:minHeight="30dp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="100dp"
+                    style="@style/setting_label"
                     android:layout_height="wrap_content"
                     android:text="底部间距" />
 
@@ -342,12 +327,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/row_margin"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="100dp"
+                    style="@style/setting_label"
                     android:layout_height="wrap_content"
                     android:text="阴影效果" />
 
@@ -370,12 +355,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/row_margin"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="100dp"
+                    style="@style/setting_label"
                     android:layout_height="wrap_content"
                     android:text="描边效果" />
 
@@ -398,13 +383,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/row_margin"
                 android:gravity="center_vertical"
                 android:minHeight="30dp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="100dp"
+                    style="@style/setting_label"
                     android:layout_height="wrap_content"
                     android:text="线条粗细" />
 
@@ -454,7 +439,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/row_margin"
                 android:orientation="horizontal">
 
                 <TextView
@@ -478,7 +463,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/row_margin"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -537,7 +522,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/row_margin"
                 android:orientation="horizontal">
 
                 <TextView

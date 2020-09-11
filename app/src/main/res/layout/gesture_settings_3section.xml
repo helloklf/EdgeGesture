@@ -54,10 +54,8 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:minWidth="80dp"
+
+                    style="@style/setting_label"
                     android:text="@string/bottom_hot_area_width" />
 
                 <SeekBar
@@ -79,14 +77,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/row_margin"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:minWidth="80dp"
+
+                    style="@style/setting_label"
                     android:text="@string/bottom_hot_area_height" />
 
                 <SeekBar
@@ -111,18 +107,14 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:minWidth="80dp"
-                    android:text="左侧"
-                    android:textColor="?android:textColorPrimary" />
+                    style="@style/setting_label"
+                    android:text="左侧" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="上滑" />
+                    android:text="[上滑]" />
 
                 <Button
                     android:id="@+id/three_section_left_slide"
@@ -132,7 +124,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="悬停" />
+                    android:text="[悬停]" />
 
                 <Button
                     android:id="@+id/three_section_left_hover"
@@ -142,22 +134,19 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/row_margin"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:minWidth="80dp"
-                    android:text="中间"
-                    android:textColor="?android:textColorPrimary" />
+
+                    style="@style/setting_label"
+                    android:text="中间" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="上滑" />
+                    android:text="[上滑]" />
 
                 <Button
                     android:id="@+id/three_section_center_slide"
@@ -167,7 +156,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="悬停" />
+                    android:text="[悬停]" />
 
                 <Button
                     android:id="@+id/three_section_center_hover"
@@ -177,14 +166,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/row_margin"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:minWidth="80dp"
+
+                    style="@style/setting_label"
                     android:text="右侧"
                     android:textColor="?android:textColorPrimary" />
 
@@ -192,7 +179,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="上滑" />
+                    android:text="[上滑]" />
 
                 <Button
                     android:id="@+id/three_section_right_slide"
@@ -202,7 +189,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="悬停" />
+                    android:text="[悬停]" />
 
                 <Button
                     android:id="@+id/three_section_right_hover"

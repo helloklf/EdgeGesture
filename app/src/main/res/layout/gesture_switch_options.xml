@@ -16,6 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="@string/enable_service"
+            android:switchPadding="10dp"
             android:textStyle="bold" />
     </LinearLayout>
 

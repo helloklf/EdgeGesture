@@ -55,10 +55,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:minWidth="80dp"
+                    style="@style/setting_label"
                     android:text="@string/bottom_hot_area_width" />
 
                 <SeekBar
@@ -75,14 +72,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/row_margin"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:minWidth="80dp"
+
+                    style="@style/setting_label"
                     android:text="@string/bottom_hot_area_height" />
 
                 <SeekBar
@@ -96,14 +91,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/row_margin"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:minWidth="80dp"
+
+                    style="@style/setting_label"
                     android:text="向上滑动" />
 
                 <Button
@@ -112,10 +105,8 @@
                     android:text="@string/edge_action" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:minWidth="80dp"
+
+                    style="@style/setting_label"
                     android:text="上滑悬停" />
 
                 <Button
@@ -162,10 +153,8 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:minWidth="80dp"
+
+                    style="@style/setting_label"
                     android:text="热区高度" />
 
                 <SeekBar
@@ -180,15 +169,14 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_marginTop="@dimen/row_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:minWidth="80dp"
+
+                    style="@style/setting_label"
                     android:text="向右滑动" />
 
                 <Button
@@ -197,10 +185,8 @@
                     android:text="@string/edge_action" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:minWidth="80dp"
+
+                    style="@style/setting_label"
                     android:text="右滑悬停" />
 
                 <Button
@@ -250,10 +236,8 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:minWidth="80dp"
+
+                    style="@style/setting_label"
                     android:text="热区高度" />
 
                 <SeekBar
@@ -268,15 +252,14 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_marginTop="@dimen/row_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:minWidth="80dp"
+
+                    style="@style/setting_label"
                     android:text="向左滑动" />
 
                 <Button
@@ -285,10 +268,8 @@
                     android:text="@string/edge_action" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:minWidth="80dp"
+
+                    style="@style/setting_label"
                     android:text="左滑悬停" />
 
                 <Button
@@ -310,14 +291,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/row_margin"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:minWidth="80dp"
+
+                    style="@style/setting_label"
                     android:text="大小/颜色" />
 
                 <SeekBar
@@ -338,7 +317,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/row_margin"
                 android:text="@string/hot_area_desc"
                 android:textColor="#888"
                 android:textSize="11dp" />

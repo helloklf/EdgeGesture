@@ -76,9 +76,18 @@
     <style name="switch_desc">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">4dp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">12dp</item>
         <item name="android:alpha">0.7</item>
+    </style>
+
+    <style name="setting_label">
+        <item name="android:layout_width">@dimen/label_width</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:textAlignment">textEnd</item>
+        <item name="android:paddingEnd">5dp</item>
     </style>
 
     <style name="card_title">
@@ -100,7 +109,7 @@
     <style name="btn_handler_picker">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_height">20dp</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:layout_weight">1</item>
         <item name="android:paddingLeft">3dp</item>

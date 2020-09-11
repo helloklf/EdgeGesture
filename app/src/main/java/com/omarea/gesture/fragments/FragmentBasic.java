@@ -46,7 +46,7 @@ public class FragmentBasic extends FragmentSettingsBase {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.gesture_basic_options, container, false);
+        return inflater.inflate(R.layout.gesture_settings_basic, container, false);
     }
 
     @Override

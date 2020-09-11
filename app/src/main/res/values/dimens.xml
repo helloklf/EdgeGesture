@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="card_corner_radius">8dp</dimen>
+    <dimen name="label_width">90dp</dimen>
+    <dimen name="row_margin">12dp</dimen>
 </resources>

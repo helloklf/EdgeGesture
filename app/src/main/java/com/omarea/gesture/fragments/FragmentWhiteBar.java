@@ -18,7 +18,7 @@ public class FragmentWhiteBar extends FragmentSettingsBase {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.gesture_ios_bar_options, container, false);
+        return inflater.inflate(R.layout.gesture_settings_white_bar, container, false);
     }
 
     @Override
@@ -35,15 +35,15 @@ public class FragmentWhiteBar extends FragmentSettingsBase {
         bindHandlerPicker(R.id.ios_bar_touch, SpfConfig.IOS_BAR_TOUCH, SpfConfig.IOS_BAR_TOUCH_DEFAULT);
         bindHandlerPicker(R.id.ios_bar_press, SpfConfig.IOS_BAR_PRESS, SpfConfig.IOS_BAR_PRESS_DEFAULT);
 
-        bindColorPicker(R.id.ios_bar_color_shadow, SpfConfig.IOS_BAR_COLOR_SHADOW, SpfConfig.IOS_BAR_COLOR_SHADOW_DEFAULT);
-        bindColorPicker(R.id.ios_bar_color_stroke, SpfConfig.IOS_BAR_COLOR_STROKE, SpfConfig.IOS_BAR_COLOR_STROKE_DEFAULT);
+        bindColorPicker(R.id.ios_bar_color_shadow, SpfConfig.IOS_BAR_COLOR_SHADOW, SpfConfig.IOS_BAR_COLOR_SHADOW_DEFAULT, getString(R.string.white_bar_shadow_color));
+        bindColorPicker(R.id.ios_bar_color_stroke, SpfConfig.IOS_BAR_COLOR_STROKE, SpfConfig.IOS_BAR_COLOR_STROKE_DEFAULT, getString(R.string.white_bar_stroke_color));
 
         bindSeekBar(R.id.ios_bar_width_landscape, SpfConfig.IOS_BAR_WIDTH_LANDSCAPE, SpfConfig.IOS_BAR_WIDTH_DEFAULT_LANDSCAPE, true);
         bindSeekBar(R.id.ios_bar_width_portrait, SpfConfig.IOS_BAR_WIDTH_PORTRAIT, SpfConfig.IOS_BAR_WIDTH_DEFAULT_PORTRAIT, true);
         bindSeekBar(R.id.ios_bar_alpha_fadeout_portrait, SpfConfig.IOS_BAR_ALPHA_FADEOUT_PORTRAIT, SpfConfig.IOS_BAR_ALPHA_FADEOUT_PORTRAIT_DEFAULT, true);
         bindSeekBar(R.id.ios_bar_alpha_fadeout_landscape, SpfConfig.IOS_BAR_ALPHA_FADEOUT_LANDSCAPE, SpfConfig.IOS_BAR_ALPHA_FADEOUT_LANDSCAPE_DEFAULT, true);
-        bindColorPicker(R.id.ios_bar_color_landscape, SpfConfig.IOS_BAR_COLOR_LANDSCAPE, SpfConfig.IOS_BAR_COLOR_LANDSCAPE_DEFAULT);
-        bindColorPicker(R.id.ios_bar_color_portrait, SpfConfig.IOS_BAR_COLOR_PORTRAIT, SpfConfig.IOS_BAR_COLOR_PORTRAIT_DEFAULT);
+        bindColorPicker(R.id.ios_bar_color_landscape, SpfConfig.IOS_BAR_COLOR_LANDSCAPE, SpfConfig.IOS_BAR_COLOR_LANDSCAPE_DEFAULT, getString(R.string.white_bar_landscape_color));
+        bindColorPicker(R.id.ios_bar_color_portrait, SpfConfig.IOS_BAR_COLOR_PORTRAIT, SpfConfig.IOS_BAR_COLOR_PORTRAIT_DEFAULT, getString(R.string.white_bar_portrait_color));
         bindSeekBar(R.id.ios_bar_size_shadow, SpfConfig.IOS_BAR_SHADOW_SIZE, SpfConfig.IOS_BAR_SHADOW_SIZE_DEFAULT, true);
         bindSeekBar(R.id.ios_bar_size_stroke, SpfConfig.IOS_BAR_STROKE_SIZE, SpfConfig.IOS_BAR_STROKE_SIZE_DEFAULT, true);
         bindSeekBar(R.id.ios_bar_margin_bottom_landscape, SpfConfig.IOS_BAR_MARGIN_BOTTOM_LANDSCAPE, SpfConfig.IOS_BAR_MARGIN_BOTTOM_LANDSCAPE_DEFAULT, true);
@@ -56,8 +56,8 @@ public class FragmentWhiteBar extends FragmentSettingsBase {
 
         bindCheckable(R.id.ios_input_avoid, SpfConfig.INPUT_METHOD_AVOID, SpfConfig.INPUT_METHOD_AVOID_DEFAULT);
 
-        setViewBackground(getActivity().findViewById(R.id.ios_bar_color_fadeout_portrait), 0xff888888);
-        setViewBackground(getActivity().findViewById(R.id.ios_bar_color_fadeout_landscape), 0xff888888);
+        setViewBackground(getActivity().findViewById(R.id.ios_bar_color_fadeout_portrait), config.getInt(SpfConfig.IOS_BAR_COLOR_PORTRAIT, SpfConfig.IOS_BAR_COLOR_PORTRAIT_DEFAULT));
+        setViewBackground(getActivity().findViewById(R.id.ios_bar_color_fadeout_landscape), config.getInt(SpfConfig.IOS_BAR_COLOR_LANDSCAPE, SpfConfig.IOS_BAR_COLOR_LANDSCAPE_DEFAULT));
 
         Switch ios_bar_auto_color_root = getActivity().findViewById(R.id.ios_bar_auto_color_root);
         ios_bar_auto_color_root.setChecked(config.getBoolean(SpfConfig.IOS_BAR_AUTO_COLOR, SpfConfig.IOS_BAR_AUTO_COLOR_DEFAULT));
@@ -90,6 +90,8 @@ public class FragmentWhiteBar extends FragmentSettingsBase {
         setViewBackground(context.findViewById(R.id.ios_bar_color_portrait), config.getInt(SpfConfig.IOS_BAR_COLOR_PORTRAIT, SpfConfig.IOS_BAR_COLOR_PORTRAIT_DEFAULT));
         setViewBackground(context.findViewById(R.id.ios_bar_color_shadow), config.getInt(SpfConfig.IOS_BAR_COLOR_SHADOW, SpfConfig.IOS_BAR_COLOR_SHADOW_DEFAULT));
         setViewBackground(context.findViewById(R.id.ios_bar_color_stroke), config.getInt(SpfConfig.IOS_BAR_COLOR_STROKE, SpfConfig.IOS_BAR_COLOR_STROKE_DEFAULT));
+        setViewBackground(getActivity().findViewById(R.id.ios_bar_color_fadeout_portrait), config.getInt(SpfConfig.IOS_BAR_COLOR_PORTRAIT, SpfConfig.IOS_BAR_COLOR_PORTRAIT_DEFAULT));
+        setViewBackground(getActivity().findViewById(R.id.ios_bar_color_fadeout_landscape), config.getInt(SpfConfig.IOS_BAR_COLOR_LANDSCAPE, SpfConfig.IOS_BAR_COLOR_LANDSCAPE_DEFAULT));
 
         context.findViewById(R.id.ios_bar_color_fadeout_portrait).setAlpha(config.getInt(SpfConfig.IOS_BAR_ALPHA_FADEOUT_PORTRAIT, SpfConfig.IOS_BAR_ALPHA_FADEOUT_PORTRAIT_DEFAULT) / 100f);
         context.findViewById(R.id.ios_bar_color_fadeout_landscape).setAlpha(config.getInt(SpfConfig.IOS_BAR_ALPHA_FADEOUT_LANDSCAPE, SpfConfig.IOS_BAR_ALPHA_FADEOUT_LANDSCAPE_DEFAULT) / 100f);

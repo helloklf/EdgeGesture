@@ -14,9 +14,9 @@ import android.view.WindowManager;
 import android.widget.TabHost;
 
 import com.omarea.gesture.fragments.FragmentBasic;
-import com.omarea.gesture.fragments.FragmentEdge;
+import com.omarea.gesture.fragments.FragmentSimple;
 import com.omarea.gesture.fragments.FragmentOther;
-import com.omarea.gesture.fragments.FragmentThreeSection;
+import com.omarea.gesture.fragments.Fragment3Section;
 import com.omarea.gesture.fragments.FragmentWhiteBar;
 import com.omarea.gesture.util.GlobalState;
 import com.omarea.gesture.util.Memory;
@@ -54,7 +54,7 @@ public class SettingsActivity extends Activity {
 
         setTheme(false);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gesture_settings);
+        setContentView(R.layout.gesture_settings);
 
         try {
             final TabHost tabHost = findViewById(R.id.main_tabhost);
@@ -75,9 +75,9 @@ public class SettingsActivity extends Activity {
             getFragmentManager().beginTransaction()
                     .replace(R.id.main_tab_1, new FragmentWhiteBar()).commit();
             getFragmentManager().beginTransaction()
-                    .replace(R.id.main_tab_2, new FragmentEdge()).commit();
+                    .replace(R.id.main_tab_2, new FragmentSimple()).commit();
             getFragmentManager().beginTransaction()
-                    .replace(R.id.main_tab_3, new FragmentThreeSection()).commit();
+                    .replace(R.id.main_tab_3, new Fragment3Section()).commit();
             getFragmentManager().beginTransaction()
                     .replace(R.id.main_tab_4, new FragmentOther()).commit();
         } catch (Exception ex) {
