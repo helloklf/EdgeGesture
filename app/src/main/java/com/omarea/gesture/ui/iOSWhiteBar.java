@@ -37,7 +37,6 @@ public class iOSWhiteBar {
     private AccessibilityServiceGesture accessibilityService;
     private SharedPreferences config;
     private Boolean isLandscapf;
-    private float pressure = 0;
 
     iOSWhiteBar(AccessibilityServiceGesture accessibilityService, Boolean isLandscapf) {
         this.accessibilityService = accessibilityService;
@@ -53,9 +52,9 @@ public class iOSWhiteBar {
         int h = displayMetrics.heightPixels;
         int w = displayMetrics.widthPixels;
         if (isLandscapf) {
-            return h < w ? w : h;
+            return Math.max(h, w);
         } else {
-            return h < w ? h : w;
+            return Math.min(h, w);
         }
     }
 
@@ -65,10 +64,7 @@ public class iOSWhiteBar {
     private int dp2px(Context context, float dpValue) {
         float scale = context.getResources().getDisplayMetrics().density;
         int value = (int) (dpValue * scale + 0.5f);
-        if (value < 1) {
-            return 1;
-        }
-        return value;
+        return Math.max(value, 1);
     }
 
     // 判断是否没有定义任何动作（装饰模式）
@@ -347,8 +343,6 @@ public class iOSWhiteBar {
                 return true;
             }
 
-            private int consecutiveDirection = 0;
-
             private boolean onTouchMove(MotionEvent event) {
                 if (isGestureCompleted || !isTouchDown) {
                     return true;
@@ -444,7 +438,6 @@ public class iOSWhiteBar {
             }
 
             void clearEffect() {
-                pressure = 0;
 
                 if (!lowPowerMode) {
                     animationTo(originX, originY, 800, new OvershootInterpolator());

@@ -12,19 +12,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3c4db40-6ccf-4f9b-a0ce-fe5b9784ddcb" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/app/adb_process/jar/adb_process.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/adb_process/jar/adb_process.dex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/adb_process/jar/adb_process.jar" beforeDir="false" afterPath="$PROJECT_DIR$/app/adb_process/jar/adb_process.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/adb_process/src/shell/RemoteAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/adb_process/src/shell/RemoteAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/assets/adb_process.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/adb_process.dex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/AccessibilityServiceGesture.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/AccessibilityServiceGesture.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="Pixel_2_API_30" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="8b3aae2c" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -83,7 +78,7 @@
     <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="emulator-5554" />
     <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-07-10T03:30:53.392Z" />
     <property name="ExportApk.ApkPath" value="D:\Android\EdgeGesture\app" />
-    <property name="ExportApk.BuildVariants" value="release_mini" />
+    <property name="ExportApk.BuildVariants" value="release" />
     <property name="ExportApk.SignV1" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="SHOW_ALL_PROCESSES" value="false" />
