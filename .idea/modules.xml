@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/EdgeGesture.iml" filepath="$PROJECT_DIR$/EdgeGesture.iml" group="EdgeGesture" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/EdgeGesture-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/EdgeGesture-app.iml" group="EdgeGesture/app" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="EdgeGesture/app" />
     </modules>
   </component>

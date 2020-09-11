@@ -301,6 +301,7 @@ public class iOSWhiteBar {
             */
 
             private boolean onTouchDown(final MotionEvent event) {
+                Log.e("@Gesture", "TouchDown");
                 isTouchDown = true;
                 isGestureCompleted = false;
                 touchStartX = event.getX();
@@ -476,7 +477,7 @@ public class iOSWhiteBar {
                             return onTouchDown(event);
                         }
                         case MotionEvent.ACTION_MOVE: {
-                            touchPath.lineTo(event.getRawX(), event.getRawY());
+                            // touchPath.lineTo(event.getRawX(), event.getRawY());
                             return onTouchMove(event);
                         }
                         case MotionEvent.ACTION_UP: {

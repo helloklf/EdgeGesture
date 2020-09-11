@@ -149,7 +149,7 @@ public class TouchBarView extends View {
                     return onTouchDown(event);
                 }
                 case MotionEvent.ACTION_MOVE: {
-                    touchPath.lineTo(event.getRawX(), event.getRawY());
+                    // touchPath.lineTo(event.getRawX(), event.getRawY());
                     return onTouchMove(event);
                 }
                 case MotionEvent.ACTION_UP: {
