@@ -14,49 +14,16 @@
     <list default="true" id="e3c4db40-6ccf-4f9b-a0ce-fe5b9784ddcb" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/BatteryReceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/BatteryReceiver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/adb_off.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/adb_off.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/adb_on.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/adb_on.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_copy.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_copy.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_disable.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_icon_add.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_icon_add.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_icon_edit.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_icon_edit.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_icon_ok.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_icon_ok.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_quick_question.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_quick_question.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_tab_apple.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_tab_apple.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_tab_edge.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_tab_edge.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_tab_lab.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_tab_lab.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_tab_settings.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_tab_settings.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_tab_switch.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_tab_switch.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/icon_question.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/icon_question.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_app.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_app.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_app_window.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_app_window.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_arrow_left.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_arrow_left.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_arrow_right.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_arrow_right.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_grid.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_grid.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_home.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_home.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_info.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_info.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_jump_next.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_jump_next.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_jump_previous.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_jump_previous.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_lock.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_lock.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_notice.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_notice.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_power.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_power.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_screenshot.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_screenshot.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_settings.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_settings.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_shell.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_shell.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_split.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_split.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_switch.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_switch.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_tasks.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_tasks.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/touch_window.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/touch_window.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/gesture_switch_options.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/gesture_switch_options.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/ThreeSectionView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/ThreeSectionView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/TouchBarView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/TouchBarView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/iOSWhiteBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/iOSWhiteBar.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="8b3aae2c" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="Pixel_2_API_30" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -250,42 +217,42 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1599810941219" />
-    <state width="1877" height="180" key="GridCell.Tab.0.bottom" timestamp="1599807305869">
+    <state width="1877" height="292" key="GridCell.Tab.0.bottom" timestamp="1599815086734">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="180" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1599807305869" />
-    <state width="1877" height="180" key="GridCell.Tab.0.center" timestamp="1599807305869">
+    <state width="1877" height="292" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1599815086734" />
+    <state width="1877" height="292" key="GridCell.Tab.0.center" timestamp="1599815086734">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="180" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1599807305869" />
-    <state width="1877" height="180" key="GridCell.Tab.0.left" timestamp="1599807305869">
+    <state width="1877" height="292" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1599815086734" />
+    <state width="1877" height="292" key="GridCell.Tab.0.left" timestamp="1599815086734">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="180" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1599807305869" />
-    <state width="1877" height="180" key="GridCell.Tab.0.right" timestamp="1599807305869">
+    <state width="1877" height="292" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1599815086734" />
+    <state width="1877" height="292" key="GridCell.Tab.0.right" timestamp="1599815086734">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="180" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1599807305869" />
-    <state width="1877" height="292" key="GridCell.Tab.1.bottom" timestamp="1599806122721">
+    <state width="1877" height="292" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1599815086734" />
+    <state width="1877" height="292" key="GridCell.Tab.1.bottom" timestamp="1599815086734">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="292" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1599806122721" />
-    <state width="1877" height="292" key="GridCell.Tab.1.center" timestamp="1599806122721">
+    <state width="1877" height="292" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1599815086734" />
+    <state width="1877" height="292" key="GridCell.Tab.1.center" timestamp="1599815086734">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="292" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1599806122721" />
-    <state width="1877" height="292" key="GridCell.Tab.1.left" timestamp="1599806122721">
+    <state width="1877" height="292" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1599815086734" />
+    <state width="1877" height="292" key="GridCell.Tab.1.left" timestamp="1599815086734">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="292" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1599806122721" />
-    <state width="1877" height="292" key="GridCell.Tab.1.right" timestamp="1599806122721">
+    <state width="1877" height="292" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1599815086734" />
+    <state width="1877" height="292" key="GridCell.Tab.1.right" timestamp="1599815086734">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="292" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1599806122721" />
-    <state x="768" y="371" key="com.intellij.ide.util.TipDialog" timestamp="1599796501067">
+    <state width="1877" height="292" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1599815086734" />
+    <state x="768" y="371" key="com.intellij.ide.util.TipDialog" timestamp="1599820936021">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="768" y="371" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1599796501067" />
+    <state x="768" y="371" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1599820936021" />
     <state x="950" y="260" width="829" height="602" key="find.popup" timestamp="1599812737396">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
