@@ -424,17 +424,13 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:text="锁屏隐藏" />
+                    android:text="锁屏时隐藏" />
 
                 <Switch
                     android:id="@+id/ios_bar_lock_hide"
                     style="@style/btn_handler_picker"
                     android:textAlignment="center" />
             </LinearLayout>
-
-            <TextView
-                style="@style/switch_desc"
-                android:text="手机锁屏后隐藏小横条" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -477,17 +473,13 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
-                        android:text="输入避让" />
+                        android:text="避免遮挡输入法" />
 
                     <Switch
                         android:id="@+id/ios_input_avoid"
                         style="@style/btn_handler_picker"
                         android:textAlignment="center" />
                 </LinearLayout>
-
-                <TextView
-                    style="@style/switch_desc"
-                    android:text="弹出输入软键盘时小横条显示在键盘上方" />
             </LinearLayout>
         </LinearLayout>
 
@@ -507,17 +499,13 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:text="自动反色(增强模式)" />
+                    android:text="随界面自动变色(增强模式)" />
 
                 <Switch
                     android:id="@+id/ios_bar_auto_color_root"
                     style="@style/btn_handler_picker"
                     android:textAlignment="center" />
             </LinearLayout>
-
-            <TextView
-                style="@style/switch_desc"
-                android:text="根据界面内容切换小横条颜色" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -531,18 +519,13 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:text="彩虹电量" />
+                    android:text="随电量调整颜色" />
 
                 <Switch
                     android:id="@+id/ios_bar_pop_battery"
                     style="@style/btn_handler_picker"
                     android:textAlignment="center" />
             </LinearLayout>
-
-            <TextView
-                style="@style/switch_desc"
-                android:text="根据电池电量改变小横条颜色" />
-
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

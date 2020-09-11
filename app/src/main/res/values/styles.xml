@@ -86,7 +86,7 @@
         <item name="android:layout_width">@dimen/label_width</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:textAlignment">textEnd</item>
+        <item name="android:textAlignment">textStart</item>
         <item name="android:paddingEnd">5dp</item>
     </style>
 
@@ -108,10 +108,9 @@
 
     <style name="btn_handler_picker">
         <item name="android:background">@android:color/transparent</item>
-        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">20dp</item>
         <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:layout_weight">1</item>
         <item name="android:paddingLeft">3dp</item>
         <item name="android:paddingRight">3dp</item>
         <item name="android:paddingTop">0dp</item>

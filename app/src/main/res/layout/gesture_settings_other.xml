@@ -22,19 +22,29 @@
             style="@style/card_view"
             android:orientation="vertical"
             android:padding="10dp">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
-                    style="@style/card_title"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:text="@string/animation_mode" />
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/card_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/animation_mode" />
+
+                    <TextView
+                        style="@style/switch_desc"
+                        android:layout_marginTop="6dp"
+                        android:text="@string/animation_mode_desc" />
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/home_animation"
@@ -42,11 +52,6 @@
                     android:text="@string/animation_mode_default"
                     android:textAlignment="textEnd" />
             </LinearLayout>
-
-            <TextView
-                style="@style/switch_desc"
-                android:layout_marginTop="6dp"
-                android:text="@string/animation_mode_desc" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -68,11 +73,6 @@
                     android:textAlignment="center" />
             </LinearLayout>
 
-            <TextView
-                style="@style/switch_desc"
-                android:layout_marginTop="6dp"
-                android:text="@string/game_optimization_desc" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -92,11 +92,6 @@
                     style="@style/btn_handler_picker"
                     android:textAlignment="center" />
             </LinearLayout>
-
-            <TextView
-                style="@style/switch_desc"
-                android:layout_marginTop="6dp"
-                android:text="@string/root_get_recents_desc" />
 
         </LinearLayout>
 
@@ -129,17 +124,11 @@
                         android:text="@string/app_switch_exclusive_desc" />
                 </LinearLayout>
 
-                <ImageButton
+                <Button
                     android:id="@+id/app_switch_exclusive"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="5dp"
-                    android:background="@null"
-                    android:padding="10dp"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/gesture_disable"
-                    android:tint="?android:colorAccent" />
+                    style="@style/btn_handler_picker"
+                    android:text="@string/choose_app"
+                    android:textAlignment="textEnd" />
             </LinearLayout>
         </LinearLayout>
 
@@ -153,23 +142,28 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
-                    style="@style/card_title"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_weight="1"
-                    android:text="@string/hide_start_icon" />
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        style="@style/card_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/hide_start_icon" />
 
+                    <TextView
+                        style="@style/switch_desc"
+                        android:text="@string/hide_start_icon_desc" />
+                </LinearLayout>
                 <Switch
                     android:id="@+id/hide_start_icon"
                     style="@style/btn_handler_picker"
                     android:textAlignment="center" />
             </LinearLayout>
 
-            <TextView
-                style="@style/switch_desc"
-                android:text="@string/hide_start_icon_desc" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -190,10 +184,6 @@
                     style="@style/btn_handler_picker"
                     android:textAlignment="center" />
             </LinearLayout>
-
-            <TextView
-                style="@style/switch_desc"
-                android:text="@string/low_power_desc" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
