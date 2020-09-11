@@ -15,6 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="@string/simple_gesture"
+            android:fontFamily="sans-serif-light"
             android:textAppearance="@android:style/TextAppearance.Material.Title" />
 
         <LinearLayout
@@ -74,7 +75,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="16dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -95,7 +96,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="16dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -309,7 +310,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="16dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -337,7 +338,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/hot_area_desc"
                 android:textColor="#888"
                 android:textSize="11dp" />

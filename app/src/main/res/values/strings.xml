@@ -65,6 +65,8 @@
     <string name="app_switch_exclusive_desc">避免通过 上个应用/下个应用 手势切换到这些应用</string>
     <string name="btn_ok">确定</string>
     <string name="faq_click_me">使用遇到问题？点我</string>
-    <string name="steps_click_me">点我，查看向导</string>
+    <string name="steps_click_me">点我，查看(增强模式)向导</string>
+    <string name="enhanced_mode">增强模式</string>
+    <string name="enhanced_mode_desc">激活增强模式，可解决以下问题：①切换应用时会打开已清除的后台；②小横条不会自动反转颜色；③回桌面后切换应用5秒延迟；\n\n点击右侧图标查看激活代码</string>
 
 </resources>

@@ -12,8 +12,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3c4db40-6ccf-4f9b-a0ce-fe5b9784ddcb" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/seekbar_progress_drawable.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/seekbar_thumb.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/switch_thumb.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/switch_track.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/switch_track_close.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/switch_track_open.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/TouchBarView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/TouchBarView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/SettingsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/SettingsActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/enhanced_mode.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/enhanced_mode.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/gesture_basic_options.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/gesture_basic_options.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/gesture_edge_options.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/gesture_edge_options.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/gesture_ios_bar_options.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/gesture_ios_bar_options.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/gesture_other_options.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/gesture_other_options.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/gesture_three_section_options.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/gesture_three_section_options.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,7 +100,7 @@
     <property name="android.recentlyUsedThemes" value="android:Theme.Material.Light&#10;android:Theme.Material&#10;android:Theme.Material.Dialog" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="last.edited.regexp" value="&#10;" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/assets" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/res/drawable" />
     <property name="project.structure.last.edited" value="Build Variants" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -97,8 +111,12 @@
     <option name="LAST_EDITED_BUILD_TYPE" value="release" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Android\EdgeGesture\app\src\main\res\drawable" />
       <recent name="D:\Android\EdgeGesture\app\src\main\assets" />
+      <recent name="D:\Android\EdgeGesture\app\src\main\res\anim" />
+      <recent name="D:\Android\EdgeGesture\app\src\main\res\layout" />
+      <recent name="D:\Android\EdgeGesture\app\src\main\res\raw" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.omarea.gesture" />
@@ -111,12 +129,8 @@
       <recent name="com.omarea.gesture.fragments" />
       <recent name="com.omarea.gesture" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
+    <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Android\EdgeGesture\app\src\main\assets" />
-      <recent name="D:\Android\EdgeGesture\app\src\main\res\anim" />
-      <recent name="D:\Android\EdgeGesture\app\src\main\res\drawable" />
-      <recent name="D:\Android\EdgeGesture\app\src\main\res\layout" />
-      <recent name="D:\Android\EdgeGesture\app\src\main\res\raw" />
     </key>
   </component>
   <component name="RunManager">
@@ -202,10 +216,18 @@
     </todo-panel>
   </component>
   <component name="WindowStateProjectService">
+    <state x="808" y="333" key="AndroidCreateXmlResourceDialog" timestamp="1599809998529">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="808" y="333" key="AndroidCreateXmlResourceDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1599809998529" />
     <state x="805" y="114" key="CommitChangelistDialog2" timestamp="1599804667818">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="805" y="114" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1599804667818" />
+    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1599807782677">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1599807782677" />
     <state width="1877" height="180" key="GridCell.Tab.0.bottom" timestamp="1599807305869">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -242,10 +264,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="768" y="371" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1599796501067" />
-    <state x="480" y="241" width="677" height="534" key="find.popup" timestamp="1599225037785">
+    <state x="480" y="241" width="829" height="602" key="find.popup" timestamp="1599809743875">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="480" y="241" width="677" height="534" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1599225037785" />
+    <state x="480" y="241" width="829" height="602" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1599809743875" />
     <state x="702" y="148" key="refactoring.ChangeSignatureDialog" timestamp="1599806255233">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

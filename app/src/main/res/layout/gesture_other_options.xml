@@ -15,6 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="@string/other_settings"
+            android:fontFamily="sans-serif-light"
             android:textAppearance="@android:style/TextAppearance.Material.Title" />
 
         <LinearLayout
@@ -147,24 +148,48 @@
             android:orientation="vertical"
             android:padding="10dp">
 
-            <Switch
-                android:id="@+id/hide_start_icon"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/hide_start_icon"
-                android:textStyle="bold" />
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/card_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="@string/hide_start_icon" />
+
+                <Switch
+                    android:id="@+id/hide_start_icon"
+                    style="@style/btn_handler_picker"
+                    android:textAlignment="center" />
+            </LinearLayout>
 
             <TextView
                 style="@style/switch_desc"
                 android:text="@string/hide_start_icon_desc" />
 
-            <Switch
-                android:id="@+id/low_power"
-                android:layout_marginTop="16dp"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/low_power"
-                android:textStyle="bold" />
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/card_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="@string/low_power" />
+
+                <Switch
+                    android:id="@+id/low_power"
+                    style="@style/btn_handler_picker"
+                    android:textAlignment="center" />
+            </LinearLayout>
 
             <TextView
                 style="@style/switch_desc"
