@@ -1,13 +1,17 @@
 package com.omarea.gesture.ui;
 
+import android.accessibilityservice.AccessibilityService;
+import android.accessibilityservice.GestureDescription;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
+import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.omarea.gesture.AccessibilityServiceGesture;
@@ -49,6 +53,9 @@ public class TouchBarView extends View {
 
     private float touchRawX;
     private float touchRawY;
+
+    private Path touchPath = new Path();
+    private ReTouchHelper reTouchHelper;
 
     public TouchBarView(Context context) {
         super(context);
@@ -121,15 +128,28 @@ public class TouchBarView extends View {
         this.accessibilityService = context;
     }
 
+    void setReTouchHelper(ReTouchHelper reTouchHelper) {
+        this.reTouchHelper = reTouchHelper;
+    }
+
+    private void buildGesture() {
+        if (reTouchHelper != null) {
+            reTouchHelper.dispatchGesture(touchPath);
+        }
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event != null) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN: {
+                    touchPath.reset();
+                    touchPath.moveTo(event.getRawX(), event.getRawY());
                     return onTouchDown(event);
                 }
                 case MotionEvent.ACTION_MOVE: {
+                    touchPath.rLineTo(event.getRawX(), event.getRawY());
                     return onTouchMove(event);
                 }
                 case MotionEvent.ACTION_UP: {
@@ -240,7 +260,14 @@ public class TouchBarView extends View {
         float moveX = event.getX() - touchStartX;
         float moveY = touchStartY - event.getY();
 
-        if (Math.abs(moveX) > flingValue || Math.abs(moveY) > flingValue) {
+        if (barPosition == BOTTOM && Math.abs(moveY) > flingValue) {
+            if (moveY > FLIP_DISTANCE) {
+                if (isLongTimeGesture)
+                    onTouchHover();
+                else
+                    onShortTouch();
+            }
+        } else if ((barPosition == LEFT || barPosition == RIGHT) && Math.abs(moveX) > flingValue) {
             if (barPosition == LEFT) {
                 if (moveX > FLIP_DISTANCE) {
                     // 向屏幕内侧滑动 - 停顿250ms 打开最近任务，不停顿则“返回”
@@ -257,14 +284,9 @@ public class TouchBarView extends View {
                     else
                         onShortTouch();
                 }
-            } else if (barPosition == BOTTOM) {
-                if (moveY > FLIP_DISTANCE) {
-                    if (isLongTimeGesture)
-                        onTouchHover();
-                    else
-                        onShortTouch();
-                }
             }
+        } else {
+            buildGesture();
         }
         cleartEffect();
 

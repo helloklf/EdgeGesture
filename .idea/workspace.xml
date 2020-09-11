@@ -6,13 +6,19 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="&gt;&gt;&gt;&gt;" />
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="@Gesture" />
     <option name="TOOL_WINDOW_LOG_LEVEL" value="debug" />
-    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3c4db40-6ccf-4f9b-a0ce-fe5b9784ddcb" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/ReTouchHelper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/xml-v24/keyevent_accessibility.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/FloatVirtualTouchBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/FloatVirtualTouchBar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/TouchBarView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/TouchBarView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/iOSWhiteBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/iOSWhiteBar.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -201,17 +207,64 @@
     </todo-panel>
   </component>
   <component name="WindowStateProjectService">
-    <state x="768" y="371" key="com.intellij.ide.util.TipDialog" timestamp="1599442103951">
+    <state x="805" y="114" key="CommitChangelistDialog2" timestamp="1599804667818">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="768" y="371" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1599442103951" />
+    <state x="805" y="114" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1599804667818" />
+    <state width="1877" height="292" key="GridCell.Tab.0.bottom" timestamp="1599806122721">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="292" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1599806122721" />
+    <state width="1877" height="292" key="GridCell.Tab.0.center" timestamp="1599806122721">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="292" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1599806122721" />
+    <state width="1877" height="292" key="GridCell.Tab.0.left" timestamp="1599806122721">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="292" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1599806122721" />
+    <state width="1877" height="292" key="GridCell.Tab.0.right" timestamp="1599806122721">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="292" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1599806122721" />
+    <state width="1877" height="292" key="GridCell.Tab.1.bottom" timestamp="1599806122721">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="292" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1599806122721" />
+    <state width="1877" height="292" key="GridCell.Tab.1.center" timestamp="1599806122721">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="292" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1599806122721" />
+    <state width="1877" height="292" key="GridCell.Tab.1.left" timestamp="1599806122721">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="292" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1599806122721" />
+    <state width="1877" height="292" key="GridCell.Tab.1.right" timestamp="1599806122721">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="292" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1599806122721" />
+    <state x="768" y="371" key="com.intellij.ide.util.TipDialog" timestamp="1599796501067">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="768" y="371" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1599796501067" />
     <state x="480" y="241" width="677" height="534" key="find.popup" timestamp="1599225037785">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="480" y="241" width="677" height="534" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1599225037785" />
+    <state x="702" y="148" key="refactoring.ChangeSignatureDialog" timestamp="1599806255233">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="702" y="148" key="refactoring.ChangeSignatureDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1599806255233" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/TouchBarView.java</url>
+          <line>262</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
       <breakpoints-defaults>
         <breakpoint type="java-line" />
       </breakpoints-defaults>

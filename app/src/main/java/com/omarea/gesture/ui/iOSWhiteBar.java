@@ -1,5 +1,7 @@
 package com.omarea.gesture.ui;
 
+import android.accessibilityservice.AccessibilityService;
+import android.accessibilityservice.GestureDescription;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
@@ -9,6 +11,7 @@ import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -17,6 +20,7 @@ import android.view.WindowManager;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
+import android.view.inputmethod.InputMethodManager;
 
 import com.omarea.gesture.AccessibilityServiceGesture;
 import com.omarea.gesture.ActionModel;
@@ -37,6 +41,7 @@ public class iOSWhiteBar {
     private AccessibilityServiceGesture accessibilityService;
     private SharedPreferences config;
     private Boolean isLandscapf;
+    private Path touchPath = new Path(); // 记录触摸轨迹
 
     iOSWhiteBar(AccessibilityServiceGesture accessibilityService, Boolean isLandscapf) {
         this.accessibilityService = accessibilityService;
@@ -166,6 +171,7 @@ public class iOSWhiteBar {
         }
 
         mWindowManager.addView(view, params);
+        final ReTouchHelper reTouchHelper = new ReTouchHelper(accessibilityService, mWindowManager, view);
 
         View.OnTouchListener onTouchListener = new View.OnTouchListener() {
             private float touchStartX = 0F; // 触摸开始位置
@@ -286,6 +292,14 @@ public class iOSWhiteBar {
                 objectAnimator.start();
             }
 
+            /*
+            // 只有被输入的引用才能获取输入法状态
+            private boolean softKeyboardIsActive () {
+                InputMethodManager imm = (InputMethodManager)accessibilityService.getSystemService(Context.INPUT_METHOD_SERVICE);
+                return imm.isActive();
+            }
+            */
+
             private boolean onTouchDown(final MotionEvent event) {
                 isTouchDown = true;
                 isGestureCompleted = false;
@@ -401,10 +415,9 @@ public class iOSWhiteBar {
                 isGestureCompleted = true;
                 lastTouchDown = 0L;
 
+                float moveX = event.getX() - touchStartX;
+                float moveY = touchStartY - event.getY();
                 if (GlobalState.consecutiveAction == null || GlobalState.consecutiveAction.actionCode == Handlers.GLOBAL_ACTION_NONE) {
-                    float moveX = event.getX() - touchStartX;
-                    float moveY = touchStartY - event.getY();
-
                     if (Math.abs(moveX) > flingValue || Math.abs(moveY) > flingValue) {
                         if (moveY > FLIP_DISTANCE) {
                             if (isLongTimeGesture) { // 上滑悬停
@@ -429,16 +442,22 @@ public class iOSWhiteBar {
                         if (action != Handlers.GLOBAL_ACTION_NONE) {
                             Gesture.vibrate(Gesture.VibrateMode.VIBRATE_CLICK, view);
                             performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_TOUCH, SpfConfig.IOS_BAR_TOUCH_DEFAULT));
+                        } else {
+                            buildGesture();
                         }
                     }
+                } else if (!(Math.abs(moveX) > flingValue || Math.abs(moveY) > flingValue)) {
+                    buildGesture();
                 }
 
                 clearEffect();
+            }
 
+            private void buildGesture() {
+                reTouchHelper.dispatchGesture(touchPath);
             }
 
             void clearEffect() {
-
                 if (!lowPowerMode) {
                     animationTo(originX, originY, 800, new OvershootInterpolator());
                 }
@@ -452,9 +471,12 @@ public class iOSWhiteBar {
                 if (event != null) {
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN: {
+                            touchPath.reset();
+                            touchPath.moveTo(event.getRawX(), event.getRawY());
                             return onTouchDown(event);
                         }
                         case MotionEvent.ACTION_MOVE: {
+                            touchPath.rLineTo(event.getRawX(), event.getRawY());
                             return onTouchMove(event);
                         }
                         case MotionEvent.ACTION_UP: {

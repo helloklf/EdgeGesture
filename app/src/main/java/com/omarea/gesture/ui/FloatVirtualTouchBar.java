@@ -228,6 +228,7 @@ public class FloatVirtualTouchBar {
         }
 
         mWindowManager.addView(view, params);
+        bar.setReTouchHelper(new ReTouchHelper(context, mWindowManager, view));
 
         return view;
     }
@@ -352,6 +353,7 @@ public class FloatVirtualTouchBar {
 
         mWindowManager.addView(view, params);
         // view.setOnTouchListener(getTouchPierceListener(params, view));
+        bar.setReTouchHelper(new ReTouchHelper(context, mWindowManager, view));
 
         return view;
     }
@@ -400,6 +402,7 @@ public class FloatVirtualTouchBar {
 
         mWindowManager.addView(view, params);
         // view.setOnTouchListener(getTouchPierceListener(params, view));
+        bar.setReTouchHelper(new ReTouchHelper(context, mWindowManager, view));
 
         return view;
     }
