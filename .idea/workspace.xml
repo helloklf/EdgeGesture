@@ -13,16 +13,9 @@
   <component name="ChangeListManager">
     <list default="true" id="e3c4db40-6ccf-4f9b-a0ce-fe5b9784ddcb" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/AccessibilityServiceGesture.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/AccessibilityServiceGesture.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/AppSwitchActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/AppSwitchActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/SpfConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/SpfConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/fragments/FragmentOther.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/fragments/FragmentOther.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/ThreeSectionView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/ThreeSectionView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/TouchBarView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/TouchBarView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/iOSWhiteBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/iOSWhiteBar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/util/Handlers.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/util/Handlers.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_other.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_other.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -318,10 +311,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="950" y="260" width="829" height="602" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1600511752629" />
-    <state width="339" height="59" key="javadoc.popup.new" timestamp="1600514328413">
+    <state width="339" height="59" key="javadoc.popup.new" timestamp="1600515806449">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="339" height="59" key="javadoc.popup.new/0.0.1920.1040@0.0.1920.1040" timestamp="1600514328413" />
+    <state width="339" height="59" key="javadoc.popup.new/0.0.1920.1040@0.0.1920.1040" timestamp="1600515806449" />
     <state x="702" y="148" key="refactoring.ChangeSignatureDialog" timestamp="1599806255233">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

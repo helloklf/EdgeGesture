@@ -1,10 +1,8 @@
 package com.omarea.gesture.ui;
 
-import android.accessibilityservice.AccessibilityService;
-import android.accessibilityservice.GestureDescription;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Path;
 import android.util.AttributeSet;
@@ -12,7 +10,6 @@ import android.view.InputDevice;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.omarea.gesture.AccessibilityServiceGesture;
@@ -98,7 +95,11 @@ public class TouchBarView extends View {
 
     private void onTouchHover() {
         if (accessibilityService != null) {
-            performGlobalAction(eventHover);
+            if (eventHover.actionCode == Handlers.GLOBAL_ACTION_NONE && eventTouch.actionCode != Handlers.GLOBAL_ACTION_NONE) {
+                performGlobalAction(eventTouch);
+            } else {
+                performGlobalAction(eventHover);
+            }
         }
     }
 
@@ -218,7 +219,7 @@ public class TouchBarView extends View {
 
         if (a - b > FLIP_DISTANCE) {
             if (gestureStartTime < 1) {
-                GlobalState.updateEdgeFeedbackIcon(TouchIconCache.getIcon(eventTouch.actionCode), false);
+                updateEdgeFeedbackIcon();
 
                 final long currentTime = System.currentTimeMillis();
                 gestureStartTime = currentTime;
@@ -232,7 +233,7 @@ public class TouchBarView extends View {
 
                                 vibratorRun = false;
                             }
-                            GlobalState.updateEdgeFeedbackIcon(TouchIconCache.getIcon(eventHover.actionCode), true);
+                            updateEdgeFeedbackIcon();
                             if (barPosition == BOTTOM) {
                                 onTouchHover();
                                 isGestureCompleted = true;
@@ -252,6 +253,19 @@ public class TouchBarView extends View {
         }
         updateEdgeFeedback(touchRawX, touchRawY);
         return true;
+    }
+
+    private int getHitAction() {
+        if (isLongTimeGesture && eventHover.actionCode != Handlers.GLOBAL_ACTION_NONE) {
+            return eventHover.actionCode;
+        } else {
+            return eventTouch.actionCode;
+        }
+    }
+
+    private void updateEdgeFeedbackIcon() {
+        int currentAction = getHitAction();
+        GlobalState.updateEdgeFeedbackIcon(TouchIconCache.getIcon(currentAction), currentAction != eventTouch.actionCode);
     }
 
     private void updateEdgeFeedback(float touchRawX, float touchRawY) {

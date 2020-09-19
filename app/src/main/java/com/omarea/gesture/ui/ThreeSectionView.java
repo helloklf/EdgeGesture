@@ -3,6 +3,7 @@ package com.omarea.gesture.ui;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -132,21 +133,21 @@ public class ThreeSectionView extends View {
             float p = touchStartX / getWidth();
             if (p > 0.6f) {
                 if (eventRightHover.actionCode != Handlers.GLOBAL_ACTION_NONE) {
-                    GlobalState.updateThreeSectionFeedbackIcon(TouchIconCache.getIcon(eventRightHover.actionCode), false);
+                    updateThreeSectionFeedbackIcon(eventRightHover, eventRightSlide);
                     performGlobalAction(eventRightHover);
                 } else {
                     performGlobalAction(eventRightSlide);
                 }
             } else if (p > 0.4f) {
                 if (eventCenterHover.actionCode != Handlers.GLOBAL_ACTION_NONE) {
-                    GlobalState.updateThreeSectionFeedbackIcon(TouchIconCache.getIcon(eventCenterHover.actionCode), false);
+                    updateThreeSectionFeedbackIcon(eventCenterHover, eventCenterSlide);
                     performGlobalAction(eventCenterHover);
                 } else {
                     performGlobalAction(eventCenterSlide);
                 }
             } else {
                 if (eventLeftHover.actionCode != Handlers.GLOBAL_ACTION_NONE) {
-                    GlobalState.updateThreeSectionFeedbackIcon(TouchIconCache.getIcon(eventLeftHover.actionCode), false);
+                    updateThreeSectionFeedbackIcon(eventLeftHover, eventLeftSlide);
                     performGlobalAction(eventLeftHover);
                 } else {
                     performGlobalAction(eventLeftSlide);
@@ -269,11 +270,11 @@ public class ThreeSectionView extends View {
             if (gestureStartTime < 1) {
                 float p = touchStartX / getWidth();
                 if (p > 0.6f) {
-                    GlobalState.updateThreeSectionFeedbackIcon(TouchIconCache.getIcon(eventRightSlide.actionCode), false);
+                    updateThreeSectionFeedbackIcon(eventRightSlide, eventRightSlide);
                 } else if (p > 0.4f) {
-                    GlobalState.updateThreeSectionFeedbackIcon(TouchIconCache.getIcon(eventCenterSlide.actionCode), false);
+                    updateThreeSectionFeedbackIcon(eventCenterHover, eventCenterSlide);
                 } else {
-                    GlobalState.updateThreeSectionFeedbackIcon(TouchIconCache.getIcon(eventLeftSlide.actionCode), false);
+                    updateThreeSectionFeedbackIcon(eventLeftHover, eventLeftSlide);
                 }
 
                 final long currentTime = System.currentTimeMillis();
@@ -303,6 +304,14 @@ public class ThreeSectionView extends View {
         updateThreeSectionFeedback(touchRawX, touchRawY);
 
         return true;
+    }
+
+    private void updateThreeSectionFeedbackIcon(ActionModel hoverAction, ActionModel slideAction) {
+        int currentAction = slideAction.actionCode;
+        if (isLongTimeGesture && hoverAction.actionCode != Handlers.GLOBAL_ACTION_NONE) {
+            currentAction = hoverAction.actionCode;
+        }
+        GlobalState.updateThreeSectionFeedbackIcon(TouchIconCache.getIcon(currentAction), currentAction != slideAction.actionCode);
     }
 
     private void updateThreeSectionFeedback(float touchRawX, float touchRawY) {
