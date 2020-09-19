@@ -84,13 +84,15 @@ public class Handlers {
     private static boolean isMiui12 = new SystemProperty().isMiui12();
 
     // 获取动画模式
-    private static int getAnimationRes() {
+    private static int getAnimationRes(final ActionModel action) {
         if (GlobalState.consecutiveAction != null) {
-            return SpfConfig.HOME_ANIMATION_FAST;
+            return SpfConfig.ANIMATION_FAST;
         } else if (Gesture.config.getBoolean(SpfConfig.LOW_POWER_MODE, SpfConfig.LOW_POWER_MODE_DEFAULT)) {
-            return SpfConfig.HOME_ANIMATION_DEFAULT;
+            return SpfConfig.ANIMATION_DEFAULT;
+        } else if (action.actionCode == GLOBAL_ACTION_HOME) {
+            return Gesture.config.getInt(SpfConfig.BACK_HOME_ANIMATION, SpfConfig.ANIMATION_DEFAULT);
         } else {
-            return Gesture.config.getInt(SpfConfig.HOME_ANIMATION, SpfConfig.HOME_ANIMATION_DEFAULT);
+            return Gesture.config.getInt(SpfConfig.APP_SWITCH_ANIMATION, SpfConfig.ANIMATION_DEFAULT);
         }
     }
 
@@ -116,9 +118,9 @@ public class Handlers {
                 } else if (Gesture.config.getBoolean(SpfConfig.LOW_POWER_MODE, SpfConfig.LOW_POWER_MODE_DEFAULT)) {
                     lowPowerModeAppSwitch(accessibilityService, action.actionCode);
                 } else {
-                    int animation = getAnimationRes();
+                    int animation = getAnimationRes(action);
 
-                    if (action.actionCode == GLOBAL_ACTION_HOME && animation == SpfConfig.HOME_ANIMATION_DEFAULT) {
+                    if (action.actionCode == GLOBAL_ACTION_HOME && animation == SpfConfig.ANIMATION_DEFAULT) {
                         accessibilityService.performGlobalAction(action.actionCode);
                     } else {
                         appSwitch(accessibilityService, action.actionCode, animation);

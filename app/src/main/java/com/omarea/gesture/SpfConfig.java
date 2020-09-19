@@ -3,11 +3,12 @@ package com.omarea.gesture;
 import com.omarea.gesture.util.Handlers;
 
 public class SpfConfig {
-    public final static String HOME_ANIMATION = "HOME_ANIMATION";
-    public final static int HOME_ANIMATION_DEFAULT = 0;
-    public final static int HOME_ANIMATION_BASIC = 1;
-    public final static int HOME_ANIMATION_CUSTOM = 2;
-    public final static int HOME_ANIMATION_FAST = 3;
+    public final static String BACK_HOME_ANIMATION = "BACK_HOME_ANIMATION";
+    public final static String APP_SWITCH_ANIMATION = "APP_SWITCH_ANIMATION";
+    public final static int ANIMATION_DEFAULT = 0;
+    public final static int ANIMATION_BASIC = 1;
+    public final static int ANIMATION_CUSTOM = 2;
+    public final static int ANIMATION_FAST = 3;
     public static final String ConfigFile = "main";
     public static final String AppSwitchBlackList = "app_switch_black_list";
     // 悬停时间

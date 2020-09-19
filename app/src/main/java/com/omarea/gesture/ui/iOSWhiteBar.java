@@ -199,6 +199,8 @@ public class iOSWhiteBar {
 
             private float touchCurrentRawX;
             private float touchCurrentRawY;
+            private float touchMaxMoveX = 0F; // 本次手势过程中 最大横向移动距离
+            private float touchMaxMoveY = 0F; // 本次手势过程中 最大纵向移动距离
             private long lastTouchDown = 0L;
 
             private InputDevice inputDevice;
@@ -209,8 +211,24 @@ public class iOSWhiteBar {
                 }
             }
 
+            // 是否移动的了足够的距离，认为它算是个手势
+            private boolean isGesture() {
+                float moveX = Math.abs(touchCurrentRawX - touchStartRawX);
+                float moveY = Math.abs(touchCurrentRawY - touchStartRawY);
+                if (moveX > touchMaxMoveX) {
+                    touchMaxMoveX = moveX;
+                }
+                if (moveY > touchMaxMoveY) {
+                    touchMaxMoveY = moveY;
+                }
+                return (moveX >= flingValue || moveY >= flingValue);
+            }
+
             private void setPosition(float x, float y) {
                 if (!lowPowerMode) {
+                    if (!isGesture()) {
+                        return;
+                    }
                     int limitX = (int) x;
                     if (limitX < -offsetLimitX) {
                         limitX = -offsetLimitX;
@@ -314,6 +332,8 @@ public class iOSWhiteBar {
                 touchCurrentRawY = event.getRawY();
                 touchCurrentX = event.getX();
                 touchCurrentY = event.getY();
+                touchMaxMoveX = 0f;
+                touchMaxMoveY = 0f;
                 gestureStartTime = 0;
                 isLongTimeGesture = false;
                 vibratorRun = true;
@@ -404,7 +424,9 @@ public class iOSWhiteBar {
                     gestureStartTime = 0;
                 }
 
-                setPosition(originX + ((touchCurrentX - touchStartX) / animationScaling), originY + ((touchStartY - touchCurrentY) / animationScaling));
+                if (isGesture()) {
+                    setPosition(originX + ((touchCurrentX - touchStartX) / animationScaling), originY + ((touchStartY - touchCurrentY) / animationScaling));
+                }
 
                 return false;
             }
@@ -465,7 +487,7 @@ public class iOSWhiteBar {
             }
 
             void clearEffect() {
-                if (!lowPowerMode) {
+                if (!lowPowerMode && isGesture()) {
                     animationTo(originX, originY, 800, new OvershootInterpolator());
                 }
                 // if (isLandscapf) {

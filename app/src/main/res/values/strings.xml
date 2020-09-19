@@ -32,7 +32,9 @@
     <string name="bottom_hot_area_width">热区宽度</string>
     <string name="portrait">竖屏</string>
     <string name="landscape">横屏</string>
-    <string name="animation_mode">动画模式</string>
+    <string name="animation_mode">选择动画</string>
+    <string name="back_home_animation">返回桌面动画</string>
+    <string name="app_switch_animation">应用切换动画</string>
     <string name="choose_app">选择应用</string>
     <string name="animation_mode_default">默认动画</string>
     <string name="animation_mode_basic">定制动画1</string>

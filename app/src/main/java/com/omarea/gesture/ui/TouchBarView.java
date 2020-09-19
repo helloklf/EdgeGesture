@@ -32,6 +32,8 @@ public class TouchBarView extends View {
 
     private float touchStartX = 0F; // 触摸开始位置
     private float touchStartRawX = 0F; // 触摸开始位置
+    private float touchMaxMoveX = 0F; // 本次手势过程中 最大横向移动距离
+    private float touchMaxMoveY = 0F; // 本次手势过程中 最大纵向移动距离
     private float touchStartY = 0F; // 触摸开始位置
     private float touchStartRawY = 0F; // 触摸开始位置
     private long gestureStartTime = 0L; // 手势开始时间（是指滑动到一定距离，认定触摸手势生效的时间）
@@ -179,6 +181,8 @@ public class TouchBarView extends View {
         touchStartRawX = event.getRawX();
         touchStartY = event.getY();
         touchStartRawY = event.getRawY();
+        touchMaxMoveX = 0f;
+        touchMaxMoveY = 0f;
         GlobalState.startEdgeFeedback(event.getRawX(), event.getRawY(), barPosition);
         gestureStartTime = 0;
         isLongTimeGesture = false;
@@ -234,7 +238,7 @@ public class TouchBarView extends View {
                                 isGestureCompleted = true;
                                 cleartEffect();
                             } else {
-                                GlobalState.updateEdgeFeedback(touchRawX, touchRawY);
+                                updateEdgeFeedback(touchRawX, touchRawY);
                             }
                         }
                     }
@@ -246,8 +250,31 @@ public class TouchBarView extends View {
             vibratorRun = true;
             gestureStartTime = 0;
         }
-        GlobalState.updateEdgeFeedback(touchRawX, touchRawY);
+        updateEdgeFeedback(touchRawX, touchRawY);
         return true;
+    }
+
+    private void updateEdgeFeedback(float touchRawX, float touchRawY) {
+        float moveX = Math.abs(touchRawX - touchStartRawX);
+        float moveY = Math.abs(touchRawY - touchStartRawY);
+        if (moveX > touchMaxMoveX) {
+            touchMaxMoveX = moveX;
+        }
+        if (moveY > touchMaxMoveY) {
+            touchMaxMoveY = moveY;
+        }
+        if (barPosition == BOTTOM) {
+            if (moveY < flingValue) {
+                return;
+            }
+        } else {
+            if (moveX < flingValue) {
+                return;
+            }
+        }
+
+
+        GlobalState.updateEdgeFeedback(touchRawX, touchRawY);
     }
 
     private boolean onTouchUp(MotionEvent event) {

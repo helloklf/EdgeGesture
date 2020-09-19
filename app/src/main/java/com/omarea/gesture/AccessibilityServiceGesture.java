@@ -12,6 +12,7 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build;
+import android.os.Looper;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -24,6 +25,7 @@ import com.omarea.gesture.remote.RemoteAPI;
 import com.omarea.gesture.ui.FloatVirtualTouchBar;
 import com.omarea.gesture.ui.QuickPanel;
 import com.omarea.gesture.util.GlobalState;
+import com.omarea.gesture.util.Handlers;
 import com.omarea.gesture.util.Recents;
 
 import java.util.ArrayList;
@@ -42,11 +44,13 @@ public class AccessibilityServiceGesture extends AccessibilityService {
     private SharedPreferences appSwitchBlackList;
     private BatteryReceiver batteryReceiver;
 
-    private void hidePopupWindow() {
+    private boolean hidePopupWindow() {
         if (floatVitualTouchBar != null) {
             floatVitualTouchBar.hidePopupWindow();
             floatVitualTouchBar = null;
+            return true;
         }
+        return false;
     }
 
     private boolean ignored(String packageName) {
@@ -312,7 +316,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
                                 setResultData("Unable to start enhanced mode >_<");
                             }
                         }
-                        createPopupView();
+                        createPopupView(false);
                     }
                 }
             };
@@ -333,7 +337,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
             };
             registerReceiver(serviceDisable, new IntentFilter(getString(R.string.action_service_disable)));
         }
-        createPopupView();
+        createPopupView(false);
 
         registerReceiver(screenStateReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -388,16 +392,22 @@ public class AccessibilityServiceGesture extends AccessibilityService {
             if (point.x != GlobalState.displayWidth || point.y != GlobalState.displayHeight) {
                 GlobalState.displayWidth = point.x;
                 GlobalState.displayHeight = point.y;
-                createPopupView();
+                createPopupView(true);
             }
         }
     }
 
-    private void createPopupView() {
-        hidePopupWindow();
+    private void createPopupView(boolean delayed) {
+        final AccessibilityServiceGesture context = this;
 
-        setServiceInfo();
-        floatVitualTouchBar = new FloatVirtualTouchBar(this);
+        new android.os.Handler().postDelayed(new Runnable(){
+            @Override
+            public void run() {
+                hidePopupWindow();
+                setServiceInfo();
+                floatVitualTouchBar = new FloatVirtualTouchBar(context);
+            }
+        }, (delayed ? 500 : 0));
     }
 
     private void setServiceInfo() {

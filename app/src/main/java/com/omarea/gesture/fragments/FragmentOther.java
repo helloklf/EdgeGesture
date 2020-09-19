@@ -58,10 +58,16 @@ public class FragmentOther extends FragmentSettingsBase {
         bindCheckable(R.id.game_optimization, SpfConfig.GAME_OPTIMIZATION, SpfConfig.GAME_OPTIMIZATION_DEFAULT);
         bindCheckable(R.id.low_power, SpfConfig.LOW_POWER_MODE, SpfConfig.LOW_POWER_MODE_DEFAULT);
 
-        activity.findViewById(R.id.home_animation).setOnClickListener(new View.OnClickListener() {
+        activity.findViewById(R.id.back_home_animation).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                homeAnimationPicker();
+                homeAnimationPicker(SpfConfig.BACK_HOME_ANIMATION);
+            }
+        });
+        activity.findViewById(R.id.app_switch_animation).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                homeAnimationPicker(SpfConfig.APP_SWITCH_ANIMATION);
             }
         });
 
@@ -112,15 +118,15 @@ public class FragmentOther extends FragmentSettingsBase {
         super.restartService();
     }
 
-    private void homeAnimationPicker() {
+    private void homeAnimationPicker(final String Key) {
         String[] options = new String[]{getString(R.string.animation_mode_default), getString(R.string.animation_mode_basic), getString(R.string.animation_mode_custom)};
         new AlertDialog.Builder(getActivity()).setTitle(R.string.animation_mode)
                 .setSingleChoiceItems(options,
-                        config.getInt(SpfConfig.HOME_ANIMATION, SpfConfig.HOME_ANIMATION_DEFAULT),
+                        config.getInt(SpfConfig.BACK_HOME_ANIMATION, SpfConfig.ANIMATION_DEFAULT),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                config.edit().putInt(SpfConfig.HOME_ANIMATION, which).apply();
+                                config.edit().putInt(Key, which).apply();
                                 restartService();
                                 dialog.dismiss();
                             }
@@ -129,22 +135,25 @@ public class FragmentOther extends FragmentSettingsBase {
                 .show();
     }
 
-    private void setHomeAnimationText() {
-        int modeIndex = config.getInt(SpfConfig.HOME_ANIMATION, SpfConfig.HOME_ANIMATION_DEFAULT);
-        Button button = getActivity().findViewById(R.id.home_animation);
-        switch (modeIndex) {
-            case SpfConfig.HOME_ANIMATION_DEFAULT: {
-                button.setText(getString(R.string.animation_mode_default));
-                break;
+    private String animationName (int value) {
+        switch (value) {
+            case SpfConfig.ANIMATION_DEFAULT: {
+                return getString(R.string.animation_mode_default);
             }
-            case SpfConfig.HOME_ANIMATION_BASIC: {
-                button.setText(getString(R.string.animation_mode_basic));
-                break;
+            case SpfConfig.ANIMATION_BASIC: {
+                return getString(R.string.animation_mode_basic);
             }
-            case SpfConfig.HOME_ANIMATION_CUSTOM: {
-                button.setText(getString(R.string.animation_mode_custom));
-                break;
+            case SpfConfig.ANIMATION_CUSTOM: {
+                return getString(R.string.animation_mode_custom);
             }
         }
+        return "";
+    }
+
+    private void setHomeAnimationText() {
+        ((Button)(getActivity().findViewById(R.id.back_home_animation)))
+                .setText(animationName(config.getInt(SpfConfig.BACK_HOME_ANIMATION, SpfConfig.ANIMATION_DEFAULT)));
+        ((Button)(getActivity().findViewById(R.id.app_switch_animation)))
+                .setText(animationName(config.getInt(SpfConfig.APP_SWITCH_ANIMATION, SpfConfig.ANIMATION_DEFAULT)));
     }
 }
