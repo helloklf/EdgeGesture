@@ -31,7 +31,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            signingConfig signingConfigs.omarea_Signing
+            // signingConfig signingConfigs.omarea_Signing
             minifyEnabled false
             debuggable true
             jniDebuggable = false

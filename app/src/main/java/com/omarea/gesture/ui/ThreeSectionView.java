@@ -42,7 +42,7 @@ public class ThreeSectionView extends View {
     private boolean isTouchDown = false;
     private boolean isGestureCompleted = false;
     private boolean vibratorRun = false;
-    private float flingValue = dp2px(context, 3f); // 小于此值认为是点击而非滑动
+    private float flingValue = dp2px(context, 5f); // 小于此值认为是点击而非滑动
 
     private ActionModel eventLeftSlide;
     private ActionModel eventLeftHover;

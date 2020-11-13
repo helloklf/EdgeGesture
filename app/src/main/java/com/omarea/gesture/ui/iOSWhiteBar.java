@@ -186,7 +186,7 @@ public class iOSWhiteBar {
             private float touchCurrentX = 0F; // 当前触摸位置
             private float touchCurrentY = 0F; // 当前触摸位置
             private int FLIP_DISTANCE = dp2px(accessibilityService, 50f); // 触摸灵敏度（滑动多长距离认为是手势）
-            private float flingValue = dp2px(accessibilityService, 3f); // 小于此值认为是点击而非滑动
+            private float flingValue = dp2px(accessibilityService, 5f); // 小于此值认为是点击而非滑动
             private int offsetLimitX = dp2px(accessibilityService, 50);
             private int offsetLimitY = dp2px(accessibilityService, 12);
             private int animationScaling = dp2px(accessibilityService, 2); // 手指移动多少像素时动画才移动1像素
