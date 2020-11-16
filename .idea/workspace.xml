@@ -12,22 +12,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3c4db40-6ccf-4f9b-a0ce-fe5b9784ddcb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/util/Handlers.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/util/Handlers.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[6db66husdm6pt8mz]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -289,6 +283,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="814" y="630" key="AndroidCreateXmlResourceDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1599812945904" />
+    <state x="722" y="266" key="AndroidProcessChooserDialog" timestamp="1605488212989">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="722" y="266" key="AndroidProcessChooserDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1605488212989" />
     <state x="805" y="114" key="CommitChangelistDialog2" timestamp="1599804667818">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -297,38 +295,38 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1605257610589" />
-    <state width="1877" height="229" key="GridCell.Tab.0.bottom" timestamp="1599835637872">
+    <state width="1877" height="227" key="GridCell.Tab.0.bottom" timestamp="1605488658530">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="229" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1599835637872" />
-    <state width="1877" height="229" key="GridCell.Tab.0.center" timestamp="1599835637872">
+    <state width="1877" height="227" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1605488658530" />
+    <state width="1877" height="227" key="GridCell.Tab.0.center" timestamp="1605488658530">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="229" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1599835637872" />
-    <state width="1877" height="229" key="GridCell.Tab.0.left" timestamp="1599835637872">
+    <state width="1877" height="227" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1605488658530" />
+    <state width="1877" height="227" key="GridCell.Tab.0.left" timestamp="1605488658530">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="229" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1599835637872" />
-    <state width="1877" height="229" key="GridCell.Tab.0.right" timestamp="1599835637872">
+    <state width="1877" height="227" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1605488658530" />
+    <state width="1877" height="227" key="GridCell.Tab.0.right" timestamp="1605488658530">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="229" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1599835637872" />
-    <state width="1877" height="292" key="GridCell.Tab.1.bottom" timestamp="1599815086734">
+    <state width="1877" height="227" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1605488658530" />
+    <state width="1877" height="227" key="GridCell.Tab.1.bottom" timestamp="1605488658530">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="292" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1599815086734" />
-    <state width="1877" height="292" key="GridCell.Tab.1.center" timestamp="1599815086734">
+    <state width="1877" height="227" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1605488658530" />
+    <state width="1877" height="227" key="GridCell.Tab.1.center" timestamp="1605488658530">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="292" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1599815086734" />
-    <state width="1877" height="292" key="GridCell.Tab.1.left" timestamp="1599815086734">
+    <state width="1877" height="227" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1605488658530" />
+    <state width="1877" height="227" key="GridCell.Tab.1.left" timestamp="1605488658530">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="292" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1599815086734" />
-    <state width="1877" height="292" key="GridCell.Tab.1.right" timestamp="1599815086734">
+    <state width="1877" height="227" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1605488658530" />
+    <state width="1877" height="227" key="GridCell.Tab.1.right" timestamp="1605488658530">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="292" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1599815086734" />
+    <state width="1877" height="227" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1605488658530" />
     <state x="768" y="371" key="com.intellij.ide.util.TipDialog" timestamp="1599820936021">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

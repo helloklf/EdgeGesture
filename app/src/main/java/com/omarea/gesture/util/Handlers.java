@@ -44,8 +44,8 @@ public class Handlers {
     final public static int CUSTOM_ACTION_SHELL = 1000006;
     final public static int CUSTOM_ACTION_QUICK = 1000009;
     final public static int OMAREA_FILTER_SCREENSHOT = 1100000;
-    private static boolean isXiaomi = Build.MANUFACTURER.toLowerCase().equals("xiaomi") && (Build.BRAND.toLowerCase().equals("xiaomi") || Build.BRAND.toLowerCase().equals("redmi"));
-    private final static ActionModel[] options = new ArrayList<ActionModel>() {{
+    private static final boolean isXiaomi = Build.MANUFACTURER.toLowerCase().equals("xiaomi") && (Build.BRAND.toLowerCase().equals("xiaomi") || Build.BRAND.toLowerCase().equals("redmi"));
+    private final static ArrayList<ActionModel> options = new ArrayList<ActionModel>() {{
         add(new ActionModel(GLOBAL_ACTION_NONE, "无"));
         add(new ActionModel(GLOBAL_ACTION_BACK, "返回键"));
         add(new ActionModel(GLOBAL_ACTION_HOME, "Home键"));
@@ -67,11 +67,6 @@ public class Handlers {
             add(new ActionModel(GLOBAL_ACTION_TAKE_SCREENSHOT, "屏幕截图"));
         }
 
-        if (isXiaomi && GlobalState.enhancedMode) {
-            add(new ActionModel(VITUAL_ACTION_MI_HANDY_MODE_1, "单手模式-左"));
-            add(new ActionModel(VITUAL_ACTION_MI_HANDY_MODE_2, "单手模式-右"));
-        }
-
         add(new ActionModel(CUSTOM_ACTION_APP, "打开应用 > "));
         if (Build.VERSION.SDK_INT > 23) {
             add(new ActionModel(CUSTOM_ACTION_APP_WINDOW, "以小窗口打开应用[试验]  > "));
@@ -79,7 +74,7 @@ public class Handlers {
         add(new ActionModel(CUSTOM_ACTION_SHELL, "运行脚本 > "));
         add(new ActionModel(CUSTOM_ACTION_QUICK, "常用应用 > "));
         add(new ActionModel(OMAREA_FILTER_SCREENSHOT, "屏幕滤镜-正常截图"));
-    }}.toArray(new ActionModel[0]);
+    }};
     private static SharedPreferences configEx;
     private static boolean isMiui12 = new SystemProperty().isMiui12();
 
@@ -350,7 +345,7 @@ public class Handlers {
     }
 
     public static String getOption(int value) {
-        for (ActionModel actionModel : options) {
+        for (ActionModel actionModel : getOptions()) {
             if (actionModel.actionCode == value) {
                 return actionModel.title;
             }
@@ -359,6 +354,13 @@ public class Handlers {
     }
 
     public static ActionModel[] getOptions() {
-        return options;
+        ArrayList<ActionModel> items = new ArrayList<ActionModel>(){{
+            addAll(options);
+            if (isXiaomi && GlobalState.enhancedMode) {
+                add(new ActionModel(VITUAL_ACTION_MI_HANDY_MODE_1, "单手模式-左"));
+                add(new ActionModel(VITUAL_ACTION_MI_HANDY_MODE_2, "单手模式-右"));
+            }
+        }};
+        return items.toArray(new ActionModel[0]);
     }
 }
