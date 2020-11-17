@@ -22,7 +22,7 @@
     <application
         android:name=".Gesture"
         android:allowBackup="true"
-        android:hardwareAccelerated="true"
+        android:hardwareAccelerated="false"
         android:icon="@drawable/gesture_logo"
         android:label="@string/app_name"
         android:supportsRtl="true"

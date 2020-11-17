@@ -22,7 +22,7 @@ public class ReTouchHelper {
         mFlags = mParams.flags;
     }
 
-    public void dispatchGesture(Path touchPath) {
+    public void dispatchGesture(final Path touchPath) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             synchronized (this) {
                 if (running) {
@@ -30,23 +30,27 @@ public class ReTouchHelper {
                 }
                 Log.e("@Gesture", "dispatchGesture >>");
                 pause();
-                final GestureDescription.Builder builder = new GestureDescription.Builder();
-                builder.addStroke(new GestureDescription.StrokeDescription(touchPath, 1, 1));
                 mView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mAccessibilityService.dispatchGesture(builder.build(), new AccessibilityService.GestureResultCallback() {
-                            @Override
-                            public void onCompleted(GestureDescription gestureDescription) {
-                                resume();
-                                super.onCompleted(gestureDescription);
-                            }
+                        try {
+                            final GestureDescription.Builder builder = new GestureDescription.Builder();
+                            builder.addStroke(new GestureDescription.StrokeDescription(touchPath, 1, 1));
+                            mAccessibilityService.dispatchGesture(builder.build(), new AccessibilityService.GestureResultCallback() {
+                                @Override
+                                public void onCompleted(GestureDescription gestureDescription) {
+                                    resume();
+                                    super.onCompleted(gestureDescription);
+                                }
 
-                            public void onCancelled(GestureDescription gestureDescription) {
-                                resume();
-                                super.onCancelled(gestureDescription);
-                            }
-                        }, null);
+                                public void onCancelled(GestureDescription gestureDescription) {
+                                    resume();
+                                    super.onCancelled(gestureDescription);
+                                }
+                            }, null);
+                        } catch (Exception ignored) {
+                            resume();
+                        }
                     }
                 }, 60);
             }
