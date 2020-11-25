@@ -122,7 +122,7 @@ public class FragmentOther extends FragmentSettingsBase {
         String[] options = new String[]{getString(R.string.animation_mode_default), getString(R.string.animation_mode_basic), getString(R.string.animation_mode_custom)};
         new AlertDialog.Builder(getActivity()).setTitle(R.string.animation_mode)
                 .setSingleChoiceItems(options,
-                        config.getInt(SpfConfig.BACK_HOME_ANIMATION, SpfConfig.ANIMATION_DEFAULT),
+                        config.getInt(Key, SpfConfig.ANIMATION_DEFAULT),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
