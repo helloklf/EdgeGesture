@@ -7,6 +7,7 @@ import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.os.Build;
@@ -126,6 +127,13 @@ public class iOSWhiteBar {
         final int totalHeight = marginBottom + lineWeight + (shadowSize * 2) + (strokeWidth * 2);
         final boolean inputAvoid = config.getBoolean(SpfConfig.INPUT_METHOD_AVOID, SpfConfig.INPUT_METHOD_AVOID_DEFAULT); // 输入法避让
 
+        final boolean noShadow = (shadowSize == 0 || Color.alpha(shadowColor) == 0);
+        final boolean isTransparent = (lineWeight == 0 || Color.alpha(barColor) == 0);
+        final boolean noStroke = (strokeWidth == 0 || Color.alpha(strokeColor) == 0);
+
+        // 是否没任何可见效果（整个横条是隐藏的）
+        final boolean isHidden = noShadow && isTransparent && noStroke;
+
         bar.setStyle(
                 ((int) (getScreenWidth(accessibilityService) * widthRatio)),
                 dp2px(accessibilityService, totalHeight),
@@ -225,7 +233,7 @@ public class iOSWhiteBar {
             }
 
             private void setPosition(float x, float y) {
-                if (!lowPowerMode) {
+                if (!(lowPowerMode || isHidden)) {
                     if (!isGesture()) {
                         return;
                     }
@@ -251,30 +259,35 @@ public class iOSWhiteBar {
                 if (fareOutAnimation != null) {
                     fareOutAnimation.cancel();
                 }
-                if (lowPowerMode) {
-                    bar.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (!isTouchDown) {
-                                bar.setAlpha(fateOutAlpha);
+                if (isHidden) {
+                } else if (lowPowerMode) {
+                    if (!isTransparent) {
+                        bar.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (!isTouchDown) {
+                                    bar.setAlpha(fateOutAlpha);
+                                }
                             }
-                        }
-                    }, 5000);
+                        }, 5000);
+                    }
                 } else {
-                    fareOutAnimation = ValueAnimator.ofFloat(1f, fateOutAlpha);
-                    fareOutAnimation.setDuration(1000);
-                    fareOutAnimation.setInterpolator(new LinearInterpolator());
-                    fareOutAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                        @Override
-                        public void onAnimationUpdate(ValueAnimator animation) {
-                            try {
-                                bar.setAlpha((float) animation.getAnimatedValue());
-                            } catch (Exception ignored) {
+                    if (!isTransparent) {
+                        fareOutAnimation = ValueAnimator.ofFloat(1f, fateOutAlpha);
+                        fareOutAnimation.setDuration(1000);
+                        fareOutAnimation.setInterpolator(new LinearInterpolator());
+                        fareOutAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animation) {
+                                try {
+                                    bar.setAlpha((float) animation.getAnimatedValue());
+                                } catch (Exception ignored) {
+                                }
                             }
-                        }
-                    });
-                    fareOutAnimation.setStartDelay(5000);
-                    fareOutAnimation.start();
+                        });
+                        fareOutAnimation.setStartDelay(5000);
+                        fareOutAnimation.start();
+                    }
                 }
             }
 
@@ -351,7 +364,7 @@ public class iOSWhiteBar {
                     objectAnimator = null;
                 }
 
-                if (bar.getAlpha() != 1f) {
+                if (!(isTransparent || bar.getAlpha() == 1f)) {
                     bar.setAlpha(1f);
                     bar.invalidate();
                 }
@@ -487,7 +500,7 @@ public class iOSWhiteBar {
             }
 
             void clearEffect() {
-                if (!lowPowerMode && isGesture()) {
+                if (!(lowPowerMode || isHidden) && isGesture()) {
                     animationTo(originX, originY, 800, new OvershootInterpolator());
                 }
                 // if (isLandscapf) {
