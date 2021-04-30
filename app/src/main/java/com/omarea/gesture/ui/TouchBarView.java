@@ -54,9 +54,6 @@ public class TouchBarView extends View {
     private float touchRawX;
     private float touchRawY;
 
-    private Path touchPath = new Path();
-    private ReTouchHelper reTouchHelper;
-
     public TouchBarView(Context context) {
         super(context);
         init();
@@ -132,28 +129,15 @@ public class TouchBarView extends View {
         this.accessibilityService = context;
     }
 
-    void setReTouchHelper(ReTouchHelper reTouchHelper) {
-        this.reTouchHelper = reTouchHelper;
-    }
-
-    private void buildGesture() {
-        if (reTouchHelper != null) {
-            reTouchHelper.dispatchGesture(touchPath);
-        }
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event != null) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN: {
-                    touchPath.reset();
-                    touchPath.moveTo(event.getRawX(), event.getRawY());
                     return onTouchDown(event);
                 }
                 case MotionEvent.ACTION_MOVE: {
-                    touchPath.lineTo(event.getRawX(), event.getRawY());
                     return onTouchMove(event);
                 }
                 case MotionEvent.ACTION_UP: {
@@ -326,11 +310,6 @@ public class TouchBarView extends View {
                     else
                         onShortTouch();
                 }
-            }
-        } else {
-            InputDevice inputDevice = event.getDevice();
-            if (inputDevice != null && !inputDevice.isVirtual()) {
-                buildGesture();
             }
         }
         cleartEffect();

@@ -54,14 +54,14 @@ public class AccessibilityServiceGesture extends AccessibilityService {
     }
 
     private boolean ignored(String packageName) {
-        return recents.inputMethods.indexOf(packageName) > -1;
+        return recents.inputMethods.contains(packageName);
     }
 
     // 检测应用是否是可以打开的
     private boolean canOpen(String packageName) {
-        if (recents.blackList.indexOf(packageName) > -1) {
+        if (recents.blackList.contains(packageName)) {
             return false;
-        } else if (recents.whiteList.indexOf(packageName) > -1) {
+        } else if (recents.whiteList.contains(packageName)) {
             return true;
         } else {
             Intent launchIntent = getPackageManager().getLaunchIntentForPackage(packageName);
@@ -83,7 +83,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
         ArrayList<String> launcherApps = new ArrayList<>();
         for (ResolveInfo resolveInfo : resolveinfoList) {
             String packageName = resolveInfo.activityInfo.packageName;
-            if (!("com.android.settings".equals(packageName))) { // MIUI的设置有算个桌面，什么鬼
+            if (!("com.android.settings".equals(packageName))) { // MIUI的设置也算个桌面，什么鬼
                 launcherApps.add(packageName);
             }
         }
@@ -118,7 +118,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
             if (colorPolingApps != null && GlobalState.updateBar != null && !GlobalState.useBatteryCapacity) {
                 CharSequence packageName = event.getPackageName();
                 if (packageName != null) {
-                    if (colorPolingApps.indexOf(packageName.toString()) > -1) { // 抖音APP
+                    if (colorPolingApps.contains(packageName.toString())) { // 抖音APP
                         startColorPolling();
                     }
                 }

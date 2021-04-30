@@ -7,11 +7,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="00b9e733-837f-4404-8cc6-216a44cb3e13" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/jar/adb_process.dex" beforeDir="false" afterPath="$PROJECT_DIR$/jar/adb_process.dex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jar/adb_process.jar" beforeDir="false" afterPath="$PROJECT_DIR$/jar/adb_process.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shell/RemoteAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shell/RemoteAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/main/java/com/omarea/gesture/AccessibilityServiceGesture.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/omarea/gesture/AccessibilityServiceGesture.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/omarea/gesture/ui/iOSWhiteBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/omarea/gesture/ui/iOSWhiteBar.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -37,7 +36,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/shell/RemoteAPI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
+            <state relative-caret-position="1387">
               <caret line="113" column="101" selection-start-line="113" selection-start-column="101" selection-end-line="113" selection-end-column="101" />
               <folding>
                 <element signature="method#filterPackages#0;class#RemoteAPI#0" />
@@ -75,7 +74,7 @@
         <entry file="file://$PROJECT_DIR$/steps.txt">
           <provider selected="true" editor-type-id="text-editor">
             <state>
-              <caret lean-forward="true" selection-end-column="125" />
+              <caret selection-end-column="125" />
             </state>
           </provider>
         </entry>
@@ -154,6 +153,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -182,7 +182,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -289,11 +288,12 @@
       <workItem from="1598933456735" duration="971000" />
       <workItem from="1598937118496" duration="730000" />
       <workItem from="1599224864422" duration="241000" />
+      <workItem from="1616744109421" duration="13000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="41183000" />
+    <option name="totallyTimeSpent" value="41196000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -307,7 +307,7 @@
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17910448" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18070363" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
@@ -425,6 +425,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/shell/RemoteAPI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1387">
+          <caret line="113" column="101" selection-start-line="113" selection-start-column="101" selection-end-line="113" selection-end-column="101" />
+          <folding>
+            <element signature="method#filterPackages#0;class#RemoteAPI#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/shell/ScreenColor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2299">
@@ -453,20 +463,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/shell/RemoteAPI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="113" column="101" selection-start-line="113" selection-start-column="101" selection-end-line="113" selection-end-column="101" />
-          <folding>
-            <element signature="method#filterPackages#0;class#RemoteAPI#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/steps.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state>
-          <caret lean-forward="true" selection-end-column="125" />
+          <caret selection-end-column="125" />
         </state>
       </provider>
     </entry>

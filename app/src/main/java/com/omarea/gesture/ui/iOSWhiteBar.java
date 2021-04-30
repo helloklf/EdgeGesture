@@ -127,8 +127,9 @@ public class iOSWhiteBar {
         final int totalHeight = marginBottom + lineWeight + (shadowSize * 2) + (strokeWidth * 2);
         final boolean inputAvoid = config.getBoolean(SpfConfig.INPUT_METHOD_AVOID, SpfConfig.INPUT_METHOD_AVOID_DEFAULT); // 输入法避让
 
+        final boolean autoColor = config.getBoolean(SpfConfig.IOS_BAR_POP_BATTERY, SpfConfig.IOS_BAR_POP_BATTERY_DEFAULT) || config.getBoolean(SpfConfig.IOS_BAR_AUTO_COLOR, SpfConfig.IOS_BAR_AUTO_COLOR_DEFAULT);
         final boolean noShadow = (shadowSize == 0 || Color.alpha(shadowColor) == 0);
-        final boolean isTransparent = (lineWeight == 0 || Color.alpha(barColor) == 0);
+        final boolean isTransparent = !autoColor && lineWeight == 0 || Color.alpha(barColor) == 0;
         final boolean noStroke = (strokeWidth == 0 || Color.alpha(strokeColor) == 0);
 
         // 是否没任何可见效果（整个横条是隐藏的）
@@ -180,7 +181,6 @@ public class iOSWhiteBar {
         }
 
         mWindowManager.addView(view, params);
-        final ReTouchHelper reTouchHelper = new ReTouchHelper(accessibilityService, mWindowManager, view);
 
         View.OnTouchListener onTouchListener = new View.OnTouchListener() {
             private float touchStartX = 0F; // 触摸开始位置
@@ -480,23 +480,11 @@ public class iOSWhiteBar {
                         if (action != Handlers.GLOBAL_ACTION_NONE) {
                             Gesture.vibrate(Gesture.VibrateMode.VIBRATE_CLICK, view);
                             performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_TOUCH, SpfConfig.IOS_BAR_TOUCH_DEFAULT));
-                        } else {
-                            if (inputDevice != null && !inputDevice.isVirtual()) {
-                                buildGesture();
-                            }
                         }
-                    }
-                } else if (!(Math.abs(moveX) > flingValue || Math.abs(moveY) > flingValue)) {
-                    if (inputDevice != null && !inputDevice.isVirtual()) {
-                        buildGesture();
                     }
                 }
 
                 clearEffect();
-            }
-
-            private void buildGesture() {
-                reTouchHelper.dispatchGesture(touchPath);
             }
 
             void clearEffect() {

@@ -13,6 +13,9 @@
   <component name="ChangeListManager">
     <list default="true" id="e3c4db40-6ccf-4f9b-a0ce-fe5b9784ddcb" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/adb_process/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/adb_process/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/AccessibilityServiceGesture.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/AccessibilityServiceGesture.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/iOSWhiteBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/iOSWhiteBar.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -84,10 +87,12 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="SHOW_ALL_PROCESSES" value="false" />
+    <property name="android-custom-viewD:/Android/EdgeGesture/app/src/main/java/com/omarea/gesture/ui/TouchBarView.java_SELECTED" value="TouchBarView" />
     <property name="android.recentlyUsedThemes" value="android:Theme.Material.Light&#10;android:Theme.Material&#10;android:Theme.Material.Dialog" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="last.edited.regexp" value="&#10;" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/app" />
+    <property name="multi-representation-previewD:/Android/EdgeGesture/app/src/main/java/com/omarea/gesture/ui/TouchBarView.java_selected" value="Custom views" />
     <property name="project.structure.last.edited" value="Dependencies" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -266,89 +271,20 @@
     </todo-panel>
   </component>
   <component name="WindowStateProjectService">
-    <state x="552" y="178" key="#Auto_Import" timestamp="1600511610372">
+    <state x="779" y="261" width="616" height="534" key="find.popup" timestamp="1619319178610">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="178" key="#Auto_Import/0.0.1920.1040@0.0.1920.1040" timestamp="1600511610372" />
-    <state x="734" y="280" key="#PSD" timestamp="1605253961504">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="734" y="280" key="#PSD/0.0.1920.1040@0.0.1920.1040" timestamp="1605253961504" />
-    <state x="545" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1605253254230">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="545" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1605253254230" />
-    <state x="814" y="630" key="AndroidCreateXmlResourceDialog" timestamp="1599812945904">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="814" y="630" key="AndroidCreateXmlResourceDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1599812945904" />
-    <state x="722" y="266" key="AndroidProcessChooserDialog" timestamp="1605488212989">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="722" y="266" key="AndroidProcessChooserDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1605488212989" />
-    <state x="805" y="114" key="CommitChangelistDialog2" timestamp="1599804667818">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="805" y="114" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1599804667818" />
-    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1605257610589">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1605257610589" />
-    <state width="1877" height="227" key="GridCell.Tab.0.bottom" timestamp="1605488658530">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1877" height="227" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1605488658530" />
-    <state width="1877" height="227" key="GridCell.Tab.0.center" timestamp="1605488658530">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1877" height="227" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1605488658530" />
-    <state width="1877" height="227" key="GridCell.Tab.0.left" timestamp="1605488658530">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1877" height="227" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1605488658530" />
-    <state width="1877" height="227" key="GridCell.Tab.0.right" timestamp="1605488658530">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1877" height="227" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1605488658530" />
-    <state width="1877" height="227" key="GridCell.Tab.1.bottom" timestamp="1605488658530">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1877" height="227" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1605488658530" />
-    <state width="1877" height="227" key="GridCell.Tab.1.center" timestamp="1605488658530">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1877" height="227" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1605488658530" />
-    <state width="1877" height="227" key="GridCell.Tab.1.left" timestamp="1605488658530">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1877" height="227" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1605488658530" />
-    <state width="1877" height="227" key="GridCell.Tab.1.right" timestamp="1605488658530">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1877" height="227" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1605488658530" />
-    <state x="768" y="371" key="com.intellij.ide.util.TipDialog" timestamp="1599820936021">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="768" y="371" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1599820936021" />
-    <state x="1024" y="259" width="829" height="602" key="find.popup" timestamp="1605582908998">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="1024" y="259" width="829" height="602" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1605582908998" />
-    <state width="339" height="59" key="javadoc.popup.new" timestamp="1600515806449">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="339" height="59" key="javadoc.popup.new/0.0.1920.1040@0.0.1920.1040" timestamp="1600515806449" />
-    <state x="702" y="148" key="refactoring.ChangeSignatureDialog" timestamp="1599806255233">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="702" y="148" key="refactoring.ChangeSignatureDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1599806255233" />
-    <state x="616" y="172" width="672" height="676" key="search.everywhere.popup" timestamp="1606275859798">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="616" y="172" width="672" height="676" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1606275859798" />
+    <state x="779" y="261" width="616" height="534" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1619319178610" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/../SDK/sources/android-29/android/view/InputDevice.java</url>
+          <line>603</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+      </breakpoints>
       <breakpoints-defaults>
         <breakpoint type="java-line" />
       </breakpoints-defaults>

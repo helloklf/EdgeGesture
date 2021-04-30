@@ -59,9 +59,6 @@ public class ThreeSectionView extends View {
     private int lastEvent = -1;
     private boolean testMode = false;
 
-    private Path touchPath = new Path();
-    private ReTouchHelper reTouchHelper;
-
     public ThreeSectionView(Context context) {
         super(context);
         init();
@@ -198,28 +195,15 @@ public class ThreeSectionView extends View {
         this.accessibilityService = context;
     }
 
-    void setReTouchHelper(ReTouchHelper reTouchHelper) {
-        this.reTouchHelper = reTouchHelper;
-    }
-
-    private void buildGesture() {
-        if (reTouchHelper != null) {
-            reTouchHelper.dispatchGesture(touchPath);
-        }
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event != null) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN: {
-                    touchPath.reset();
-                    touchPath.moveTo(event.getRawX(), event.getRawY());
                     return onTouchDown(event);
                 }
                 case MotionEvent.ACTION_MOVE: {
-                    touchPath.lineTo(event.getRawX(), event.getRawY());
                     return onTouchMove(event);
                 }
                 case MotionEvent.ACTION_UP: {
@@ -349,11 +333,6 @@ public class ThreeSectionView extends View {
                     Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, getRootView());
                     onShortTouch();
                 }
-            }
-        } else {
-            InputDevice inputDevice = event.getDevice();
-            if (inputDevice != null && !inputDevice.isVirtual()) {
-                buildGesture();
             }
         }
         clearEffect();
