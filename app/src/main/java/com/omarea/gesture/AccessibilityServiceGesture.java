@@ -12,7 +12,6 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build;
-import android.os.Looper;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -25,7 +24,6 @@ import com.omarea.gesture.remote.RemoteAPI;
 import com.omarea.gesture.ui.FloatVirtualTouchBar;
 import com.omarea.gesture.ui.QuickPanel;
 import com.omarea.gesture.util.GlobalState;
-import com.omarea.gesture.util.Handlers;
 import com.omarea.gesture.util.Recents;
 
 import java.util.ArrayList;

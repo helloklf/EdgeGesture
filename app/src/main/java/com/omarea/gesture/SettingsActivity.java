@@ -13,10 +13,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TabHost;
 
-import com.omarea.gesture.fragments.FragmentBasic;
-import com.omarea.gesture.fragments.FragmentSimple;
-import com.omarea.gesture.fragments.FragmentOther;
 import com.omarea.gesture.fragments.Fragment3Section;
+import com.omarea.gesture.fragments.FragmentBasic;
+import com.omarea.gesture.fragments.FragmentOther;
+import com.omarea.gesture.fragments.FragmentSimple;
 import com.omarea.gesture.fragments.FragmentWhiteBar;
 import com.omarea.gesture.util.GlobalState;
 import com.omarea.gesture.util.Memory;
