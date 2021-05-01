@@ -137,6 +137,18 @@ public class FragmentSettingsBase extends Fragment {
         });
     }
 
+    protected void bindVisibility(int compoundButton, int targetView) {
+        final View view = getActivity().findViewById(targetView);
+        CompoundButton button = ((CompoundButton)getActivity().findViewById(compoundButton));
+        button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                view.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+            }
+        });
+        view.setVisibility(button.isChecked() ? View.VISIBLE : View.GONE);
+    }
+
     protected void setViewBackground(View view, int color) {
         GradientDrawable drawable = new GradientDrawable();
         drawable.setShape(GradientDrawable.RECTANGLE);

@@ -9,14 +9,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/basic_settings"
-            android:fontFamily="sans-serif-light"
-            android:textAppearance="@android:style/TextAppearance.Material.Title" />
-
         <include layout="@layout/gesture_switch_options" />
 
         <include layout="@layout/enhanced_mode" />
@@ -65,24 +57,19 @@
             android:orientation="vertical"
             android:padding="10dp">
 
-            <LinearLayout
+            <TextView
+                style="@style/card_title"
+                android:layout_width="match_parent"
+                android:text="震动反馈" />
+
+            <Switch
+                android:paddingRight="3dp"
+                android:layout_marginTop="16dp"
+                style="@style/textTitle"
+                android:id="@+id/vibrator_use_system"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/card_title"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:text="震动反馈" />
-
-                <Switch
-                    android:id="@+id/vibrator_use_system"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="系统默认 " />
-            </LinearLayout>
+                android:text="系统默认震感" />
 
             <LinearLayout
                 android:id="@+id/vibrator_custom"

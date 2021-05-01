@@ -155,6 +155,9 @@ public class SpfConfig {
     public static String LOW_POWER_MODE = "LOW_POWER_MODE"; // 低功耗模式
     public static boolean LOW_POWER_MODE_DEFAULT = false;
 
+    public static String WINDOW_WATCH = "WINDOW_WATCH"; // 窗口监测
+    public static boolean WINDOW_WATCH_DEFAULT = true;
+
     public static String INPUT_METHOD_AVOID = "INPUT_METHOD_AVOID"; // 输入法避让
     public static boolean INPUT_METHOD_AVOID_DEFAULT = false;
 }

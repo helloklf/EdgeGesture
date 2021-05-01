@@ -83,11 +83,16 @@
     </style>
 
     <style name="setting_label">
+        <item name="android:textSize">13dp</item>
         <item name="android:layout_width">@dimen/label_width</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:textAlignment">textStart</item>
         <item name="android:paddingEnd">5dp</item>
+    </style>
+
+    <style name="setting_label4em" parent="setting_label">
+        <item name="android:layout_width">60dp</item>
     </style>
 
     <style name="card_title">
@@ -118,7 +123,7 @@
         <item name="android:paddingBottom">0dp</item>
         <item name="android:textAlignment">textStart</item>
         <item name="android:gravity">left|center_vertical</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">13sp</item>
         <item name="android:maxLines">1</item>
         <item name="android:textColor">@color/colorAccent</item>
     </style>
@@ -171,5 +176,18 @@
     <style name="BottomQuickPanelAnimation">
         <item name="android:windowEnterAnimation">@anim/gesture_quick_panel_bottom_in</item>
         <item name="android:windowExitAnimation">@anim/gesture_quick_panel_bottom_out</item>
+    </style>
+
+    <style name="PowerSwitch">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:button">@drawable/power_switch_style</item>
+        <item name="android:background">@null</item>
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 </resources>

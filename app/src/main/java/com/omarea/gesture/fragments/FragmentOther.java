@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -57,17 +58,30 @@ public class FragmentOther extends FragmentSettingsBase {
 
         bindCheckable(R.id.game_optimization, SpfConfig.GAME_OPTIMIZATION, SpfConfig.GAME_OPTIMIZATION_DEFAULT);
         bindCheckable(R.id.low_power, SpfConfig.LOW_POWER_MODE, SpfConfig.LOW_POWER_MODE_DEFAULT);
+        ((CompoundButton)activity.findViewById(R.id.window_watch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!isChecked) {
+                    try {
+                        Intent intent = new Intent(getString(R.string.app_switch_changed));
+                        activity.sendBroadcast(intent);
+                    } catch (Exception ignored) {
+                    }
+                }
+            }
+        });
+        bindCheckable(R.id.window_watch, SpfConfig.WINDOW_WATCH, SpfConfig.WINDOW_WATCH_DEFAULT);
 
         activity.findViewById(R.id.back_home_animation).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                homeAnimationPicker(SpfConfig.BACK_HOME_ANIMATION);
+            homeAnimationPicker(SpfConfig.BACK_HOME_ANIMATION);
             }
         });
         activity.findViewById(R.id.app_switch_animation).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                homeAnimationPicker(SpfConfig.APP_SWITCH_ANIMATION);
+            homeAnimationPicker(SpfConfig.APP_SWITCH_ANIMATION);
             }
         });
 
@@ -79,20 +93,20 @@ public class FragmentOther extends FragmentSettingsBase {
         root_get_recents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Checkable ele = (Checkable) v;
-                if (ele.isChecked()) {
-                    if (KeepShellPublic.checkRoot()) {
-                        config.edit().putBoolean(SpfConfig.ROOT, true).apply();
-                        new AdbProcessExtractor().updateAdbProcessState(getActivity(), true);
-                        restartService();
-                    } else {
-                        ele.setChecked(false);
-                        Gesture.toast(getString(R.string.no_root), Toast.LENGTH_SHORT);
-                    }
-                } else {
-                    config.edit().putBoolean(SpfConfig.ROOT, false).apply();
+            Checkable ele = (Checkable) v;
+            if (ele.isChecked()) {
+                if (KeepShellPublic.checkRoot()) {
+                    config.edit().putBoolean(SpfConfig.ROOT, true).apply();
+                    new AdbProcessExtractor().updateAdbProcessState(getActivity(), true);
                     restartService();
+                } else {
+                    ele.setChecked(false);
+                    Gesture.toast(getString(R.string.no_root), Toast.LENGTH_SHORT);
                 }
+            } else {
+                config.edit().putBoolean(SpfConfig.ROOT, false).apply();
+                restartService();
+            }
             }
         });
 
@@ -100,7 +114,7 @@ public class FragmentOther extends FragmentSettingsBase {
         getActivity().findViewById(R.id.app_switch_exclusive).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DialogAppSwitchExclusive().openDialog(getActivity());
+            new DialogAppSwitchExclusive().openDialog(getActivity());
             }
         });
 

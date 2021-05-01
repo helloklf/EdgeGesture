@@ -2,10 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="10dp"
     android:orientation="vertical">
 
     <LinearLayout
-        style="@style/card_view"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:background="@drawable/gesture_card_view_top"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -26,11 +29,12 @@
                     android:text="@string/enhanced_mode" />
 
                 <TextView
+                    style="@style/switch_desc"
+                    android:paddingStart="16dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/row_margin"
-                    android:text="@string/enhanced_mode_desc"
-                    android:textSize="12dp" />
+                    android:text="@string/enhanced_mode_desc" />
             </LinearLayout>
 
             <ImageView
@@ -43,7 +47,10 @@
 
     <LinearLayout
         android:id="@+id/steps_click_me"
-        style="@style/card_view"
+        android:layout_marginTop="2px"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:background="@drawable/gesture_card_view_bottom"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="10dp">

@@ -12,6 +12,7 @@ import com.omarea.gesture.AccessibilityServiceGesture;
 import com.omarea.gesture.ActionModel;
 import com.omarea.gesture.AppSwitchActivity;
 import com.omarea.gesture.Gesture;
+import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.SpfConfigEx;
 import com.omarea.gesture.remote.RemoteAPI;
@@ -218,7 +219,11 @@ public class Handlers {
                 if (targetApp != null) {
                     new AppLauncher().startActivity(service, targetApp);
                 } else {
-                    Gesture.toast(">>", Toast.LENGTH_SHORT);
+                    if (Gesture.config.getBoolean(SpfConfig.WINDOW_WATCH, SpfConfig.WINDOW_WATCH_DEFAULT)) {
+                        Gesture.toast(">>", Toast.LENGTH_SHORT);
+                    } else {
+                        Gesture.toast(service.getString(R.string.window_watch_disabled), Toast.LENGTH_LONG);
+                    }
                 }
                 break;
             }
@@ -227,7 +232,11 @@ public class Handlers {
                 if (targetApp != null) {
                     new AppLauncher().startActivity(service, targetApp);
                 } else {
-                    Gesture.toast("<<", Toast.LENGTH_SHORT);
+                    if (Gesture.config.getBoolean(SpfConfig.WINDOW_WATCH, SpfConfig.WINDOW_WATCH_DEFAULT)) {
+                        Gesture.toast("<<", Toast.LENGTH_SHORT);
+                    } else {
+                        Gesture.toast(service.getString(R.string.window_watch_disabled), Toast.LENGTH_LONG);
+                    }
                 }
                 break;
             }
@@ -259,7 +268,17 @@ public class Handlers {
                     break;
                 }
                 case VITUAL_ACTION_FORM: {
-                    intent.putExtra("form", service.recents.getCurrent());
+                    String current = service.recents.getCurrent();
+                    if (current.isEmpty()) {
+                        if (Gesture.config.getBoolean(SpfConfig.WINDOW_WATCH, SpfConfig.WINDOW_WATCH_DEFAULT)) {
+                            Gesture.toast("□", Toast.LENGTH_SHORT);
+                        } else {
+                            Gesture.toast(service.getString(R.string.window_watch_disabled), Toast.LENGTH_LONG);
+                        }
+                        return;
+                    } else {
+                        intent.putExtra("form", current);
+                    }
                     break;
                 }
                 case VITUAL_ACTION_PREV_APP:
@@ -271,7 +290,11 @@ public class Handlers {
                             // Log.d(">>>>", targetApp);
                             intent.putExtra("prev", targetApp);
                         } else {
-                            Gesture.toast("<<", Toast.LENGTH_SHORT);
+                            if (Gesture.config.getBoolean(SpfConfig.WINDOW_WATCH, SpfConfig.WINDOW_WATCH_DEFAULT)) {
+                                Gesture.toast("<<", Toast.LENGTH_SHORT);
+                            } else {
+                                Gesture.toast(service.getString(R.string.window_watch_disabled), Toast.LENGTH_LONG);
+                            }
                             return;
                         }
                     } else {
@@ -280,7 +303,11 @@ public class Handlers {
                             // Log.d(">>>>", targetApp);
                             intent.putExtra("next", targetApp);
                         } else {
-                            Gesture.toast(">>", Toast.LENGTH_SHORT);
+                            if (Gesture.config.getBoolean(SpfConfig.WINDOW_WATCH, SpfConfig.WINDOW_WATCH_DEFAULT)) {
+                                Gesture.toast(">>", Toast.LENGTH_SHORT);
+                            } else {
+                                Gesture.toast(service.getString(R.string.window_watch_disabled), Toast.LENGTH_LONG);
+                            }
                             return;
                         }
                     }

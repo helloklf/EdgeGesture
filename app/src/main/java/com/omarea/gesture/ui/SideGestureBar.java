@@ -22,7 +22,7 @@ import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.util.GlobalState;
 import com.omarea.gesture.util.Memory;
 
-public class FloatVirtualTouchBar {
+public class SideGestureBar {
     private static WindowManager mWindowManager = null;
     private boolean islandscape;
     private View visualFeedbackView = null;
@@ -32,7 +32,7 @@ public class FloatVirtualTouchBar {
     private View rightView = null;
     private SharedPreferences config;
 
-    public FloatVirtualTouchBar(AccessibilityServiceGesture context) {
+    public SideGestureBar(AccessibilityServiceGesture context) {
         this.islandscape = GlobalState.isLandscapf;
 
         config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
@@ -102,7 +102,7 @@ public class FloatVirtualTouchBar {
     /**
      * 隐藏弹出框
      */
-    public void hidePopupWindow() {
+    public void removeGestureView() {
         if (this.iosBarView != null) {
             mWindowManager.removeView(this.iosBarView);
             this.iosBarView = null;

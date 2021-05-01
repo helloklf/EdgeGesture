@@ -55,7 +55,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    style="@style/setting_label"
+                    style="@style/setting_label4em"
                     android:minWidth="80dp"
                     android:text="向左滑动" />
 
@@ -65,7 +65,7 @@
                     android:text="@string/edge_action" />
 
                 <TextView
-                    style="@style/setting_label"
+                    style="@style/setting_label4em"
                     android:text="向右滑动" />
 
                 <Button
@@ -81,7 +81,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    style="@style/setting_label"
+                    style="@style/setting_label4em"
                     android:text="向上滑动" />
 
                 <Button
@@ -90,7 +90,7 @@
                     android:text="@string/edge_action" />
 
                 <TextView
-                    style="@style/setting_label"
+                    style="@style/setting_label4em"
                     android:text="上滑悬停" />
 
                 <Button
@@ -106,7 +106,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    style="@style/setting_label"
+                    style="@style/setting_label4em"
                     android:text="轻触" />
 
                 <Button
@@ -115,7 +115,7 @@
                     android:text="@string/edge_action" />
 
                 <TextView
-                    style="@style/setting_label"
+                    style="@style/setting_label4em"
                     android:text="长按" />
 
                 <Button
@@ -127,6 +127,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ios_options_landscape"
             style="@style/card_view"
             android:orientation="vertical"
             android:padding="10dp">
@@ -220,6 +221,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ios_options_portrait"
             style="@style/card_view"
             android:orientation="vertical"
             android:padding="10dp">

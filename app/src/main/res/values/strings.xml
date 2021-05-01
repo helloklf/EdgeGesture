@@ -7,6 +7,9 @@
     <string name="enable_service">启用手势导航</string>
     <string name="hide_start_icon">隐藏桌面入口</string>
     <string name="hide_start_icon_desc">打开此开关后，本应用将从桌面隐藏，如果需要再恢复请到辅助服务界面，选中本应用进行操作</string>
+    <string name="window_watch">窗口(前台应用)监测</string>
+    <string name="window_watch_desc">若无需使用[上个应用\下个应用]动作和小横条[自动变色]功能，可关闭此项减少性能损耗</string>
+    <string name="window_watch_disabled">你已关闭[窗口检测]，应用切换功能无法正常工作~</string>
     <string name="low_power">关闭视觉反馈动效</string>
     <string name="action_config_changed">com.omarea.gesture.ConfigChanged</string>
     <string name="action_adb_process">com.omarea.gesture.AdbProcess</string>
@@ -64,7 +67,7 @@
     <string name="faq_click_me">使用遇到问题？点我</string>
     <string name="steps_click_me">增强模式向导</string>
     <string name="enhanced_mode">增强模式</string>
-    <string name="enhanced_mode_desc">激活增强模式，可解决以下问题：①切换应用时会打开已清除的后台；②小横条不会自动反转颜色；③回桌面后切换应用5秒延迟；\n\n点击右侧图标查看激活代码</string>
+    <string name="enhanced_mode_desc">激活增强模式，可解决以下问题：\n①切换应用时会打开已清除的后台；\n②小横条不会自动反转颜色；\n③回桌面后切换应用5秒延迟；\n\n点击右侧图标查看激活代码</string>
     <string name="feedback_color">手势视觉反馈颜色</string>
     <string name="white_bar_shadow_color">小横条阴影颜色</string>
     <string name="white_bar_stroke_color">小横条描边颜色</string>

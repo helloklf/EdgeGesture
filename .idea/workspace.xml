@@ -12,18 +12,35 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3c4db40-6ccf-4f9b-a0ce-fe5b9784ddcb" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_card_view_bottom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/gesture_card_view_top.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/power_switch_off.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/power_switch_on.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/power_switch_style.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/adb_process/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/adb_process/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/AccessibilityServiceGesture.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/AccessibilityServiceGesture.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/iOSWhiteBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/iOSWhiteBar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/SpfConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/SpfConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/fragments/FragmentOther.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/fragments/FragmentOther.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/fragments/FragmentSettingsBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/fragments/FragmentSettingsBase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/fragments/FragmentWhiteBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/fragments/FragmentWhiteBar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/FloatVirtualTouchBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/SideGestureBar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/util/Handlers.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/util/Handlers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/enhanced_mode.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/enhanced_mode.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_basic.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_basic.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_other.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_other.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_white_bar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_white_bar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/gesture_switch_options.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/gesture_switch_options.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/config.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[aac46aeb]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[192.168.3.190:33445]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -80,18 +97,20 @@
     <property name="DEBUGGER_ID" value="Auto" />
     <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="emulator-5554" />
     <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-09-11T07:40:34.614Z" />
-    <property name="ExportApk.ApkPath" value="D:\Android\EdgeGesture\app" />
+    <property name="ExportApk.ApkPath" value="C:\Android\EdgeGesture\app" />
     <property name="ExportApk.BuildVariants" value="release_mini" />
     <property name="ExportApk.SignV1" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="SHOW_ALL_PROCESSES" value="false" />
+    <property name="android-custom-viewC:/Android/EdgeGesture/app/src/main/java/com/omarea/gesture/ui/ThreeSectionView.java_SELECTED" value="ThreeSectionView" />
     <property name="android-custom-viewD:/Android/EdgeGesture/app/src/main/java/com/omarea/gesture/ui/TouchBarView.java_SELECTED" value="TouchBarView" />
     <property name="android.recentlyUsedThemes" value="android:Theme.Material.Light&#10;android:Theme.Material&#10;android:Theme.Material.Dialog" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="last.edited.regexp" value="&#10;" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/app" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/res/drawable" />
+    <property name="multi-representation-previewC:/Android/EdgeGesture/app/src/main/java/com/omarea/gesture/ui/ThreeSectionView.java_selected" value="Custom views" />
     <property name="multi-representation-previewD:/Android/EdgeGesture/app/src/main/java/com/omarea/gesture/ui/TouchBarView.java_selected" value="Custom views" />
     <property name="project.structure.last.edited" value="Dependencies" />
     <property name="project.structure.proportion" value="0.17" />
@@ -103,12 +122,8 @@
     <option name="LAST_EDITED_BUILD_TYPE" value="release" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\Android\EdgeGesture\app\src\main\res\drawable" />
+    <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Android\EdgeGesture\app\src\main\assets" />
-      <recent name="D:\Android\EdgeGesture\app\src\main\res\anim" />
-      <recent name="D:\Android\EdgeGesture\app\src\main\res\layout" />
-      <recent name="D:\Android\EdgeGesture\app\src\main\res\raw" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.omarea.gesture" />
@@ -121,8 +136,12 @@
       <recent name="com.omarea.gesture.fragments" />
       <recent name="com.omarea.gesture" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Android\EdgeGesture\app\src\main\res\drawable" />
+      <recent name="D:\Android\EdgeGesture\app\src\main\res\drawable" />
       <recent name="D:\Android\EdgeGesture\app\src\main\assets" />
+      <recent name="D:\Android\EdgeGesture\app\src\main\res\anim" />
+      <recent name="D:\Android\EdgeGesture\app\src\main\res\layout" />
     </key>
   </component>
   <component name="RunManager" selected="Android App.app">
@@ -271,10 +290,14 @@
     </todo-panel>
   </component>
   <component name="WindowStateProjectService">
-    <state x="779" y="261" width="616" height="534" key="find.popup" timestamp="1619319178610">
+    <state x="779" y="261" width="616" height="536" key="find.popup" timestamp="1619873350917">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="779" y="261" width="616" height="534" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1619319178610" />
+    <state x="779" y="261" width="616" height="536" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1619873350917" />
+    <state width="339" height="59" key="javadoc.popup.new" timestamp="1619875469589">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="339" height="59" key="javadoc.popup.new/0.0.1920.1040@0.0.1920.1040" timestamp="1619875469589" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
