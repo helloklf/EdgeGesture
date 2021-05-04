@@ -55,7 +55,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    style="@style/setting_label"
+                    style="@style/setting_label4em"
                     android:text="@string/bottom_hot_area_width" />
 
                 <SeekBar
@@ -77,7 +77,7 @@
 
                 <TextView
 
-                    style="@style/setting_label"
+                    style="@style/setting_label4em"
                     android:text="@string/bottom_hot_area_height" />
 
                 <SeekBar
@@ -96,7 +96,7 @@
 
                 <TextView
 
-                    style="@style/setting_label"
+                    style="@style/setting_label4em"
                     android:text="向上滑动" />
 
                 <Button
@@ -106,7 +106,7 @@
 
                 <TextView
 
-                    style="@style/setting_label"
+                    style="@style/setting_label4em"
                     android:text="上滑悬停" />
 
                 <Button
@@ -154,7 +154,7 @@
 
                 <TextView
 
-                    style="@style/setting_label"
+                    style="@style/setting_label4em"
                     android:text="热区高度" />
 
                 <SeekBar
@@ -176,7 +176,7 @@
 
                 <TextView
 
-                    style="@style/setting_label"
+                    style="@style/setting_label4em"
                     android:text="向右滑动" />
 
                 <Button
@@ -186,7 +186,7 @@
 
                 <TextView
 
-                    style="@style/setting_label"
+                    style="@style/setting_label4em"
                     android:text="右滑悬停" />
 
                 <Button
@@ -237,7 +237,7 @@
 
                 <TextView
 
-                    style="@style/setting_label"
+                    style="@style/setting_label4em"
                     android:text="热区高度" />
 
                 <SeekBar
@@ -259,7 +259,7 @@
 
                 <TextView
 
-                    style="@style/setting_label"
+                    style="@style/setting_label4em"
                     android:text="向左滑动" />
 
                 <Button
@@ -269,7 +269,7 @@
 
                 <TextView
 
-                    style="@style/setting_label"
+                    style="@style/setting_label4em"
                     android:text="左滑悬停" />
 
                 <Button

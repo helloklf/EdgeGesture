@@ -48,6 +48,8 @@ public class TouchBarView extends View {
     private long lastEventTime = 0L;
     private int lastEvent = -1;
 
+    private long voluntarilyCancelTime = 0L; // 最后一次主动取消的垂直滑动操作的时间（例如：在两侧边缘手势上垂直滑动，认为是不合理操作）
+
     private float touchRawX;
     private float touchRawY;
 
@@ -126,6 +128,31 @@ public class TouchBarView extends View {
         this.accessibilityService = context;
     }
 
+    // 滑动方向错误或距离滑动不够不足以触发动作的手势
+    private void onInValidGesture() {
+        clearEffect();
+        long time = System.currentTimeMillis();
+
+        // 短时间内连续触发无效的垂直滑动
+        if ((time - voluntarilyCancelTime) < 4000L) {
+            antiTouchMode();
+        }
+
+        voluntarilyCancelTime = time;
+    }
+
+    // 防误触模式
+    private void antiTouchMode() {
+        if (antiTouchModeOn != null) {
+            antiTouchModeOn.run();
+        }
+    }
+
+    private Runnable antiTouchModeOn;
+    void setAntiTouchModeToggle(Runnable antiTouchModeOn) {
+        this.antiTouchModeOn = antiTouchModeOn;
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -141,17 +168,17 @@ public class TouchBarView extends View {
                     return onTouchUp(event);
                 }
                 case MotionEvent.ACTION_CANCEL:
-                    cleartEffect();
+                    clearEffect();
                     return true;
                 case MotionEvent.ACTION_OUTSIDE: {
-                    cleartEffect();
+                    clearEffect();
                     return false;
                 }
                 default: {
                 }
             }
         } else {
-            cleartEffect();
+            clearEffect();
         }
         return true;
     }
@@ -207,32 +234,44 @@ public class TouchBarView extends View {
                 postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (isTouchDown && !isGestureCompleted && currentTime == gestureStartTime) {
-                            isLongTimeGesture = true;
-                            if (vibratorRun) {
-                                Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE_HOVER, getRootView());
+                    if (isTouchDown && !isGestureCompleted && currentTime == gestureStartTime) {
+                        isLongTimeGesture = true;
+                        if (vibratorRun) {
+                            Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE_HOVER, getRootView());
 
-                                vibratorRun = false;
-                            }
-                            updateEdgeFeedbackIcon();
-                            if (barPosition == BOTTOM) {
-                                onTouchHover();
-                                isGestureCompleted = true;
-                                cleartEffect();
-                            } else {
-                                updateEdgeFeedback(touchRawX, touchRawY);
-                            }
+                            vibratorRun = false;
                         }
+                        updateEdgeFeedbackIcon();
+                        if (barPosition == BOTTOM) {
+                            onTouchHover();
+                            isGestureCompleted = true;
+                            clearEffect();
+                        } else {
+                            updateEdgeFeedback(touchRawX, touchRawY);
+                        }
+                    }
                     }
                 }, Gesture.config.getInt(SpfConfig.CONFIG_HOVER_TIME, SpfConfig.CONFIG_HOVER_TIME_DEFAULT));
                 Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, getRootView());
             }
+            updateEdgeFeedback(touchRawX, touchRawY);
         } else {
             GlobalState.updateEdgeFeedbackIcon(null, false);
             vibratorRun = true;
             gestureStartTime = 0;
+
+            updateEdgeFeedback(touchRawX, touchRawY);
+
+            // 两侧手势垂直滑动处理
+            if ((barPosition == LEFT || barPosition == RIGHT)) {
+                float moveY = Math.abs(touchRawY - touchStartRawY);
+                // float moveX = a - b;
+                if (moveY > FLIP_DISTANCE && touchMaxMoveX < (FLIP_DISTANCE / 2F)) {
+                    isGestureCompleted = true;
+                    onInValidGesture();
+                }
+            }
         }
-        updateEdgeFeedback(touchRawX, touchRawY);
         return true;
     }
 
@@ -291,25 +330,27 @@ public class TouchBarView extends View {
                     onShortTouch();
             }
         } else if ((barPosition == LEFT || barPosition == RIGHT) && Math.abs(moveX) > flingValue) {
-            if (barPosition == LEFT) {
-                if (moveX > FLIP_DISTANCE) {
-                    // 向屏幕内侧滑动 - 停顿250ms 打开最近任务，不停顿则“返回”
-                    if (isLongTimeGesture)
-                        onTouchHover();
-                    else
-                        onShortTouch();
-                }
-            } else if (barPosition == RIGHT) {
-                if (-moveX > FLIP_DISTANCE) {
-                    // 向屏幕内侧滑动 - 停顿250ms 打开最近任务，不停顿则“返回”
-                    if (isLongTimeGesture)
-                        onTouchHover();
-                    else
-                        onShortTouch();
+            if (barPosition == LEFT && moveX > FLIP_DISTANCE) {
+                // 向屏幕内侧滑动 - 停顿250ms 打开最近任务，不停顿则“返回”
+                if (isLongTimeGesture)
+                    onTouchHover();
+                else
+                    onShortTouch();
+            } else if (barPosition == RIGHT && -moveX > FLIP_DISTANCE) {
+                // 向屏幕内侧滑动 - 停顿250ms 打开最近任务，不停顿则“返回”
+                if (isLongTimeGesture)
+                    onTouchHover();
+                else
+                    onShortTouch();
+            } else {
+                // 如果连续两次滑动到了一定距离又没有触发手势，认为是误触
+                if (touchMaxMoveX > flingValue) {
+                    onInValidGesture();
+                    return true;
                 }
             }
         }
-        cleartEffect();
+        clearEffect();
 
         return true;
     }
@@ -325,7 +366,7 @@ public class TouchBarView extends View {
     /**
      * 清除手势效果
      */
-    private void cleartEffect() {
+    private void clearEffect() {
         GlobalState.clearEdgeFeedback();
         isTouchDown = false;
     }

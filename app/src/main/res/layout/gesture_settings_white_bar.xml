@@ -501,13 +501,20 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:text="随界面自动变色(增强模式)" />
+                    android:text="自动变色" />
 
                 <Switch
                     android:id="@+id/ios_bar_auto_color_root"
                     style="@style/btn_handler_picker"
                     android:textAlignment="center" />
             </LinearLayout>
+            <TextView
+                style="@style/switch_desc"
+                android:layout_marginTop="6dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="@null"
+                android:text="根据界面内容自动反色，需激活增强模式" />
 
             <LinearLayout
                 android:layout_width="match_parent"
