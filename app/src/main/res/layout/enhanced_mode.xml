@@ -2,10 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="10dp"
     android:orientation="vertical">
 
     <LinearLayout
-        style="@style/card_view"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:background="@drawable/gesture_card_view_top"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -19,18 +22,19 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:paddingRight="10dp">
+                android:paddingEnd="10dp">
 
                 <TextView
                     style="@style/card_title"
-                    android:text="增强模式" />
+                    android:text="@string/enhanced_mode" />
 
                 <TextView
+                    style="@style/switch_desc"
+                    android:paddingStart="16dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="激活增强模式，可解决以下问题：①切换应用时会打开已清除的后台；②小横条不会自动反转颜色；③回桌面后切换应用5秒延迟；\n\n点击右侧图标查看激活代码"
-                    android:textSize="12dp" />
+                    android:layout_marginTop="@dimen/row_margin"
+                    android:text="@string/enhanced_mode_desc" />
             </LinearLayout>
 
             <ImageView
@@ -43,7 +47,10 @@
 
     <LinearLayout
         android:id="@+id/steps_click_me"
-        style="@style/card_view"
+        android:layout_marginTop="2px"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:background="@drawable/gesture_card_view_bottom"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="10dp">
@@ -51,7 +58,8 @@
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/icon_question" />
+            android:src="@drawable/icon_question"
+            android:contentDescription="@string/faq_click_me" />
 
         <TextView
             android:layout_width="0dp"

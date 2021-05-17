@@ -137,6 +137,18 @@ public class FragmentSettingsBase extends Fragment {
         });
     }
 
+    protected void bindVisibility(int compoundButton, int targetView) {
+        final View view = getActivity().findViewById(targetView);
+        CompoundButton button = ((CompoundButton)getActivity().findViewById(compoundButton));
+        button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                view.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+            }
+        });
+        view.setVisibility(button.isChecked() ? View.VISIBLE : View.GONE);
+    }
+
     protected void setViewBackground(View view, int color) {
         GradientDrawable drawable = new GradientDrawable();
         drawable.setShape(GradientDrawable.RECTANGLE);
@@ -153,7 +165,7 @@ public class FragmentSettingsBase extends Fragment {
      * @param key
      * @param defValue
      */
-    private void openColorPicker(final String key, final int defValue) {
+    private void openColorPicker(final String key, final int defValue, final String title) {
         View view = getActivity().getLayoutInflater().inflate(R.layout.gesture_color_picker, null);
         int currentColor = config.getInt(key, defValue);
         final SeekBar alphaBar = view.findViewById(R.id.color_alpha);
@@ -189,7 +201,7 @@ public class FragmentSettingsBase extends Fragment {
         blueBar.setOnSeekBarChangeListener(listener);
 
         new AlertDialog.Builder(getActivity())
-                .setTitle(getString(R.string.effect_color_picker))
+                .setTitle(title == null ? "" : title)
                 .setView(view)
                 .setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
                     @Override
@@ -208,7 +220,7 @@ public class FragmentSettingsBase extends Fragment {
                 .show();
     }
 
-    protected void bindColorPicker(int id, final String key, final int defValue) {
+    protected void bindColorPicker(int id, final String key, final int defValue, final String title) {
         final Button button = getActivity().findViewById(id);
 
         setViewBackground(button, config.getInt(key, defValue));
@@ -217,7 +229,7 @@ public class FragmentSettingsBase extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openColorPicker(key, defValue);
+                openColorPicker(key, defValue, title);
             }
         });
     }

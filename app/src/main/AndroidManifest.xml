@@ -49,7 +49,6 @@
         <activity
             android:name=".SettingsActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="sensor"
             android:theme="@style/gestureAppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -74,7 +73,6 @@
             android:enabled="true"
             android:excludeFromRecents="false"
             android:launchMode="singleTask"
-            android:screenOrientation="sensor"
             android:theme="@style/gestureAppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

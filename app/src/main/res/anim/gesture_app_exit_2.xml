@@ -2,7 +2,7 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android"
     android:duration="@android:integer/config_mediumAnimTime"
     android:shareInterpolator="false"
-    android:zAdjustment="top">
+    android:zAdjustment="bottom">
     <alpha
         android:fillAfter="true"
         android:fromAlpha="1"

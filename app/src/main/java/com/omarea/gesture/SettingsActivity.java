@@ -7,15 +7,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TabHost;
 
+import com.omarea.gesture.fragments.Fragment3Section;
 import com.omarea.gesture.fragments.FragmentBasic;
-import com.omarea.gesture.fragments.FragmentEdge;
 import com.omarea.gesture.fragments.FragmentOther;
-import com.omarea.gesture.fragments.FragmentThreeSection;
+import com.omarea.gesture.fragments.FragmentSimple;
 import com.omarea.gesture.fragments.FragmentWhiteBar;
 import com.omarea.gesture.util.GlobalState;
+import com.omarea.gesture.util.Memory;
 
 
 public class SettingsActivity extends Activity {
@@ -44,9 +48,13 @@ public class SettingsActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        if (new Memory().getMemorySizeMB(this) > 4096) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+        }
+
         setTheme(false);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gesture_settings);
+        setContentView(R.layout.gesture_settings);
 
         try {
             final TabHost tabHost = findViewById(R.id.main_tabhost);
@@ -67,9 +75,9 @@ public class SettingsActivity extends Activity {
             getFragmentManager().beginTransaction()
                     .replace(R.id.main_tab_1, new FragmentWhiteBar()).commit();
             getFragmentManager().beginTransaction()
-                    .replace(R.id.main_tab_2, new FragmentEdge()).commit();
+                    .replace(R.id.main_tab_2, new FragmentSimple()).commit();
             getFragmentManager().beginTransaction()
-                    .replace(R.id.main_tab_3, new FragmentThreeSection()).commit();
+                    .replace(R.id.main_tab_3, new Fragment3Section()).commit();
             getFragmentManager().beginTransaction()
                     .replace(R.id.main_tab_4, new FragmentOther()).commit();
         } catch (Exception ex) {
@@ -89,7 +97,12 @@ public class SettingsActivity extends Activity {
         super.onResume();
 
         GlobalState.testMode = true;
-        updateView();
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                updateView();
+            }
+        }, 500);
 
         setTheme(true);
     }
@@ -98,7 +111,12 @@ public class SettingsActivity extends Activity {
     protected void onPause() {
         super.onPause();
         GlobalState.testMode = false;
-        updateView();
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                updateView();
+            }
+        }, 500);
     }
 
 

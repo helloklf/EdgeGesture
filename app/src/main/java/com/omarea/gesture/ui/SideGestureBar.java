@@ -9,6 +9,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
@@ -22,7 +23,7 @@ import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.util.GlobalState;
 import com.omarea.gesture.util.Memory;
 
-public class FloatVirtualTouchBar {
+public class SideGestureBar {
     private static WindowManager mWindowManager = null;
     private boolean islandscape;
     private View visualFeedbackView = null;
@@ -32,7 +33,7 @@ public class FloatVirtualTouchBar {
     private View rightView = null;
     private SharedPreferences config;
 
-    public FloatVirtualTouchBar(AccessibilityServiceGesture context) {
+    public SideGestureBar(AccessibilityServiceGesture context) {
         this.islandscape = GlobalState.isLandscapf;
 
         config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
@@ -102,7 +103,7 @@ public class FloatVirtualTouchBar {
     /**
      * 隐藏弹出框
      */
-    public void hidePopupWindow() {
+    public void removeGestureView() {
         if (this.iosBarView != null) {
             mWindowManager.removeView(this.iosBarView);
             this.iosBarView = null;
@@ -353,6 +354,36 @@ public class FloatVirtualTouchBar {
         mWindowManager.addView(view, params);
         // view.setOnTouchListener(getTouchPierceListener(params, view));
 
+        // 无效手势监听
+        bar.setAntiTouchModeToggle(new Runnable() {
+            @Override
+            public void run() {
+                final int flags = params.flags;
+
+                params.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS | LayoutParams.FLAG_NOT_TOUCHABLE | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
+                mWindowManager.updateViewLayout(view, params);
+
+                Toast.makeText(context, "边缘手势将停用5秒~", Toast.LENGTH_SHORT).show();
+
+                view.setOnTouchListener(new View.OnTouchListener() {
+                    private final long startTime = System.currentTimeMillis();
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if (event != null && event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                            if (System.currentTimeMillis() - startTime > 5000L) {
+                                params.flags = flags; // &= ~WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
+                                mWindowManager.updateViewLayout(view, params);
+                                view.setOnTouchListener(null);
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                });
+
+            }
+        });
+
         return view;
     }
 
@@ -400,6 +431,36 @@ public class FloatVirtualTouchBar {
 
         mWindowManager.addView(view, params);
         // view.setOnTouchListener(getTouchPierceListener(params, view));
+
+        // 无效手势监听
+        bar.setAntiTouchModeToggle(new Runnable() {
+            @Override
+            public void run() {
+                final int flags = params.flags;
+
+                params.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL | LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN | LayoutParams.FLAG_LAYOUT_NO_LIMITS | LayoutParams.FLAG_NOT_TOUCHABLE | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
+                mWindowManager.updateViewLayout(view, params);
+
+                Toast.makeText(context, "边缘手势将停用5秒~", Toast.LENGTH_SHORT).show();
+
+                view.setOnTouchListener(new View.OnTouchListener() {
+                    private final long startTime = System.currentTimeMillis();
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if (event != null && event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                            if (System.currentTimeMillis() - startTime > 5000L) {
+                                params.flags = flags; // &= ~WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
+                                mWindowManager.updateViewLayout(view, params);
+                                view.setOnTouchListener(null);
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                });
+
+            }
+        });
 
         return view;
     }

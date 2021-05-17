@@ -1,6 +1,5 @@
 package com.omarea.gesture.ui;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 

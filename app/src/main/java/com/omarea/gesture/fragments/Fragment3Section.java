@@ -8,12 +8,12 @@ import android.view.ViewGroup;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 
-public class FragmentThreeSection extends FragmentSettingsBase {
+public class Fragment3Section extends FragmentSettingsBase {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.gesture_three_section_options, container, false);
+        return inflater.inflate(R.layout.gesture_settings_3section, container, false);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class FragmentThreeSection extends FragmentSettingsBase {
         bindHandlerPicker(R.id.three_section_center_hover, SpfConfig.THREE_SECTION_CENTER_HOVER, SpfConfig.THREE_SECTION_CENTER_HOVER_DEFAULT);
         bindHandlerPicker(R.id.three_section_right_hover, SpfConfig.THREE_SECTION_RIGHT_HOVER, SpfConfig.THREE_SECTION_RIGHT_HOVER_DEFAULT);
 
-        bindColorPicker(R.id.bar_color_three_section, SpfConfig.THREE_SECTION_COLOR, SpfConfig.THREE_SECTION_COLOR_DEFAULT);
+        bindColorPicker(R.id.bar_color_three_section, SpfConfig.THREE_SECTION_COLOR, SpfConfig.THREE_SECTION_COLOR_DEFAULT, getString(R.string.feedback_color));
 
         updateView();
     }

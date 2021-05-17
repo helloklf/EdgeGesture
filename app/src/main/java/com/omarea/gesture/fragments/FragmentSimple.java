@@ -9,17 +9,17 @@ import android.view.ViewGroup;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 
-public class FragmentEdge extends FragmentSettingsBase {
+public class FragmentSimple extends FragmentSettingsBase {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.gesture_edge_options, container, false);
+        return inflater.inflate(R.layout.gesture_settings_simple, container, false);
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        bindColorPicker(R.id.bar_edge_color, SpfConfig.CONFIG_EDGE_COLOR, SpfConfig.CONFIG_EDGE_COLOR_DEFAULT);
+        bindColorPicker(R.id.bar_edge_color, SpfConfig.CONFIG_EDGE_COLOR, SpfConfig.CONFIG_EDGE_COLOR_DEFAULT, getString(R.string.feedback_color));
 
         bindCheckable(R.id.allow_bottom_landscape, SpfConfig.CONFIG_BOTTOM_ALLOW_LANDSCAPE, SpfConfig.CONFIG_BOTTOM_ALLOW_LANDSCAPE_DEFAULT);
         bindCheckable(R.id.allow_bottom_portrait, SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT, SpfConfig.CONFIG_BOTTOM_ALLOW_PORTRAIT_DEFAULT);

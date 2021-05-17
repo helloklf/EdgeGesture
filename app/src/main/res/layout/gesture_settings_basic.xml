@@ -9,13 +9,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/basic_settings"
-            android:textAppearance="@android:style/TextAppearance.Material.Title" />
-
         <include layout="@layout/gesture_switch_options" />
 
         <include layout="@layout/enhanced_mode" />
@@ -64,24 +57,19 @@
             android:orientation="vertical"
             android:padding="10dp">
 
-            <LinearLayout
+            <TextView
+                style="@style/card_title"
+                android:layout_width="match_parent"
+                android:text="震动反馈" />
+
+            <Switch
+                android:paddingRight="3dp"
+                android:layout_marginTop="16dp"
+                style="@style/textTitle"
+                android:id="@+id/vibrator_use_system"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/card_title"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:text="震动反馈" />
-
-                <Switch
-                    android:id="@+id/vibrator_use_system"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="系统默认 " />
-            </LinearLayout>
+                android:text="系统默认震感" />
 
             <LinearLayout
                 android:id="@+id/vibrator_custom"
@@ -99,7 +87,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="@dimen/row_margin"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -120,7 +108,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="@dimen/row_margin"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -146,7 +134,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="@dimen/row_margin"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -167,7 +155,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="@dimen/row_margin"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -188,7 +176,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="@dimen/row_margin"
                     android:text="根据自己的系统调节震动反馈效果，线性马达的时长可以调小，而转子马达由于响应速度较慢，时长必须要调更大一些。"
                     android:textColor="#888"
                     android:textSize="11dp" />
@@ -198,20 +186,31 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/row_margin"
                 android:orientation="vertical">
 
-                <Switch
-                    android:id="@+id/vibrator_quick_slide"
-                    style="@style/card_title"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="滑动反馈" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/card_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text="滑动反馈" />
+
+                    <Switch
+                        android:id="@+id/vibrator_quick_slide"
+                        style="@style/btn_handler_picker"
+                        android:textAlignment="center" />
+                </LinearLayout>
 
                 <TextView
                     style="@style/switch_desc"
-                    android:layout_marginTop="6dp"
                     android:text="开启快速滑动手势的震动反馈" />
             </LinearLayout>
         </LinearLayout>

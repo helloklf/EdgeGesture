@@ -1,6 +1,5 @@
 package com.omarea.gesture.util;
 
-import android.content.Context;
 import android.content.Intent;
 
 import java.util.ArrayList;

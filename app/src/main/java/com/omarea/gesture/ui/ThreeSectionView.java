@@ -30,6 +30,8 @@ public class ThreeSectionView extends View {
     private float touchStartX = 0F; // 触摸开始位置
     private float touchStartRawX = 0F; // 触摸开始位置
     private float touchStartRawY = 0F; // 触摸开始位置
+    private float touchMaxMoveX = 0F; // 本次手势过程中 最大横向移动距离
+    private float touchMaxMoveY = 0F; // 本次手势过程中 最大纵向移动距离
     private long gestureStartTime = 0L; // 手势开始时间（是指滑动到一定距离，认定触摸手势生效的时间）
     private boolean isLongTimeGesture = false;
     private Context context = getContext();
@@ -37,7 +39,7 @@ public class ThreeSectionView extends View {
     private boolean isTouchDown = false;
     private boolean isGestureCompleted = false;
     private boolean vibratorRun = false;
-    private float flingValue = dp2px(context, 3f); // 小于此值认为是点击而非滑动
+    private float flingValue = dp2px(context, 5f); // 小于此值认为是点击而非滑动
 
     private ActionModel eventLeftSlide;
     private ActionModel eventLeftHover;
@@ -125,21 +127,21 @@ public class ThreeSectionView extends View {
             float p = touchStartX / getWidth();
             if (p > 0.6f) {
                 if (eventRightHover.actionCode != Handlers.GLOBAL_ACTION_NONE) {
-                    GlobalState.updateThreeSectionFeedbackIcon(TouchIconCache.getIcon(eventRightHover.actionCode), false);
+                    updateThreeSectionFeedbackIcon(eventRightHover, eventRightSlide);
                     performGlobalAction(eventRightHover);
                 } else {
                     performGlobalAction(eventRightSlide);
                 }
             } else if (p > 0.4f) {
                 if (eventCenterHover.actionCode != Handlers.GLOBAL_ACTION_NONE) {
-                    GlobalState.updateThreeSectionFeedbackIcon(TouchIconCache.getIcon(eventCenterHover.actionCode), false);
+                    updateThreeSectionFeedbackIcon(eventCenterHover, eventCenterSlide);
                     performGlobalAction(eventCenterHover);
                 } else {
                     performGlobalAction(eventCenterSlide);
                 }
             } else {
                 if (eventLeftHover.actionCode != Handlers.GLOBAL_ACTION_NONE) {
-                    GlobalState.updateThreeSectionFeedbackIcon(TouchIconCache.getIcon(eventLeftHover.actionCode), false);
+                    updateThreeSectionFeedbackIcon(eventLeftHover, eventLeftSlide);
                     performGlobalAction(eventLeftHover);
                 } else {
                     performGlobalAction(eventLeftSlide);
@@ -226,6 +228,8 @@ public class ThreeSectionView extends View {
         touchStartX = event.getX();
         touchStartRawY = event.getRawY();
         touchStartRawX = event.getRawX();
+        touchMaxMoveX = 0f;
+        touchMaxMoveY = 0f;
         gestureStartTime = 0;
         isLongTimeGesture = false;
         vibratorRun = true;
@@ -247,11 +251,11 @@ public class ThreeSectionView extends View {
             if (gestureStartTime < 1) {
                 float p = touchStartX / getWidth();
                 if (p > 0.6f) {
-                    GlobalState.updateThreeSectionFeedbackIcon(TouchIconCache.getIcon(eventRightSlide.actionCode), false);
+                    updateThreeSectionFeedbackIcon(eventRightSlide, eventRightSlide);
                 } else if (p > 0.4f) {
-                    GlobalState.updateThreeSectionFeedbackIcon(TouchIconCache.getIcon(eventCenterSlide.actionCode), false);
+                    updateThreeSectionFeedbackIcon(eventCenterHover, eventCenterSlide);
                 } else {
-                    GlobalState.updateThreeSectionFeedbackIcon(TouchIconCache.getIcon(eventLeftSlide.actionCode), false);
+                    updateThreeSectionFeedbackIcon(eventLeftHover, eventLeftSlide);
                 }
 
                 final long currentTime = System.currentTimeMillis();
@@ -278,9 +282,33 @@ public class ThreeSectionView extends View {
             vibratorRun = true;
             gestureStartTime = 0;
         }
-        GlobalState.updateThreeSectionFeedback(touchRawX, touchRawY);
+        updateThreeSectionFeedback(touchRawX, touchRawY);
 
         return true;
+    }
+
+    private void updateThreeSectionFeedbackIcon(ActionModel hoverAction, ActionModel slideAction) {
+        int currentAction = slideAction.actionCode;
+        if (isLongTimeGesture && hoverAction.actionCode != Handlers.GLOBAL_ACTION_NONE) {
+            currentAction = hoverAction.actionCode;
+        }
+        GlobalState.updateThreeSectionFeedbackIcon(TouchIconCache.getIcon(currentAction), currentAction != slideAction.actionCode);
+    }
+
+    private void updateThreeSectionFeedback(float touchRawX, float touchRawY) {
+        float moveX = Math.abs(touchRawX - touchStartRawX);
+        float moveY = Math.abs(touchRawY - touchStartRawY);
+        if (moveX > touchMaxMoveX) {
+            touchMaxMoveX = moveX;
+        }
+        if (moveY > touchMaxMoveY) {
+            touchMaxMoveY = moveY;
+        }
+        if (moveY < flingValue) {
+            return;
+        }
+
+        GlobalState.updateThreeSectionFeedback(touchRawX, touchRawY);
     }
 
     private boolean onTouchUp(MotionEvent event) {

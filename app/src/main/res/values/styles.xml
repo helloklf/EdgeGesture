@@ -1,11 +1,50 @@
 <resources>
 
+    <style name="SceneSwitch">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:alpha">0.8</item>
+        <item name="android:thumb">@drawable/switch_thumb</item>
+        <item name="android:track">@drawable/switch_track</item>
+        <item name="android:textAppearance">@style/textTitle</item>
+        <item name="android:textOn" />
+        <item name="android:textOff" />
+        <item name="android:showText">false</item>
+    </style>
+
+    <style name="SceneSeekBar">
+        <item name="android:thumbOffset">0dp</item>
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:paddingEnd">0dp</item>
+        <item name="android:splitTrack">false</item>
+        <item name="android:maxHeight">20dp</item>
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:indeterminateDrawable">?android:colorAccent</item>
+        <item name="android:progressDrawable">@drawable/seekbar_progress_drawable</item>
+        <item name="android:minHeight">20dp</item>
+        <item name="android:thumb">@drawable/seekbar_thumb</item>
+        <item name="android:thumbTint">?android:colorAccent</item>
+        <item name="android:alpha">0.45</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="textTitle">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:alpha">1</item>
+    </style>
+
     <style name="gestureAppTheme" parent="android:Theme.Material.NoActionBar">
         <item name="android:colorPrimary">@color/colorPrimary</item>
         <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="android:colorAccent">@color/colorAccent</item>
         <item name="android:statusBarColor">#ff222222</item>
         <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="android:switchStyle">@style/SceneSwitch</item>
+        <item name="android:seekBarStyle">@style/SceneSeekBar</item>
+        <item name="android:textColor">#555555</item>
     </style>
 
     <style name="gestureAppThemeLight" parent="android:Theme.Material.Light.NoActionBar">
@@ -14,6 +53,9 @@
         <item name="android:colorAccent">@color/colorAccent</item>
         <item name="android:statusBarColor">#ffffffff</item>
         <item name="android:windowBackground">@color/windowLightBackground</item>
+        <item name="android:switchStyle">@style/SceneSwitch</item>
+        <item name="android:seekBarStyle">@style/SceneSeekBar</item>
+        <item name="android:textColor">#555555</item>
     </style>
 
     <style name="card_view">
@@ -34,8 +76,23 @@
     <style name="switch_desc">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">4dp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">12dp</item>
+        <item name="android:alpha">0.7</item>
+    </style>
+
+    <style name="setting_label">
+        <item name="android:textSize">13dp</item>
+        <item name="android:layout_width">@dimen/label_width</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:paddingEnd">5dp</item>
+    </style>
+
+    <style name="setting_label4em" parent="setting_label">
+        <item name="android:layout_width">60dp</item>
     </style>
 
     <style name="card_title">
@@ -57,16 +114,16 @@
     <style name="btn_handler_picker">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">30dp</item>
-        <item name="android:layout_gravity">center_vertical</item>
         <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">20dp</item>
+        <item name="android:layout_gravity">center_vertical</item>
         <item name="android:paddingLeft">3dp</item>
         <item name="android:paddingRight">3dp</item>
         <item name="android:paddingTop">0dp</item>
         <item name="android:paddingBottom">0dp</item>
         <item name="android:textAlignment">textStart</item>
         <item name="android:gravity">left|center_vertical</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">13sp</item>
         <item name="android:maxLines">1</item>
         <item name="android:textColor">@color/colorAccent</item>
     </style>
@@ -119,5 +176,18 @@
     <style name="BottomQuickPanelAnimation">
         <item name="android:windowEnterAnimation">@anim/gesture_quick_panel_bottom_in</item>
         <item name="android:windowExitAnimation">@anim/gesture_quick_panel_bottom_out</item>
+    </style>
+
+    <style name="PowerSwitch">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:button">@drawable/power_switch_style</item>
+        <item name="android:background">@null</item>
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 </resources>

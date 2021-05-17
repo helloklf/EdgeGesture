@@ -2,7 +2,6 @@ package com.omarea.gesture;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,8 +10,6 @@ import android.widget.Toast;
 
 import com.omarea.gesture.util.AppLauncher;
 import com.omarea.gesture.util.AppWindowed;
-
-import java.lang.reflect.Method;
 
 public class AppSwitchActivity extends Activity {
     public static Intent getOpenAppIntent(final AccessibilityServiceGesture accessibilityService) {
@@ -29,29 +26,29 @@ public class AppSwitchActivity extends Activity {
         try {
             overridePendingTransition(0, 0);
             Intent currentIntent = getIntent();
-            int animation = SpfConfig.HOME_ANIMATION_DEFAULT;
+            int animation = SpfConfig.ANIMATION_DEFAULT;
             if (currentIntent.hasExtra("animation")) {
-                animation = currentIntent.getIntExtra("animation", SpfConfig.HOME_ANIMATION_DEFAULT);
+                animation = currentIntent.getIntExtra("animation", SpfConfig.ANIMATION_DEFAULT);
             }
 
             if (currentIntent.hasExtra("next")) {
                 String appPackageName = currentIntent.getStringExtra("next");
-                if (animation == SpfConfig.HOME_ANIMATION_CUSTOM) {
+                if (animation == SpfConfig.ANIMATION_CUSTOM) {
                     switchApp(appPackageName, R.anim.gesture_next_enter_2, R.anim.gesture_next_exit_2);
-                } else if (animation == SpfConfig.HOME_ANIMATION_BASIC) {
+                } else if (animation == SpfConfig.ANIMATION_BASIC) {
                     switchApp(appPackageName, R.anim.gesture_next_enter, R.anim.gesture_next_exit);
-                } else if (animation == SpfConfig.HOME_ANIMATION_FAST) {
+                } else if (animation == SpfConfig.ANIMATION_FAST) {
                     switchApp(appPackageName, R.anim.gesture_next_enter_fast, R.anim.gesture_next_exit_fast);
                 } else {
                     switchApp(appPackageName, R.anim.gesture_next_enter_basic, R.anim.gesture_next_exit_basic);
                 }
             } else if (currentIntent.hasExtra("prev")) {
                 String appPackageName = currentIntent.getStringExtra("prev");
-                if (animation == SpfConfig.HOME_ANIMATION_CUSTOM) {
+                if (animation == SpfConfig.ANIMATION_CUSTOM) {
                     switchApp(appPackageName, R.anim.gesture_prev_enter_2, R.anim.gesture_prev_exit_2);
-                } else if (animation == SpfConfig.HOME_ANIMATION_BASIC) {
+                } else if (animation == SpfConfig.ANIMATION_BASIC) {
                     switchApp(appPackageName, R.anim.gesture_prev_enter, R.anim.gesture_prev_exit);
-                } else if (animation == SpfConfig.HOME_ANIMATION_FAST) {
+                } else if (animation == SpfConfig.ANIMATION_FAST) {
                     switchApp(appPackageName, R.anim.gesture_prev_enter_fast, R.anim.gesture_prev_exit_fast);
                 } else {
                     switchApp(appPackageName, R.anim.gesture_prev_enter_basic, R.anim.gesture_prev_exit_basic);
@@ -74,16 +71,16 @@ public class AppSwitchActivity extends Activity {
                 Intent intent = new Intent(Intent.ACTION_MAIN);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addCategory(Intent.CATEGORY_HOME);
-                if (animation == SpfConfig.HOME_ANIMATION_CUSTOM || animation == SpfConfig.HOME_ANIMATION_BASIC) {
+                if (animation == SpfConfig.ANIMATION_CUSTOM || animation == SpfConfig.ANIMATION_BASIC) {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    boolean anim2 = animation == SpfConfig.HOME_ANIMATION_CUSTOM;
+                    boolean anim2 = animation == SpfConfig.ANIMATION_CUSTOM;
                     int homeAnim;
                     int appAnim;
                     if (value.equals("prev")) {
-                        if (animation == SpfConfig.HOME_ANIMATION_CUSTOM) {
+                        if (animation == SpfConfig.ANIMATION_CUSTOM) {
                             homeAnim = R.anim.gesture_prev_enter_2;
                             appAnim = R.anim.gesture_prev_exit_2;
-                        } else if (animation == SpfConfig.HOME_ANIMATION_BASIC) {
+                        } else if (animation == SpfConfig.ANIMATION_BASIC) {
                             homeAnim = R.anim.gesture_prev_enter;
                             appAnim = R.anim.gesture_prev_exit;
                         } else {
@@ -91,10 +88,10 @@ public class AppSwitchActivity extends Activity {
                             appAnim = R.anim.gesture_prev_exit_basic;
                         }
                     } else if (value.equals("next")) {
-                        if (animation == SpfConfig.HOME_ANIMATION_CUSTOM) {
+                        if (animation == SpfConfig.ANIMATION_CUSTOM) {
                             homeAnim = R.anim.gesture_next_enter_2;
                             appAnim = R.anim.gesture_next_exit_2;
-                        } else if (animation == SpfConfig.HOME_ANIMATION_BASIC) {
+                        } else if (animation == SpfConfig.ANIMATION_BASIC) {
                             homeAnim = R.anim.gesture_next_enter;
                             appAnim = R.anim.gesture_next_exit;
                         } else {

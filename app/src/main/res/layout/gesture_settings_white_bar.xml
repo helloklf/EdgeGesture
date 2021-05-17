@@ -14,6 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:fontFamily="sans-serif-light"
             android:text="@string/white_bar_gesture"
             android:textAppearance="@android:style/TextAppearance.Material.Title" />
 
@@ -54,9 +55,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    style="@style/setting_label4em"
                     android:minWidth="80dp"
                     android:text="向左滑动" />
 
@@ -66,10 +65,7 @@
                     android:text="@string/edge_action" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:minWidth="80dp"
+                    style="@style/setting_label4em"
                     android:text="向右滑动" />
 
                 <Button
@@ -79,15 +75,13 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_marginTop="@dimen/row_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:minWidth="80dp"
+                    style="@style/setting_label4em"
                     android:text="向上滑动" />
 
                 <Button
@@ -96,10 +90,7 @@
                     android:text="@string/edge_action" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:minWidth="80dp"
+                    style="@style/setting_label4em"
                     android:text="上滑悬停" />
 
                 <Button
@@ -109,15 +100,13 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_marginTop="@dimen/row_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:minWidth="80dp"
+                    style="@style/setting_label4em"
                     android:text="轻触" />
 
                 <Button
@@ -126,10 +115,7 @@
                     android:text="@string/edge_action" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:minWidth="80dp"
+                    style="@style/setting_label4em"
                     android:text="长按" />
 
                 <Button
@@ -141,6 +127,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ios_options_landscape"
             style="@style/card_view"
             android:orientation="vertical"
             android:padding="10dp">
@@ -154,12 +141,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/row_margin"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="100dp"
+                    style="@style/setting_label"
                     android:layout_height="wrap_content"
                     android:text="宽度/颜色" />
 
@@ -171,7 +158,6 @@
                     android:layout_weight="1"
                     android:max="100"
                     android:min="0"
-                    android:paddingStart="6dp"
                     android:paddingEnd="6dp" />
 
                 <Button
@@ -182,12 +168,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/row_margin"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="100dp"
+                    style="@style/setting_label"
                     android:layout_height="wrap_content"
                     android:text="淡出不透明度" />
 
@@ -199,7 +185,7 @@
                     android:layout_weight="1"
                     android:max="100"
                     android:min="0"
-                    android:paddingStart="6dp"
+
                     android:paddingEnd="6dp" />
 
                 <Button
@@ -210,13 +196,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/row_margin"
                 android:gravity="center_vertical"
                 android:minHeight="30dp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="100dp"
+                    style="@style/setting_label"
                     android:layout_height="wrap_content"
                     android:text="底部间距" />
 
@@ -229,12 +215,13 @@
                     android:layout_weight="1"
                     android:max="30"
                     android:min="0"
-                    android:paddingStart="6dp"
+
                     android:paddingEnd="6dp" />
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ios_options_portrait"
             style="@style/card_view"
             android:orientation="vertical"
             android:padding="10dp">
@@ -248,12 +235,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/row_margin"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="100dp"
+                    style="@style/setting_label"
                     android:layout_height="wrap_content"
                     android:text="宽度/颜色" />
 
@@ -265,7 +252,7 @@
                     android:layout_weight="1"
                     android:max="100"
                     android:min="0"
-                    android:paddingStart="6dp"
+
                     android:paddingEnd="6dp" />
 
                 <Button
@@ -276,12 +263,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/row_margin"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="100dp"
+                    style="@style/setting_label"
                     android:layout_height="wrap_content"
                     android:text="淡出不透明度" />
 
@@ -293,7 +280,7 @@
                     android:layout_weight="1"
                     android:max="100"
                     android:min="0"
-                    android:paddingStart="6dp"
+
                     android:paddingEnd="6dp" />
 
                 <Button
@@ -304,13 +291,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/row_margin"
                 android:gravity="center_vertical"
                 android:minHeight="30dp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="100dp"
+                    style="@style/setting_label"
                     android:layout_height="wrap_content"
                     android:text="底部间距" />
 
@@ -319,11 +306,11 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="30dp"
+                    android:layout_marginEnd="30dp"
                     android:layout_weight="1"
                     android:max="30"
                     android:min="0"
-                    android:paddingStart="6dp"
+
                     android:paddingEnd="6dp" />
             </LinearLayout>
         </LinearLayout>
@@ -342,12 +329,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/row_margin"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="100dp"
+                    style="@style/setting_label"
                     android:layout_height="wrap_content"
                     android:text="阴影效果" />
 
@@ -359,7 +346,7 @@
                     android:layout_weight="1"
                     android:max="5"
                     android:min="0"
-                    android:paddingStart="6dp"
+
                     android:paddingEnd="6dp" />
 
                 <Button
@@ -370,12 +357,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/row_margin"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="100dp"
+                    style="@style/setting_label"
                     android:layout_height="wrap_content"
                     android:text="描边效果" />
 
@@ -387,7 +374,7 @@
                     android:layout_weight="1"
                     android:max="5"
                     android:min="0"
-                    android:paddingStart="6dp"
+
                     android:paddingEnd="6dp" />
 
                 <Button
@@ -398,13 +385,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/row_margin"
                 android:gravity="center_vertical"
                 android:minHeight="30dp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="100dp"
+                    style="@style/setting_label"
                     android:layout_height="wrap_content"
                     android:text="线条粗细" />
 
@@ -417,7 +404,7 @@
                     android:layout_weight="1"
                     android:max="12"
                     android:min="0"
-                    android:paddingStart="6dp"
+
                     android:paddingEnd="6dp" />
             </LinearLayout>
         </LinearLayout>
@@ -427,57 +414,73 @@
             android:orientation="vertical"
             android:padding="10dp">
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/card_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="锁屏时隐藏" />
 
                 <Switch
                     android:id="@+id/ios_bar_lock_hide"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="锁屏隐藏"
-                    android:textStyle="bold" />
-
-                <TextView
-                    style="@style/switch_desc"
-                    android:text="手机锁屏后隐藏小横条" />
+                    style="@style/btn_handler_picker"
+                    android:textAlignment="center" />
             </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical">
+                android:layout_marginTop="@dimen/row_margin"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/card_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="连续切换" />
 
                 <Switch
                     android:id="@+id/ios_bar_consecutive"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="连续切换"
-                    android:textStyle="bold" />
+                    style="@style/btn_handler_picker"
+                    android:textAlignment="center" />
+            </LinearLayout>
 
-                <TextView
-                    style="@style/switch_desc"
-                    android:text="通过左右滑动切换应用时，悬停可连续切换" />
+            <TextView
+                style="@style/switch_desc"
+                android:text="通过左右滑动切换应用时，悬停可连续切换" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/row_margin"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="vertical">
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/card_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text="避免遮挡输入法" />
 
                     <Switch
                         android:id="@+id/ios_input_avoid"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="输入避让"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        style="@style/switch_desc"
-                        android:text="弹出输入软键盘时小横条显示在键盘上方" />
+                        style="@style/btn_handler_picker"
+                        android:textAlignment="center" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -490,38 +493,48 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/card_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="自动变色" />
 
                 <Switch
                     android:id="@+id/ios_bar_auto_color_root"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="自动反色(增强模式)"
-                    android:textStyle="bold" />
-
-                <TextView
-                    style="@style/switch_desc"
-                    android:text="根据界面内容切换小横条颜色" />
+                    style="@style/btn_handler_picker"
+                    android:textAlignment="center" />
             </LinearLayout>
+            <TextView
+                style="@style/switch_desc"
+                android:layout_marginTop="6dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="@null"
+                android:text="根据界面内容自动反色，需激活增强模式" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical">
+                android:layout_marginTop="@dimen/row_margin"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/card_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="随电量调整颜色" />
 
                 <Switch
                     android:id="@+id/ios_bar_pop_battery"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="彩虹电量"
-                    android:textStyle="bold" />
-
-                <TextView
-                    style="@style/switch_desc"
-                    android:text="根据电池电量改变小横条颜色" />
+                    style="@style/btn_handler_picker"
+                    android:textAlignment="center" />
             </LinearLayout>
-
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -26,7 +27,7 @@ import com.omarea.gesture.shell.KeepShellPublic;
 public class FragmentOther extends FragmentSettingsBase {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.gesture_other_options, container, false);
+        return inflater.inflate(R.layout.gesture_settings_other, container, false);
     }
 
     @Override
@@ -57,11 +58,30 @@ public class FragmentOther extends FragmentSettingsBase {
 
         bindCheckable(R.id.game_optimization, SpfConfig.GAME_OPTIMIZATION, SpfConfig.GAME_OPTIMIZATION_DEFAULT);
         bindCheckable(R.id.low_power, SpfConfig.LOW_POWER_MODE, SpfConfig.LOW_POWER_MODE_DEFAULT);
+        ((CompoundButton)activity.findViewById(R.id.window_watch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!isChecked) {
+                    try {
+                        Intent intent = new Intent(getString(R.string.app_switch_changed));
+                        activity.sendBroadcast(intent);
+                    } catch (Exception ignored) {
+                    }
+                }
+            }
+        });
+        bindCheckable(R.id.window_watch, SpfConfig.WINDOW_WATCH, SpfConfig.WINDOW_WATCH_DEFAULT);
 
-        activity.findViewById(R.id.home_animation).setOnClickListener(new View.OnClickListener() {
+        activity.findViewById(R.id.back_home_animation).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                homeAnimationPicker();
+            homeAnimationPicker(SpfConfig.BACK_HOME_ANIMATION);
+            }
+        });
+        activity.findViewById(R.id.app_switch_animation).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            homeAnimationPicker(SpfConfig.APP_SWITCH_ANIMATION);
             }
         });
 
@@ -73,20 +93,20 @@ public class FragmentOther extends FragmentSettingsBase {
         root_get_recents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Checkable ele = (Checkable) v;
-                if (ele.isChecked()) {
-                    if (KeepShellPublic.checkRoot()) {
-                        config.edit().putBoolean(SpfConfig.ROOT, true).apply();
-                        new AdbProcessExtractor().updateAdbProcessState(getActivity(), true);
-                        restartService();
-                    } else {
-                        ele.setChecked(false);
-                        Gesture.toast(getString(R.string.no_root), Toast.LENGTH_SHORT);
-                    }
-                } else {
-                    config.edit().putBoolean(SpfConfig.ROOT, false).apply();
+            Checkable ele = (Checkable) v;
+            if (ele.isChecked()) {
+                if (KeepShellPublic.checkRoot()) {
+                    config.edit().putBoolean(SpfConfig.ROOT, true).apply();
+                    new AdbProcessExtractor().updateAdbProcessState(getActivity(), true);
                     restartService();
+                } else {
+                    ele.setChecked(false);
+                    Gesture.toast(getString(R.string.no_root), Toast.LENGTH_SHORT);
                 }
+            } else {
+                config.edit().putBoolean(SpfConfig.ROOT, false).apply();
+                restartService();
+            }
             }
         });
 
@@ -94,7 +114,7 @@ public class FragmentOther extends FragmentSettingsBase {
         getActivity().findViewById(R.id.app_switch_exclusive).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DialogAppSwitchExclusive().openDialog(getActivity());
+            new DialogAppSwitchExclusive().openDialog(getActivity());
             }
         });
 
@@ -112,15 +132,15 @@ public class FragmentOther extends FragmentSettingsBase {
         super.restartService();
     }
 
-    private void homeAnimationPicker() {
+    private void homeAnimationPicker(final String Key) {
         String[] options = new String[]{getString(R.string.animation_mode_default), getString(R.string.animation_mode_basic), getString(R.string.animation_mode_custom)};
         new AlertDialog.Builder(getActivity()).setTitle(R.string.animation_mode)
                 .setSingleChoiceItems(options,
-                        config.getInt(SpfConfig.HOME_ANIMATION, SpfConfig.HOME_ANIMATION_DEFAULT),
+                        config.getInt(Key, SpfConfig.ANIMATION_DEFAULT),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                config.edit().putInt(SpfConfig.HOME_ANIMATION, which).apply();
+                                config.edit().putInt(Key, which).apply();
                                 restartService();
                                 dialog.dismiss();
                             }
@@ -129,22 +149,25 @@ public class FragmentOther extends FragmentSettingsBase {
                 .show();
     }
 
-    private void setHomeAnimationText() {
-        int modeIndex = config.getInt(SpfConfig.HOME_ANIMATION, SpfConfig.HOME_ANIMATION_DEFAULT);
-        Button button = getActivity().findViewById(R.id.home_animation);
-        switch (modeIndex) {
-            case SpfConfig.HOME_ANIMATION_DEFAULT: {
-                button.setText(getString(R.string.animation_mode_default));
-                break;
+    private String animationName (int value) {
+        switch (value) {
+            case SpfConfig.ANIMATION_DEFAULT: {
+                return getString(R.string.animation_mode_default);
             }
-            case SpfConfig.HOME_ANIMATION_BASIC: {
-                button.setText(getString(R.string.animation_mode_basic));
-                break;
+            case SpfConfig.ANIMATION_BASIC: {
+                return getString(R.string.animation_mode_basic);
             }
-            case SpfConfig.HOME_ANIMATION_CUSTOM: {
-                button.setText(getString(R.string.animation_mode_custom));
-                break;
+            case SpfConfig.ANIMATION_CUSTOM: {
+                return getString(R.string.animation_mode_custom);
             }
         }
+        return "";
+    }
+
+    private void setHomeAnimationText() {
+        ((Button)(getActivity().findViewById(R.id.back_home_animation)))
+                .setText(animationName(config.getInt(SpfConfig.BACK_HOME_ANIMATION, SpfConfig.ANIMATION_DEFAULT)));
+        ((Button)(getActivity().findViewById(R.id.app_switch_animation)))
+                .setText(animationName(config.getInt(SpfConfig.APP_SWITCH_ANIMATION, SpfConfig.ANIMATION_DEFAULT)));
     }
 }

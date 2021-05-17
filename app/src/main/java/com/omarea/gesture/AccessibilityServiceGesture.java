@@ -12,6 +12,7 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build;
+import android.util.LruCache;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -21,7 +22,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.omarea.gesture.remote.RemoteAPI;
-import com.omarea.gesture.ui.FloatVirtualTouchBar;
+import com.omarea.gesture.ui.SideGestureBar;
 import com.omarea.gesture.ui.QuickPanel;
 import com.omarea.gesture.util.GlobalState;
 import com.omarea.gesture.util.Recents;
@@ -35,29 +36,31 @@ import java.util.TimerTask;
 
 public class AccessibilityServiceGesture extends AccessibilityService {
     public Recents recents = new Recents();
-    private FloatVirtualTouchBar floatVitualTouchBar = null;
+    private SideGestureBar floatVitualTouchBar = null;
     private BroadcastReceiver configChanged = null;
     private BroadcastReceiver serviceDisable = null;
     private BroadcastReceiver screenStateReceiver;
     private SharedPreferences appSwitchBlackList;
     private BatteryReceiver batteryReceiver;
 
-    private void hidePopupWindow() {
+    private boolean removeGestureView() {
         if (floatVitualTouchBar != null) {
-            floatVitualTouchBar.hidePopupWindow();
+            floatVitualTouchBar.removeGestureView();
             floatVitualTouchBar = null;
+            return true;
         }
+        return false;
     }
 
     private boolean ignored(String packageName) {
-        return recents.inputMethods.indexOf(packageName) > -1;
+        return recents.inputMethods.contains(packageName);
     }
 
     // 检测应用是否是可以打开的
     private boolean canOpen(String packageName) {
-        if (recents.blackList.indexOf(packageName) > -1) {
+        if (recents.blackList.contains(packageName)) {
             return false;
-        } else if (recents.whiteList.indexOf(packageName) > -1) {
+        } else if (recents.whiteList.contains(packageName)) {
             return true;
         } else {
             Intent launchIntent = getPackageManager().getLaunchIntentForPackage(packageName);
@@ -79,7 +82,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
         ArrayList<String> launcherApps = new ArrayList<>();
         for (ResolveInfo resolveInfo : resolveinfoList) {
             String packageName = resolveInfo.activityInfo.packageName;
-            if (!("com.android.settings".equals(packageName))) { // MIUI的设置有算个桌面，什么鬼
+            if (!("com.android.settings".equals(packageName))) { // MIUI的设置也算个桌面，什么鬼
                 launcherApps.add(packageName);
             }
         }
@@ -97,6 +100,14 @@ public class AccessibilityServiceGesture extends AccessibilityService {
     }
 
     private List<String> colorPolingApps = null; // 允许轮询颜色的APP
+    private long lastOriginEventTime = 0L;
+
+    private ArrayList<Integer> blackTypeList = new ArrayList<Integer>() {{
+        add(AccessibilityWindowInfo.TYPE_ACCESSIBILITY_OVERLAY);
+        add(AccessibilityWindowInfo.TYPE_INPUT_METHOD);
+        add(AccessibilityWindowInfo.TYPE_SPLIT_SCREEN_DIVIDER);
+        add(AccessibilityWindowInfo.TYPE_SYSTEM);
+    }};
 
     // TODO:判断是否进入全屏状态，以便在游戏和视频过程中降低功耗
     @Override
@@ -108,56 +119,94 @@ public class AccessibilityServiceGesture extends AccessibilityService {
         if (event == null) {
             return;
         }
+
+        CharSequence packageName = event.getPackageName();
+        if (packageName != null && "com.omarea.filter".equals(packageName.toString())) {
+            return;
+        }
+
         int eventType = event.getEventType();
 
         if (eventType == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED) {
             if (colorPolingApps != null && GlobalState.updateBar != null && !GlobalState.useBatteryCapacity) {
-                CharSequence packageName = event.getPackageName();
                 if (packageName != null) {
-                    if (colorPolingApps.indexOf(packageName.toString()) > -1) { // 抖音APP
+                    if (colorPolingApps.contains(packageName.toString())) { // 抖音APP
                         startColorPolling();
                     }
                 }
             }
         }
         else if (eventType == AccessibilityEvent.TYPE_WINDOWS_CHANGED || eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
-            List<AccessibilityWindowInfo> windowInfos = getWindows();
-            AccessibilityWindowInfo lastWindow = null;
+            if (Gesture.config.getBoolean(SpfConfig.WINDOW_WATCH, SpfConfig.WINDOW_WATCH_DEFAULT)) {
+                List<AccessibilityWindowInfo> windowInfos = getWindows();
+                AccessibilityWindowInfo lastWindow = null;
 
-            // TODO:
-            //      此前在MIUI系统上测试，只判定全屏显示（即窗口大小和屏幕分辨率完全一致）的应用，逻辑非常准确
-            //      但在类原生系统上表现并不好，例如：有缺口的屏幕或有导航键的系统，报告的窗口大小则可能不包括缺口高度区域和导航键区域高度
-            //      因此，现在将逻辑调整为：从所有应用窗口中选出最接近全屏的一个，判定为前台应用
-            //      当然，这并不意味着完美，只是暂时没有更好的解决方案……
+                // TODO:
+                //      此前在MIUI系统上测试，只判定全屏显示（即窗口大小和屏幕分辨率完全一致）的应用，逻辑非常准确
+                //      但在类原生系统上表现并不好，例如：有缺口的屏幕或有导航键的系统，报告的窗口大小则可能不包括缺口高度区域和导航键区域高度
+                //      因此，现在将逻辑调整为：从所有应用窗口中选出最接近全屏的一个，判定为前台应用
+                //      当然，这并不意味着完美，只是暂时没有更好的解决方案……
 
-            int lastWindowSize = 0;
-            for (AccessibilityWindowInfo windowInfo : windowInfos) {
-                if ((!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && windowInfo.isInPictureInPictureMode())) && (windowInfo.getType() == AccessibilityWindowInfo.TYPE_APPLICATION)) {
-                    Rect outBounds = new Rect();
-                    windowInfo.getBoundsInScreen(outBounds);
-                    int size = (outBounds.right - outBounds.left) * (outBounds.bottom - outBounds.top);
+                long t = event.getEventTime();
+                if (lastOriginEventTime != t && t > lastOriginEventTime) {
+                    lastOriginEventTime = t;
 
-                    if (size >= lastWindowSize) {
-                        lastWindow = windowInfo;
-                        lastWindowSize = size;
+                    int lastWindowSize = 0;
+                    ArrayList<AccessibilityWindowInfo> effectiveWindows = new ArrayList<>();
+                    for (AccessibilityWindowInfo windowInfo : windowInfos) {
+                        // if ((!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && windowInfo.isInPictureInPictureMode())) && (windowInfo.getType() == AccessibilityWindowInfo.TYPE_APPLICATION)) {
+                        // 现在不过滤画中画应用了，因为有遇到像Telegram这样的应用，从画中画切换到全屏后仍检测到处于画中画模式，并且类型是 -1（可能是MIUI魔改出来的），但对用户来说全屏就是前台应用
+                        if (!blackTypeList.contains(windowInfo.getType())) {
+                            effectiveWindows.add(windowInfo);
+                        }
+                    }
+
+                    boolean lastWindowFocus = false;
+                    boolean isLandscapf = GlobalState.isLandscapf;
+                    for (AccessibilityWindowInfo windowInfo : effectiveWindows) {
+                        if (isLandscapf) {
+                            Rect outBounds = new Rect();
+                            windowInfo.getBoundsInScreen(outBounds);
+                            int size = (outBounds.right - outBounds.left) * (outBounds.bottom - outBounds.top);
+
+                            if (size >= lastWindowSize) {
+                                lastWindow = windowInfo;
+                                lastWindowSize = size;
+                            }
+                        } else {
+                            boolean windowFocused = (windowInfo.isActive() || windowInfo.isFocused());
+                            if (lastWindowFocus && !windowFocused) {
+                                continue;
+                            }
+                            Rect outBounds = new Rect();
+                            windowInfo.getBoundsInScreen(outBounds);
+                            int size = (outBounds.right - outBounds.left) * (outBounds.bottom - outBounds.top);
+                            if (size >= lastWindowSize || (windowFocused && !lastWindowFocus)) {
+                                lastWindow = windowInfo;
+                                lastWindowSize = size;
+                                lastWindowFocus = windowFocused;
+                            }
+                        }
+                    }
+
+                    if (lastWindow != null) {
+                        lastParsingThread = System.currentTimeMillis();
+                        /*
+                        if (event.getPackageName() == null) {
+                            Log.e(">>>>G", " " +event);
+                        }
+                        */
+                        Thread thread = new WindowParsingThread(lastWindow, lastParsingThread, event.getWindowId(), packageName);
+                        thread.start();
                     }
                 }
-            }
-
-            if (lastWindow != null) {
-                lastParsingThread = System.currentTimeMillis();
-                /*
-                if (event.getPackageName() == null) {
-                    Log.e(">>>>G", " " +event);
-                }
-                */
-                Thread thread = new WindowParsingThread(lastWindow, lastParsingThread, event.getWindowId(), event.getPackageName());
-                thread.start();
             }
         }
     }
 
     private long lastParsingThread = 0;
+    // 窗口id缓存（检测到相同的窗口id时，直接读取缓存的packageName，避免重复分析窗口节点获取packageName，降低性能消耗）
+    private LruCache<Integer, String> windowIdCaches = new LruCache<Integer, String>(10);
 
     private class WindowParsingThread extends Thread {
         private AccessibilityWindowInfo windowInfo;
@@ -178,20 +227,26 @@ public class AccessibilityServiceGesture extends AccessibilityService {
                 if (eventWindowId == windowInfo.getId() && eventPackageName != null) {
                     packageName = eventPackageName;
                 } else {
-                    // 如果当前window锁属的APP处于未响应状态，此过程可能会等待5秒后超时返回null，因此需要在线程中异步进行此操作
-                    AccessibilityNodeInfo root;
+                    String cache = windowIdCaches.get(eventWindowId);
+                    if (cache != null) {
+                        packageName = cache;
+                    } else {
+                        // 如果当前window锁属的APP处于未响应状态，此过程可能会等待5秒后超时返回null，因此需要在线程中异步进行此操作
+                        AccessibilityNodeInfo root;
 
-                    try {
-                        root = windowInfo.getRoot();
-                    } catch (Exception ex) {
-                        root = null;
+                        try {
+                            root = windowInfo.getRoot();
+                        } catch (Exception ex) {
+                            root = null;
+                        }
+                        if (root == null) {
+                            return;
+                        }
+                        packageName = root.getPackageName();
+                        if (packageName != null) {
+                            windowIdCaches.put(eventWindowId, packageName.toString());
+                        }
                     }
-
-                    if (root == null) {
-                        return;
-                    }
-
-                    packageName = root.getPackageName();
                 }
                 if (packageName == null) {
                     return;
@@ -312,7 +367,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
                                 setResultData("Unable to start enhanced mode >_<");
                             }
                         }
-                        createPopupView();
+                        createPopupView(false);
                     }
                 }
             };
@@ -333,7 +388,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
             };
             registerReceiver(serviceDisable, new IntentFilter(getString(R.string.action_service_disable)));
         }
-        createPopupView();
+        createPopupView(false);
 
         registerReceiver(screenStateReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -362,7 +417,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
 
     @Override
     public boolean onUnbind(Intent intent) {
-        hidePopupWindow();
+        removeGestureView();
         return super.onUnbind(intent);
     }
 
@@ -388,16 +443,22 @@ public class AccessibilityServiceGesture extends AccessibilityService {
             if (point.x != GlobalState.displayWidth || point.y != GlobalState.displayHeight) {
                 GlobalState.displayWidth = point.x;
                 GlobalState.displayHeight = point.y;
-                createPopupView();
+                createPopupView(true);
             }
         }
     }
 
-    private void createPopupView() {
-        hidePopupWindow();
+    private void createPopupView(boolean delayed) {
+        final AccessibilityServiceGesture context = this;
 
-        setServiceInfo();
-        floatVitualTouchBar = new FloatVirtualTouchBar(this);
+        new android.os.Handler().postDelayed(new Runnable(){
+            @Override
+            public void run() {
+                removeGestureView();
+                setServiceInfo();
+                floatVitualTouchBar = new SideGestureBar(context);
+            }
+        }, (delayed ? 500 : 0));
     }
 
     private void setServiceInfo() {
@@ -405,9 +466,11 @@ public class AccessibilityServiceGesture extends AccessibilityService {
         // accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOWS_CHANGED;
         // accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED | AccessibilityEvent.TYPE_WINDOWS_CHANGED;
         if ((!Gesture.config.getBoolean(SpfConfig.LOW_POWER_MODE, SpfConfig.LOW_POWER_MODE_DEFAULT)) && colorPolingApps != null && colorPolingApps.size() > 0) {
-            accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOWS_CHANGED | AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED;
+            // accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOWS_CHANGED | AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED;
+            accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED | AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED;
         } else {
-            accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOWS_CHANGED;
+            // accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOWS_CHANGED;
+            accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
         }
         setServiceInfo(accessibilityServiceInfo);
     }
@@ -415,7 +478,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
     @Override
     public void onDestroy() {
         if (floatVitualTouchBar != null) {
-            floatVitualTouchBar.hidePopupWindow();
+            floatVitualTouchBar.removeGestureView();
         }
 
         if (configChanged != null) {

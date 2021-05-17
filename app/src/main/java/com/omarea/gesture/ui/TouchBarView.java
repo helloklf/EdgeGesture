@@ -2,7 +2,6 @@ package com.omarea.gesture.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -27,6 +26,8 @@ public class TouchBarView extends View {
 
     private float touchStartX = 0F; // 触摸开始位置
     private float touchStartRawX = 0F; // 触摸开始位置
+    private float touchMaxMoveX = 0F; // 本次手势过程中 最大横向移动距离
+    private float touchMaxMoveY = 0F; // 本次手势过程中 最大纵向移动距离
     private float touchStartY = 0F; // 触摸开始位置
     private float touchStartRawY = 0F; // 触摸开始位置
     private long gestureStartTime = 0L; // 手势开始时间（是指滑动到一定距离，认定触摸手势生效的时间）
@@ -36,7 +37,7 @@ public class TouchBarView extends View {
     private boolean isTouchDown = false;
     private boolean isGestureCompleted = false;
     private boolean vibratorRun = false;
-    private float flingValue = dp2px(context, 3f); // 小于此值认为是点击而非滑动
+    private float flingValue = dp2px(context, 5f); // 小于此值认为是点击而非滑动
 
     private ActionModel eventTouch;
     private ActionModel eventHover;
@@ -46,6 +47,8 @@ public class TouchBarView extends View {
 
     private long lastEventTime = 0L;
     private int lastEvent = -1;
+
+    private long voluntarilyCancelTime = 0L; // 最后一次主动取消的垂直滑动操作的时间（例如：在两侧边缘手势上垂直滑动，认为是不合理操作）
 
     private float touchRawX;
     private float touchRawY;
@@ -88,7 +91,11 @@ public class TouchBarView extends View {
 
     private void onTouchHover() {
         if (accessibilityService != null) {
-            performGlobalAction(eventHover);
+            if (eventHover.actionCode == Handlers.GLOBAL_ACTION_NONE && eventTouch.actionCode != Handlers.GLOBAL_ACTION_NONE) {
+                performGlobalAction(eventTouch);
+            } else {
+                performGlobalAction(eventHover);
+            }
         }
     }
 
@@ -121,6 +128,31 @@ public class TouchBarView extends View {
         this.accessibilityService = context;
     }
 
+    // 滑动方向错误或距离滑动不够不足以触发动作的手势
+    private void onInValidGesture() {
+        clearEffect();
+        long time = System.currentTimeMillis();
+
+        // 短时间内连续触发无效的垂直滑动
+        if ((time - voluntarilyCancelTime) < 4000L) {
+            antiTouchMode();
+        }
+
+        voluntarilyCancelTime = time;
+    }
+
+    // 防误触模式
+    private void antiTouchMode() {
+        if (antiTouchModeOn != null) {
+            antiTouchModeOn.run();
+        }
+    }
+
+    private Runnable antiTouchModeOn;
+    void setAntiTouchModeToggle(Runnable antiTouchModeOn) {
+        this.antiTouchModeOn = antiTouchModeOn;
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -136,17 +168,17 @@ public class TouchBarView extends View {
                     return onTouchUp(event);
                 }
                 case MotionEvent.ACTION_CANCEL:
-                    cleartEffect();
+                    clearEffect();
                     return true;
                 case MotionEvent.ACTION_OUTSIDE: {
-                    cleartEffect();
+                    clearEffect();
                     return false;
                 }
                 default: {
                 }
             }
         } else {
-            cleartEffect();
+            clearEffect();
         }
         return true;
     }
@@ -158,6 +190,8 @@ public class TouchBarView extends View {
         touchStartRawX = event.getRawX();
         touchStartY = event.getY();
         touchStartRawY = event.getRawY();
+        touchMaxMoveX = 0f;
+        touchMaxMoveY = 0f;
         GlobalState.startEdgeFeedback(event.getRawX(), event.getRawY(), barPosition);
         gestureStartTime = 0;
         isLongTimeGesture = false;
@@ -193,40 +227,88 @@ public class TouchBarView extends View {
 
         if (a - b > FLIP_DISTANCE) {
             if (gestureStartTime < 1) {
-                GlobalState.updateEdgeFeedbackIcon(TouchIconCache.getIcon(eventTouch.actionCode), false);
+                updateEdgeFeedbackIcon();
 
                 final long currentTime = System.currentTimeMillis();
                 gestureStartTime = currentTime;
                 postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (isTouchDown && !isGestureCompleted && currentTime == gestureStartTime) {
-                            isLongTimeGesture = true;
-                            if (vibratorRun) {
-                                Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE_HOVER, getRootView());
+                    if (isTouchDown && !isGestureCompleted && currentTime == gestureStartTime) {
+                        isLongTimeGesture = true;
+                        if (vibratorRun) {
+                            Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE_HOVER, getRootView());
 
-                                vibratorRun = false;
-                            }
-                            GlobalState.updateEdgeFeedbackIcon(TouchIconCache.getIcon(eventHover.actionCode), true);
-                            if (barPosition == BOTTOM) {
-                                onTouchHover();
-                                isGestureCompleted = true;
-                                cleartEffect();
-                            } else {
-                                GlobalState.updateEdgeFeedback(touchRawX, touchRawY);
-                            }
+                            vibratorRun = false;
                         }
+                        updateEdgeFeedbackIcon();
+                        if (barPosition == BOTTOM) {
+                            onTouchHover();
+                            isGestureCompleted = true;
+                            clearEffect();
+                        } else {
+                            updateEdgeFeedback(touchRawX, touchRawY);
+                        }
+                    }
                     }
                 }, Gesture.config.getInt(SpfConfig.CONFIG_HOVER_TIME, SpfConfig.CONFIG_HOVER_TIME_DEFAULT));
                 Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, getRootView());
             }
+            updateEdgeFeedback(touchRawX, touchRawY);
         } else {
             GlobalState.updateEdgeFeedbackIcon(null, false);
             vibratorRun = true;
             gestureStartTime = 0;
+
+            updateEdgeFeedback(touchRawX, touchRawY);
+
+            // 两侧手势垂直滑动处理
+            if ((barPosition == LEFT || barPosition == RIGHT)) {
+                float moveY = Math.abs(touchRawY - touchStartRawY);
+                // float moveX = a - b;
+                if (moveY > FLIP_DISTANCE && touchMaxMoveX < (FLIP_DISTANCE / 2F)) {
+                    isGestureCompleted = true;
+                    onInValidGesture();
+                }
+            }
         }
-        GlobalState.updateEdgeFeedback(touchRawX, touchRawY);
         return true;
+    }
+
+    private int getHitAction() {
+        if (isLongTimeGesture && eventHover.actionCode != Handlers.GLOBAL_ACTION_NONE) {
+            return eventHover.actionCode;
+        } else {
+            return eventTouch.actionCode;
+        }
+    }
+
+    private void updateEdgeFeedbackIcon() {
+        int currentAction = getHitAction();
+        GlobalState.updateEdgeFeedbackIcon(TouchIconCache.getIcon(currentAction), currentAction != eventTouch.actionCode);
+    }
+
+    private void updateEdgeFeedback(float touchRawX, float touchRawY) {
+        float moveX = Math.abs(touchRawX - touchStartRawX);
+        float moveY = Math.abs(touchRawY - touchStartRawY);
+        if (moveX > touchMaxMoveX) {
+            touchMaxMoveX = moveX;
+        }
+        if (moveY > touchMaxMoveY) {
+            touchMaxMoveY = moveY;
+        }
+        if (barPosition == BOTTOM) {
+            if (moveY < flingValue) {
+                return;
+            }
+        } else {
+            if (moveX < flingValue) {
+                return;
+            }
+        }
+
+
+        GlobalState.updateEdgeFeedback(touchRawX, touchRawY);
     }
 
     private boolean onTouchUp(MotionEvent event) {
@@ -240,33 +322,35 @@ public class TouchBarView extends View {
         float moveX = event.getX() - touchStartX;
         float moveY = touchStartY - event.getY();
 
-        if (Math.abs(moveX) > flingValue || Math.abs(moveY) > flingValue) {
-            if (barPosition == LEFT) {
-                if (moveX > FLIP_DISTANCE) {
-                    // 向屏幕内侧滑动 - 停顿250ms 打开最近任务，不停顿则“返回”
-                    if (isLongTimeGesture)
-                        onTouchHover();
-                    else
-                        onShortTouch();
-                }
-            } else if (barPosition == RIGHT) {
-                if (-moveX > FLIP_DISTANCE) {
-                    // 向屏幕内侧滑动 - 停顿250ms 打开最近任务，不停顿则“返回”
-                    if (isLongTimeGesture)
-                        onTouchHover();
-                    else
-                        onShortTouch();
-                }
-            } else if (barPosition == BOTTOM) {
-                if (moveY > FLIP_DISTANCE) {
-                    if (isLongTimeGesture)
-                        onTouchHover();
-                    else
-                        onShortTouch();
+        if (barPosition == BOTTOM && Math.abs(moveY) > flingValue) { //  > flingValue
+            if (moveY > FLIP_DISTANCE) {
+                if (isLongTimeGesture)
+                    onTouchHover();
+                else
+                    onShortTouch();
+            }
+        } else if ((barPosition == LEFT || barPosition == RIGHT) && Math.abs(moveX) > flingValue) {
+            if (barPosition == LEFT && moveX > FLIP_DISTANCE) {
+                // 向屏幕内侧滑动 - 停顿250ms 打开最近任务，不停顿则“返回”
+                if (isLongTimeGesture)
+                    onTouchHover();
+                else
+                    onShortTouch();
+            } else if (barPosition == RIGHT && -moveX > FLIP_DISTANCE) {
+                // 向屏幕内侧滑动 - 停顿250ms 打开最近任务，不停顿则“返回”
+                if (isLongTimeGesture)
+                    onTouchHover();
+                else
+                    onShortTouch();
+            } else {
+                // 如果连续两次滑动到了一定距离又没有触发手势，认为是误触
+                if (touchMaxMoveX > flingValue) {
+                    onInValidGesture();
+                    return true;
                 }
             }
         }
-        cleartEffect();
+        clearEffect();
 
         return true;
     }
@@ -282,7 +366,7 @@ public class TouchBarView extends View {
     /**
      * 清除手势效果
      */
-    private void cleartEffect() {
+    private void clearEffect() {
         GlobalState.clearEdgeFeedback();
         isTouchDown = false;
     }

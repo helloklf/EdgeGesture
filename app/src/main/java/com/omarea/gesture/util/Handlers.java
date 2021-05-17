@@ -12,6 +12,7 @@ import com.omarea.gesture.AccessibilityServiceGesture;
 import com.omarea.gesture.ActionModel;
 import com.omarea.gesture.AppSwitchActivity;
 import com.omarea.gesture.Gesture;
+import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.SpfConfigEx;
 import com.omarea.gesture.remote.RemoteAPI;
@@ -36,13 +37,16 @@ public class Handlers {
     final public static int VITUAL_ACTION_PREV_APP = 900001;
     final public static int VITUAL_ACTION_FORM = 900009;
     final public static int VITUAL_ACTION_SWITCH_APP = 900005;
+    final public static int VITUAL_ACTION_MI_HANDY_MODE_1 = 900100;
+    final public static int VITUAL_ACTION_MI_HANDY_MODE_2 = 900101;
 
     final public static int CUSTOM_ACTION_APP = 1000001;
     final public static int CUSTOM_ACTION_APP_WINDOW = 1000002;
     final public static int CUSTOM_ACTION_SHELL = 1000006;
     final public static int CUSTOM_ACTION_QUICK = 1000009;
     final public static int OMAREA_FILTER_SCREENSHOT = 1100000;
-    private final static ActionModel[] options = new ArrayList<ActionModel>() {{
+    private static final boolean isXiaomi = Build.MANUFACTURER.toLowerCase().equals("xiaomi") && (Build.BRAND.toLowerCase().equals("xiaomi") || Build.BRAND.toLowerCase().equals("redmi"));
+    private final static ArrayList<ActionModel> options = new ArrayList<ActionModel>() {{
         add(new ActionModel(GLOBAL_ACTION_NONE, "无"));
         add(new ActionModel(GLOBAL_ACTION_BACK, "返回键"));
         add(new ActionModel(GLOBAL_ACTION_HOME, "Home键"));
@@ -71,19 +75,20 @@ public class Handlers {
         add(new ActionModel(CUSTOM_ACTION_SHELL, "运行脚本 > "));
         add(new ActionModel(CUSTOM_ACTION_QUICK, "常用应用 > "));
         add(new ActionModel(OMAREA_FILTER_SCREENSHOT, "屏幕滤镜-正常截图"));
-    }}.toArray(new ActionModel[0]);
-    // private static boolean isXiaomi = Build.MANUFACTURER.equals("Xiaomi") && Build.BRAND.equals("Xiaomi");
+    }};
     private static SharedPreferences configEx;
     private static boolean isMiui12 = new SystemProperty().isMiui12();
 
     // 获取动画模式
-    private static int getAnimationRes() {
+    private static int getAnimationRes(final ActionModel action) {
         if (GlobalState.consecutiveAction != null) {
-            return SpfConfig.HOME_ANIMATION_FAST;
+            return SpfConfig.ANIMATION_FAST;
         } else if (Gesture.config.getBoolean(SpfConfig.LOW_POWER_MODE, SpfConfig.LOW_POWER_MODE_DEFAULT)) {
-            return SpfConfig.HOME_ANIMATION_DEFAULT;
+            return SpfConfig.ANIMATION_DEFAULT;
+        } else if (action.actionCode == GLOBAL_ACTION_HOME) {
+            return Gesture.config.getInt(SpfConfig.BACK_HOME_ANIMATION, SpfConfig.ANIMATION_DEFAULT);
         } else {
-            return Gesture.config.getInt(SpfConfig.HOME_ANIMATION, SpfConfig.HOME_ANIMATION_DEFAULT);
+            return Gesture.config.getInt(SpfConfig.APP_SWITCH_ANIMATION, SpfConfig.ANIMATION_DEFAULT);
         }
     }
 
@@ -109,9 +114,9 @@ public class Handlers {
                 } else if (Gesture.config.getBoolean(SpfConfig.LOW_POWER_MODE, SpfConfig.LOW_POWER_MODE_DEFAULT)) {
                     lowPowerModeAppSwitch(accessibilityService, action.actionCode);
                 } else {
-                    int animation = getAnimationRes();
+                    int animation = getAnimationRes(action);
 
-                    if (action.actionCode == GLOBAL_ACTION_HOME && animation == SpfConfig.HOME_ANIMATION_DEFAULT) {
+                    if (action.actionCode == GLOBAL_ACTION_HOME && animation == SpfConfig.ANIMATION_DEFAULT) {
                         accessibilityService.performGlobalAction(action.actionCode);
                     } else {
                         appSwitch(accessibilityService, action.actionCode, animation);
@@ -163,6 +168,14 @@ public class Handlers {
                 }).start();
                 break;
             }
+            case VITUAL_ACTION_MI_HANDY_MODE_1: {
+                RemoteAPI.xiaomiHandymode(1);
+                break;
+            }
+            case VITUAL_ACTION_MI_HANDY_MODE_2: {
+                RemoteAPI.xiaomiHandymode(2);
+                break;
+            }
             default: {
                 accessibilityService.performGlobalAction(action.actionCode);
                 break;
@@ -206,7 +219,11 @@ public class Handlers {
                 if (targetApp != null) {
                     new AppLauncher().startActivity(service, targetApp);
                 } else {
-                    Gesture.toast(">>", Toast.LENGTH_SHORT);
+                    if (Gesture.config.getBoolean(SpfConfig.WINDOW_WATCH, SpfConfig.WINDOW_WATCH_DEFAULT)) {
+                        Gesture.toast(">>", Toast.LENGTH_SHORT);
+                    } else {
+                        Gesture.toast(service.getString(R.string.window_watch_disabled), Toast.LENGTH_LONG);
+                    }
                 }
                 break;
             }
@@ -215,7 +232,11 @@ public class Handlers {
                 if (targetApp != null) {
                     new AppLauncher().startActivity(service, targetApp);
                 } else {
-                    Gesture.toast("<<", Toast.LENGTH_SHORT);
+                    if (Gesture.config.getBoolean(SpfConfig.WINDOW_WATCH, SpfConfig.WINDOW_WATCH_DEFAULT)) {
+                        Gesture.toast("<<", Toast.LENGTH_SHORT);
+                    } else {
+                        Gesture.toast(service.getString(R.string.window_watch_disabled), Toast.LENGTH_LONG);
+                    }
                 }
                 break;
             }
@@ -247,7 +268,17 @@ public class Handlers {
                     break;
                 }
                 case VITUAL_ACTION_FORM: {
-                    intent.putExtra("form", service.recents.getCurrent());
+                    String current = service.recents.getCurrent();
+                    if (current.isEmpty()) {
+                        if (Gesture.config.getBoolean(SpfConfig.WINDOW_WATCH, SpfConfig.WINDOW_WATCH_DEFAULT)) {
+                            Gesture.toast("□", Toast.LENGTH_SHORT);
+                        } else {
+                            Gesture.toast(service.getString(R.string.window_watch_disabled), Toast.LENGTH_LONG);
+                        }
+                        return;
+                    } else {
+                        intent.putExtra("form", current);
+                    }
                     break;
                 }
                 case VITUAL_ACTION_PREV_APP:
@@ -259,7 +290,11 @@ public class Handlers {
                             // Log.d(">>>>", targetApp);
                             intent.putExtra("prev", targetApp);
                         } else {
-                            Gesture.toast("<<", Toast.LENGTH_SHORT);
+                            if (Gesture.config.getBoolean(SpfConfig.WINDOW_WATCH, SpfConfig.WINDOW_WATCH_DEFAULT)) {
+                                Gesture.toast("<<", Toast.LENGTH_SHORT);
+                            } else {
+                                Gesture.toast(service.getString(R.string.window_watch_disabled), Toast.LENGTH_LONG);
+                            }
                             return;
                         }
                     } else {
@@ -268,7 +303,11 @@ public class Handlers {
                             // Log.d(">>>>", targetApp);
                             intent.putExtra("next", targetApp);
                         } else {
-                            Gesture.toast(">>", Toast.LENGTH_SHORT);
+                            if (Gesture.config.getBoolean(SpfConfig.WINDOW_WATCH, SpfConfig.WINDOW_WATCH_DEFAULT)) {
+                                Gesture.toast(">>", Toast.LENGTH_SHORT);
+                            } else {
+                                Gesture.toast(service.getString(R.string.window_watch_disabled), Toast.LENGTH_LONG);
+                            }
                             return;
                         }
                     }
@@ -333,7 +372,7 @@ public class Handlers {
     }
 
     public static String getOption(int value) {
-        for (ActionModel actionModel : options) {
+        for (ActionModel actionModel : getOptions()) {
             if (actionModel.actionCode == value) {
                 return actionModel.title;
             }
@@ -342,6 +381,13 @@ public class Handlers {
     }
 
     public static ActionModel[] getOptions() {
-        return options;
+        ArrayList<ActionModel> items = new ArrayList<ActionModel>(){{
+            addAll(options);
+            if (isXiaomi && GlobalState.enhancedMode) {
+                add(new ActionModel(VITUAL_ACTION_MI_HANDY_MODE_1, "单手模式-左"));
+                add(new ActionModel(VITUAL_ACTION_MI_HANDY_MODE_2, "单手模式-右"));
+            }
+        }};
+        return items.toArray(new ActionModel[0]);
     }
 }

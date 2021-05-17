@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="adb_process:jar">
+    <output-path>$PROJECT_DIR$/jar</output-path>
+    <root id="archive" name="adb_process.jar">
+      <element id="module-output" name="adb_process" />
+    </root>
+  </artifact>
+</component>

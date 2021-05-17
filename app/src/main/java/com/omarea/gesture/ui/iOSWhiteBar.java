@@ -5,11 +5,13 @@ import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.InputDevice;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -37,7 +39,7 @@ public class iOSWhiteBar {
     private AccessibilityServiceGesture accessibilityService;
     private SharedPreferences config;
     private Boolean isLandscapf;
-    private float pressure = 0;
+    private Path touchPath = new Path(); // 记录触摸轨迹
 
     iOSWhiteBar(AccessibilityServiceGesture accessibilityService, Boolean isLandscapf) {
         this.accessibilityService = accessibilityService;
@@ -53,9 +55,9 @@ public class iOSWhiteBar {
         int h = displayMetrics.heightPixels;
         int w = displayMetrics.widthPixels;
         if (isLandscapf) {
-            return h < w ? w : h;
+            return Math.max(h, w);
         } else {
-            return h < w ? h : w;
+            return Math.min(h, w);
         }
     }
 
@@ -65,10 +67,7 @@ public class iOSWhiteBar {
     private int dp2px(Context context, float dpValue) {
         float scale = context.getResources().getDisplayMetrics().density;
         int value = (int) (dpValue * scale + 0.5f);
-        if (value < 1) {
-            return 1;
-        }
-        return value;
+        return Math.max(value, 1);
     }
 
     // 判断是否没有定义任何动作（装饰模式）
@@ -123,6 +122,14 @@ public class iOSWhiteBar {
         final int marginBottom = (isLandscapf ? config.getInt(SpfConfig.IOS_BAR_MARGIN_BOTTOM_LANDSCAPE, SpfConfig.IOS_BAR_MARGIN_BOTTOM_LANDSCAPE_DEFAULT) : config.getInt(SpfConfig.IOS_BAR_MARGIN_BOTTOM_PORTRAIT, SpfConfig.IOS_BAR_MARGIN_BOTTOM_PORTRAIT_DEFAULT)); // 底部边距
         final int totalHeight = marginBottom + lineWeight + (shadowSize * 2) + (strokeWidth * 2);
         final boolean inputAvoid = config.getBoolean(SpfConfig.INPUT_METHOD_AVOID, SpfConfig.INPUT_METHOD_AVOID_DEFAULT); // 输入法避让
+
+        final boolean autoColor = config.getBoolean(SpfConfig.IOS_BAR_POP_BATTERY, SpfConfig.IOS_BAR_POP_BATTERY_DEFAULT) || config.getBoolean(SpfConfig.IOS_BAR_AUTO_COLOR, SpfConfig.IOS_BAR_AUTO_COLOR_DEFAULT);
+        final boolean noShadow = (shadowSize == 0 || Color.alpha(shadowColor) == 0);
+        final boolean isTransparent = !autoColor && lineWeight == 0 || Color.alpha(barColor) == 0;
+        final boolean noStroke = (strokeWidth == 0 || Color.alpha(strokeColor) == 0);
+
+        // 是否没任何可见效果（整个横条是隐藏的）
+        final boolean isHidden = noShadow && isTransparent && noStroke;
 
         bar.setStyle(
                 ((int) (getScreenWidth(accessibilityService) * widthRatio)),
@@ -183,7 +190,7 @@ public class iOSWhiteBar {
             private float touchCurrentX = 0F; // 当前触摸位置
             private float touchCurrentY = 0F; // 当前触摸位置
             private int FLIP_DISTANCE = dp2px(accessibilityService, 50f); // 触摸灵敏度（滑动多长距离认为是手势）
-            private float flingValue = dp2px(accessibilityService, 3f); // 小于此值认为是点击而非滑动
+            private float flingValue = dp2px(accessibilityService, 5f); // 小于此值认为是点击而非滑动
             private int offsetLimitX = dp2px(accessibilityService, 50);
             private int offsetLimitY = dp2px(accessibilityService, 12);
             private int animationScaling = dp2px(accessibilityService, 2); // 手指移动多少像素时动画才移动1像素
@@ -196,7 +203,11 @@ public class iOSWhiteBar {
 
             private float touchCurrentRawX;
             private float touchCurrentRawY;
+            private float touchMaxMoveX = 0F; // 本次手势过程中 最大横向移动距离
+            private float touchMaxMoveY = 0F; // 本次手势过程中 最大纵向移动距离
             private long lastTouchDown = 0L;
+
+            private InputDevice inputDevice;
 
             private void performGlobalAction(final ActionModel event) {
                 if (accessibilityService != null) {
@@ -204,8 +215,24 @@ public class iOSWhiteBar {
                 }
             }
 
+            // 是否移动的了足够的距离，认为它算是个手势
+            private boolean isGesture() {
+                float moveX = Math.abs(touchCurrentRawX - touchStartRawX);
+                float moveY = Math.abs(touchCurrentRawY - touchStartRawY);
+                if (moveX > touchMaxMoveX) {
+                    touchMaxMoveX = moveX;
+                }
+                if (moveY > touchMaxMoveY) {
+                    touchMaxMoveY = moveY;
+                }
+                return (moveX >= flingValue || moveY >= flingValue);
+            }
+
             private void setPosition(float x, float y) {
-                if (!lowPowerMode) {
+                if (!(lowPowerMode || isHidden)) {
+                    if (!isGesture()) {
+                        return;
+                    }
                     int limitX = (int) x;
                     if (limitX < -offsetLimitX) {
                         limitX = -offsetLimitX;
@@ -228,30 +255,35 @@ public class iOSWhiteBar {
                 if (fareOutAnimation != null) {
                     fareOutAnimation.cancel();
                 }
-                if (lowPowerMode) {
-                    bar.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (!isTouchDown) {
-                                bar.setAlpha(fateOutAlpha);
+                if (isHidden) {
+                } else if (lowPowerMode) {
+                    if (!isTransparent) {
+                        bar.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (!isTouchDown) {
+                                    bar.setAlpha(fateOutAlpha);
+                                }
                             }
-                        }
-                    }, 5000);
+                        }, 5000);
+                    }
                 } else {
-                    fareOutAnimation = ValueAnimator.ofFloat(1f, fateOutAlpha);
-                    fareOutAnimation.setDuration(1000);
-                    fareOutAnimation.setInterpolator(new LinearInterpolator());
-                    fareOutAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                        @Override
-                        public void onAnimationUpdate(ValueAnimator animation) {
-                            try {
-                                bar.setAlpha((float) animation.getAnimatedValue());
-                            } catch (Exception ignored) {
+                    if (!isTransparent) {
+                        fareOutAnimation = ValueAnimator.ofFloat(1f, fateOutAlpha);
+                        fareOutAnimation.setDuration(1000);
+                        fareOutAnimation.setInterpolator(new LinearInterpolator());
+                        fareOutAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animation) {
+                                try {
+                                    bar.setAlpha((float) animation.getAnimatedValue());
+                                } catch (Exception ignored) {
+                                }
                             }
-                        }
-                    });
-                    fareOutAnimation.setStartDelay(5000);
-                    fareOutAnimation.start();
+                        });
+                        fareOutAnimation.setStartDelay(5000);
+                        fareOutAnimation.start();
+                    }
                 }
             }
 
@@ -290,6 +322,14 @@ public class iOSWhiteBar {
                 objectAnimator.start();
             }
 
+            /*
+            // 只有被输入的引用才能获取输入法状态
+            private boolean softKeyboardIsActive () {
+                InputMethodManager imm = (InputMethodManager)accessibilityService.getSystemService(Context.INPUT_METHOD_SERVICE);
+                return imm.isActive();
+            }
+            */
+
             private boolean onTouchDown(final MotionEvent event) {
                 isTouchDown = true;
                 isGestureCompleted = false;
@@ -301,6 +341,8 @@ public class iOSWhiteBar {
                 touchCurrentRawY = event.getRawY();
                 touchCurrentX = event.getX();
                 touchCurrentY = event.getY();
+                touchMaxMoveX = 0f;
+                touchMaxMoveY = 0f;
                 gestureStartTime = 0;
                 isLongTimeGesture = false;
                 vibratorRun = true;
@@ -318,7 +360,7 @@ public class iOSWhiteBar {
                     objectAnimator = null;
                 }
 
-                if (bar.getAlpha() != 1f) {
+                if (!(isTransparent || bar.getAlpha() == 1f)) {
                     bar.setAlpha(1f);
                     bar.invalidate();
                 }
@@ -329,7 +371,7 @@ public class iOSWhiteBar {
                         if (isTouchDown && !isGestureCompleted && lastTouchDown == downTime) {
                             if (Math.abs(touchStartRawX - touchCurrentRawX) < slideThresholdX && Math.abs(touchStartRawY - touchCurrentRawY) < slideThresholdY) {
                                 int pressureAction = config.getInt(SpfConfig.IOS_BAR_PRESS, SpfConfig.IOS_BAR_PRESS_DEFAULT);
-                                if (pressureAction != SpfConfig.IOS_BAR_TOUCH_DEFAULT) {
+                                if (pressureAction != Handlers.GLOBAL_ACTION_NONE) {
                                     isLongTimeGesture = true;
                                     if (vibratorRun) {
                                         Gesture.vibrate(Gesture.VibrateMode.VIBRATE_PRESS, view);
@@ -342,12 +384,10 @@ public class iOSWhiteBar {
                             }
                         }
                     }
-                }, 280);
+                }, config.getInt(SpfConfig.CONFIG_HOVER_TIME, SpfConfig.CONFIG_HOVER_TIME_DEFAULT) + 100);
 
                 return true;
             }
-
-            private int consecutiveDirection = 0;
 
             private boolean onTouchMove(MotionEvent event) {
                 if (isGestureCompleted || !isTouchDown) {
@@ -393,7 +433,9 @@ public class iOSWhiteBar {
                     gestureStartTime = 0;
                 }
 
-                setPosition(originX + ((touchCurrentX - touchStartX) / animationScaling), originY + ((touchStartY - touchCurrentY) / animationScaling));
+                if (isGesture()) {
+                    setPosition(originX + ((touchCurrentX - touchStartX) / animationScaling), originY + ((touchStartY - touchCurrentY) / animationScaling));
+                }
 
                 return false;
             }
@@ -407,10 +449,9 @@ public class iOSWhiteBar {
                 isGestureCompleted = true;
                 lastTouchDown = 0L;
 
+                float moveX = event.getX() - touchStartX;
+                float moveY = touchStartY - event.getY();
                 if (GlobalState.consecutiveAction == null || GlobalState.consecutiveAction.actionCode == Handlers.GLOBAL_ACTION_NONE) {
-                    float moveX = event.getX() - touchStartX;
-                    float moveY = touchStartY - event.getY();
-
                     if (Math.abs(moveX) > flingValue || Math.abs(moveY) > flingValue) {
                         if (moveY > FLIP_DISTANCE) {
                             if (isLongTimeGesture) { // 上滑悬停
@@ -440,13 +481,10 @@ public class iOSWhiteBar {
                 }
 
                 clearEffect();
-
             }
 
             void clearEffect() {
-                pressure = 0;
-
-                if (!lowPowerMode) {
+                if (!(lowPowerMode || isHidden) && isGesture()) {
                     animationTo(originX, originY, 800, new OvershootInterpolator());
                 }
                 // if (isLandscapf) {
@@ -459,9 +497,13 @@ public class iOSWhiteBar {
                 if (event != null) {
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN: {
+                            touchPath.reset();
+                            touchPath.moveTo(event.getRawX(), event.getRawY());
+                            inputDevice = event.getDevice();
                             return onTouchDown(event);
                         }
                         case MotionEvent.ACTION_MOVE: {
+                            touchPath.lineTo(event.getRawX(), event.getRawY());
                             return onTouchMove(event);
                         }
                         case MotionEvent.ACTION_UP: {
