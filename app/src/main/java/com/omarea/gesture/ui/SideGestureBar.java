@@ -34,7 +34,7 @@ public class SideGestureBar {
     private SharedPreferences config;
 
     public SideGestureBar(AccessibilityServiceGesture context) {
-        this.islandscape = GlobalState.isLandscapf;
+        this.islandscape = GlobalState.isLandscape;
 
         config = context.getSharedPreferences(SpfConfig.ConfigFile, Context.MODE_PRIVATE);
         mWindowManager = (WindowManager) (context.getSystemService(Context.WINDOW_SERVICE));

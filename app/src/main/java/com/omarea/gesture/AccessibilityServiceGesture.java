@@ -162,7 +162,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
                     }
 
                     boolean lastWindowFocus = false;
-                    boolean isLandscapf = GlobalState.isLandscapf;
+                    boolean isLandscapf = GlobalState.isLandscape;
                     for (AccessibilityWindowInfo windowInfo : effectiveWindows) {
                         if (isLandscapf) {
                             Rect outBounds = new Rect();
@@ -320,6 +320,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
         super.onServiceConnected();
 
         setServiceInfo();
+        this.onConfigurationChanged(getResources().getConfiguration());
 
         if (appSwitchBlackList == null) {
             appSwitchBlackList = getSharedPreferences(SpfConfig.AppSwitchBlackList, Context.MODE_PRIVATE);
@@ -434,7 +435,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
             // 关闭常用应用面板
             QuickPanel.close();
 
-            GlobalState.isLandscapf = newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE;
+            GlobalState.isLandscape = newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE;
 
             // 如果分辨率变了，那就重新创建手势区域
             WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);

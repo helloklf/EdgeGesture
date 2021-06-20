@@ -67,7 +67,7 @@ public class QuickPanel {
         params.format = PixelFormat.TRANSLUCENT;
 
         params.width = WindowManager.LayoutParams.MATCH_PARENT;
-        if (GlobalState.isLandscapf) {
+        if (GlobalState.isLandscape) {
             params.height = WindowManager.LayoutParams.MATCH_PARENT;
         } else {
             params.height = UITools.dp2px(accessibilityService, 480); // WindowManager.LayoutParams.MATCH_PARENT;
@@ -240,7 +240,7 @@ public class QuickPanel {
         mWindowManager = (WindowManager) (accessibilityService.getSystemService(Context.WINDOW_SERVICE));
         close();
 
-        if (GlobalState.isLandscapf && !(touchRawY > GlobalState.displayHeight - (GlobalState.displayHeight * 0.15))) {
+        if (GlobalState.isLandscape && !(touchRawY > GlobalState.displayHeight - (GlobalState.displayHeight * 0.15))) {
             view = LayoutInflater.from(accessibilityService).inflate(R.layout.layout_quick_panel_landscape, null);
         } else {
             view = LayoutInflater.from(accessibilityService).inflate(R.layout.layout_quick_panel, null);
@@ -301,7 +301,7 @@ public class QuickPanel {
             layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
             wrapView.setBackground(accessibilityService.getDrawable(R.drawable.quick_panel_bg_bottom));
             wrapView.setLayoutParams(layoutParams);
-            if (GlobalState.isLandscapf) {
+            if (GlobalState.isLandscape) {
                 appList.setNumColumns(10);
             } else {
                 appList.setNumColumns(5);

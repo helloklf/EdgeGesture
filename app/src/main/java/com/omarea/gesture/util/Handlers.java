@@ -109,7 +109,7 @@ public class Handlers {
             case VITUAL_ACTION_PREV_APP:
             case VITUAL_ACTION_FORM:
             case GLOBAL_ACTION_HOME: {
-                if ((action.actionCode == GLOBAL_ACTION_HOME  && (isMiui12 && GlobalState.isLandscapf))) {
+                if ((action.actionCode == GLOBAL_ACTION_HOME  && (isMiui12 && GlobalState.isLandscape))) {
                     accessibilityService.performGlobalAction(action.actionCode);
                 } else if (Gesture.config.getBoolean(SpfConfig.LOW_POWER_MODE, SpfConfig.LOW_POWER_MODE_DEFAULT)) {
                     lowPowerModeAppSwitch(accessibilityService, action.actionCode);
