@@ -56,7 +56,7 @@
                 <TextView
 
                     style="@style/setting_label4em"
-                    android:text="@string/bottom_hot_area_width" />
+                    android:text="@string/gesture_area_width" />
 
                 <SeekBar
                     android:id="@+id/bar_width_three_section"
@@ -83,7 +83,7 @@
                 <TextView
 
                     style="@style/setting_label4em"
-                    android:text="@string/bottom_hot_area_height" />
+                    android:text="@string/gesture_area_height" />
 
                 <SeekBar
                     android:id="@+id/three_section_height"
@@ -108,13 +108,13 @@
 
                 <TextView
                     style="@style/setting_label4em"
-                    android:text="左侧" />
+                    android:text="@string/side_left" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="[上滑]" />
+                    android:text="@string/gesture_up" />
 
                 <Button
                     android:id="@+id/three_section_left_slide"
@@ -124,7 +124,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="[悬停]" />
+                    android:text="@string/gesture_up_hover" />
 
                 <Button
                     android:id="@+id/three_section_left_hover"
@@ -138,15 +138,14 @@
                 android:orientation="horizontal">
 
                 <TextView
-
                     style="@style/setting_label4em"
-                    android:text="中间" />
+                    android:text="@string/side_center" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="[上滑]" />
+                    android:text="@string/gesture_up" />
 
                 <Button
                     android:id="@+id/three_section_center_slide"
@@ -156,7 +155,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="[悬停]" />
+                    android:text="@string/gesture_up_hover" />
 
                 <Button
                     android:id="@+id/three_section_center_hover"
@@ -170,16 +169,14 @@
                 android:orientation="horizontal">
 
                 <TextView
-
                     style="@style/setting_label4em"
-                    android:text="右侧"
-                    android:textColor="?android:textColorPrimary" />
+                    android:text="@string/side_right" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="[上滑]" />
+                    android:text="@string/gesture_up" />
 
                 <Button
                     android:id="@+id/three_section_right_slide"
@@ -189,7 +186,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="[悬停]" />
+                    android:text="@string/gesture_up_hover" />
 
                 <Button
                     android:id="@+id/three_section_right_hover"
@@ -202,7 +199,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="注意：“三段式手势”、“底边手势”、“小横条手势”并没有做共存优化！" />
+            android:text="@string/three_section_warn" />
     </LinearLayout>
 
 </ScrollView>

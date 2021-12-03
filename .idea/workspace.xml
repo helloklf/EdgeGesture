@@ -13,10 +13,13 @@
   <component name="ChangeListManager">
     <list default="true" id="e3c4db40-6ccf-4f9b-a0ce-fe5b9784ddcb" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/adb_process/steps.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/adb_process/steps.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/assets/up.sh" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/raw/up.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/AdbProcessExtractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/AdbProcessExtractor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/EnhancedModeGuide.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/EnhancedModeGuide.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_3section.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_3section.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_basic.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_basic.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_simple.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_simple.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_white_bar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_white_bar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_enhanced_mode_guide.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_enhanced_mode_guide.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -317,10 +320,10 @@
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
     <state width="1294" height="176" key="GridCell.Tab.1.right/0.0.1920.1032@0.0.1920.1032" timestamp="1638521188420" />
-    <state x="828" y="325" width="610" height="578" key="find.popup" timestamp="1638522009147">
+    <state x="146" y="330" width="610" height="578" key="find.popup" timestamp="1638524043999">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state x="828" y="325" width="610" height="578" key="find.popup/0.0.1920.1032@0.0.1920.1032" timestamp="1638522009147" />
+    <state x="146" y="330" width="610" height="578" key="find.popup/0.0.1920.1032@0.0.1920.1032" timestamp="1638524043999" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

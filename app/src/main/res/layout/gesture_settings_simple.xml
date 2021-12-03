@@ -56,7 +56,7 @@
 
                 <TextView
                     style="@style/setting_label4em"
-                    android:text="@string/bottom_hot_area_width" />
+                    android:text="@string/gesture_area_width" />
 
                 <SeekBar
                     android:id="@+id/bar_width_bottom"
@@ -78,7 +78,7 @@
                 <TextView
 
                     style="@style/setting_label4em"
-                    android:text="@string/bottom_hot_area_height" />
+                    android:text="@string/gesture_area_height" />
 
                 <SeekBar
                     android:id="@+id/edge_bottom_height"
@@ -97,7 +97,7 @@
                 <TextView
 
                     style="@style/setting_label4em"
-                    android:text="向上滑动" />
+                    android:text="@string/gesture_up" />
 
                 <Button
                     android:id="@+id/tap_bottom"
@@ -107,7 +107,7 @@
                 <TextView
 
                     style="@style/setting_label4em"
-                    android:text="上滑悬停" />
+                    android:text="@string/gesture_up_hover" />
 
                 <Button
                     android:id="@+id/hover_bottom"
@@ -155,7 +155,7 @@
                 <TextView
 
                     style="@style/setting_label4em"
-                    android:text="热区高度" />
+                    android:text="@string/gesture_area_height" />
 
                 <SeekBar
                     android:id="@+id/bar_height_left"
@@ -177,7 +177,7 @@
                 <TextView
 
                     style="@style/setting_label4em"
-                    android:text="向右滑动" />
+                    android:text="@string/gesture_right" />
 
                 <Button
                     android:id="@+id/tap_left"
@@ -187,7 +187,7 @@
                 <TextView
 
                     style="@style/setting_label4em"
-                    android:text="右滑悬停" />
+                    android:text="@string/gesture_right_hover" />
 
                 <Button
                     android:id="@+id/hover_left"
@@ -238,7 +238,7 @@
                 <TextView
 
                     style="@style/setting_label4em"
-                    android:text="热区高度" />
+                    android:text="@string/gesture_area_height" />
 
                 <SeekBar
                     android:id="@+id/bar_height_right"
@@ -260,7 +260,7 @@
                 <TextView
 
                     style="@style/setting_label4em"
-                    android:text="向左滑动" />
+                    android:text="@string/gesture_left" />
 
                 <Button
                     android:id="@+id/tap_right"
@@ -270,7 +270,7 @@
                 <TextView
 
                     style="@style/setting_label4em"
-                    android:text="左滑悬停" />
+                    android:text="@string/gesture_left_hover" />
 
                 <Button
                     android:id="@+id/hover_right"
@@ -286,7 +286,7 @@
 
             <TextView
                 style="@style/card_title"
-                android:text="基本外观" />
+                android:text="@string/basic_styles" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -297,7 +297,7 @@
                 <TextView
 
                     style="@style/setting_label"
-                    android:text="大小/颜色" />
+                    android:text="@string/size_color" />
 
                 <SeekBar
                     android:id="@+id/edge_side_width"

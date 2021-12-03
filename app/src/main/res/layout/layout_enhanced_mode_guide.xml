@@ -8,10 +8,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="请通过adb程序执行下方命令："
+        android:text="@string/guide_adb"
         android:textSize="12dp" />
 
-    <EditText
+    <TextView
+        android:textIsSelectable="true"
         android:id="@+id/enhanced_mode_shell"
         android:layout_width="match_parent"
         android:layout_height="100dp"

@@ -31,7 +31,7 @@
                     android:layout_marginTop="0dp"
                     android:layout_marginBottom="0dp"
                     android:minWidth="80dp"
-                    android:text="悬停时长"
+                    android:text="@string/hover_delay"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -47,7 +47,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="该设置决定悬停多久才算触发手势，悬停时长调太短可能会导致手势不灵敏，或短滑操作难以触发"
+                android:text="@string/hover_delay_desc"
                 android:textColor="#888"
                 android:textSize="11dp" />
         </LinearLayout>
@@ -60,7 +60,7 @@
             <TextView
                 style="@style/card_title"
                 android:layout_width="match_parent"
-                android:text="震动反馈" />
+                android:text="@string/haptic" />
 
             <Switch
                 android:paddingRight="3dp"
@@ -69,7 +69,7 @@
                 android:id="@+id/vibrator_use_system"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="系统默认震感" />
+                android:text="@string/haptic_follow_system" />
 
             <LinearLayout
                 android:id="@+id/vibrator_custom"
@@ -82,7 +82,7 @@
                 <TextView
                     style="@style/card_title"
                     android:layout_marginTop="20dp"
-                    android:text="轻触/点击" />
+                    android:text="@string/tap_click" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -95,7 +95,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minWidth="40dp"
-                        android:text="时长" />
+                        android:text="@string/haptic_duration" />
 
                     <SeekBar
                         android:id="@+id/vibrator_time"
@@ -116,7 +116,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minWidth="40dp"
-                        android:text="强度" />
+                        android:text="@string/haptic_strength" />
 
                     <SeekBar
                         android:id="@+id/vibrator_amplitude"
@@ -129,7 +129,7 @@
                 <TextView
                     style="@style/card_title"
                     android:layout_marginTop="20dp"
-                    android:text="悬停/长按" />
+                    android:text="@string/hover_long_press" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -142,7 +142,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minWidth="40dp"
-                        android:text="时长" />
+                        android:text="@string/haptic_duration" />
 
                     <SeekBar
                         android:id="@+id/vibrator_time_long"
@@ -163,7 +163,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minWidth="40dp"
-                        android:text="强度" />
+                        android:text="@string/haptic_strength" />
 
                     <SeekBar
                         android:id="@+id/vibrator_amplitude_long"
@@ -177,7 +177,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/row_margin"
-                    android:text="根据自己的系统调节震动反馈效果，线性马达的时长可以调小，而转子马达由于响应速度较慢，时长必须要调更大一些。"
+                    android:text="@string/haptic_tip"
                     android:textColor="#888"
                     android:textSize="11dp" />
 
@@ -201,7 +201,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
-                        android:text="滑动反馈" />
+                        android:text="@string/haptic_slide" />
 
                     <Switch
                         android:id="@+id/vibrator_quick_slide"
@@ -211,7 +211,7 @@
 
                 <TextView
                     style="@style/switch_desc"
-                    android:text="开启快速滑动手势的震动反馈" />
+                    android:text="@string/haptic_slide" />
             </LinearLayout>
         </LinearLayout>
 
