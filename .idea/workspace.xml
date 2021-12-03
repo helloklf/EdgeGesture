@@ -6,19 +6,24 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="Gesture" />
     <option name="TOOL_WINDOW_LOG_LEVEL" value="debug" />
-    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
     <option name="TOOL_WINDOW_REGEXP_FILTER" value="false" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3c4db40-6ccf-4f9b-a0ce-fe5b9784ddcb" name="Default Changelist" comment="" />
+    <list default="true" id="e3c4db40-6ccf-4f9b-a0ce-fe5b9784ddcb" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/adb_process/steps.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/adb_process/steps.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/up.sh" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/raw/up.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/AdbProcessExtractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/AdbProcessExtractor.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[c79601ae]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -75,9 +80,10 @@
     <property name="DEBUGGER_ID" value="Auto" />
     <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="emulator-5554" />
     <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-09-11T07:40:34.614Z" />
-    <property name="ExportApk.ApkPath" value="C:\Android\EdgeGesture\app" />
+    <property name="ExportApk.ApkPath" value="D:\Android\EdgeGesture\app" />
     <property name="ExportApk.BuildVariants" value="release_mini" />
     <property name="ExportApk.SignV1" value="true" />
+    <property name="ExportApk.SignV2" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
@@ -106,8 +112,12 @@
     <option name="LAST_EDITED_BUILD_TYPE" value="release" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Android\EdgeGesture\app\src\main\res\drawable" />
+      <recent name="D:\Android\EdgeGesture\app\src\main\res\drawable" />
       <recent name="D:\Android\EdgeGesture\app\src\main\assets" />
+      <recent name="D:\Android\EdgeGesture\app\src\main\res\anim" />
+      <recent name="D:\Android\EdgeGesture\app\src\main\res\layout" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.omarea.gesture" />
@@ -120,12 +130,9 @@
       <recent name="com.omarea.gesture.fragments" />
       <recent name="com.omarea.gesture" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Android\EdgeGesture\app\src\main\res\drawable" />
-      <recent name="D:\Android\EdgeGesture\app\src\main\res\drawable" />
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Android\EdgeGesture\app\src\main\res\raw" />
       <recent name="D:\Android\EdgeGesture\app\src\main\assets" />
-      <recent name="D:\Android\EdgeGesture\app\src\main\res\anim" />
-      <recent name="D:\Android\EdgeGesture\app\src\main\res\layout" />
     </key>
   </component>
   <component name="RunManager" selected="Android App.app">
@@ -274,46 +281,46 @@
     </todo-panel>
   </component>
   <component name="WindowStateProjectService">
-    <state x="92" y="92" width="1736" height="856" key="AVDManager" timestamp="1619938277899">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1294" height="176" key="GridCell.Tab.0.bottom" timestamp="1638521188420">
+      <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state x="92" y="92" width="1736" height="856" key="AVDManager/0.0.1920.1040@0.0.1920.1040" timestamp="1619938277899" />
-    <state x="740" y="260" key="FileChooserDialogImpl" timestamp="1619934506978">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1294" height="350" key="GridCell.Tab.0.bottom/0.0.1920.1032/1920.-714.1920.1032@0.0.1920.1032" timestamp="1638264388707" />
+    <state width="1294" height="176" key="GridCell.Tab.0.bottom/0.0.1920.1032@0.0.1920.1032" timestamp="1638521188420" />
+    <state width="1294" height="176" key="GridCell.Tab.0.center" timestamp="1638521188420">
+      <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state x="740" y="260" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1619934506978" />
-    <state width="1877" height="221" key="GridCell.Tab.0.bottom" timestamp="1619938555233">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1294" height="350" key="GridCell.Tab.0.center/0.0.1920.1032/1920.-714.1920.1032@0.0.1920.1032" timestamp="1638264388707" />
+    <state width="1294" height="176" key="GridCell.Tab.0.center/0.0.1920.1032@0.0.1920.1032" timestamp="1638521188420" />
+    <state width="1294" height="176" key="GridCell.Tab.0.left" timestamp="1638521188420">
+      <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state width="1877" height="221" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1619938555233" />
-    <state width="1877" height="221" key="GridCell.Tab.0.center" timestamp="1619938555233">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1294" height="350" key="GridCell.Tab.0.left/0.0.1920.1032/1920.-714.1920.1032@0.0.1920.1032" timestamp="1638264388707" />
+    <state width="1294" height="176" key="GridCell.Tab.0.left/0.0.1920.1032@0.0.1920.1032" timestamp="1638521188420" />
+    <state width="1294" height="176" key="GridCell.Tab.0.right" timestamp="1638521188420">
+      <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state width="1877" height="221" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1619938555233" />
-    <state width="1877" height="221" key="GridCell.Tab.0.left" timestamp="1619938555233">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1294" height="350" key="GridCell.Tab.0.right/0.0.1920.1032/1920.-714.1920.1032@0.0.1920.1032" timestamp="1638264388707" />
+    <state width="1294" height="176" key="GridCell.Tab.0.right/0.0.1920.1032@0.0.1920.1032" timestamp="1638521188420" />
+    <state width="1294" height="176" key="GridCell.Tab.1.bottom" timestamp="1638521188420">
+      <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state width="1877" height="221" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1619938555233" />
-    <state width="1877" height="221" key="GridCell.Tab.0.right" timestamp="1619938555233">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1294" height="176" key="GridCell.Tab.1.bottom/0.0.1920.1032@0.0.1920.1032" timestamp="1638521188420" />
+    <state width="1294" height="176" key="GridCell.Tab.1.center" timestamp="1638521188420">
+      <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state width="1877" height="221" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1619938555233" />
-    <state x="779" y="261" width="616" height="536" key="find.popup" timestamp="1619873350917">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1294" height="176" key="GridCell.Tab.1.center/0.0.1920.1032@0.0.1920.1032" timestamp="1638521188420" />
+    <state width="1294" height="176" key="GridCell.Tab.1.left" timestamp="1638521188420">
+      <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state x="779" y="261" width="616" height="536" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1619873350917" />
-    <state width="339" height="59" key="javadoc.popup.new" timestamp="1619939285844">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1294" height="176" key="GridCell.Tab.1.left/0.0.1920.1032@0.0.1920.1032" timestamp="1638521188420" />
+    <state width="1294" height="176" key="GridCell.Tab.1.right" timestamp="1638521188420">
+      <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state width="339" height="59" key="javadoc.popup.new/0.0.1920.1040@0.0.1920.1040" timestamp="1619939285844" />
-    <state x="616" y="240" key="run.anything.popup" timestamp="1619938378910">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1294" height="176" key="GridCell.Tab.1.right/0.0.1920.1032@0.0.1920.1032" timestamp="1638521188420" />
+    <state x="828" y="325" width="610" height="578" key="find.popup" timestamp="1638522009147">
+      <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1619938378910" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1619936643137">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1619936643137" />
+    <state x="828" y="325" width="610" height="578" key="find.popup/0.0.1920.1032@0.0.1920.1032" timestamp="1638522009147" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

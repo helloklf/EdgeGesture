@@ -1,4 +1,4 @@
-C:\Users\helloklf\AppData\Local\Android\Sdk\build-tools\28.0.3\dx  --dex --output=./jar/adb_process.dex ./jar/adb_process.jar
+D:\Android\SDK\build-tools\30.0.2\dx  --dex --output=./jar/adb_process.dex ./jar/adb_process.jar
 
 adb push ./jar/adb_process.dex /sdcard/adb_process.dex
 

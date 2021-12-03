@@ -1,34 +1,48 @@
 package com.omarea.gesture;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.omarea.gesture.remote.RemoteAPI;
 import com.omarea.gesture.shell.KeepShellPublic;
 import com.omarea.gesture.util.GlobalState;
 
-import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 
 public class AdbProcessExtractor {
+
+    // example: setADBReadable(context, "/data/data/com.omarea.vtools/files/scene-daemon")
+    @SuppressLint("SetWorldReadable")
+    private void setADBReadable(Context context, String absPath) {
+        String packageName = context.getPackageName();
+        File file = new File(absPath);
+        if (file.exists() && absPath.contains(packageName)) {
+            file.setReadable(true, false);
+            file.setExecutable(true, false);
+            file.setWritable(true, true);
+            if (!absPath.endsWith(packageName)) {
+                String parent = file.getParent();
+                if (parent != null && !parent.isEmpty()) {
+                    setADBReadable(context, parent);
+                }
+            }
+        }
+    }
+
     private boolean extractFile(Context context, String file) {
         try {
-            File cacheDir = context.getExternalCacheDir();
-            cacheDir.mkdirs();
-
-            cacheDir.setExecutable(true);
-            cacheDir.setWritable(true);
-
             InputStream inputStream = context.getAssets().open(file);
-            File outFile = new File((cacheDir.getAbsolutePath() + "/" + file));
+            File outFile = new File(getOutDir(context, file));
             FileOutputStream fileOutputStream = new FileOutputStream(outFile);
-            byte[] datas = new byte[10240];
+            byte[] buffer = new byte[10240];
             while (true) {
-                int len = inputStream.read(datas);
+                int len = inputStream.read(buffer);
                 if (len > 0) {
-                    fileOutputStream.write(datas, 0, len);
+                    fileOutputStream.write(buffer, 0, len);
                 } else {
                     break;
                 }
@@ -38,48 +52,67 @@ public class AdbProcessExtractor {
             fileOutputStream.close();
             inputStream.close();
 
-            outFile.setExecutable(true, false);
-            outFile.setReadable(true, false);
-            outFile.setWritable(true, false);
-
+            setADBReadable(context, outFile.getAbsolutePath());
             return true;
         } catch (Exception ex) {
             return false;
         }
     }
 
-    private boolean extractShellScript(Context context, String file) {
+    private byte[] readRawResBytes(Context context, int rawResId) {
         try {
-            File cacheDir = context.getExternalCacheDir();
-            cacheDir.mkdirs();
-            cacheDir.setExecutable(true);
-            cacheDir.setWritable(true);
+            InputStream inputStream = context.getResources().openRawResource(rawResId);
+            return readBytes(inputStream);
+        } catch (Exception ex) {
+            return new byte[0];
+        }
+    }
+    private byte[] readAssetsBytes(Context context, String fileName) {
+        try {
+            InputStream inputStream = context.getAssets().open(fileName);
+            return readBytes(inputStream);
+        } catch (Exception ex) {
+            return new byte[0];
+        }
+    }
 
-            InputStream inputStream = context.getAssets().open(file);
-            File outFile = new File((cacheDir.getAbsolutePath() + "/" + file));
+    private byte[] readBytes(InputStream inputStream) {
+        try {
+            // BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int i = 0;
+            while ((i = inputStream.read(buffer)) > 0) {
+                byteArrayOutputStream.write(buffer, 0, i);
+            }
+            return byteArrayOutputStream.toByteArray();
+        } catch (Exception ex) {
+            return new byte[0];
+        }
+    }
+
+    private String getOutDir(Context context, String fileName) {
+        File cacheDir = context.getFilesDir();
+        cacheDir.mkdirs();
+
+        return (cacheDir.getAbsolutePath() + "/" + fileName);
+    }
+
+    private boolean extractShellScript(Context context, String outName) {
+        try {
+            byte[] content = new String(
+                readRawResBytes(context, R.raw.up), Charset.defaultCharset()
+            ).replaceAll("\r\n", "\n").replaceAll("\r", "\n").getBytes();
+
+            File outFile = new File(getOutDir(context, outName));
             FileOutputStream fileOutputStream = new FileOutputStream(outFile);
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-            StringBuilder stringBuffer = new StringBuilder();
-            String line;
-            do {
-                line = bufferedReader.readLine();
-                if (line == null) {
-                    break;
-                } else {
-                    stringBuffer.append(line);
-                    stringBuffer.append("\n");
-                }
-            } while (true);
-            fileOutputStream.write(stringBuffer.toString().replaceAll("\r\n", "\n").replaceAll("\r", "\n").getBytes());
+            fileOutputStream.write(content);
 
             fileOutputStream.flush();
             fileOutputStream.close();
-            inputStream.close();
 
-            outFile.setExecutable(true, false);
-            outFile.setReadable(true, false);
-            outFile.setWritable(true, false);
-
+            setADBReadable(context, outFile.getAbsolutePath());
             return true;
         } catch (Exception ex) {
             return false;
@@ -88,8 +121,7 @@ public class AdbProcessExtractor {
 
     public String extract(Context context) {
         if (extractFile(context, "adb_process.dex") && extractShellScript(context, "up.sh")) {
-            File cacheDir = context.getExternalCacheDir();
-            return cacheDir.getAbsolutePath() + "/up.sh";
+            return getOutDir(context, "up.sh");
         }
         return null;
     }
