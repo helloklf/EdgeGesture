@@ -9,7 +9,7 @@ import android.widget.Checkable;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.omarea.gesture.AdbProcessExtractor;
+import com.omarea.gesture.daemon.AdbProcessExtractor;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.util.GlobalState;

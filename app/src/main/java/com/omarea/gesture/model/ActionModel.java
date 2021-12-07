@@ -1,4 +1,4 @@
-package com.omarea.gesture;
+package com.omarea.gesture.model;
 
 import android.content.SharedPreferences;
 

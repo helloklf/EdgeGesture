@@ -13,20 +13,37 @@
   <component name="ChangeListManager">
     <list default="true" id="e3c4db40-6ccf-4f9b-a0ce-fe5b9784ddcb" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/EnhancedModeGuide.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/EnhancedModeGuide.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/AccessibilityServiceGesture.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/AccessibilityServiceGesture.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ActionModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/model/ActionModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/AdbProcessExtractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/daemon/AdbProcessExtractor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/DialogAppSwitchExclusive.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/dialog/DialogAppSwitchExclusive.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/DialogFrequentlyAppEdit.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/dialog/DialogFrequentlyAppEdit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/DialogHandlerEX.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/dialog/DialogHandlerEX.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/SpfConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/SpfConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/WhiteBarColor.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/WhiteBarColor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/fragments/FragmentBasic.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/fragments/FragmentBasic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/fragments/FragmentOther.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/fragments/FragmentOther.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/fragments/FragmentSettingsBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/fragments/FragmentSettingsBase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/fragments/FragmentWhiteBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/fragments/FragmentWhiteBar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/remote/RemoteAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/daemon/RemoteAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/QuickPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/QuickPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/SideGestureBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/SideGestureBar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/ThreeSectionView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/ThreeSectionView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/TouchBarView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/TouchBarView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/TouchIconCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/TouchIconCache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/iOSWhiteBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/ui/iOSWhiteBar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/util/GlobalState.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/util/GlobalState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/util/Handlers.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/omarea/gesture/util/GestureActions.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_3section.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_3section.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_basic.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_basic.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_simple.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_simple.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_white_bar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/gesture_settings_white_bar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_enhanced_mode_guide.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_enhanced_mode_guide.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/raw/up.sh" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/raw/up.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[c79601ae]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[aac46aeb]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -96,6 +113,7 @@
     <property name="android-custom-viewC:/Users/helloklf/AppData/Local/Android/Sdk/sources/android-29/android/view/ViewGroup.java_SELECTED" value="ViewGroup" />
     <property name="android-custom-viewC:/Users/helloklf/AppData/Local/Android/Sdk/sources/android-29/android/widget/LinearLayout.java_SELECTED" value="LinearLayout" />
     <property name="android-custom-viewD:/Android/EdgeGesture/app/src/main/java/com/omarea/gesture/ui/TouchBarView.java_SELECTED" value="TouchBarView" />
+    <property name="android-custom-viewD:/Android/EdgeGesture/app/src/main/java/com/omarea/gesture/ui/VisualFeedbackView.java_SELECTED" value="VisualFeedbackView" />
     <property name="android.recentlyUsedThemes" value="android:Theme.Material.Light&#10;android:Theme.Material&#10;android:Theme.Material.Dialog" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="last.edited.regexp" value="&#10;" />
@@ -105,6 +123,7 @@
     <property name="multi-representation-previewC:/Users/helloklf/AppData/Local/Android/Sdk/sources/android-29/android/view/ViewGroup.java_selected" value="Custom views" />
     <property name="multi-representation-previewC:/Users/helloklf/AppData/Local/Android/Sdk/sources/android-29/android/widget/LinearLayout.java_selected" value="Custom views" />
     <property name="multi-representation-previewD:/Android/EdgeGesture/app/src/main/java/com/omarea/gesture/ui/TouchBarView.java_selected" value="Custom views" />
+    <property name="multi-representation-previewD:/Android/EdgeGesture/app/src/main/java/com/omarea/gesture/ui/VisualFeedbackView.java_selected" value="Custom views" />
     <property name="project.structure.last.edited" value="Dependencies" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -284,46 +303,46 @@
     </todo-panel>
   </component>
   <component name="WindowStateProjectService">
-    <state width="1294" height="176" key="GridCell.Tab.0.bottom" timestamp="1638521188420">
+    <state width="1294" height="176" key="GridCell.Tab.0.bottom" timestamp="1638526195942">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
     <state width="1294" height="350" key="GridCell.Tab.0.bottom/0.0.1920.1032/1920.-714.1920.1032@0.0.1920.1032" timestamp="1638264388707" />
-    <state width="1294" height="176" key="GridCell.Tab.0.bottom/0.0.1920.1032@0.0.1920.1032" timestamp="1638521188420" />
-    <state width="1294" height="176" key="GridCell.Tab.0.center" timestamp="1638521188420">
+    <state width="1294" height="176" key="GridCell.Tab.0.bottom/0.0.1920.1032@0.0.1920.1032" timestamp="1638526195942" />
+    <state width="1294" height="176" key="GridCell.Tab.0.center" timestamp="1638526195942">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
     <state width="1294" height="350" key="GridCell.Tab.0.center/0.0.1920.1032/1920.-714.1920.1032@0.0.1920.1032" timestamp="1638264388707" />
-    <state width="1294" height="176" key="GridCell.Tab.0.center/0.0.1920.1032@0.0.1920.1032" timestamp="1638521188420" />
-    <state width="1294" height="176" key="GridCell.Tab.0.left" timestamp="1638521188420">
+    <state width="1294" height="176" key="GridCell.Tab.0.center/0.0.1920.1032@0.0.1920.1032" timestamp="1638526195942" />
+    <state width="1294" height="176" key="GridCell.Tab.0.left" timestamp="1638526195942">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
     <state width="1294" height="350" key="GridCell.Tab.0.left/0.0.1920.1032/1920.-714.1920.1032@0.0.1920.1032" timestamp="1638264388707" />
-    <state width="1294" height="176" key="GridCell.Tab.0.left/0.0.1920.1032@0.0.1920.1032" timestamp="1638521188420" />
-    <state width="1294" height="176" key="GridCell.Tab.0.right" timestamp="1638521188420">
+    <state width="1294" height="176" key="GridCell.Tab.0.left/0.0.1920.1032@0.0.1920.1032" timestamp="1638526195942" />
+    <state width="1294" height="176" key="GridCell.Tab.0.right" timestamp="1638526195942">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
     <state width="1294" height="350" key="GridCell.Tab.0.right/0.0.1920.1032/1920.-714.1920.1032@0.0.1920.1032" timestamp="1638264388707" />
-    <state width="1294" height="176" key="GridCell.Tab.0.right/0.0.1920.1032@0.0.1920.1032" timestamp="1638521188420" />
-    <state width="1294" height="176" key="GridCell.Tab.1.bottom" timestamp="1638521188420">
+    <state width="1294" height="176" key="GridCell.Tab.0.right/0.0.1920.1032@0.0.1920.1032" timestamp="1638526195942" />
+    <state width="1294" height="176" key="GridCell.Tab.1.bottom" timestamp="1638526195942">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state width="1294" height="176" key="GridCell.Tab.1.bottom/0.0.1920.1032@0.0.1920.1032" timestamp="1638521188420" />
-    <state width="1294" height="176" key="GridCell.Tab.1.center" timestamp="1638521188420">
+    <state width="1294" height="176" key="GridCell.Tab.1.bottom/0.0.1920.1032@0.0.1920.1032" timestamp="1638526195942" />
+    <state width="1294" height="176" key="GridCell.Tab.1.center" timestamp="1638526195942">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state width="1294" height="176" key="GridCell.Tab.1.center/0.0.1920.1032@0.0.1920.1032" timestamp="1638521188420" />
-    <state width="1294" height="176" key="GridCell.Tab.1.left" timestamp="1638521188420">
+    <state width="1294" height="176" key="GridCell.Tab.1.center/0.0.1920.1032@0.0.1920.1032" timestamp="1638526195942" />
+    <state width="1294" height="176" key="GridCell.Tab.1.left" timestamp="1638526195942">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state width="1294" height="176" key="GridCell.Tab.1.left/0.0.1920.1032@0.0.1920.1032" timestamp="1638521188420" />
-    <state width="1294" height="176" key="GridCell.Tab.1.right" timestamp="1638521188420">
+    <state width="1294" height="176" key="GridCell.Tab.1.left/0.0.1920.1032@0.0.1920.1032" timestamp="1638526195942" />
+    <state width="1294" height="176" key="GridCell.Tab.1.right" timestamp="1638526195942">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state width="1294" height="176" key="GridCell.Tab.1.right/0.0.1920.1032@0.0.1920.1032" timestamp="1638521188420" />
-    <state x="146" y="330" width="610" height="578" key="find.popup" timestamp="1638524043999">
+    <state width="1294" height="176" key="GridCell.Tab.1.right/0.0.1920.1032@0.0.1920.1032" timestamp="1638526195942" />
+    <state x="1118" y="378" width="610" height="578" key="find.popup" timestamp="1638841903500">
       <screen x="0" y="0" width="1920" height="1032" />
     </state>
-    <state x="146" y="330" width="610" height="578" key="find.popup/0.0.1920.1032@0.0.1920.1032" timestamp="1638524043999" />
+    <state x="1118" y="378" width="610" height="578" key="find.popup/0.0.1920.1032@0.0.1920.1032" timestamp="1638841903500" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -19,12 +19,12 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.omarea.gesture.AdbProcessExtractor;
+import com.omarea.gesture.daemon.AdbProcessExtractor;
 import com.omarea.gesture.EnhancedModeGuide;
 import com.omarea.gesture.Gesture;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
-import com.omarea.gesture.remote.RemoteAPI;
+import com.omarea.gesture.daemon.RemoteAPI;
 import com.omarea.gesture.util.GlobalState;
 
 import java.util.List;

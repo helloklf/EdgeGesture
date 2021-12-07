@@ -10,12 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.omarea.gesture.AccessibilityServiceGesture;
-import com.omarea.gesture.ActionModel;
+import com.omarea.gesture.model.ActionModel;
 import com.omarea.gesture.Gesture;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.util.GlobalState;
-import com.omarea.gesture.util.Handlers;
+import com.omarea.gesture.util.GestureActions;
 
 public class TouchBarView extends View {
     static final int RIGHT = 2;
@@ -78,7 +78,7 @@ public class TouchBarView extends View {
                 lastEventTime = System.currentTimeMillis();
                 Gesture.toast(this.getContext().getString(R.string.please_repeat), Toast.LENGTH_SHORT);
             } else {
-                Handlers.executeVirtualAction(accessibilityService, event, touchStartRawX, touchStartRawY);
+                GestureActions.executeVirtualAction(accessibilityService, event, touchStartRawX, touchStartRawY);
             }
         }
     }
@@ -91,7 +91,7 @@ public class TouchBarView extends View {
 
     private void onTouchHover() {
         if (accessibilityService != null) {
-            if (eventHover.actionCode == Handlers.GLOBAL_ACTION_NONE && eventTouch.actionCode != Handlers.GLOBAL_ACTION_NONE) {
+            if (eventHover.actionCode == GestureActions.GLOBAL_ACTION_NONE && eventTouch.actionCode != GestureActions.GLOBAL_ACTION_NONE) {
                 performGlobalAction(eventTouch);
             } else {
                 performGlobalAction(eventHover);
@@ -276,7 +276,7 @@ public class TouchBarView extends View {
     }
 
     private int getHitAction() {
-        if (isLongTimeGesture && eventHover.actionCode != Handlers.GLOBAL_ACTION_NONE) {
+        if (isLongTimeGesture && eventHover.actionCode != GestureActions.GLOBAL_ACTION_NONE) {
             return eventHover.actionCode;
         } else {
             return eventTouch.actionCode;

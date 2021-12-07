@@ -9,20 +9,20 @@ import android.os.Build;
 import android.widget.Toast;
 
 import com.omarea.gesture.AccessibilityServiceGesture;
-import com.omarea.gesture.ActionModel;
+import com.omarea.gesture.model.ActionModel;
 import com.omarea.gesture.AppSwitchActivity;
 import com.omarea.gesture.Gesture;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.SpfConfigEx;
-import com.omarea.gesture.remote.RemoteAPI;
+import com.omarea.gesture.daemon.RemoteAPI;
 import com.omarea.gesture.shell.KeepShellPublic;
 import com.omarea.gesture.ui.QuickPanel;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Handlers {
+public class GestureActions {
     final public static int GLOBAL_ACTION_NONE = 0;
     final public static int GLOBAL_ACTION_BACK = AccessibilityService.GLOBAL_ACTION_BACK;
     final public static int GLOBAL_ACTION_HOME = AccessibilityService.GLOBAL_ACTION_HOME;
@@ -337,7 +337,7 @@ public class Handlers {
             configEx = service.getSharedPreferences(SpfConfigEx.configFile, Context.MODE_PRIVATE);
         }
 
-        boolean windowMode = action.actionCode == Handlers.CUSTOM_ACTION_APP_WINDOW;
+        boolean windowMode = action.actionCode == GestureActions.CUSTOM_ACTION_APP_WINDOW;
 
         String app = configEx.getString((windowMode ? SpfConfigEx.prefix_app_window : SpfConfigEx.prefix_app) + action.exKey, "");
         if (!app.isEmpty()) {

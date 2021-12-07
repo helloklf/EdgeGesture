@@ -13,12 +13,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.omarea.gesture.AccessibilityServiceGesture;
-import com.omarea.gesture.ActionModel;
+import com.omarea.gesture.model.ActionModel;
 import com.omarea.gesture.Gesture;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.util.GlobalState;
-import com.omarea.gesture.util.Handlers;
+import com.omarea.gesture.util.GestureActions;
 
 public class ThreeSectionView extends View {
     private SharedPreferences config;
@@ -103,7 +103,7 @@ public class ThreeSectionView extends View {
                     remindState = false;
                     invalidate();
                 }
-                Handlers.executeVirtualAction(accessibilityService, event, touchStartRawX, touchStartRawY);
+                GestureActions.executeVirtualAction(accessibilityService, event, touchStartRawX, touchStartRawY);
             }
         }
     }
@@ -126,21 +126,21 @@ public class ThreeSectionView extends View {
             GlobalState.finishThreeSectionFeedbackIcon();
             float p = touchStartX / getWidth();
             if (p > 0.6f) {
-                if (eventRightHover.actionCode != Handlers.GLOBAL_ACTION_NONE) {
+                if (eventRightHover.actionCode != GestureActions.GLOBAL_ACTION_NONE) {
                     updateThreeSectionFeedbackIcon(eventRightHover, eventRightSlide);
                     performGlobalAction(eventRightHover);
                 } else {
                     performGlobalAction(eventRightSlide);
                 }
             } else if (p > 0.4f) {
-                if (eventCenterHover.actionCode != Handlers.GLOBAL_ACTION_NONE) {
+                if (eventCenterHover.actionCode != GestureActions.GLOBAL_ACTION_NONE) {
                     updateThreeSectionFeedbackIcon(eventCenterHover, eventCenterSlide);
                     performGlobalAction(eventCenterHover);
                 } else {
                     performGlobalAction(eventCenterSlide);
                 }
             } else {
-                if (eventLeftHover.actionCode != Handlers.GLOBAL_ACTION_NONE) {
+                if (eventLeftHover.actionCode != GestureActions.GLOBAL_ACTION_NONE) {
                     updateThreeSectionFeedbackIcon(eventLeftHover, eventLeftSlide);
                     performGlobalAction(eventLeftHover);
                 } else {
@@ -289,7 +289,7 @@ public class ThreeSectionView extends View {
 
     private void updateThreeSectionFeedbackIcon(ActionModel hoverAction, ActionModel slideAction) {
         int currentAction = slideAction.actionCode;
-        if (isLongTimeGesture && hoverAction.actionCode != Handlers.GLOBAL_ACTION_NONE) {
+        if (isLongTimeGesture && hoverAction.actionCode != GestureActions.GLOBAL_ACTION_NONE) {
             currentAction = hoverAction.actionCode;
         }
         GlobalState.updateThreeSectionFeedbackIcon(TouchIconCache.getIcon(currentAction), currentAction != slideAction.actionCode);

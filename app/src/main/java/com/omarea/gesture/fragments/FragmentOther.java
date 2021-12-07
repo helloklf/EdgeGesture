@@ -16,8 +16,8 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.omarea.gesture.AdbProcessExtractor;
-import com.omarea.gesture.DialogAppSwitchExclusive;
+import com.omarea.gesture.daemon.AdbProcessExtractor;
+import com.omarea.gesture.dialog.DialogAppSwitchExclusive;
 import com.omarea.gesture.Gesture;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;

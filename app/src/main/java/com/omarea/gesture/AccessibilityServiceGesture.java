@@ -12,6 +12,7 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build;
+import android.os.Looper;
 import android.util.LruCache;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
@@ -21,7 +22,8 @@ import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import com.omarea.gesture.remote.RemoteAPI;
+import com.omarea.gesture.daemon.RemoteAPI;
+import com.omarea.gesture.daemon.AdbProcessExtractor;
 import com.omarea.gesture.ui.SideGestureBar;
 import com.omarea.gesture.ui.QuickPanel;
 import com.omarea.gesture.util.GlobalState;
@@ -43,13 +45,11 @@ public class AccessibilityServiceGesture extends AccessibilityService {
     private SharedPreferences appSwitchBlackList;
     private BatteryReceiver batteryReceiver;
 
-    private boolean removeGestureView() {
+    private void removeGestureView() {
         if (floatVitualTouchBar != null) {
             floatVitualTouchBar.removeGestureView();
             floatVitualTouchBar = null;
-            return true;
         }
-        return false;
     }
 
     private boolean ignored(String packageName) {
@@ -452,7 +452,7 @@ public class AccessibilityServiceGesture extends AccessibilityService {
     private void createPopupView(boolean delayed) {
         final AccessibilityServiceGesture context = this;
 
-        new android.os.Handler().postDelayed(new Runnable(){
+        new android.os.Handler(Looper.getMainLooper()).postDelayed(new Runnable(){
             @Override
             public void run() {
                 removeGestureView();

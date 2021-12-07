@@ -1,4 +1,4 @@
-package com.omarea.gesture;
+package com.omarea.gesture.dialog;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import com.omarea.gesture.R;
+import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.util.AppInfo;
 import com.omarea.gesture.util.AppListHelper;
 

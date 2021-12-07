@@ -1,4 +1,4 @@
-package com.omarea.gesture;
+package com.omarea.gesture.dialog;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -11,9 +11,11 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.omarea.gesture.R;
+import com.omarea.gesture.SpfConfigEx;
 import com.omarea.gesture.util.AppInfo;
 import com.omarea.gesture.util.AppListHelper;
-import com.omarea.gesture.util.Handlers;
+import com.omarea.gesture.util.GestureActions;
 
 import java.util.ArrayList;
 
@@ -28,9 +30,9 @@ public class DialogHandlerEX {
         config.remove(SpfConfigEx.prefix_shell + key);
 
         switch (customActionCode) {
-            case Handlers.CUSTOM_ACTION_APP:
-            case Handlers.CUSTOM_ACTION_APP_WINDOW: {
-                final String fullKey = (customActionCode == Handlers.CUSTOM_ACTION_APP ? SpfConfigEx.prefix_app : SpfConfigEx.prefix_app_window) + key;
+            case GestureActions.CUSTOM_ACTION_APP:
+            case GestureActions.CUSTOM_ACTION_APP_WINDOW: {
+                final String fullKey = (customActionCode == GestureActions.CUSTOM_ACTION_APP ? SpfConfigEx.prefix_app : SpfConfigEx.prefix_app_window) + key;
 
                 final ArrayList<AppInfo> appInfos = new AppListHelper().loadAppList(context);
                 final String currentApp = configFile.getString(fullKey, "");
@@ -90,7 +92,7 @@ public class DialogHandlerEX {
 
                 break;
             }
-            case Handlers.CUSTOM_ACTION_SHELL: {
+            case GestureActions.CUSTOM_ACTION_SHELL: {
                 final String fullKey = SpfConfigEx.prefix_shell + key;
 
                 alertDialog.setTitle(context.getString(R.string.custom_shell));

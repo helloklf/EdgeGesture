@@ -101,14 +101,13 @@
             android:orientation="vertical"
             android:padding="10dp">
 
+            <TextView
+                style="@style/setting_label4em"
+                android:text="@string/side_left" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-
-                <TextView
-                    style="@style/setting_label4em"
-                    android:text="@string/side_left" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -131,15 +130,15 @@
                     style="@style/btn_handler_picker" />
             </LinearLayout>
 
+
+            <TextView
+                android:layout_marginTop="@dimen/row_margin"
+                style="@style/setting_label4em"
+                android:text="@string/side_center" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/row_margin"
                 android:orientation="horizontal">
-
-                <TextView
-                    style="@style/setting_label4em"
-                    android:text="@string/side_center" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -162,15 +161,14 @@
                     style="@style/btn_handler_picker" />
             </LinearLayout>
 
+            <TextView
+                android:layout_marginTop="@dimen/row_margin"
+                style="@style/setting_label4em"
+                android:text="@string/side_right" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/row_margin"
                 android:orientation="horizontal">
-
-                <TextView
-                    style="@style/setting_label4em"
-                    android:text="@string/side_right" />
 
                 <TextView
                     android:layout_width="wrap_content"

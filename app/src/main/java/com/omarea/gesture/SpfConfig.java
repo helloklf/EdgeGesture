@@ -1,6 +1,6 @@
 package com.omarea.gesture;
 
-import com.omarea.gesture.util.Handlers;
+import com.omarea.gesture.util.GestureActions;
 
 public class SpfConfig {
     public final static String BACK_HOME_ANIMATION = "BACK_HOME_ANIMATION";
@@ -25,9 +25,9 @@ public class SpfConfig {
     public static final String CONFIG_LEFT_HEIGHT = "CONFIG_LEFT_HEIGHT";
     public static final int CONFIG_LEFT_HEIGHT_DEFAULT = 65; // 高度百分比
     public static final String CONFIG_LEFT_EVENT = "CONFIG_LEFT_EVENT";
-    public static final int CONFIG_LEFT_EVENT_DEFAULT = Handlers.GLOBAL_ACTION_BACK;
+    public static final int CONFIG_LEFT_EVENT_DEFAULT = GestureActions.GLOBAL_ACTION_BACK;
     public static final String CONFIG_LEFT_EVENT_HOVER = "CONFIG_LEFT_EVENT_HOVER";
-    public static final int CONFIG_LEFT_EVENT_HOVER_DEFAULT = Handlers.GLOBAL_ACTION_RECENTS;
+    public static final int CONFIG_LEFT_EVENT_HOVER_DEFAULT = GestureActions.GLOBAL_ACTION_RECENTS;
     // 右侧手势区域
     public static final String CONFIG_RIGHT_ALLOW_PORTRAIT = "CONFIG_RIGHT_ALLOW_PORTRAIT";
     public static final boolean CONFIG_RIGHT_ALLOW_PORTRAIT_DEFAULT = true;
@@ -36,9 +36,9 @@ public class SpfConfig {
     public static final String CONFIG_RIGHT_HEIGHT = "CONFIG_RIGHT_HEIGHT";
     public static final int CONFIG_RIGHT_HEIGHT_DEFAULT = 65; // 高度百分比
     public static final String CONFIG_RIGHT_EVENT = "CONFIG_RIGHT_EVENT";
-    public static final int CONFIG_RIGHT_EVENT_DEFAULT = Handlers.GLOBAL_ACTION_BACK;
+    public static final int CONFIG_RIGHT_EVENT_DEFAULT = GestureActions.GLOBAL_ACTION_BACK;
     public static final String CONFIG_RIGHT_EVENT_HOVER = "CONFIG_RIGHT_EVENT_HOVER";
-    public static final int CONFIG_RIGHT_EVENT_HOVER_DEFAULT = Handlers.GLOBAL_ACTION_RECENTS;
+    public static final int CONFIG_RIGHT_EVENT_HOVER_DEFAULT = GestureActions.GLOBAL_ACTION_RECENTS;
     // 底部手势区域
     public static final String CONFIG_BOTTOM_ALLOW_PORTRAIT = "CONFIG_BOTTOM_ALLOW_PORTRAIT";
     public static final boolean CONFIG_BOTTOM_ALLOW_PORTRAIT_DEFAULT = true;
@@ -47,9 +47,9 @@ public class SpfConfig {
     public static final String CONFIG_BOTTOM_WIDTH = "CONFIG_BOTTOM_WIDTH";
     public static final int CONFIG_BOTTOM_WIDTH_DEFAULT = 100;
     public static final String CONFIG_BOTTOM_EVENT = "CONFIG_BOTTOM_EVENT";
-    public static final int CONFIG_BOTTOM_EVENT_DEFAULT = Handlers.GLOBAL_ACTION_HOME;
+    public static final int CONFIG_BOTTOM_EVENT_DEFAULT = GestureActions.GLOBAL_ACTION_HOME;
     public static final String CONFIG_BOTTOM_EVENT_HOVER = "CONFIG_BOTTOM_EVENT_HOVER";
-    public static final int CONFIG_BOTTOM_EVENT_HOVER_DEFAULT = Handlers.GLOBAL_ACTION_RECENTS;
+    public static final int CONFIG_BOTTOM_EVENT_HOVER_DEFAULT = GestureActions.GLOBAL_ACTION_RECENTS;
     // 热区灵敏度
     public static final String CONFIG_HOT_SIDE_WIDTH = "CONFIG_SIDE_WIDTH";
     public static final int CONFIG_HOT_SIDE_WIDTH_DEFAULT = 12; // 侧边热区宽度
@@ -75,17 +75,17 @@ public class SpfConfig {
 
     // iOS小横条动作r
     public static final String IOS_BAR_SLIDE_LEFT = "ios_bar_slide_left";
-    public static final int IOS_BAR_SLIDE_LEFT_DEFAULT = Handlers.VITUAL_ACTION_NEXT_APP;
+    public static final int IOS_BAR_SLIDE_LEFT_DEFAULT = GestureActions.VITUAL_ACTION_NEXT_APP;
     public static final String IOS_BAR_SLIDE_RIGHT = "ios_bar_slide_right";
-    public static final int IOS_BAR_SLIDE_RIGHT_DEFAULT = Handlers.VITUAL_ACTION_PREV_APP;
+    public static final int IOS_BAR_SLIDE_RIGHT_DEFAULT = GestureActions.VITUAL_ACTION_PREV_APP;
     public static final String IOS_BAR_SLIDE_UP = "ios_bar_slide_up";
-    public static final int IOS_BAR_SLIDE_UP_DEFAULT = Handlers.GLOBAL_ACTION_HOME;
+    public static final int IOS_BAR_SLIDE_UP_DEFAULT = GestureActions.GLOBAL_ACTION_HOME;
     public static final String IOS_BAR_SLIDE_UP_HOVER = "ios_bar_slide_up_hover";
-    public static final int IOS_BAR_SLIDE_UP_HOVER_DEFAULT = Handlers.GLOBAL_ACTION_RECENTS;
+    public static final int IOS_BAR_SLIDE_UP_HOVER_DEFAULT = GestureActions.GLOBAL_ACTION_RECENTS;
     public static final String IOS_BAR_TOUCH = "ios_bar_touch"; // 轻触
-    public static final int IOS_BAR_TOUCH_DEFAULT = Handlers.GLOBAL_ACTION_BACK;
+    public static final int IOS_BAR_TOUCH_DEFAULT = GestureActions.GLOBAL_ACTION_BACK;
     public static final String IOS_BAR_PRESS = "ios_bar_press"; // 长按
-    public static final int IOS_BAR_PRESS_DEFAULT = Handlers.GLOBAL_ACTION_HOME;
+    public static final int IOS_BAR_PRESS_DEFAULT = GestureActions.GLOBAL_ACTION_HOME;
 
     public static final String IOS_BAR_CONSECUTIVE = "ios_bar_consecutive"; // 连续切换
     public static final boolean IOS_BAR_CONSECUTIVE_DEFAULT = false;
@@ -140,17 +140,17 @@ public class SpfConfig {
     public static String THREE_SECTION_PORTRAIT = "THREE_SECTION_PORTRAIT";
     public static boolean THREE_SECTION_PORTRAIT_DEFAULT = false;
     public static String THREE_SECTION_LEFT_SLIDE = "THREE_SECTION_LEFT_SLIDE";
-    public static int THREE_SECTION_LEFT_SLIDE_DEFAULT = Handlers.GLOBAL_ACTION_BACK;
+    public static int THREE_SECTION_LEFT_SLIDE_DEFAULT = GestureActions.GLOBAL_ACTION_BACK;
     public static String THREE_SECTION_CENTER_SLIDE = "THREE_SECTION_CENTER_SLIDE";
-    public static int THREE_SECTION_CENTER_SLIDE_DEFAULT = Handlers.GLOBAL_ACTION_HOME;
+    public static int THREE_SECTION_CENTER_SLIDE_DEFAULT = GestureActions.GLOBAL_ACTION_HOME;
     public static String THREE_SECTION_RIGHT_SLIDE = "THREE_SECTION_RIGHT_SLIDE";
-    public static int THREE_SECTION_RIGHT_SLIDE_DEFAULT = Handlers.GLOBAL_ACTION_RECENTS;
+    public static int THREE_SECTION_RIGHT_SLIDE_DEFAULT = GestureActions.GLOBAL_ACTION_RECENTS;
     public static String THREE_SECTION_LEFT_HOVER = "THREE_SECTION_LEFT_HOVER";
-    public static int THREE_SECTION_LEFT_HOVER_DEFAULT = Handlers.GLOBAL_ACTION_NONE;
+    public static int THREE_SECTION_LEFT_HOVER_DEFAULT = GestureActions.GLOBAL_ACTION_NONE;
     public static String THREE_SECTION_CENTER_HOVER = "THREE_SECTION_CENTER_HOVER";
-    public static int THREE_SECTION_CENTER_HOVER_DEFAULT = Handlers.GLOBAL_ACTION_NONE;
+    public static int THREE_SECTION_CENTER_HOVER_DEFAULT = GestureActions.GLOBAL_ACTION_NONE;
     public static String THREE_SECTION_RIGHT_HOVER = "THREE_SECTION_RIGHT_HOVER";
-    public static int THREE_SECTION_RIGHT_HOVER_DEFAULT = Handlers.GLOBAL_ACTION_NONE;
+    public static int THREE_SECTION_RIGHT_HOVER_DEFAULT = GestureActions.GLOBAL_ACTION_NONE;
 
     public static String LOW_POWER_MODE = "LOW_POWER_MODE"; // 低功耗模式
     public static boolean LOW_POWER_MODE_DEFAULT = false;

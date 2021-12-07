@@ -21,13 +21,13 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 
 import com.omarea.gesture.AccessibilityServiceGesture;
-import com.omarea.gesture.ActionModel;
+import com.omarea.gesture.model.ActionModel;
 import com.omarea.gesture.Gesture;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.WhiteBarColor;
 import com.omarea.gesture.util.GlobalState;
-import com.omarea.gesture.util.Handlers;
+import com.omarea.gesture.util.GestureActions;
 import com.omarea.gesture.util.ReceiverLock;
 import com.omarea.gesture.util.ReceiverLockHandler;
 import com.omarea.gesture.util.ScreenState;
@@ -79,12 +79,12 @@ public class iOSWhiteBar {
         int actionSlideLeft = config.getInt(SpfConfig.IOS_BAR_SLIDE_LEFT, SpfConfig.IOS_BAR_SLIDE_LEFT_DEFAULT);
         int actionSlideRight = config.getInt(SpfConfig.IOS_BAR_SLIDE_RIGHT, SpfConfig.IOS_BAR_SLIDE_RIGHT_DEFAULT);
 
-        return actionSlideUp == Handlers.GLOBAL_ACTION_NONE &&
-                actionSlideUpHover == Handlers.GLOBAL_ACTION_NONE &&
-                actionTouch == Handlers.GLOBAL_ACTION_NONE &&
-                actionTouchHover == Handlers.GLOBAL_ACTION_NONE &&
-                actionSlideLeft == Handlers.GLOBAL_ACTION_NONE &&
-                actionSlideRight == Handlers.GLOBAL_ACTION_NONE;
+        return actionSlideUp == GestureActions.GLOBAL_ACTION_NONE &&
+                actionSlideUpHover == GestureActions.GLOBAL_ACTION_NONE &&
+                actionTouch == GestureActions.GLOBAL_ACTION_NONE &&
+                actionTouchHover == GestureActions.GLOBAL_ACTION_NONE &&
+                actionSlideLeft == GestureActions.GLOBAL_ACTION_NONE &&
+                actionSlideRight == GestureActions.GLOBAL_ACTION_NONE;
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -211,7 +211,7 @@ public class iOSWhiteBar {
 
             private void performGlobalAction(final ActionModel event) {
                 if (accessibilityService != null) {
-                    Handlers.executeVirtualAction(accessibilityService, event, touchStartRawX, touchStartRawY);
+                    GestureActions.executeVirtualAction(accessibilityService, event, touchStartRawX, touchStartRawY);
                 }
             }
 
@@ -371,7 +371,7 @@ public class iOSWhiteBar {
                         if (isTouchDown && !isGestureCompleted && lastTouchDown == downTime) {
                             if (Math.abs(touchStartRawX - touchCurrentRawX) < slideThresholdX && Math.abs(touchStartRawY - touchCurrentRawY) < slideThresholdY) {
                                 int pressureAction = config.getInt(SpfConfig.IOS_BAR_PRESS, SpfConfig.IOS_BAR_PRESS_DEFAULT);
-                                if (pressureAction != Handlers.GLOBAL_ACTION_NONE) {
+                                if (pressureAction != GestureActions.GLOBAL_ACTION_NONE) {
                                     isLongTimeGesture = true;
                                     if (vibratorRun) {
                                         Gesture.vibrate(Gesture.VibrateMode.VIBRATE_PRESS, view);
@@ -451,7 +451,7 @@ public class iOSWhiteBar {
 
                 float moveX = event.getX() - touchStartX;
                 float moveY = touchStartY - event.getY();
-                if (GlobalState.consecutiveAction == null || GlobalState.consecutiveAction.actionCode == Handlers.GLOBAL_ACTION_NONE) {
+                if (GlobalState.consecutiveAction == null || GlobalState.consecutiveAction.actionCode == GestureActions.GLOBAL_ACTION_NONE) {
                     if (Math.abs(moveX) > flingValue || Math.abs(moveY) > flingValue) {
                         if (moveY > FLIP_DISTANCE) {
                             if (isLongTimeGesture) { // 上滑悬停
@@ -473,7 +473,7 @@ public class iOSWhiteBar {
                     } else {
                         // 轻触
                         int action = config.getInt(SpfConfig.IOS_BAR_TOUCH, SpfConfig.IOS_BAR_TOUCH_DEFAULT);
-                        if (action != Handlers.GLOBAL_ACTION_NONE) {
+                        if (action != GestureActions.GLOBAL_ACTION_NONE) {
                             Gesture.vibrate(Gesture.VibrateMode.VIBRATE_CLICK, view);
                             performGlobalAction(ActionModel.getConfig(config, SpfConfig.IOS_BAR_TOUCH, SpfConfig.IOS_BAR_TOUCH_DEFAULT));
                         }
@@ -545,7 +545,7 @@ public class iOSWhiteBar {
                         } else if (touchStartRawX - touchCurrentRawX < -slideThresholdX) {
                             actionModel = ActionModel.getConfig(config, SpfConfig.IOS_BAR_SLIDE_RIGHT, SpfConfig.IOS_BAR_SLIDE_RIGHT_DEFAULT);
                         }
-                        if (actionModel != null && (actionModel.actionCode == Handlers.VITUAL_ACTION_NEXT_APP || actionModel.actionCode == Handlers.VITUAL_ACTION_PREV_APP)) {
+                        if (actionModel != null && (actionModel.actionCode == GestureActions.VITUAL_ACTION_NEXT_APP || actionModel.actionCode == GestureActions.VITUAL_ACTION_PREV_APP)) {
                             GlobalState.consecutiveAction = actionModel;
                             if (vibratorRun) {
                                 Gesture.vibrate(Gesture.VibrateMode.VIBRATE_SLIDE, view);

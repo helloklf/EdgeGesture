@@ -1,13 +1,13 @@
 package com.omarea.gesture;
 
-import com.omarea.gesture.remote.RemoteAPI;
+import com.omarea.gesture.daemon.RemoteAPI;
 import com.omarea.gesture.util.GlobalState;
 
 public class WhiteBarColor {
     private static final Object threadRun = "";
     private static ScreenCapThread thread;
     private static int nextTimes = 0;
-    private static boolean notifyed = false; // 是否已经notify过，并且还未进入wait清除notifyed状态，避免多次notify进入队列
+    private static boolean updating = false; // 是否正在检测颜色
 
     public static void updateBarColorSingle() {
         updateBarColor();
@@ -21,19 +21,15 @@ public class WhiteBarColor {
     private static void updateBarColor() {
         if (thread != null && thread.isAlive() && !thread.isInterrupted()) {
             synchronized (threadRun) {
-                if (!notifyed && (thread.getState() == Thread.State.WAITING || thread.getState() == Thread.State.TIMED_WAITING)) {
+                if (!updating && (thread.getState() == Thread.State.WAITING || thread.getState() == Thread.State.TIMED_WAITING)) {
                     threadRun.notify();
-                    notifyed = true;
+                    updating = true;
                 }
             }
         } else {
             thread = new ScreenCapThread();
             thread.start();
         }
-    }
-
-    public static void updateDisplaySize() {
-
     }
 
     static class ScreenCapThread extends Thread {
@@ -48,7 +44,7 @@ public class WhiteBarColor {
                         GlobalState.updateBar.run();
                     }
                 }
-                notifyed = false;
+                updating = false;
                 try {
                     synchronized (threadRun) {
                         if (nextTimes > 0) {

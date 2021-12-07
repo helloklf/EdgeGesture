@@ -19,11 +19,11 @@ import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.omarea.gesture.ActionModel;
-import com.omarea.gesture.DialogHandlerEX;
+import com.omarea.gesture.model.ActionModel;
+import com.omarea.gesture.dialog.DialogHandlerEX;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
-import com.omarea.gesture.util.Handlers;
+import com.omarea.gesture.util.GestureActions;
 import com.omarea.gesture.util.UITools;
 
 public class FragmentSettingsBase extends Fragment {
@@ -61,7 +61,7 @@ public class FragmentSettingsBase extends Fragment {
     }
 
     private void openHandlerPicker(final String key, final int defValue) {
-        final ActionModel[] items = Handlers.getOptions();
+        final ActionModel[] items = GestureActions.getOptions();
 
         final int currentValue = config.getInt(key, defValue);
         int index = -1;
@@ -110,7 +110,7 @@ public class FragmentSettingsBase extends Fragment {
                         restartService();
                         dialog.dismiss();
 
-                        if (code >= Handlers.CUSTOM_ACTION_APP) {
+                        if (code >= GestureActions.CUSTOM_ACTION_APP) {
                             new DialogHandlerEX().openDialog(getActivity(), key, code);
                         }
                     }
@@ -122,7 +122,7 @@ public class FragmentSettingsBase extends Fragment {
     }
 
     protected void updateActionText(int id, String key, int defaultAction) {
-        ((Button) getActivity().findViewById(id)).setText(Handlers.getOption(config.getInt(key, defaultAction)));
+        ((Button) getActivity().findViewById(id)).setText(GestureActions.getOption(config.getInt(key, defaultAction)));
     }
 
     protected void bindCheckable(int id, final String key, boolean defValue) {

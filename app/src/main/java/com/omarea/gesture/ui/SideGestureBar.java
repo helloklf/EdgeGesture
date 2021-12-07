@@ -16,7 +16,7 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.Toast;
 
 import com.omarea.gesture.AccessibilityServiceGesture;
-import com.omarea.gesture.ActionModel;
+import com.omarea.gesture.model.ActionModel;
 import com.omarea.gesture.Gesture;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;

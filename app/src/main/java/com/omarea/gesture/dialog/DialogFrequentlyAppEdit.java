@@ -1,4 +1,4 @@
-package com.omarea.gesture;
+package com.omarea.gesture.dialog;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -17,6 +17,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.omarea.gesture.AccessibilityServiceGesture;
+import com.omarea.gesture.Gesture;
+import com.omarea.gesture.R;
+import com.omarea.gesture.SpfConfigEx;
 import com.omarea.gesture.util.AppInfo;
 import com.omarea.gesture.util.AppListHelper;
 import com.omarea.gesture.util.UITools;

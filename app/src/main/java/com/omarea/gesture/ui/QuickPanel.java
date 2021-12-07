@@ -26,10 +26,10 @@ import android.widget.Toast;
 
 import com.omarea.gesture.AccessibilityServiceGesture;
 import com.omarea.gesture.AppSwitchActivity;
-import com.omarea.gesture.DialogFrequentlyAppEdit;
+import com.omarea.gesture.dialog.DialogFrequentlyAppEdit;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfigEx;
-import com.omarea.gesture.remote.RemoteAPI;
+import com.omarea.gesture.daemon.RemoteAPI;
 import com.omarea.gesture.util.GlobalState;
 import com.omarea.gesture.util.UITools;
 

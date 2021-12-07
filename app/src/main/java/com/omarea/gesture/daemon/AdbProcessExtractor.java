@@ -1,9 +1,12 @@
-package com.omarea.gesture;
+package com.omarea.gesture.daemon;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import com.omarea.gesture.remote.RemoteAPI;
+import com.omarea.gesture.Gesture;
+import com.omarea.gesture.R;
+import com.omarea.gesture.SpfConfig;
+import com.omarea.gesture.daemon.RemoteAPI;
 import com.omarea.gesture.shell.KeepShellPublic;
 import com.omarea.gesture.util.GlobalState;
 

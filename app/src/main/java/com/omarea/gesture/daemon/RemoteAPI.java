@@ -1,4 +1,4 @@
-package com.omarea.gesture.remote;
+package com.omarea.gesture.daemon;
 
 import android.os.Build;
 
@@ -104,7 +104,7 @@ public class RemoteAPI {
 
     private static String readResponse(URLConnection connection) {
         try {
-            connection.setConnectTimeout(500);
+            connection.setConnectTimeout(100);
             connection.setReadTimeout(3000);
 
             StringBuilder stringBuffer = new StringBuilder();
