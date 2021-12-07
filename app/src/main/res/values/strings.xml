@@ -119,10 +119,10 @@
     <string name="action_prev_simulation">RECENT Double-click</string>
     <string name="action_lock_screen">Lock Screen</string>
     <string name="action_screenshot">Screenshot</string>
-    <string name="action_launch_app"><![CDATA[\"Start an app > \"]]></string>
-    <string name="action_launch_app_windowed"><![CDATA[\"Start an app(Windowed, experimental)  > \"]]></string>
-    <string name="action_exec_shell"><![CDATA[\"Linux Shell > \"]]></string>
-    <string name="action_quick_apps"><![CDATA[\"Quick Apps > \"]]></string>
+    <string name="action_launch_app">Start an app</string>
+    <string name="action_launch_app_windowed">Start an app(Windowed, experimental)</string>
+    <string name="action_exec_shell">Linux Shell</string>
+    <string name="action_quick_apps">Quick Apps</string>
     <string name="action_filter_screenshot">Filter-Screenshot</string>
 
     <string name="enhanced_mode_is_ok">The enhanced mode is ready</string>

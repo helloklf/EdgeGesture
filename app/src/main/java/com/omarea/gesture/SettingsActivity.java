@@ -80,8 +80,9 @@ public class SettingsActivity extends Activity {
                     .replace(R.id.main_tab_3, new Fragment3Section()).commit();
             getFragmentManager().beginTransaction()
                     .replace(R.id.main_tab_4, new FragmentOther()).commit();
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
+
     }
 
     private void updateView() {
@@ -120,7 +121,7 @@ public class SettingsActivity extends Activity {
     }
 
 
-    private void setExcludeFromRecents(boolean excludeFromRecents) {
+    private void setExcludeFromRecent(boolean excludeFromRecents) {
         try {
             ActivityManager service = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
             int taskId = this.getTaskId();
@@ -129,13 +130,13 @@ public class SettingsActivity extends Activity {
                     task.setExcludeFromRecents(excludeFromRecents);
                 }
             }
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
     }
 
     @Override
     public void onBackPressed() {
-        setExcludeFromRecents(true);
-        super.onBackPressed();
+        setExcludeFromRecent(true);
+        super.finishAfterTransition();
     }
 }

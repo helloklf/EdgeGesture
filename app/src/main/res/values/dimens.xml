@@ -3,4 +3,6 @@
     <dimen name="card_corner_radius">8dp</dimen>
     <dimen name="label_width">90dp</dimen>
     <dimen name="row_margin">20dp</dimen>
+    <dimen name="SceneButtonTextSize">10dp</dimen>
+    <dimen name="SceneButtonPadding">8dp</dimen>
 </resources>

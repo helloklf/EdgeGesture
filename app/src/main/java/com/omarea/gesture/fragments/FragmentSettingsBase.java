@@ -9,22 +9,18 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.Checkable;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
-import android.widget.TextView;
 
 import com.omarea.gesture.Gesture;
 import com.omarea.gesture.model.ActionModel;
 import com.omarea.gesture.dialog.DialogHandlerEX;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
-import com.omarea.gesture.GestureActions;
+import com.omarea.gesture.ui.ActionPicker;
 import com.omarea.gesture.util.UITools;
 
 public class FragmentSettingsBase extends Fragment {
@@ -62,64 +58,18 @@ public class FragmentSettingsBase extends Fragment {
     }
 
     private void openHandlerPicker(final String key, final int defValue) {
-        final ActionModel[] items = Gesture.gestureActions.getOptions();
-
         final int currentValue = config.getInt(key, defValue);
-        int index = -1;
-        for (int i = 0; i < items.length; i++) {
-            if (items[i].actionCode == currentValue) {
-                index = i;
-                break;
-            }
-        }
-
-        final int finalIndex = index;
-        new AlertDialog.Builder(getActivity())
-                .setTitle(getString(R.string.handler_picker))
-                .setSingleChoiceItems(new BaseAdapter() {
-                    @Override
-                    public int getCount() {
-                        return items.length;
-                    }
-
-                    @Override
-                    public Object getItem(int position) {
-                        return items[position];
-                    }
-
-                    @Override
-                    public long getItemId(int position) {
-                        return items[position].actionCode;
-                    }
-
-                    @Override
-                    public View getView(int position, View convertView, ViewGroup parent) {
-                        ActionModel actionModel = ((ActionModel) getItem(position));
-                        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gesture_layout_action_option, null);
-                        TextView textView = view.findViewById(R.id.item_title);
-                        textView.setText(actionModel.title);
-                        if (position == finalIndex) {
-                            textView.setTextColor(textView.getHighlightColor());
-                        }
-                        return view;
-                    }
-                }, finalIndex, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        int code = items[which].actionCode;
-                        config.edit().putInt(key, code).apply();
-                        restartService();
-                        dialog.dismiss();
-
-                        if (code >= GestureActions.CUSTOM_ACTION_APP) {
-                            new DialogHandlerEX().openDialog(getActivity(), key, code);
-                        }
-                    }
-                }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+        new ActionPicker(this.getActivity()).open(new ActionPicker.ActionPickerCallback() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onConfirm(ActionModel action, String data) {
+                config.edit().putInt(key, action.actionCode).apply();
+
+                if (action.extraRequired) {
+                    new DialogHandlerEX().openDialog(getActivity(), key, action.actionCode);
+                }
+                restartService();
             }
-        }).create().show();
+        }, currentValue);
     }
 
     protected void updateActionText(int id, String key, int defaultAction) {

@@ -7,6 +7,7 @@ import java.io.Serializable;
 public class ActionModel implements Serializable {
     public int actionCode;
     public String title;
+    public boolean extraRequired; // 此指令是否需要额外的数据
     public String exKey;
     public String st;
     public String shellCommand;

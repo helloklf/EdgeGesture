@@ -46,12 +46,12 @@ public class GestureActions {
                 add(new ActionModel(GLOBAL_ACTION_TAKE_SCREENSHOT, context.getString(R.string.action_screenshot)));
             }
 
-            add(new ActionModel(CUSTOM_ACTION_APP, context.getString(R.string.action_launch_app)));
+            add(new ActionModel(CUSTOM_ACTION_APP, context.getString(R.string.action_launch_app)){{ extraRequired = true; }});
             if (Build.VERSION.SDK_INT > 23) {
-                add(new ActionModel(CUSTOM_ACTION_APP_WINDOW, context.getString(R.string.action_launch_app_windowed)));
+                add(new ActionModel(CUSTOM_ACTION_APP_WINDOW, context.getString(R.string.action_launch_app_windowed)){{ extraRequired = true; }});
             }
 
-            add(new ActionModel(CUSTOM_ACTION_SHELL, context.getString(R.string.action_exec_shell)));
+            add(new ActionModel(CUSTOM_ACTION_SHELL, context.getString(R.string.action_exec_shell)){{ extraRequired = true; }});
             add(new ActionModel(CUSTOM_ACTION_QUICK, context.getString(R.string.action_quick_apps)));
             add(new ActionModel(OMAREA_FILTER_SCREENSHOT, context.getString(R.string.action_filter_screenshot)));
         }};
