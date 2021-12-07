@@ -19,6 +19,7 @@ public class Gesture extends Application {
     public static Context context;
     private static Vibrator vibrator;
     public static SharedPreferences config;
+    public static  GestureActions gestureActions;
 
     public static void vibrate(VibrateMode mode, View view) {
         if (vibrator == null) {
@@ -90,6 +91,7 @@ public class Gesture extends Application {
         StrictMode.setThreadPolicy(policy);
 
         context = this;
+        gestureActions = new GestureActions(this);
     }
 
     public static enum VibrateMode {

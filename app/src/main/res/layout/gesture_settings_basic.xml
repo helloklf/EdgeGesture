@@ -58,7 +58,7 @@
             android:padding="10dp">
 
             <TextView
-                style="@style/card_title"
+                style="@style/setting_label_small"
                 android:layout_width="match_parent"
                 android:text="@string/haptic" />
 

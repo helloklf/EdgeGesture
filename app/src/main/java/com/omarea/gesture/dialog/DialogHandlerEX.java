@@ -15,7 +15,7 @@ import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfigEx;
 import com.omarea.gesture.util.AppInfo;
 import com.omarea.gesture.util.AppListHelper;
-import com.omarea.gesture.util.GestureActions;
+import com.omarea.gesture.GestureActions;
 
 import java.util.ArrayList;
 

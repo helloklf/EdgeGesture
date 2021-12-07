@@ -33,19 +33,22 @@
                     style="@style/card_title"
                     android:text="@string/side_bottom" />
 
-                <CheckBox
+                <Switch
                     android:id="@+id/allow_bottom_landscape"
+                    android:scaleY="0.8"
+                    android:scaleX="0.8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="@string/landscape" />
 
-                <CheckBox
+                <Switch
                     android:id="@+id/allow_bottom_portrait"
+                    android:scaleY="0.8"
+                    android:scaleX="0.8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="10dp"
                     android:text="@string/portrait" />
             </LinearLayout>
 
@@ -88,30 +91,33 @@
                     android:max="40" />
             </LinearLayout>
 
+            <View style="@style/Separator" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/row_margin"
                 android:orientation="horizontal">
 
                 <TextView
-
-                    style="@style/setting_label4em"
+                    style="@style/setting_label_fill"
                     android:text="@string/gesture_up" />
 
                 <Button
                     android:id="@+id/tap_bottom"
-                    style="@style/btn_handler_picker"
+                    style="@style/btn_handler_picker_right"
                     android:text="@string/edge_action" />
-
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
                 <TextView
 
-                    style="@style/setting_label4em"
+                    style="@style/setting_label_fill"
                     android:text="@string/gesture_up_hover" />
 
                 <Button
                     android:id="@+id/hover_bottom"
-                    style="@style/btn_handler_picker"
+                    style="@style/btn_handler_picker_right"
                     android:text="@string/edge_action" />
             </LinearLayout>
         </LinearLayout>
@@ -131,19 +137,22 @@
                     style="@style/card_title"
                     android:text="@string/side_left" />
 
-                <CheckBox
+                <Switch
                     android:id="@+id/allow_left_landscape"
+                    android:scaleY="0.8"
+                    android:scaleX="0.8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="@string/landscape" />
 
-                <CheckBox
+                <Switch
                     android:id="@+id/allow_left_portrait"
+                    android:scaleY="0.8"
+                    android:scaleX="0.8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="10dp"
                     android:text="@string/portrait" />
             </LinearLayout>
 
@@ -168,30 +177,33 @@
 
             </LinearLayout>
 
+            <View style="@style/Separator" />
             <LinearLayout
-                android:layout_marginTop="@dimen/row_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
-
-                    style="@style/setting_label4em"
+                    style="@style/setting_label_fill"
                     android:text="@string/gesture_right" />
 
                 <Button
                     android:id="@+id/tap_left"
-                    style="@style/btn_handler_picker"
+                    style="@style/btn_handler_picker_right"
                     android:text="@string/edge_action" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <TextView
-
-                    style="@style/setting_label4em"
+                    style="@style/setting_label_fill"
                     android:text="@string/gesture_right_hover" />
 
                 <Button
                     android:id="@+id/hover_left"
-                    style="@style/btn_handler_picker"
+                    style="@style/btn_handler_picker_right"
                     android:text="@string/edge_action" />
             </LinearLayout>
         </LinearLayout>
@@ -214,19 +226,22 @@
                     style="@style/card_title"
                     android:text="@string/side_right" />
 
-                <CheckBox
+                <Switch
                     android:id="@+id/allow_right_landscape"
+                    android:scaleY="0.8"
+                    android:scaleX="0.8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="@string/landscape" />
 
-                <CheckBox
+                <Switch
                     android:id="@+id/allow_right_portrait"
+                    android:scaleY="0.8"
+                    android:scaleX="0.8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="10dp"
                     android:text="@string/portrait" />
             </LinearLayout>
 
@@ -251,30 +266,32 @@
 
             </LinearLayout>
 
+            <View style="@style/Separator" />
             <LinearLayout
-                android:layout_marginTop="@dimen/row_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
-
-                    style="@style/setting_label4em"
+                    style="@style/setting_label_fill"
                     android:text="@string/gesture_left" />
 
                 <Button
                     android:id="@+id/tap_right"
-                    style="@style/btn_handler_picker"
+                    style="@style/btn_handler_picker_right"
                     android:text="@string/edge_action" />
-
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
                 <TextView
-
-                    style="@style/setting_label4em"
+                    style="@style/setting_label_fill"
                     android:text="@string/gesture_left_hover" />
 
                 <Button
                     android:id="@+id/hover_right"
-                    style="@style/btn_handler_picker"
+                    style="@style/btn_handler_picker_right"
                     android:text="@string/edge_action" />
             </LinearLayout>
         </LinearLayout>
@@ -295,7 +312,6 @@
                 android:orientation="horizontal">
 
                 <TextView
-
                     style="@style/setting_label"
                     android:text="@string/size_color" />
 

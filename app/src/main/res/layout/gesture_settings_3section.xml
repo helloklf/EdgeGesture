@@ -26,25 +26,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
                     style="@style/card_title"
                     android:text="@string/three_section" />
 
-                <CheckBox
+                <Switch
                     android:id="@+id/allow_three_section_landscape"
+                    android:scaleY="0.8"
+                    android:scaleX="0.8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="@string/landscape" />
-
-                <CheckBox
+                <Switch
                     android:id="@+id/allow_three_section_portrait"
+                    android:scaleY="0.8"
+                    android:scaleX="0.8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="10dp"
                     android:text="@string/portrait" />
             </LinearLayout>
 
@@ -81,7 +84,6 @@
                 android:orientation="horizontal">
 
                 <TextView
-
                     style="@style/setting_label4em"
                     android:text="@string/gesture_area_height" />
 
@@ -102,7 +104,8 @@
             android:padding="10dp">
 
             <TextView
-                style="@style/setting_label4em"
+                style="@style/setting_label_small"
+                android:layout_width="match_parent"
                 android:text="@string/side_left" />
             <LinearLayout
                 android:layout_width="match_parent"
@@ -110,30 +113,31 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    style="@style/setting_label_fill"
                     android:text="@string/gesture_up" />
 
                 <Button
                     android:id="@+id/three_section_left_slide"
-                    style="@style/btn_handler_picker" />
-
+                    style="@style/btn_handler_picker_right" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    style="@style/setting_label_fill"
                     android:text="@string/gesture_up_hover" />
 
                 <Button
                     android:id="@+id/three_section_left_hover"
-                    style="@style/btn_handler_picker" />
+                    style="@style/btn_handler_picker_right" />
             </LinearLayout>
 
 
+            <View style="@style/Separator" />
             <TextView
-                android:layout_marginTop="@dimen/row_margin"
-                style="@style/setting_label4em"
+                style="@style/setting_label_small"
+                android:layout_width="match_parent"
                 android:text="@string/side_center" />
             <LinearLayout
                 android:layout_width="match_parent"
@@ -141,29 +145,30 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    style="@style/setting_label_fill"
                     android:text="@string/gesture_up" />
 
                 <Button
                     android:id="@+id/three_section_center_slide"
-                    style="@style/btn_handler_picker" />
-
+                    style="@style/btn_handler_picker_right" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    style="@style/setting_label_fill"
                     android:text="@string/gesture_up_hover" />
 
                 <Button
                     android:id="@+id/three_section_center_hover"
-                    style="@style/btn_handler_picker" />
+                    style="@style/btn_handler_picker_right" />
             </LinearLayout>
 
+            <View style="@style/Separator" />
             <TextView
-                android:layout_marginTop="@dimen/row_margin"
-                style="@style/setting_label4em"
+                style="@style/setting_label_small"
+                android:layout_width="match_parent"
                 android:text="@string/side_right" />
             <LinearLayout
                 android:layout_width="match_parent"
@@ -171,24 +176,24 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    style="@style/setting_label_fill"
                     android:text="@string/gesture_up" />
 
                 <Button
                     android:id="@+id/three_section_right_slide"
-                    style="@style/btn_handler_picker" />
-
+                    style="@style/btn_handler_picker_right" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    style="@style/setting_label_fill"
                     android:text="@string/gesture_up_hover" />
 
                 <Button
                     android:id="@+id/three_section_right_hover"
-                    style="@style/btn_handler_picker" />
+                    style="@style/btn_handler_picker_right" />
             </LinearLayout>
         </LinearLayout>
 

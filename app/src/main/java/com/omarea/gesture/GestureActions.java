@@ -1,4 +1,4 @@
-package com.omarea.gesture.util;
+package com.omarea.gesture;
 
 import android.accessibilityservice.AccessibilityService;
 import android.content.ComponentName;
@@ -8,21 +8,55 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.widget.Toast;
 
-import com.omarea.gesture.AccessibilityServiceGesture;
 import com.omarea.gesture.model.ActionModel;
-import com.omarea.gesture.AppSwitchActivity;
-import com.omarea.gesture.Gesture;
-import com.omarea.gesture.R;
-import com.omarea.gesture.SpfConfig;
-import com.omarea.gesture.SpfConfigEx;
 import com.omarea.gesture.daemon.RemoteAPI;
 import com.omarea.gesture.shell.KeepShellPublic;
 import com.omarea.gesture.ui.QuickPanel;
+import com.omarea.gesture.util.AppLauncher;
+import com.omarea.gesture.util.AppWindowed;
+import com.omarea.gesture.util.GlobalState;
+import com.omarea.gesture.util.SystemProperty;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class GestureActions {
+    private Context context;
+    public GestureActions(final Context context) {
+        this.context = context;
+        options = options = new ArrayList<ActionModel>() {{
+            add(new ActionModel(GLOBAL_ACTION_NONE, context.getString(R.string.action_none)));
+            add(new ActionModel(GLOBAL_ACTION_BACK, context.getString(R.string.action_back)));
+            add(new ActionModel(GLOBAL_ACTION_HOME, context.getString(R.string.action_home)));
+            add(new ActionModel(GLOBAL_ACTION_RECENTS, context.getString(R.string.action_recent)));
+            add(new ActionModel(GLOBAL_ACTION_NOTIFICATIONS, context.getString(R.string.action_notification)));
+            add(new ActionModel(GLOBAL_ACTION_QUICK_SETTINGS, context.getString(R.string.action_quick_settings)));
+            add(new ActionModel(GLOBAL_ACTION_POWER_DIALOG, context.getString(R.string.action_power_menu)));
+            add(new ActionModel(VITUAL_ACTION_PREV_APP, context.getString(R.string.action_prev_app)));
+            add(new ActionModel(VITUAL_ACTION_NEXT_APP, context.getString(R.string.action_next_app)));
+
+            if (Build.VERSION.SDK_INT > 23) {
+                add(new ActionModel(GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN, context.getString(R.string.action_split_screen)));
+                add(new ActionModel(VITUAL_ACTION_SWITCH_APP, context.getString(R.string.action_prev_simulation)));
+                add(new ActionModel(VITUAL_ACTION_FORM, context.getString(R.string.action_windowed)));
+            }
+
+            if (Build.VERSION.SDK_INT > 27) {
+                add(new ActionModel(GLOBAL_ACTION_LOCK_SCREEN, context.getString(R.string.action_lock_screen)));
+                add(new ActionModel(GLOBAL_ACTION_TAKE_SCREENSHOT, context.getString(R.string.action_screenshot)));
+            }
+
+            add(new ActionModel(CUSTOM_ACTION_APP, context.getString(R.string.action_launch_app)));
+            if (Build.VERSION.SDK_INT > 23) {
+                add(new ActionModel(CUSTOM_ACTION_APP_WINDOW, context.getString(R.string.action_launch_app_windowed)));
+            }
+
+            add(new ActionModel(CUSTOM_ACTION_SHELL, context.getString(R.string.action_exec_shell)));
+            add(new ActionModel(CUSTOM_ACTION_QUICK, context.getString(R.string.action_quick_apps)));
+            add(new ActionModel(OMAREA_FILTER_SCREENSHOT, context.getString(R.string.action_filter_screenshot)));
+        }};
+    }
+
     final public static int GLOBAL_ACTION_NONE = 0;
     final public static int GLOBAL_ACTION_BACK = AccessibilityService.GLOBAL_ACTION_BACK;
     final public static int GLOBAL_ACTION_HOME = AccessibilityService.GLOBAL_ACTION_HOME;
@@ -45,42 +79,15 @@ public class GestureActions {
     final public static int CUSTOM_ACTION_SHELL = 1000006;
     final public static int CUSTOM_ACTION_QUICK = 1000009;
     final public static int OMAREA_FILTER_SCREENSHOT = 1100000;
-    private static final boolean isXiaomi = Build.MANUFACTURER.toLowerCase().equals("xiaomi") && (Build.BRAND.toLowerCase().equals("xiaomi") || Build.BRAND.toLowerCase().equals("redmi"));
-    private final static ArrayList<ActionModel> options = new ArrayList<ActionModel>() {{
-        add(new ActionModel(GLOBAL_ACTION_NONE, "无"));
-        add(new ActionModel(GLOBAL_ACTION_BACK, "返回键"));
-        add(new ActionModel(GLOBAL_ACTION_HOME, "Home键"));
-        add(new ActionModel(GLOBAL_ACTION_RECENTS, "任务键"));
-        add(new ActionModel(GLOBAL_ACTION_NOTIFICATIONS, "下拉通知"));
-        add(new ActionModel(GLOBAL_ACTION_QUICK_SETTINGS, "快捷面板"));
-        add(new ActionModel(GLOBAL_ACTION_POWER_DIALOG, "电源菜单"));
-        add(new ActionModel(VITUAL_ACTION_PREV_APP, "上个应用"));
-        add(new ActionModel(VITUAL_ACTION_NEXT_APP, "下个应用"));
 
-        if (Build.VERSION.SDK_INT > 23) {
-            add(new ActionModel(GLOBAL_ACTION_TOGGLE_SPLIT_SCREEN, "分屏"));
-            add(new ActionModel(VITUAL_ACTION_SWITCH_APP, "上个应用[模拟任务键双击]"));
-            add(new ActionModel(VITUAL_ACTION_FORM, "窗口化当前应用[试验]"));
-        }
+    private final boolean isXiaomi = Build.MANUFACTURER.toLowerCase().equals("xiaomi") && (Build.BRAND.toLowerCase().equals("xiaomi") || Build.BRAND.toLowerCase().equals("redmi"));
 
-        if (Build.VERSION.SDK_INT > 27) {
-            add(new ActionModel(GLOBAL_ACTION_LOCK_SCREEN, "锁屏"));
-            add(new ActionModel(GLOBAL_ACTION_TAKE_SCREENSHOT, "屏幕截图"));
-        }
-
-        add(new ActionModel(CUSTOM_ACTION_APP, "打开应用 > "));
-        if (Build.VERSION.SDK_INT > 23) {
-            add(new ActionModel(CUSTOM_ACTION_APP_WINDOW, "以小窗口打开应用[试验]  > "));
-        }
-        add(new ActionModel(CUSTOM_ACTION_SHELL, "运行脚本 > "));
-        add(new ActionModel(CUSTOM_ACTION_QUICK, "常用应用 > "));
-        add(new ActionModel(OMAREA_FILTER_SCREENSHOT, "屏幕滤镜-正常截图"));
-    }};
-    private static SharedPreferences configEx;
-    private static boolean isMiui12 = new SystemProperty().isMiui12();
+    private ArrayList<ActionModel> options;
+    private SharedPreferences configEx;
+    private final boolean isMiui12 = new SystemProperty().isMIUI12();
 
     // 获取动画模式
-    private static int getAnimationRes(final ActionModel action) {
+    private int getAnimationRes(final ActionModel action) {
         if (GlobalState.consecutiveAction != null) {
             return SpfConfig.ANIMATION_FAST;
         } else if (Gesture.config.getBoolean(SpfConfig.LOW_POWER_MODE, SpfConfig.LOW_POWER_MODE_DEFAULT)) {
@@ -97,7 +104,7 @@ public class GestureActions {
     // 由于Google限制，再按下Home键以后，后台应用如果想要打开Activity则需要等待5秒，参考 stopAppSwitches 相关逻辑
     // 这导致应用切换手势和打开应用的操作变得体验很差
     // 目前还没找到解决办法
-    public static void executeVirtualAction(
+    public void executeVirtualAction(
             final AccessibilityServiceGesture accessibilityService,
             final ActionModel action, float touchStartRawX, float touchStartRawY) {
 
@@ -151,7 +158,7 @@ public class GestureActions {
                 break;
             }
             case OMAREA_FILTER_SCREENSHOT: {
-                omareaFilterScreenShot(accessibilityService);
+                filterScreenShot(accessibilityService);
                 break;
             }
             case VITUAL_ACTION_SWITCH_APP: {
@@ -183,7 +190,7 @@ public class GestureActions {
         }
     }
 
-    private static void omareaFilterScreenShot(final AccessibilityServiceGesture accessibilityServiceGesture) {
+    private void filterScreenShot(final AccessibilityServiceGesture accessibilityServiceGesture) {
         try {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setComponent(new ComponentName("com.omarea.filter", "com.omarea.filter.ScreenCapActivity"));
@@ -195,11 +202,11 @@ public class GestureActions {
         }
     }
 
-    private static void openQuickPanel(final AccessibilityServiceGesture accessibilityService, float touchRawX, float touchRawY) {
+    private void openQuickPanel(final AccessibilityServiceGesture accessibilityService, float touchRawX, float touchRawY) {
         new QuickPanel(accessibilityService).open(touchRawX, touchRawY);
     }
 
-    private static Intent getAppSwitchIntent(String appPackageName) {
+    private Intent getAppSwitchIntent(String appPackageName) {
         Intent i = Gesture.context.getPackageManager().getLaunchIntentForPackage(appPackageName);
         i.setFlags((i.getFlags() & ~Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED) | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
         i.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
@@ -207,7 +214,7 @@ public class GestureActions {
         return i;
     }
 
-    private static void lowPowerModeAppSwitch(final AccessibilityServiceGesture service, final int action) {
+    private void lowPowerModeAppSwitch(final AccessibilityServiceGesture service, final int action) {
         switch (action) {
             case GLOBAL_ACTION_HOME: {
                 service.performGlobalAction(GLOBAL_ACTION_HOME);
@@ -247,16 +254,16 @@ public class GestureActions {
         }
     }
 
-    private static void updateRecent(final AccessibilityServiceGesture service) {
+    private void updateRecent(final AccessibilityServiceGesture service) {
         if (GlobalState.enhancedMode) {
-            ArrayList<String> recents = new ArrayList<>();
+            ArrayList<String> recent = new ArrayList<>();
             // ADB
-            Collections.addAll(recents, RemoteAPI.getRecents());
-            service.recents.setRecents(recents);
+            Collections.addAll(recent, RemoteAPI.getRecents());
+            service.recents.setRecents(recent);
         }
     }
 
-    private static void appSwitch(final AccessibilityServiceGesture service, final int action, final int animation) {
+    private void appSwitch(final AccessibilityServiceGesture service, final int action, final int animation) {
         try {
             Intent intent = AppSwitchActivity.getOpenAppIntent(service);
             intent.putExtra("animation", animation);
@@ -332,7 +339,7 @@ public class GestureActions {
         }
     }
 
-    private static void openApp(AccessibilityServiceGesture service, ActionModel action) {
+    private void openApp(AccessibilityServiceGesture service, ActionModel action) {
         if (configEx == null) {
             configEx = service.getSharedPreferences(SpfConfigEx.configFile, Context.MODE_PRIVATE);
         }
@@ -360,7 +367,7 @@ public class GestureActions {
         }
     }
 
-    private static void executeShell(AccessibilityServiceGesture service, ActionModel action) {
+    private void executeShell(AccessibilityServiceGesture service, ActionModel action) {
         if (configEx == null) {
             configEx = service.getSharedPreferences(SpfConfigEx.configFile, Context.MODE_PRIVATE);
         }
@@ -371,7 +378,7 @@ public class GestureActions {
         }
     }
 
-    public static String getOption(int value) {
+    public String getOption(int value) {
         for (ActionModel actionModel : getOptions()) {
             if (actionModel.actionCode == value) {
                 return actionModel.title;
@@ -380,12 +387,12 @@ public class GestureActions {
         return "";
     }
 
-    public static ActionModel[] getOptions() {
+    public ActionModel[] getOptions() {
         ArrayList<ActionModel> items = new ArrayList<ActionModel>(){{
             addAll(options);
             if (isXiaomi && GlobalState.enhancedMode) {
-                add(new ActionModel(VITUAL_ACTION_MI_HANDY_MODE_1, "单手模式-左"));
-                add(new ActionModel(VITUAL_ACTION_MI_HANDY_MODE_2, "单手模式-右"));
+                add(new ActionModel(VITUAL_ACTION_MI_HANDY_MODE_1, context.getString(R.string.single_hand_model_left)));
+                add(new ActionModel(VITUAL_ACTION_MI_HANDY_MODE_2, context.getString(R.string.single_hand_model_right)));
             }
         }};
         return items.toArray(new ActionModel[0]);

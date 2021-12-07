@@ -16,7 +16,7 @@ public class AppLauncher {
         return i;
     }
 
-    void startActivity(Context context, String targetApp) {
+    public void startActivity(Context context, String targetApp) {
         try {
             context.startActivity(getAppSwitchIntent(targetApp));
         } catch (Exception ex) {

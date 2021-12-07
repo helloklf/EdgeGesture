@@ -27,7 +27,7 @@ import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.WhiteBarColor;
 import com.omarea.gesture.util.GlobalState;
-import com.omarea.gesture.util.GestureActions;
+import com.omarea.gesture.GestureActions;
 import com.omarea.gesture.util.ReceiverLock;
 import com.omarea.gesture.util.ReceiverLockHandler;
 import com.omarea.gesture.util.ScreenState;
@@ -211,7 +211,7 @@ public class iOSWhiteBar {
 
             private void performGlobalAction(final ActionModel event) {
                 if (accessibilityService != null) {
-                    GestureActions.executeVirtualAction(accessibilityService, event, touchStartRawX, touchStartRawY);
+                    Gesture.gestureActions.executeVirtualAction(accessibilityService, event, touchStartRawX, touchStartRawY);
                 }
             }
 

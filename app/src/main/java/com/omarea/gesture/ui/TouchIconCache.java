@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory;
 import com.omarea.gesture.Gesture;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
-import com.omarea.gesture.util.GestureActions;
+import com.omarea.gesture.GestureActions;
 
 public class TouchIconCache {
     private static Bitmap touch_arrow_left, touch_tasks, touch_home, touch_lock, touch_notice, touch_power, touch_settings, touch_split, touch_info, touch_screenshot, touch_switch, touch_jump_previous, touch_jump_next, touch_window, touch_app, touch_grid, touch_shell, touch_app_window; // 图标资源

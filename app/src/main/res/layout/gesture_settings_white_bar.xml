@@ -22,108 +22,122 @@
             style="@style/card_view"
             android:orientation="vertical"
             android:padding="10dp">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="10dp"
                 android:orientation="horizontal">
 
                 <TextView
                     style="@style/card_title"
                     android:text="@string/ios_bar" />
 
-                <CheckBox
+                <Switch
                     android:id="@+id/landscape_ios_bar"
+                    android:scaleY="0.8"
+                    android:scaleX="0.8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="@string/landscape" />
 
-                <CheckBox
+                <Switch
                     android:id="@+id/portrait_ios_bar"
+                    android:scaleY="0.8"
+                    android:scaleX="0.8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="10dp"
                     android:text="@string/portrait" />
             </LinearLayout>
 
+            <View style="@style/Separator" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
-                    style="@style/setting_label4em"
+                    style="@style/setting_label_fill"
                     android:minWidth="80dp"
                     android:text="@string/gesture_left" />
 
                 <Button
                     android:id="@+id/ios_bar_slide_left"
-                    style="@style/btn_handler_picker"
+                    style="@style/btn_handler_picker_right"
                     android:text="@string/edge_action" />
-
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
                 <TextView
-                    style="@style/setting_label4em"
+                    style="@style/setting_label_fill"
                     android:text="@string/gesture_right" />
 
                 <Button
                     android:id="@+id/ios_bar_slide_right"
-                    style="@style/btn_handler_picker"
+                    style="@style/btn_handler_picker_right"
                     android:text="@string/edge_action" />
             </LinearLayout>
 
+            <View style="@style/Separator" />
             <LinearLayout
-                android:layout_marginTop="@dimen/row_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
-                    style="@style/setting_label4em"
+                    style="@style/setting_label_fill"
                     android:text="@string/gesture_up" />
 
                 <Button
                     android:id="@+id/ios_bar_slide_up"
-                    style="@style/btn_handler_picker"
+                    style="@style/btn_handler_picker_right"
                     android:text="@string/edge_action" />
-
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
                 <TextView
-                    style="@style/setting_label4em"
+                    style="@style/setting_label_fill"
                     android:text="@string/gesture_up_hover" />
 
                 <Button
                     android:id="@+id/ios_bar_slide_up_hover"
-                    style="@style/btn_handler_picker"
+                    style="@style/btn_handler_picker_right"
                     android:text="@string/edge_action" />
             </LinearLayout>
 
+            <View style="@style/Separator" />
             <LinearLayout
-                android:layout_marginTop="@dimen/row_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
-                    style="@style/setting_label4em"
+                    style="@style/setting_label_fill"
                     android:text="@string/tap_click" />
 
                 <Button
                     android:id="@+id/ios_bar_touch"
-                    style="@style/btn_handler_picker"
+                    style="@style/btn_handler_picker_right"
                     android:text="@string/edge_action" />
-
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
                 <TextView
-                    style="@style/setting_label4em"
+                    style="@style/setting_label_fill"
                     android:text="@string/long_press" />
 
                 <Button
                     android:id="@+id/ios_bar_press"
-                    style="@style/btn_handler_picker"
+                    style="@style/btn_handler_picker_right"
                     android:text="@string/edge_action" />
             </LinearLayout>
-
         </LinearLayout>
 
         <LinearLayout

@@ -1,4 +1,11 @@
 <resources>
+    <style name="Separator">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1px</item>
+        <item name="android:background">#40808080</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+    </style>
 
     <style name="SceneSwitch">
         <item name="android:textColor">?android:attr/textColorPrimary</item>
@@ -91,8 +98,24 @@
         <item name="android:paddingEnd">5dp</item>
     </style>
 
+    <style name="setting_label_small">
+        <item name="android:textSize">10dp</item>
+        <item name="android:layout_width">@dimen/label_width</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:fontFamily">sans-serif-condensed-light</item>
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:paddingEnd">5dp</item>
+        <item name="android:alpha">0.7</item>
+    </style>
+
     <style name="setting_label4em" parent="setting_label">
         <item name="android:layout_width">60dp</item>
+    </style>
+
+    <style name="setting_label_fill" parent="setting_label">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
     </style>
 
     <style name="card_title">
@@ -126,6 +149,12 @@
         <item name="android:textSize">13sp</item>
         <item name="android:maxLines">1</item>
         <item name="android:textColor">@color/colorAccent</item>
+    </style>
+    <style name="btn_handler_picker_right" parent="@style/btn_handler_picker">
+        <item name="android:textAlignment">textEnd</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:layout_height">30dp</item>
     </style>
 
     <style name="activityAnim">

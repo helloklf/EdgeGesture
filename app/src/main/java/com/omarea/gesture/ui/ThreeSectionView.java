@@ -18,7 +18,7 @@ import com.omarea.gesture.Gesture;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.util.GlobalState;
-import com.omarea.gesture.util.GestureActions;
+import com.omarea.gesture.GestureActions;
 
 public class ThreeSectionView extends View {
     private SharedPreferences config;
@@ -103,7 +103,7 @@ public class ThreeSectionView extends View {
                     remindState = false;
                     invalidate();
                 }
-                GestureActions.executeVirtualAction(accessibilityService, event, touchStartRawX, touchStartRawY);
+                Gesture.gestureActions.executeVirtualAction(accessibilityService, event, touchStartRawX, touchStartRawY);
             }
         }
     }

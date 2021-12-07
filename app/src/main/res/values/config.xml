@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="action_config_changed" translatable="false">com.omarea.gesture.ConfigChanged</string>
+    <string name="action_adb_process" translatable="false">com.omarea.gesture.AdbProcess</string>
+    <string name="app_switch_changed" translatable="false">com.omarea.gesture.AppSwitchChanged</string>
+    <string name="action_service_disable" translatable="false">com.omarea.gesture.ServiceDisable</string>
     <string-array name="app_switch_black_list">
         <item>android</item>
         <item>com.android.systemui</item>

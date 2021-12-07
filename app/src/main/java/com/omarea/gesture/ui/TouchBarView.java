@@ -15,7 +15,7 @@ import com.omarea.gesture.Gesture;
 import com.omarea.gesture.R;
 import com.omarea.gesture.SpfConfig;
 import com.omarea.gesture.util.GlobalState;
-import com.omarea.gesture.util.GestureActions;
+import com.omarea.gesture.GestureActions;
 
 public class TouchBarView extends View {
     static final int RIGHT = 2;
@@ -78,7 +78,7 @@ public class TouchBarView extends View {
                 lastEventTime = System.currentTimeMillis();
                 Gesture.toast(this.getContext().getString(R.string.please_repeat), Toast.LENGTH_SHORT);
             } else {
-                GestureActions.executeVirtualAction(accessibilityService, event, touchStartRawX, touchStartRawY);
+                Gesture.gestureActions.executeVirtualAction(accessibilityService, event, touchStartRawX, touchStartRawY);
             }
         }
     }

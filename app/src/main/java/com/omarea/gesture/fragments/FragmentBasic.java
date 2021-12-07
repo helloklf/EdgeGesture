@@ -124,14 +124,14 @@ public class FragmentBasic extends FragmentSettingsBase {
 
                 GlobalState.enhancedMode = RemoteAPI.isOnline();
                 if (GlobalState.enhancedMode) {
-                    Gesture.toast("别点啦！增强模式已经好了", Toast.LENGTH_SHORT);
+                    Gesture.toast(getString(R.string.enhanced_mode_is_ok), Toast.LENGTH_SHORT);
                     updateView();
                 } else {
                     String shell = new AdbProcessExtractor().extract(activity);
                     if (shell != null) {
                         new EnhancedModeGuide().show(activity, shell);
                     } else {
-                        Gesture.toast("无法提取外接程序文件", Toast.LENGTH_SHORT);
+                        Gesture.toast(getString(R.string.daemon_cannot_extract), Toast.LENGTH_SHORT);
                     }
                 }
             }

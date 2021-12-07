@@ -60,7 +60,7 @@ public class Recents {
         }
     }
 
-    void setRecents(ArrayList<String> items) {
+    public void setRecents(ArrayList<String> items) {
         synchronized (recents) {
             /*
             if (recents.size() < 4) {
@@ -101,11 +101,11 @@ public class Recents {
         return this.recents.size() > 1;
     }
 
-    String getCurrent() {
+    public String getCurrent() {
         return currentTop;
     }
 
-    String moveNext() {
+    public String moveNext() {
         String packageName;
         synchronized (recents) {
             if (index < recents.size() - 1) {
@@ -124,7 +124,7 @@ public class Recents {
         return packageName;
     }
 
-    String movePrevious() {
+    public String movePrevious() {
         String packageName;
         synchronized (recents) {
             if (index > 0) {

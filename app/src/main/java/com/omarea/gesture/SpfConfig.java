@@ -1,7 +1,5 @@
 package com.omarea.gesture;
 
-import com.omarea.gesture.util.GestureActions;
-
 public class SpfConfig {
     public final static String BACK_HOME_ANIMATION = "BACK_HOME_ANIMATION";
     public final static String APP_SWITCH_ANIMATION = "APP_SWITCH_ANIMATION";
