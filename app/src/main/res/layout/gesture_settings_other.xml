@@ -18,6 +18,9 @@
             android:fontFamily="sans-serif-light"
             android:textAppearance="@android:style/TextAppearance.Material.Title" />
 
+        <TextView
+            style="@style/setting_label_small"
+            android:text="@string/animation" />
         <LinearLayout
             style="@style/card_view"
             android:orientation="vertical"
@@ -26,7 +29,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-
 
                 <TextView
                     style="@style/card_title"
@@ -66,11 +68,16 @@
                 android:layout_marginEnd="45dp"
                 android:layout_marginTop="6dp"
                 android:text="@string/animation_mode_desc" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/card_view"
+            android:orientation="vertical"
+            android:padding="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/row_margin"
                 android:orientation="horizontal">
 
                 <TextView

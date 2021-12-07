@@ -52,19 +52,17 @@
                 android:textSize="11dp" />
         </LinearLayout>
 
+
+        <TextView
+            style="@style/setting_label_small"
+            android:layout_width="match_parent"
+            android:text="@string/haptic" />
         <LinearLayout
             style="@style/card_view"
             android:orientation="vertical"
             android:padding="10dp">
-
-            <TextView
-                style="@style/setting_label_small"
-                android:layout_width="match_parent"
-                android:text="@string/haptic" />
-
             <Switch
                 android:paddingRight="3dp"
-                android:layout_marginTop="16dp"
                 style="@style/textTitle"
                 android:id="@+id/vibrator_use_system"
                 android:layout_width="match_parent"

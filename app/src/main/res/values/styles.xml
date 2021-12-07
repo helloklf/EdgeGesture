@@ -15,6 +15,8 @@
         <item name="android:thumb">@drawable/switch_thumb</item>
         <item name="android:track">@drawable/switch_track</item>
         <item name="android:textAppearance">@style/textTitle</item>
+        <item name="android:thumbTextPadding">2dp</item>
+        <item name="android:switchPadding">2dp</item>
         <item name="android:textOn" />
         <item name="android:textOff" />
         <item name="android:showText">false</item>
@@ -68,7 +70,10 @@
     <style name="card_view">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">10dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginBottom">15dp</item>
         <item name="android:background">@drawable/gesture_card_view</item>
     </style>
 
@@ -96,21 +101,20 @@
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:textAlignment">textStart</item>
         <item name="android:paddingEnd">5dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
     </style>
 
     <style name="setting_label_small">
+        <item name="android:layout_marginStart">15dp</item>
         <item name="android:textSize">10dp</item>
-        <item name="android:layout_width">@dimen/label_width</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:fontFamily">sans-serif-condensed-light</item>
         <item name="android:textAlignment">textStart</item>
         <item name="android:paddingEnd">5dp</item>
         <item name="android:alpha">0.7</item>
-    </style>
-
-    <style name="setting_label4em" parent="setting_label">
-        <item name="android:layout_width">60dp</item>
     </style>
 
     <style name="setting_label_fill" parent="setting_label">
@@ -129,6 +133,7 @@
     </style>
 
     <style name="btn_color_picker">
+        <item name="android:elevation">0dp</item>
         <item name="android:layout_width">30dp</item>
         <item name="android:layout_height">30dp</item>
         <item name="android:layout_gravity">center_vertical</item>
@@ -153,9 +158,9 @@
     </style>
     <style name="btn_handler_picker_right" parent="@style/btn_handler_picker">
         <item name="android:textAlignment">textEnd</item>
-        <item name="android:paddingTop">4dp</item>
-        <item name="android:paddingBottom">4dp</item>
-        <item name="android:layout_height">30dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:layout_height">35dp</item>
     </style>
 
     <style name="activityAnim">

@@ -75,7 +75,7 @@ public class DialogHandlerEX {
                                 title.setText(appInfo.appName);
                                 desc.setText(appInfo.packageName);
                                 if (position == finalCurrentIndex) {
-                                    title.setTextColor(title.getHighlightColor());
+                                    desc.setTextColor(desc.getContext().getResources().getColor(R.color.colorAccent));
                                 }
 
                                 return view;

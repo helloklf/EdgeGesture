@@ -25,6 +25,7 @@
     <string name="side_bottom">底边手势</string>
     <string name="side_right">右边手势</string>
     <string name="side_center">中间手势</string>
+    <string name="show_in">显示在</string>
     <string name="three_section">三段手势</string>
     <string name="side_left">左边手势</string>
     <string name="basic_styles">基本外观</string>
@@ -35,6 +36,9 @@
     <string name="gesture_right">向右滑动</string>
     <string name="gesture_right_hover">右滑悬停</string>
     <string name="gesture_area_height">热区高度</string>
+    <string name="height">高度</string>
+    <string name="width">宽度</string>
+    <string name="gesture_area">手势区域</string>
     <string name="gesture_area_width">热区宽度</string>
     <string name="size_color">大小/颜色</string>
     <string name="width_color">宽度/颜色</string>
@@ -56,6 +60,7 @@
     <string name="portrait">竖屏</string>
     <string name="landscape">横屏</string>
     <string name="animation_mode">选择动画</string>
+    <string name="animation">动画</string>
     <string name="back_home_animation">返回桌面动画</string>
     <string name="app_switch_animation">应用切换动画</string>
     <string name="choose_app">选择应用</string>

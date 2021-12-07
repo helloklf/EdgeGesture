@@ -18,6 +18,10 @@
             android:fontFamily="sans-serif-light"
             android:textAppearance="@android:style/TextAppearance.Material.Title" />
 
+
+        <TextView
+            style="@style/setting_label_small"
+            android:text="@string/side_bottom" />
         <LinearLayout
             style="@style/card_view"
             android:orientation="vertical"
@@ -31,7 +35,7 @@
 
                 <TextView
                     style="@style/card_title"
-                    android:text="@string/side_bottom" />
+                    android:text="@string/show_in" />
 
                 <Switch
                     android:id="@+id/allow_bottom_landscape"
@@ -58,8 +62,8 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    style="@style/setting_label4em"
-                    android:text="@string/gesture_area_width" />
+                    style="@style/setting_label"
+                    android:text="@string/width" />
 
                 <SeekBar
                     android:id="@+id/bar_width_bottom"
@@ -80,8 +84,8 @@
 
                 <TextView
 
-                    style="@style/setting_label4em"
-                    android:text="@string/gesture_area_height" />
+                    style="@style/setting_label"
+                    android:text="@string/height" />
 
                 <SeekBar
                     android:id="@+id/edge_bottom_height"
@@ -91,8 +95,8 @@
                     android:max="40" />
             </LinearLayout>
 
-            <View style="@style/Separator" />
             <LinearLayout
+                android:layout_marginTop="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -122,11 +126,13 @@
             </LinearLayout>
         </LinearLayout>
 
+        <TextView
+            style="@style/setting_label_small"
+            android:text="@string/side_left" />
         <LinearLayout
             style="@style/card_view"
             android:orientation="vertical"
             android:padding="10dp">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -135,7 +141,7 @@
 
                 <TextView
                     style="@style/card_title"
-                    android:text="@string/side_left" />
+                    android:text="@string/show_in" />
 
                 <Switch
                     android:id="@+id/allow_left_landscape"
@@ -162,9 +168,8 @@
                 android:orientation="horizontal">
 
                 <TextView
-
-                    style="@style/setting_label4em"
-                    android:text="@string/gesture_area_height" />
+                    style="@style/setting_label"
+                    android:text="@string/height" />
 
                 <SeekBar
                     android:id="@+id/bar_height_left"
@@ -177,8 +182,8 @@
 
             </LinearLayout>
 
-            <View style="@style/Separator" />
             <LinearLayout
+                android:layout_marginTop="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -209,6 +214,9 @@
         </LinearLayout>
 
 
+        <TextView
+            style="@style/setting_label_small"
+            android:text="@string/side_right" />
         <LinearLayout
             style="@style/card_view"
             android:layout_width="match_parent"
@@ -224,7 +232,7 @@
 
                 <TextView
                     style="@style/card_title"
-                    android:text="@string/side_right" />
+                    android:text="@string/show_in" />
 
                 <Switch
                     android:id="@+id/allow_right_landscape"
@@ -251,9 +259,8 @@
                 android:orientation="horizontal">
 
                 <TextView
-
-                    style="@style/setting_label4em"
-                    android:text="@string/gesture_area_height" />
+                    style="@style/setting_label"
+                    android:text="@string/height" />
 
                 <SeekBar
                     android:id="@+id/bar_height_right"
@@ -266,8 +273,8 @@
 
             </LinearLayout>
 
-            <View style="@style/Separator" />
             <LinearLayout
+                android:layout_marginTop="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -296,19 +303,18 @@
             </LinearLayout>
         </LinearLayout>
 
+
+        <TextView
+            style="@style/setting_label_small"
+            android:text="@string/basic_styles" />
         <LinearLayout
             style="@style/card_view"
             android:orientation="vertical"
             android:padding="10dp">
 
-            <TextView
-                style="@style/card_title"
-                android:text="@string/basic_styles" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/row_margin"
                 android:orientation="horizontal">
 
                 <TextView

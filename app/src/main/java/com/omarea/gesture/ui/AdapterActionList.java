@@ -50,7 +50,8 @@ public class AdapterActionList extends BaseAdapter {
         }
         textView.setText(actionModel.title);
         if (position == selectedIndex) {
-            textView.setTextColor(textView.getHighlightColor());
+            // textView.setTextColor(textView.getHighlightColor());
+            textView.setTextColor(textView.getContext().getResources().getColor(R.color.colorAccent));
         }
 
         view.setOnClickListener(new View.OnClickListener() {

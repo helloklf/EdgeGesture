@@ -17,11 +17,15 @@
             android:text="@string/three_section_gesture"
             android:textAppearance="@android:style/TextAppearance.Material.Title" />
 
+        <TextView
+            style="@style/setting_label_small"
+            android:layout_marginStart="15dp"
+            android:layout_width="match_parent"
+            android:text="@string/gesture_area" />
         <LinearLayout
             style="@style/card_view"
             android:orientation="vertical"
             android:padding="10dp">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -31,7 +35,7 @@
 
                 <TextView
                     style="@style/card_title"
-                    android:text="@string/three_section" />
+                    android:text="@string/show_in" />
 
                 <Switch
                     android:id="@+id/allow_three_section_landscape"
@@ -57,9 +61,8 @@
                 android:orientation="horizontal">
 
                 <TextView
-
-                    style="@style/setting_label4em"
-                    android:text="@string/gesture_area_width" />
+                    style="@style/setting_label"
+                    android:text="@string/width" />
 
                 <SeekBar
                     android:id="@+id/bar_width_three_section"
@@ -84,8 +87,8 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    style="@style/setting_label4em"
-                    android:text="@string/gesture_area_height" />
+                    style="@style/setting_label"
+                    android:text="@string/height" />
 
                 <SeekBar
                     android:id="@+id/three_section_height"
@@ -98,15 +101,16 @@
             </LinearLayout>
         </LinearLayout>
 
+        <TextView
+            style="@style/setting_label_small"
+            android:layout_marginStart="15dp"
+            android:layout_width="match_parent"
+            android:text="@string/side_left" />
         <LinearLayout
             style="@style/card_view"
             android:orientation="vertical"
             android:padding="10dp">
 
-            <TextView
-                style="@style/setting_label_small"
-                android:layout_width="match_parent"
-                android:text="@string/side_left" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -132,13 +136,18 @@
                     android:id="@+id/three_section_left_hover"
                     style="@style/btn_handler_picker_right" />
             </LinearLayout>
+        </LinearLayout>
 
 
-            <View style="@style/Separator" />
-            <TextView
-                style="@style/setting_label_small"
-                android:layout_width="match_parent"
-                android:text="@string/side_center" />
+        <TextView
+            style="@style/setting_label_small"
+            android:layout_marginStart="15dp"
+            android:layout_width="match_parent"
+            android:text="@string/side_center" />
+        <LinearLayout
+            style="@style/card_view"
+            android:orientation="vertical"
+            android:padding="10dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -164,12 +173,17 @@
                     android:id="@+id/three_section_center_hover"
                     style="@style/btn_handler_picker_right" />
             </LinearLayout>
+        </LinearLayout>
 
-            <View style="@style/Separator" />
-            <TextView
-                style="@style/setting_label_small"
-                android:layout_width="match_parent"
-                android:text="@string/side_right" />
+        <TextView
+            style="@style/setting_label_small"
+            android:layout_marginStart="15dp"
+            android:layout_width="match_parent"
+            android:text="@string/side_right" />
+        <LinearLayout
+            style="@style/card_view"
+            android:orientation="vertical"
+            android:padding="10dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
