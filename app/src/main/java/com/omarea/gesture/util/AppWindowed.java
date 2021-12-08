@@ -4,7 +4,14 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
+import com.omarea.gesture.R;
+import com.omarea.gesture.daemon.RemoteAPI;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 public class AppWindowed {
@@ -17,9 +24,18 @@ public class AppWindowed {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
         // intent.setFlags(Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT | Intent.FLAG_ACTIVITY_NEW_TASK);
         try {
-            Method method = ActivityOptions.class.getMethod("setLaunchWindowingMode", int.class);
+            Method method = activityOptions.getClass().getMethod("setLaunchWindowingMode", int.class);
             method.invoke(activityOptions, 5);
-        } catch (Exception e) { /* Gracefully fail */ }
+        } catch (Exception e) {
+            if (RemoteAPI.isOnline()) {
+                RemoteAPI.windowingMode(packageName + "/" + intent.getComponent().getClassName());
+                return;
+            } else {
+                Toast.makeText(context, R.string.windowed_fail, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            // e.printStackTrace();
+        }
 
         // int left = 50;
         // int top = 100;

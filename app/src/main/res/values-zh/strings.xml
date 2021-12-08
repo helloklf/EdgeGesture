@@ -136,4 +136,5 @@
     <string name="daemon_cannot_extract">无法提取外接程序文件</string>
     <string name="single_hand_model_left">单手模式-左</string>
     <string name="single_hand_model_right">单手模式-右</string>
+    <string name="windowed_fail">无法在当前Android版本窗口化启动应用，但是你可以激活增强模式来解决此问题</string>
 </resources>

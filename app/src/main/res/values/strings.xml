@@ -134,5 +134,6 @@
     <string name="daemon_cannot_extract">The daemon cannot extract</string>
     <string name="single_hand_model_left">OneHandedMode(Left)</string>
     <string name="single_hand_model_right">One-Handed Mode(Right)</string>
+    <string name="windowed_fail">There is no way to window launch an app on the current Version of Android, but you can fix this by enabling Enhanced mode</string>
 
 </resources>

@@ -7,6 +7,7 @@ import com.omarea.gesture.util.GlobalState;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -130,6 +131,20 @@ public class RemoteAPI {
             @Override
             public void run() {
                 loadContent("fix-delay");
+            }
+        }).start();
+    }
+
+    // am start --windowingMode 5 -n com.tencent.mm/.ui.LauncherUI
+    // windowingMode("com.tencent.mm/.ui.LauncherUI")
+    public static void windowingMode(final String component) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    loadContent("windowed?" + URLEncoder.encode(component, "UTF-8"));
+                } catch (UnsupportedEncodingException ignored) {
+                }
             }
         }).start();
     }

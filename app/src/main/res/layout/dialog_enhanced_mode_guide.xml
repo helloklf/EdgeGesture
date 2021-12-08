@@ -13,10 +13,10 @@
 
     <TextView
         android:textIsSelectable="true"
+        android:gravity="center"
         android:id="@+id/enhanced_mode_shell"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:background="@android:color/transparent"
-        android:textAlignment="center"
         android:textSize="13dp" />
 </LinearLayout>

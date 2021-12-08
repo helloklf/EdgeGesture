@@ -1,11 +1,9 @@
 package shell;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 
 public class RemoteAPI {
@@ -104,6 +102,19 @@ public class RemoteAPI {
                     // "am start -n com.omarea.gesture/com.omarea.gesture.FixAppSwitchDelay --activity-no-animation --activity-no-history --activity-exclude-from-recents --activity-clear-top --activity-clear-task"
                     "am start -n com.omarea.gesture/com.omarea.gesture.FixAppSwitchDelay"
             ));
+        } else if (request.startsWith("/windowed")) {
+            if (request.contains("?")) {
+                try {
+                    String component = URLDecoder.decode(request.substring(request.indexOf("?") + 1), "UTF-8");
+                    responseEnd(socket, KeepShellPublic.doCmdSync(
+                        "am start --windowingMode 5 -n " + component
+                    ));
+                    return;
+                } catch (UnsupportedEncodingException ignored) {
+
+                }
+            }
+            responseEnd(socket, "error");
         } else if (request.startsWith("/shell")) {
             if (request.contains("?")) {
                 // KeepShellPublic.doCmdSync(request.substring(request.indexOf("?") + 1));

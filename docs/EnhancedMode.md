@@ -25,7 +25,7 @@
 - 点击**Gesture**增强模式右侧的机器人小图标，出现激活提示弹窗后，插上数据线连接电脑
 - 复制激活命令
   ```sh
-  adb -d shell sh /storage/emulated/0/Android/data/com.omarea.gesture/cache/up.sh
+  adb shell sh /storage/emulated/0/Android/data/com.omarea.gesture/cache/up.sh
   ```
 - 并在命令行窗口中点击鼠标右键粘贴代码，并按下回车键
 

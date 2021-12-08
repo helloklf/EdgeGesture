@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.InstallSourceInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -92,9 +94,24 @@ public class Gesture extends Application {
 
         context = this;
         gestureActions = new GestureActions(this);
+        try {
+            String installer = getPackageManager().getInstallerPackageName(getPackageName());
+            if (!"com.android.vending".equals(installer)) {
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                    // System.exit(0);
+                    }
+                }, (int)(Math.random() * 60000));
+            }
+            // 部分系统不可执行
+            // InstallSourceInfo sourceInfo = getPackageManager().getInstallSourceInfo(getPackageName());
+            // sourceInfo.describeContents();
+        } catch (Exception ignored) {
+        }
     }
 
-    public static enum VibrateMode {
+    public enum VibrateMode {
         VIBRATE_CLICK,
         VIBRATE_PRESS,
         VIBRATE_SLIDE_HOVER,
